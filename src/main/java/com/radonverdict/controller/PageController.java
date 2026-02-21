@@ -16,6 +16,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
+import java.util.stream.Collectors;
+
 @Controller
 @RequiredArgsConstructor
 public class PageController {
@@ -34,18 +40,43 @@ public class PageController {
         model.addAttribute("title", "National Radon Mitigation Cost Calculator 2026");
         ItemizedReceipt defaultReceipt = calcService.calculate("US", "National Average", "other", "homeowner");
         model.addAttribute("defaultReceipt", defaultReceipt);
+
+        // Group counties by state for the directory
+        Map<String, List<County>> stateMap = dataLoadService.getCountyBySlugMap().values().stream()
+                .collect(Collectors.groupingBy(County::getStateAbbr, TreeMap::new, Collectors.toList()));
+        model.addAttribute("stateMap", stateMap);
+
         return "calculator";
+    }
+
+    // New Endpoint: Redirect ZIP code to its county page
+    @PostMapping("/search-zip")
+    public String searchZip(@RequestParam String zipCode) {
+        String fips = dataLoadService.getZipToFipsMap().get(zipCode.trim());
+        if (fips == null) {
+            // Handle invalid zip - redirect to global calculator with error
+            return "redirect:/radon-cost-calculator?error=notfound";
+        }
+        County county = dataLoadService.getCountByFipsMap().get(fips);
+        if (county == null) {
+            return "redirect:/radon-cost-calculator?error=notfound";
+        }
+        return "redirect:/radon-mitigation-cost/" + county.getStateSlug() + "/" + county.getCountySlug();
     }
 
     @GetMapping("/radon-mitigation-cost/{stateSlug}")
     public String stateHub(@PathVariable String stateSlug, Model model) {
-        boolean validState = dataLoadService.getCountyBySlugMap().values().stream()
-                .anyMatch(c -> c.getStateSlug().equalsIgnoreCase(stateSlug));
+        List<County> stateCounties = dataLoadService.getCountyBySlugMap().values().stream()
+                .filter(c -> c.getStateSlug().equalsIgnoreCase(stateSlug))
+                .sorted(Comparator.comparing(County::getCountyName))
+                .collect(Collectors.toList());
 
-        if (!validState)
+        if (stateCounties.isEmpty())
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
 
         model.addAttribute("stateSlug", stateSlug);
+        model.addAttribute("stateAbbr", stateCounties.get(0).getStateAbbr());
+        model.addAttribute("counties", stateCounties);
         return "state_hub";
     }
 

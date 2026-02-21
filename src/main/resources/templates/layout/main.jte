@@ -1,0 +1,101 @@
+@import gg.jte.Content
+
+@param String title
+@param String description = "National Radon Mitigation Cost Calculator"
+@param Content content
+
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>${title}</title>
+    <meta name="description" content="${description}">
+    
+    <!-- Google Fonts: Outfit (Display) & Inter (Numbers/Body) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;700;800;900&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS CDN (Configured for startup look) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Outfit', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#f8fafc',
+                            100: '#f1f5f9',
+                            400: '#94a3b8',
+                            500: '#64748b',
+                            600: '#475569',
+                            900: '#0f172a', /* Deep slate navy for premium feel */
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- HTMX & Alpine.js -->
+    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.13.3/dist/cdn.min.js"></script>
+    
+    <style>
+        .glass-header {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(226, 232, 240, 0.8);
+        }
+        .tabular-nums {
+            font-variant-numeric: tabular-nums;
+        }
+        [x-cloak] { display: none !important; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans antialiased selection:bg-brand-900 selection:text-white flex flex-col min-h-screen">
+    
+    <!-- Glassmorphism Navbar -->
+    <header class="sticky top-0 z-50 glass-header">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <a href="/radon-cost-calculator" class="flex items-center gap-2 group">
+                <div class="w-8 h-8 rounded-lg bg-slate-900 text-white flex items-center justify-center font-display font-bold text-lg shadow-sm group-hover:bg-slate-700 transition-colors">
+                    R
+                </div>
+                <span class="font-display font-bold text-xl tracking-tight text-slate-900">Radon<span class="text-slate-400">Verdict</span></span>
+            </a>
+            <nav class="hidden md:flex gap-6 text-sm font-medium text-slate-500">
+                <a href="/radon-cost-calculator" class="hover:text-slate-900 transition-colors">Cost Calculator</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content Injection -->
+    <main class="flex-grow flex flex-col">
+        ${content}
+    </main>
+
+    <!-- 2026 SaaS Style Minimal Footer -->
+    <footer class="bg-white border-t border-slate-100 mt-20">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+                <div>
+                    <span class="font-display font-bold text-lg tracking-tight text-slate-900">RadonVerdict</span>
+                    <p class="mt-2 text-sm text-slate-400">
+                        Empowering homeowners with localized mitigation data.
+                    </p>
+                </div>
+                <div class="text-xs text-slate-400 font-medium">
+                    &copy; 2026 RadonVerdict. Not affiliated with the US EPA.
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

@@ -21,4 +21,16 @@ public class ItemizedReceipt {
 
     private String countyName;
     private String stateAbbr;
+
+    public int getMaterialsAvg() {
+        return (materialsLow + materialsHigh) / 2;
+    }
+
+    public int getLaborAvg() {
+        return (laborLow + laborHigh) / 2;
+    }
+
+    public int getPermitsSetupAvg() {
+        return (permitsSetupLow + permitsSetupHigh) / 2;
+    }
 }
