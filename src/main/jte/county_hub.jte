@@ -32,7 +32,7 @@
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 mt-16 mb-20">
                 
                 <!-- Left Column (Simulator + Details) -->
-                <div class="lg:col-span-5 order-2 lg:order-1">
+                <div class="lg:col-span-5 order-1">
                     @template.components.radon_level_advisor(county = county)
                     @template.components.simulator_form(county = county)
                     
@@ -71,7 +71,7 @@
                 </div>
 
                 <!-- Right Column (The Live Receipt & Strategy) -->
-                <div class="lg:col-span-7 order-1 lg:order-2">
+                <div class="lg:col-span-7 order-2">
                     <div class="sticky top-24">
                         <div id="receipt-container" class="transition-opacity duration-200">
                             <!-- Included via JTE fragment so it matches the HTMX return exactly -->
