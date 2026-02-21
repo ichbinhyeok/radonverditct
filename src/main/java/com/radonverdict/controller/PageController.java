@@ -51,7 +51,7 @@ public class PageController {
 
     // New Endpoint: Redirect ZIP code to its county page
     @PostMapping("/search-zip")
-    public String searchZip(@RequestParam String zipCode) {
+    public String searchZip(@RequestParam("zipCode") String zipCode) {
         String fips = dataLoadService.getZipToFipsMap().get(zipCode.trim());
         if (fips == null) {
             // Handle invalid zip - redirect to global calculator with error
@@ -65,7 +65,7 @@ public class PageController {
     }
 
     @GetMapping("/radon-mitigation-cost/{stateSlug}")
-    public String stateHub(@PathVariable String stateSlug, Model model) {
+    public String stateHub(@PathVariable("stateSlug") String stateSlug, Model model) {
         List<County> stateCounties = dataLoadService.getCountyBySlugMap().values().stream()
                 .filter(c -> c.getStateSlug().equalsIgnoreCase(stateSlug))
                 .sorted(Comparator.comparing(County::getCountyName))
@@ -81,7 +81,8 @@ public class PageController {
     }
 
     @GetMapping("/radon-mitigation-cost/{stateSlug}/{countySlug}")
-    public String countyPage(@PathVariable String stateSlug, @PathVariable String countySlug, Model model) {
+    public String countyPage(@PathVariable("stateSlug") String stateSlug, @PathVariable("countySlug") String countySlug,
+            Model model) {
         String key = stateSlug.toLowerCase() + "/" + countySlug.toLowerCase();
         County county = dataLoadService.getCountyBySlugMap().get(key);
 
@@ -104,11 +105,11 @@ public class PageController {
     // HTMX Endpoint: recalculates receipt + content fragment based on user input
     @PostMapping("/htmx/calculate-receipt")
     public String calculateReceiptFragment(
-            @RequestParam String stateSlug,
-            @RequestParam String countySlug,
-            @RequestParam String foundation,
-            @RequestParam String intent,
-            @RequestParam(defaultValue = "under_2000") String sqftCategory,
+            @RequestParam("stateSlug") String stateSlug,
+            @RequestParam("countySlug") String countySlug,
+            @RequestParam("foundation") String foundation,
+            @RequestParam("intent") String intent,
+            @RequestParam(value = "sqftCategory", defaultValue = "under_2000") String sqftCategory,
             Model model) {
 
         String key = stateSlug.toLowerCase() + "/" + countySlug.toLowerCase();

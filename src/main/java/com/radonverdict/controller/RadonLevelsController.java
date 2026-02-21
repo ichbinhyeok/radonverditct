@@ -22,7 +22,7 @@ public class RadonLevelsController {
     private final DataLoadService dataLoadService;
 
     @GetMapping("/radon-levels/{stateSlug}")
-    public String stateLevelsHub(@PathVariable String stateSlug, Model model) {
+    public String stateLevelsHub(@PathVariable("stateSlug") String stateSlug, Model model) {
         List<County> stateCounties = dataLoadService.getCountyBySlugMap().values().stream()
                 .filter(c -> c.getStateSlug().equalsIgnoreCase(stateSlug))
                 .sorted(Comparator.comparing(County::getCountyName))
@@ -49,7 +49,8 @@ public class RadonLevelsController {
     }
 
     @GetMapping("/radon-levels/{stateSlug}/{countySlug}")
-    public String countyLevelsPage(@PathVariable String stateSlug, @PathVariable String countySlug, Model model) {
+    public String countyLevelsPage(@PathVariable("stateSlug") String stateSlug,
+            @PathVariable("countySlug") String countySlug, Model model) {
         String key = stateSlug.toLowerCase() + "/" + countySlug.toLowerCase();
         County county = dataLoadService.getCountyBySlugMap().get(key);
 
