@@ -3,6 +3,7 @@
 @param String title
 @param String description = "National Radon Mitigation Cost Calculator"
 @param String canonicalUrl = null
+@param boolean noindex = false
 @param Content content
 
 <!DOCTYPE html>
@@ -15,6 +16,9 @@
     <link rel="icon" type="image/svg+xml" href="/favicon.svg">
     @if(canonicalUrl != null)
         <link rel="canonical" href="${canonicalUrl}">
+    @endif
+    @if(noindex)
+        <meta name="robots" content="noindex, nofollow">
     @endif
     
     <!-- Google Fonts: Outfit (Display) & Inter (Numbers/Body) -->

@@ -135,6 +135,7 @@ public class SitemapController {
     public String robotsTxt() {
         return "User-agent: *\n" +
                 "Allow: /\n" +
+                "Disallow: /admin/\n" +
                 "Sitemap: " + BASE_URL + "/sitemap.xml";
     }
 }
