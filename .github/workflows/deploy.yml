@@ -80,6 +80,10 @@ jobs:
                 restart: unless-stopped
                 ports:
                   - "8807:8080"
+                environment:
+                  - GG_JTE_DEVELOPMENTMODE=false
+                  - GG_JTE_USEPRECOMPILEDTEMPLATES=true
+                  - SPRING_PROFILES_ACTIVE=prod
                 deploy:
                   resources:
                     limits:
