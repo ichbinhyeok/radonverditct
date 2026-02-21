@@ -12,6 +12,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>${title}</title>
     <meta name="description" content="${description}">
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
     @if(canonicalUrl != null)
         <link rel="canonical" href="${canonicalUrl}">
     @endif
