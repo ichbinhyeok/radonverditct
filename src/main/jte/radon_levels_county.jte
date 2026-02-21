@@ -53,7 +53,8 @@
                         Radon Levels in<br>${county.getCountyName()} County, ${county.getStateAbbr()}
                     </h1>
 
-                    <p class="text-lg text-slate-300 leading-relaxed max-w-3xl">
+                    <p class="text-lg text-slate-300 leading-relaxed max-w-3xl" itemscope itemtype="https://schema.org/Answer" itemprop="text">
+                        <strong class="text-white">Direct Answer:</strong> 
                         @if(county.getEpaZone() == 1)
                             ${county.getCountyName()} County is classified as <strong class="text-white">EPA Zone 1 (High Risk)</strong>.
                             The predicted average indoor radon screening level exceeds 4.0 pCi/L — the EPA's recommended action threshold.

@@ -213,6 +213,47 @@
                     📊 Sources: EPA "A Citizen's Guide to Radon" (EPA 402/K-12/002), EPA "Home Buyer's and Seller's Guide to Radon", WHO Handbook on Indoor Radon (2009). All testing protocol recommendations follow ANSI/AARST MAH 2019 standards.
                 </p>
             </div>
+
+            <!-- AEO / Rich Snippet: HowTo Schema.org Data for AI Agents & Search Engines -->
+            <script type="application/ld+json">
+                {
+                    "@context": "https://schema.org",
+                    "@type": "HowTo",
+                    "name": "How to Test Your Home for Radon",
+                    "description": "Radon testing is the only way to know if your home has dangerous radon levels. This guide covers how to test, place your kit, and interpret the results.",
+                    "totalTime": "P3D",
+                    "estimatedCost": {
+                        "@type": "MonetaryAmount",
+                        "currency": "USD",
+                        "value": "20.00"
+                    },
+                    "supply": [
+                        { "@type": "HowToSupply", "name": "Short-Term Charcoal Radon Test Kit" }
+                    ],
+                    "step": [
+                        {
+                            "@type": "HowToStep",
+                            "name": "Buy a Test Kit",
+                            "text": "Purchase a short-term charcoal test kit online or from a local hardware store. Place it in the lowest livable level of your home, such as a basement, about 2-5 feet above the floor."
+                        },
+                        {
+                            "@type": "HowToStep",
+                            "name": "Maintain Closed-House Conditions",
+                            "text": "Keep doors and windows closed (except for normal entry/exit) for 12 hours before starting the test and during the entire 2-7 day test period. Do not run whole-house fans."
+                        },
+                        {
+                            "@type": "HowToStep",
+                            "name": "Wait 2-7 Days and Mail to Lab",
+                            "text": "Leave the kit absorbing radon for the duration specified by the manufacturer (usually 48 to 96 hours). Afterward, seal the kit immediately and mail it to the certified lab for analysis."
+                        },
+                        {
+                            "@type": "HowToStep",
+                            "name": "Read Your Results",
+                            "text": "If results are below 2.0 pCi/L, no action is needed. If between 2.0 and 4.0 pCi/L, consider mitigation. If above 4.0 pCi/L, the EPA recommends mitigating your home within a few months."
+                        }
+                    ]
+                }
+            </script>
         </div>
     `
 )
