@@ -13,6 +13,7 @@
     <!-- hx-post: calls our Spring controller, hx-target: updates the #receipt-container div -->
     <form hx-post="/htmx/calculate-receipt" 
           hx-target="#receipt-container"
+          hx-trigger="change"
           hx-swap="innerHTML transition:true"
           class="space-y-8"
           x-data="{ foundation: 'basement', intent: 'buying' }">
@@ -26,21 +27,21 @@
             <label class="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-3 text-center">Foundation Type</label>
             <div class="grid grid-cols-3 gap-3">
                 <label class="cursor-pointer">
-                    <input type="radio" name="foundation" value="basement" x-model="foundation" class="peer sr-only" @change="$dispatch('submit')">
+                    <input type="radio" name="foundation" value="basement" x-model="foundation" class="peer sr-only">
                     <div class="text-center rounded-xl p-3 border-2 transition-all duration-200"
                          :class="foundation === 'basement' ? 'border-brand-900 bg-brand-50 text-brand-900 shadow-sm' : 'border-slate-100 bg-white text-slate-500 hover:border-slate-300 hover:bg-slate-50'">
                         <div class="font-semibold text-sm">Basement</div>
                     </div>
                 </label>
                 <label class="cursor-pointer">
-                    <input type="radio" name="foundation" value="slab" x-model="foundation" class="peer sr-only" @change="$dispatch('submit')">
+                    <input type="radio" name="foundation" value="slab" x-model="foundation" class="peer sr-only">
                     <div class="text-center rounded-xl p-3 border-2 transition-all duration-200"
                          :class="foundation === 'slab' ? 'border-brand-900 bg-brand-50 text-brand-900 shadow-sm' : 'border-slate-100 bg-white text-slate-500 hover:border-slate-300 hover:bg-slate-50'">
                         <div class="font-semibold text-sm">Slab</div>
                     </div>
                 </label>
                 <label class="cursor-pointer">
-                    <input type="radio" name="foundation" value="crawlspace" x-model="foundation" class="peer sr-only" @change="$dispatch('submit')">
+                    <input type="radio" name="foundation" value="crawlspace" x-model="foundation" class="peer sr-only">
                     <div class="text-center rounded-xl p-3 border-2 transition-all duration-200"
                          :class="foundation === 'crawlspace' ? 'border-brand-900 bg-brand-50 text-brand-900 shadow-sm' : 'border-slate-100 bg-white text-slate-500 hover:border-slate-300 hover:bg-slate-50'">
                         <div class="font-semibold text-sm">Crawl</div>
@@ -54,21 +55,21 @@
             <label class="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-3 text-center">Your Goal</label>
             <div class="bg-slate-100 rounded-xl p-1.5 flex gap-1 relative overflow-hidden ring-1 ring-inset ring-slate-200">
                 <label class="flex-1 cursor-pointer relative z-10">
-                    <input type="radio" name="intent" value="buying" x-model="intent" class="peer sr-only" @change="$dispatch('submit')">
+                    <input type="radio" name="intent" value="buying" x-model="intent" class="peer sr-only">
                     <div class="text-center py-2.5 rounded-lg text-sm font-semibold transition-colors duration-200"
                          :class="intent === 'buying' ? 'bg-white text-slate-900 shadow-sm ring-1 ring-black/5' : 'text-slate-500 hover:text-slate-700'">
                         Buying
                     </div>
                 </label>
                 <label class="flex-1 cursor-pointer relative z-10">
-                    <input type="radio" name="intent" value="selling" x-model="intent" class="peer sr-only" @change="$dispatch('submit')">
+                    <input type="radio" name="intent" value="selling" x-model="intent" class="peer sr-only">
                     <div class="text-center py-2.5 rounded-lg text-sm font-semibold transition-colors duration-200"
                          :class="intent === 'selling' ? 'bg-white text-slate-900 shadow-sm ring-1 ring-black/5' : 'text-slate-500 hover:text-slate-700'">
                         Selling
                     </div>
                 </label>
                 <label class="flex-1 cursor-pointer relative z-10">
-                    <input type="radio" name="intent" value="homeowner" x-model="intent" class="peer sr-only" @change="$dispatch('submit')">
+                    <input type="radio" name="intent" value="homeowner" x-model="intent" class="peer sr-only">
                     <div class="text-center py-2.5 rounded-lg text-sm font-semibold transition-colors duration-200"
                          :class="intent === 'homeowner' ? 'bg-white text-slate-900 shadow-sm ring-1 ring-black/5' : 'text-slate-500 hover:text-slate-700'">
                         Living Here
