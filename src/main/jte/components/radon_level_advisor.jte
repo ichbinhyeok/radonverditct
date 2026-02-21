@@ -143,19 +143,19 @@
                 </p>
 
                 <!-- Before / After Promise -->
-                <div class="mt-4 flex items-center gap-3 bg-white/70 rounded-xl p-3 border border-red-100">
+                <div class="mt-4 flex items-center justify-between gap-2 sm:gap-4 bg-white/70 rounded-xl p-3 sm:p-4 border border-red-100">
                     <div class="text-center">
-                        <div class="text-xs font-bold text-red-400 uppercase tracking-wider">Now</div>
-                        <div class="font-display font-black text-2xl text-red-600 tabular-nums" x-text="parseFloat(level).toFixed(1)"></div>
+                        <div class="text-[10px] sm:text-xs font-bold text-red-400 uppercase tracking-widest">Now</div>
+                        <div class="font-display font-black text-xl sm:text-2xl text-red-600 tabular-nums whitespace-nowrap" x-text="parseFloat(level).toFixed(1)"></div>
                     </div>
-                    <div class="flex-1 flex items-center justify-center">
-                        <svg class="w-8 h-8 text-slate-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                    <div class="flex shrink-0 items-center justify-center">
+                        <svg class="w-5 h-5 sm:w-8 sm:h-8 text-slate-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3" />
                         </svg>
                     </div>
                     <div class="text-center">
-                        <div class="text-xs font-bold text-emerald-500 uppercase tracking-wider">After Mitigation</div>
-                        <div class="font-display font-black text-2xl text-emerald-600 tabular-nums" x-text="postMitigationLow + '–' + postMitigationHigh"></div>
+                        <div class="text-[10px] sm:text-xs font-bold text-emerald-500 uppercase tracking-widest">After</div>
+                        <div class="font-display font-black text-xl sm:text-2xl text-emerald-600 tabular-nums whitespace-nowrap" x-text="postMitigationLow + '–' + postMitigationHigh"></div>
                     </div>
                 </div>
 
