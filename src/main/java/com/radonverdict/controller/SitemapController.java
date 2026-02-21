@@ -16,7 +16,7 @@ import java.util.Collection;
 public class SitemapController {
 
     private final DataLoadService dataLoadService;
-    private final String BASE_URL = "https://livingcostcheck.com"; // Current live domain
+    private final String BASE_URL = "https://radonverdict.com"; // Final live domain
 
     @GetMapping(value = "/sitemap.xml", produces = MediaType.APPLICATION_XML_VALUE)
     @ResponseBody
