@@ -1,0 +1,92 @@
+{
+    "base_components": {
+        "materials": {
+            "low": 300,
+            "high": 500
+        },
+        "permits_setup": {
+            "low": 100,
+            "high": 250
+        }
+    },
+    "labor_base": {
+        "low": 400,
+        "high": 600
+    },
+    "foundation_labor_modifiers": {
+        "basement": {
+            "low": 100,
+            "high": 250
+        },
+        "crawlspace": {
+            "low": 200,
+            "high": 400
+        },
+        "slab": {
+            "low": 50,
+            "high": 150
+        },
+        "other": {
+            "low": 100,
+            "high": 200
+        }
+    },
+    "regional_multipliers": {
+        "AL": 0.85,
+        "AK": 1.35,
+        "AZ": 1.05,
+        "AR": 0.82,
+        "CA": 1.30,
+        "CO": 1.10,
+        "CT": 1.15,
+        "DE": 1.05,
+        "FL": 1.02,
+        "GA": 0.95,
+        "HI": 1.40,
+        "ID": 0.95,
+        "IL": 1.08,
+        "IN": 0.92,
+        "IA": 0.90,
+        "KS": 0.90,
+        "KY": 0.86,
+        "LA": 0.90,
+        "ME": 1.00,
+        "MD": 1.15,
+        "MA": 1.20,
+        "MI": 0.95,
+        "MN": 1.02,
+        "MS": 0.80,
+        "MO": 0.88,
+        "MT": 0.98,
+        "NE": 0.92,
+        "NV": 1.05,
+        "NH": 1.08,
+        "NJ": 1.15,
+        "NM": 0.92,
+        "NY": 1.25,
+        "NC": 0.95,
+        "ND": 0.95,
+        "OH": 0.92,
+        "OK": 0.86,
+        "OR": 1.15,
+        "PA": 1.02,
+        "RI": 1.12,
+        "SC": 0.92,
+        "SD": 0.90,
+        "TN": 0.90,
+        "TX": 0.98,
+        "UT": 1.02,
+        "VT": 1.10,
+        "VA": 1.05,
+        "WA": 1.15,
+        "WV": 0.85,
+        "WI": 0.95,
+        "WY": 0.95,
+        "DC": 1.25
+    },
+    "default_multiplier": 1.0,
+    "sanity_bounds": {
+        "min_total": 600,
+        "max_total": 4500
+    }
+}

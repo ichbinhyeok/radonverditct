@@ -1,0 +1,50 @@
+[
+    {
+        "id": "epa_radon_zones",
+        "name": "EPA Map of Radon Zones",
+        "url": "https://www.epa.gov/radon/epa-map-radon-zones",
+        "type": "epa",
+        "retrieved_at": "2026-02-21",
+        "notes": "County-level radon zone classifications (Zone 1/2/3). Primary source for risk context."
+    },
+    {
+        "id": "angi_cost_guide",
+        "name": "Angi Radon Mitigation Cost Guide",
+        "url": "https://www.angi.com/articles/how-much-does-it-cost-remove-radon-gas.htm",
+        "type": "cost",
+        "retrieved_at": "2026-02-21",
+        "notes": "National average cost range for radon mitigation system installation. Used for base range calibration."
+    },
+    {
+        "id": "homeadvisor_cost_guide",
+        "name": "HomeAdvisor Radon Mitigation Cost Guide",
+        "url": "https://www.homeadvisor.com/cost/environmental-safety/remove-radon-gas/",
+        "type": "cost",
+        "retrieved_at": "2026-02-21",
+        "notes": "Detailed cost breakdown by foundation type and system complexity. Secondary cost reference."
+    },
+    {
+        "id": "thumbtack_cost_overview",
+        "name": "Thumbtack Radon Mitigation Cost Overview",
+        "url": "https://www.thumbtack.com/p/radon-mitigation-cost",
+        "type": "cost",
+        "retrieved_at": "2026-02-21",
+        "notes": "Backup cost reference for cross-validation of pricing ranges."
+    },
+    {
+        "id": "epa_find_professional",
+        "name": "EPA - Find a Radon Professional",
+        "url": "https://www.epa.gov/radon/find-radon-test-kit-or-measurement-and-mitigation-professional",
+        "type": "state",
+        "retrieved_at": "2026-02-21",
+        "notes": "Hub page linking to state-level radon professional directories. Used in 'Find a Pro' module."
+    },
+    {
+        "id": "hud_zip_crosswalk",
+        "name": "HUD USPS ZIP Code Crosswalk",
+        "url": "https://www.huduser.gov/portal/datasets/usps_crosswalk.html",
+        "type": "epa",
+        "retrieved_at": "2026-02-21",
+        "notes": "ZIP-to-county FIPS mapping source. Used to resolve user ZIP input to county page."
+    }
+]

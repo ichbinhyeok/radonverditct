@@ -1,0 +1,3197 @@
+County,State	COUNTY LABEL	STATE	Region	Zone
+UNITED STATES	no data	no data	.	.
+ALABAMA	no data	no data	.	.
+Autauga, AL	.Autauga County	Alabama	4	2
+Baldwin, AL	.Baldwin County	Alabama	4	3
+Barbour, AL	.Barbour County	Alabama	4	2
+Bibb, AL	.Bibb County	Alabama	4	2
+Blount, AL	.Blount County	Alabama	4	2
+Bullock, AL	.Bullock County	Alabama	4	2
+Butler, AL	.Butler County	Alabama	4	3
+Calhoun, AL	.Calhoun County	Alabama	4	1
+Chambers, AL	.Chambers County	Alabama	4	3
+Cherokee, AL	.Cherokee County	Alabama	4	2
+Chilton, AL	.Chilton County	Alabama	4	2
+Choctaw, AL	.Choctaw County	Alabama	4	3
+Clarke, AL	.Clarke County	Alabama	4	3
+Clay, AL	.Clay County	Alabama	4	1
+Cleburne, AL	.Cleburne County	Alabama	4	1
+Coffee, AL	.Coffee County	Alabama	4	3
+Colbert, AL	.Colbert County	Alabama	4	1
+Conecuh, AL	.Conecuh County	Alabama	4	3
+Coosa, AL	.Coosa County	Alabama	4	1
+Covington, AL	.Covington County	Alabama	4	3
+Crenshaw, AL	.Crenshaw County	Alabama	4	3
+Cullman, AL	.Cullman County	Alabama	4	2
+Dale, AL	.Dale County	Alabama	4	3
+Dallas, AL	.Dallas County	Alabama	4	2
+De Kalb, AL	.DeKalb County	Alabama	4	2
+Elmore, AL	.Elmore County	Alabama	4	2
+Escambia, AL	.Escambia County	Alabama	4	3
+Etowah, AL	.Etowah County	Alabama	4	2
+Fayette, AL	.Fayette County	Alabama	4	2
+Franklin, AL	.Franklin County	Alabama	4	1
+Geneva, AL	.Geneva County	Alabama	4	3
+Greene, AL	.Greene County	Alabama	4	2
+Hale, AL	.Hale County	Alabama	4	2
+Henry, AL	.Henry County	Alabama	4	3
+Houston, AL	.Houston County	Alabama	4	3
+Jackson, AL	.Jackson County	Alabama	4	1
+Jefferson, AL	.Jefferson County	Alabama	4	2
+Lamar, AL	.Lamar County	Alabama	4	2
+Lauderdale, AL	.Lauderdale County	Alabama	4	1
+Lawrence, AL	.Lawrence County	Alabama	4	1
+Lee, AL	.Lee County	Alabama	4	2
+Limestone, AL	.Limestone County	Alabama	4	1
+Lowndes, AL	.Lowndes County	Alabama	4	2
+Macon, AL	.Macon County	Alabama	4	2
+Madison, AL	.Madison County	Alabama	4	1
+Marengo, AL	.Marengo County	Alabama	4	3
+Marion, AL	.Marion County	Alabama	4	2
+Marshall, AL	.Marshall County	Alabama	4	2
+Mobile, AL	.Mobile County	Alabama	4	3
+Monroe, AL	.Monroe County	Alabama	4	3
+Montgomery, AL	.Montgomery County	Alabama	4	2
+Morgan, AL	.Morgan County	Alabama	4	1
+Perry, AL	.Perry County	Alabama	4	2
+Pickens, AL	.Pickens County	Alabama	4	2
+Pike, AL	.Pike County	Alabama	4	3
+Randolph, AL	.Randolph County	Alabama	4	2
+Russell, AL	.Russell County	Alabama	4	2
+St. Clair, AL	.St. Clair County	Alabama	4	2
+Shelby, AL	.Shelby County	Alabama	4	2
+Sumter, AL	.Sumter County	Alabama	4	2
+Talladega, AL	.Talladega County	Alabama	4	1
+Tallapoosa, AL	.Tallapoosa County	Alabama	4	3
+Tuscaloosa, AL	.Tuscaloosa County	Alabama	4	2
+Walker, AL	.Walker County	Alabama	4	2
+Washington, AL	.Washington County	Alabama	4	3
+Wilcox, AL	.Wilcox County	Alabama	4	3
+Winston, AL	.Winston County	Alabama	4	2
+ALASKA	no data	no data	.	.
+Aleutians East, AK	.Aleutians East Borough	Alaska	10	3
+Aleutians West, AK	.Aleutians West Census Area	Alaska	10	3
+Anchorage, AK	.Anchorage Municipality	Alaska	10	2
+Bethel, AK	.Bethel Census Area	Alaska	10	3
+Bristol Bay, AK	.Bristol Bay Borough	Alaska	10	3
+Denali, AK	.Denali Borough	Alaska	10	3
+Dillingham, AK	.Dillingham Census Area	Alaska	10	3
+Fairbanks North Star, AK	.Fairbanks North Star Borough	Alaska	10	2
+Haines, AK	.Haines Borough	Alaska	10	3
+Juneau, AK	.Juneau City and Borough	Alaska	10	3
+Kenai Peninsula, AK	.Kenai Peninsula Borough	Alaska	10	2
+Ketchikan Gateway, AK	.Ketchikan Gateway Borough	Alaska	10	2
+Kodiak Island, AK	.Kodiak Island Borough	Alaska	10	3
+Lake and Peninsula, AK	.Lake and Peninsula Borough	Alaska	10	3
+Matanuska-Susitna, AK	.Matanuska-Susitna Borough	Alaska	10	2
+Nome, AK	.Nome Census Area	Alaska	10	3
+North Slope, AK	.North Slope Borough	Alaska	10	3
+Northwest Arctic, AK	.Northwest Arctic Borough	Alaska	10	3
+Prince of Wales-Outer Ketchikan, AK	.Prince of Wales-Outer Ketchikan Census Area	Alaska	10	3
+Sitka, AK	.Sitka City and Borough	Alaska	10	3
+Skagway-Hoonah-Angoon, AK	.Skagway Municipality	Alaska	10	3
+Southeast Fairbanks, AK	.Southeast Fairbanks Census Area	Alaska	10	2
+Valdez-Cordova, AK	.Valdez-Cordova Census Area	Alaska	10	3
+Wade Hampton, AK	.Wade Hampton Census Area	Alaska	10	3
+Wrangell-Petersburg, AK	.Wrangell-Petersburg Census Area	Alaska	10	3
+Yakutat, AK	.Yakutat City and Borough	Alaska	10	3
+Yukon-Koyukuk, AK	.Yukon-Koyukuk Census Area	Alaska	10	3
+ARIZONA	no data	no data	.	.
+Apache, AZ	.Apache County	Arizona	9	2
+Cochise, AZ	.Cochise County	Arizona	9	2
+Coconino, AZ	.Coconino County	Arizona	9	2
+Gila, AZ	.Gila County	Arizona	9	2
+Graham, AZ	.Graham County	Arizona	9	2
+Greenlee, AZ	.Greenlee County	Arizona	9	2
+La Paz, AZ	.La Paz County	Arizona	9	2
+Maricopa, AZ	.Maricopa County	Arizona	9	2
+Mohave, AZ	.Mohave County	Arizona	9	2
+Navajo, AZ	.Navajo County	Arizona	9	2
+Pima, AZ	.Pima County	Arizona	9	2
+Pinal, AZ	.Pinal County	Arizona	9	2
+Santa Cruz, AZ	.Santa Cruz County	Arizona	9	2
+Yavapai, AZ	.Yavapai County	Arizona	9	2
+Yuma, AZ	.Yuma County	Arizona	9	2
+ARKANSAS	no data	no data	.	.
+Arkansas, AR	.Arkansas County	Arkansas	6	3
+Ashley, AR	.Ashley County	Arkansas	6	3
+Baxter, AR	.Baxter County	Arkansas	6	2
+Benton, AR	.Benton County	Arkansas	6	2
+Boone, AR	.Boone County	Arkansas	6	2
+Bradley, AR	.Bradley County	Arkansas	6	3
+Calhoun, AR	.Calhoun County	Arkansas	6	3
+Carroll, AR	.Carroll County	Arkansas	6	2
+Chicot, AR	.Chicot County	Arkansas	6	3
+Clark, AR	.Clark County	Arkansas	6	3
+Clay, AR	.Clay County	Arkansas	6	3
+Cleburne, AR	.Cleburne County	Arkansas	6	3
+Cleveland, AR	.Cleveland County	Arkansas	6	3
+Columbia, AR	.Columbia County	Arkansas	6	3
+Conway, AR	.Conway County	Arkansas	6	3
+Craighead, AR	.Craighead County	Arkansas	6	3
+Crawford, AR	.Crawford County	Arkansas	6	3
+Crittenden, AR	.Crittenden County	Arkansas	6	3
+Cross, AR	.Cross County	Arkansas	6	3
+Dallas, AR	.Dallas County	Arkansas	6	3
+Desha, AR	.Desha County	Arkansas	6	3
+Drew, AR	.Drew County	Arkansas	6	3
+Faulkner, AR	.Faulkner County	Arkansas	6	3
+Franklin, AR	.Franklin County	Arkansas	6	3
+Fulton, AR	.Fulton County	Arkansas	6	2
+Garland, AR	.Garland County	Arkansas	6	2
+Grant, AR	.Grant County	Arkansas	6	3
+Greene, AR	.Greene County	Arkansas	6	3
+Hempstead, AR	.Hempstead County	Arkansas	6	3
+Hot Spring, AR	.Hot Spring County	Arkansas	6	3
+Howard, AR	.Howard County	Arkansas	6	3
+Independence, AR	.Independence County	Arkansas	6	2
+Izard, AR	.Izard County	Arkansas	6	2
+Jackson, AR	.Jackson County	Arkansas	6	3
+Jefferson, AR	.Jefferson County	Arkansas	6	3
+Johnson, AR	.Johnson County	Arkansas	6	3
+Lafayette, AR	.Lafayette County	Arkansas	6	3
+Lawrence, AR	.Lawrence County	Arkansas	6	3
+Lee, AR	.Lee County	Arkansas	6	3
+Lincoln, AR	.Lincoln County	Arkansas	6	3
+Little River, AR	.Little River County	Arkansas	6	3
+Logan, AR	.Logan County	Arkansas	6	3
+Lonoke, AR	.Lonoke County	Arkansas	6	3
+Madison, AR	.Madison County	Arkansas	6	3
+Marion, AR	.Marion County	Arkansas	6	2
+Miller, AR	.Miller County	Arkansas	6	3
+Mississippi, AR	.Mississippi County	Arkansas	6	3
+Monroe, AR	.Monroe County	Arkansas	6	3
+Montgomery, AR	.Montgomery County	Arkansas	6	2
+Nevada, AR	.Nevada County	Arkansas	6	3
+Newton, AR	.Newton County	Arkansas	6	3
+Ouachita, AR	.Ouachita County	Arkansas	6	3
+Perry, AR	.Perry County	Arkansas	6	3
+Phillips, AR	.Phillips County	Arkansas	6	3
+Pike, AR	.Pike County	Arkansas	6	3
+Poinsett, AR	.Poinsett County	Arkansas	6	3
+Polk, AR	.Polk County	Arkansas	6	3
+Pope, AR	.Pope County	Arkansas	6	3
+Prairie, AR	.Prairie County	Arkansas	6	3
+Pulaski, AR	.Pulaski County	Arkansas	6	3
+Randolph, AR	.Randolph County	Arkansas	6	2
+St. Francis, AR	.St. Francis County	Arkansas	6	3
+Saline, AR	.Saline County	Arkansas	6	3
+Scott, AR	.Scott County	Arkansas	6	3
+Searcy, AR	.Searcy County	Arkansas	6	2
+Sebastian, AR	.Sebastian County	Arkansas	6	3
+Sevier, AR	.Sevier County	Arkansas	6	3
+Sharp, AR	.Sharp County	Arkansas	6	2
+Stone, AR	.Stone County	Arkansas	6	2
+Union, AR	.Union County	Arkansas	6	3
+Van Buren, AR	.Van Buren County	Arkansas	6	3
+Washington, AR	.Washington County	Arkansas	6	3
+White, AR	.White County	Arkansas	6	3
+Woodruff, AR	.Woodruff County	Arkansas	6	3
+Yell, AR	.Yell County	Arkansas	6	3
+CALIFORNIA	no data	no data	.	.
+Alameda, CA	.Alameda County	California	9	2
+Alpine, CA	.Alpine County	California	9	2
+Amador, CA	.Amador County	California	9	2
+Butte, CA	.Butte County	California	9	3
+Calaveras, CA	.Calaveras County	California	9	2
+Colusa, CA	.Colusa County	California	9	3
+Contra Costa, CA	.Contra Costa County	California	9	2
+Del Norte, CA	.Del Norte County	California	9	3
+El Dorado, CA	.El Dorado County	California	9	2
+Fresno, CA	.Fresno County	California	9	2
+Glenn, CA	.Glenn County	California	9	3
+Humboldt, CA	.Humboldt County	California	9	3
+Imperial, CA	.Imperial County	California	9	3
+Inyo, CA	.Inyo County	California	9	2
+Kern, CA	.Kern County	California	9	2
+Kings, CA	.Kings County	California	9	3
+Lake, CA	.Lake County	California	9	3
+Lassen, CA	.Lassen County	California	9	3
+Los Angeles, CA	.Los Angeles County	California	9	2
+Madera, CA	.Madera County	California	9	2
+Marin, CA	.Marin County	California	9	3
+Mariposa, CA	.Mariposa County	California	9	2
+Mendocino, CA	.Mendocino County	California	9	3
+Merced, CA	.Merced County	California	9	3
+Modoc, CA	.Modoc County	California	9	3
+Mono, CA	.Mono County	California	9	2
+Monterey, CA	.Monterey County	California	9	2
+Napa, CA	.Napa County	California	9	3
+Nevada, CA	.Nevada County	California	9	2
+Orange, CA	.Orange County	California	9	3
+Placer, CA	.Placer County	California	9	2
+Plumas, CA	.Plumas County	California	9	2
+Riverside, CA	.Riverside County	California	9	2
+Sacramento, CA	.Sacramento County	California	9	3
+San Benito, CA	.San Benito County	California	9	2
+San Bernardino, CA	.San Bernardino County	California	9	2
+San Diego, CA	.San Diego County	California	9	3
+San Francisco, CA	.San Francisco County	California	9	2
+San Joaquin, CA	.San Joaquin County	California	9	3
+San Luis Obispo, CA	.San Luis Obispo County	California	9	2
+San Mateo, CA	.San Mateo County	California	9	2
+Santa Barbara, CA	.Santa Barbara County	California	9	1
+Santa Clara, CA	.Santa Clara County	California	9	2
+Santa Cruz, CA	.Santa Cruz County	California	9	2
+Shasta, CA	.Shasta County	California	9	3
+Sierra, CA	.Sierra County	California	9	2
+Siskiyou, CA	.Siskiyou County	California	9	3
+Solano, CA	.Solano County	California	9	3
+Sonoma, CA	.Sonoma County	California	9	3
+Stanislaus, CA	.Stanislaus County	California	9	3
+Sutter, CA	.Sutter County	California	9	3
+Tehama, CA	.Tehama County	California	9	3
+Trinity, CA	.Trinity County	California	9	3
+Tulare, CA	.Tulare County	California	9	2
+Tuolumne, CA	.Tuolumne County	California	9	2
+Ventura, CA	.Ventura County	California	9	1
+Yolo, CA	.Yolo County	California	9	3
+Yuba, CA	.Yuba County	California	9	2
+COLORADO	no data	no data	.	.
+Adams, CO	.Adams County	Colorado	8	1
+Alamosa, CO	.Alamosa County	Colorado	8	2
+Arapahoe, CO	.Arapahoe County	Colorado	8	1
+Archuleta, CO	.Archuleta County	Colorado	8	2
+Baca, CO	.Baca County	Colorado	8	1
+Bent, CO	.Bent County	Colorado	8	1
+Boulder, CO	.Boulder County	Colorado	8	1
+Broomfield, CO	.Broomfield County	Colorado	8	1
+Chaffee, CO	.Chaffee County	Colorado	8	1
+Cheyenne, CO	.Cheyenne County	Colorado	8	1
+Clear Creek, CO	.Clear Creek County	Colorado	8	1
+Conejos, CO	.Conejos County	Colorado	8	2
+Costilla, CO	.Costilla County	Colorado	8	2
+Crowley, CO	.Crowley County	Colorado	8	1
+Custer, CO	.Custer County	Colorado	8	1
+Delta, CO	.Delta County	Colorado	8	1
+Denver, CO	.Denver County	Colorado	8	1
+Dolores, CO	.Dolores County	Colorado	8	1
+Douglas, CO	.Douglas County	Colorado	8	1
+Eagle, CO	.Eagle County	Colorado	8	2
+Elbert, CO	.Elbert County	Colorado	8	1
+El Paso, CO	.El Paso County	Colorado	8	1
+Fremont, CO	.Fremont County	Colorado	8	1
+Garfield, CO	.Garfield County	Colorado	8	1
+Gilpin, CO	.Gilpin County	Colorado	8	1
+Grand, CO	.Grand County	Colorado	8	1
+Gunnison, CO	.Gunnison County	Colorado	8	1
+Hinsdale, CO	.Hinsdale County	Colorado	8	2
+Huerfano, CO	.Huerfano County	Colorado	8	1
+Jackson, CO	.Jackson County	Colorado	8	1
+Jefferson, CO	.Jefferson County	Colorado	8	1
+Kiowa, CO	.Kiowa County	Colorado	8	1
+Kit Carson, CO	.Kit Carson County	Colorado	8	1
+Lake, CO	.Lake County	Colorado	8	1
+La Plata, CO	.La Plata County	Colorado	8	2
+Larimer, CO	.Larimer County	Colorado	8	1
+Las Animas, CO	.Las Animas County	Colorado	8	1
+Lincoln, CO	.Lincoln County	Colorado	8	1
+Logan, CO	.Logan County	Colorado	8	1
+Mesa, CO	.Mesa County	Colorado	8	1
+Mineral, CO	.Mineral County	Colorado	8	2
+Moffat, CO	.Moffat County	Colorado	8	1
+Montezuma, CO	.Montezuma County	Colorado	8	1
+Montrose, CO	.Montrose County	Colorado	8	1
+Morgan, CO	.Morgan County	Colorado	8	1
+Otero, CO	.Otero County	Colorado	8	1
+Ouray, CO	.Ouray County	Colorado	8	1
+Park, CO	.Park County	Colorado	8	1
+Phillips, CO	.Phillips County	Colorado	8	1
+Pitkin, CO	.Pitkin County	Colorado	8	1
+Prowers, CO	.Prowers County	Colorado	8	1
+Pueblo, CO	.Pueblo County	Colorado	8	1
+Rio Blanco, CO	.Rio Blanco County	Colorado	8	1
+Rio Grande, CO	.Rio Grande County	Colorado	8	2
+Routt, CO	.Routt County	Colorado	8	2
+Saguache, CO	.Saguache County	Colorado	8	2
+San Juan, CO	.San Juan County	Colorado	8	2
+San Miguel, CO	.San Miguel County	Colorado	8	1
+Sedgwick, CO	.Sedgwick County	Colorado	8	1
+Summit, CO	.Summit County	Colorado	8	1
+Teller, CO	.Teller County	Colorado	8	1
+Washington, CO	.Washington County	Colorado	8	1
+Weld, CO	.Weld County	Colorado	8	1
+Yuma, CO	.Yuma County	Colorado	8	1
+CONNECTICUT	no data	no data	.	.
+Fairfield, CT	.Fairfield County	Connecticut	1	1
+Hartford, CT	.Hartford County	Connecticut	1	3
+Litchfield, CT	.Litchfield County	Connecticut	1	2
+Middlesex, CT	.Middlesex County	Connecticut	1	1
+New Haven, CT	.New Haven County	Connecticut	1	1
+New London, CT	.New London County	Connecticut	1	1
+Tolland, CT	.Tolland County	Connecticut	1	2
+Windham, CT	.Windham County	Connecticut	1	2
+DELAWARE	no data	no data	.	.
+Kent, DE	.Kent County	Delaware	3	3
+New Castle, DE	.New Castle County	Delaware	3	2
+Sussex, DE	.Sussex County	Delaware	3	3
+DISTRICT OF COLUMBIA	no data	no data	.	.
+District of Columbia	.District of Columbia	District of Columbia	3	3
+FLORIDA	no data	no data	.	.
+Alachua, FL	.Alachua County	Florida	4	2
+Baker, FL	.Baker County	Florida	4	3
+Bay, FL	.Bay County	Florida	4	3
+Bradford, FL	.Bradford County	Florida	4	3
+Brevard, FL	.Brevard County	Florida	4	3
+Broward, FL	.Broward County	Florida	4	3
+Calhoun, FL	.Calhoun County	Florida	4	3
+Charlotte, FL	.Charlotte County	Florida	4	3
+Citrus, FL	.Citrus County	Florida	4	2
+Clay, FL	.Clay County	Florida	4	3
+Collier, FL	.Collier County	Florida	4	3
+Columbia, FL	.Columbia County	Florida	4	2
+De Soto, FL	.DeSoto County	Florida	4	3
+Dixie, FL	.Dixie County	Florida	4	3
+Duval, FL	.Duval County	Florida	4	3
+Escambia, FL	.Escambia County	Florida	4	3
+Flagler, FL	.Flagler County	Florida	4	3
+Franklin, FL	.Franklin County	Florida	4	3
+Gadsden, FL	.Gadsden County	Florida	4	3
+Gilchrist, FL	.Gilchrist County	Florida	4	3
+Glades, FL	.Glades County	Florida	4	3
+Gulf, FL	.Gulf County	Florida	4	3
+Hamilton, FL	.Hamilton County	Florida	4	3
+Hardee, FL	.Hardee County	Florida	4	3
+Hendry, FL	.Hendry County	Florida	4	3
+Hernando, FL	.Hernando County	Florida	4	3
+Highlands, FL	.Highlands County	Florida	4	3
+Hillsborough, FL	.Hillsborough County	Florida	4	2
+Holmes, FL	.Holmes County	Florida	4	3
+Indian River, FL	.Indian River County	Florida	4	3
+Jackson, FL	.Jackson County	Florida	4	3
+Jefferson, FL	.Jefferson County	Florida	4	3
+Lafayette, FL	.Lafayette County	Florida	4	3
+Lake, FL	.Lake County	Florida	4	3
+Lee, FL	.Lee County	Florida	4	3
+Leon, FL	.Leon County	Florida	4	2
+Levy, FL	.Levy County	Florida	4	3
+Liberty, FL	.Liberty County	Florida	4	3
+Madison, FL	.Madison County	Florida	4	3
+Manatee, FL	.Manatee County	Florida	4	3
+Marion, FL	.Marion County	Florida	4	2
+Martin, FL	.Martin County	Florida	4	3
+Miami-Dade, FL	.Miami-Dade County	Florida	4	2
+Monroe, FL	.Monroe County	Florida	4	3
+Nassau, FL	.Nassau County	Florida	4	3
+Okaloosa, FL	.Okaloosa County	Florida	4	3
+Okeechobee, FL	.Okeechobee County	Florida	4	3
+Orange, FL	.Orange County	Florida	4	3
+Osceola, FL	.Osceola County	Florida	4	3
+Palm Beach, FL	.Palm Beach County	Florida	4	3
+Pasco, FL	.Pasco County	Florida	4	3
+Pinellas, FL	.Pinellas County	Florida	4	3
+Polk, FL	.Polk County	Florida	4	2
+Putnam, FL	.Putnam County	Florida	4	3
+St. Johns, FL	.St. Johns County	Florida	4	3
+St. Lucie, FL	.St. Lucie County	Florida	4	3
+Santa Rosa, FL	.Santa Rosa County	Florida	4	3
+Sarasota, FL	.Sarasota County	Florida	4	3
+Seminole, FL	.Seminole County	Florida	4	3
+Sumter, FL	.Sumter County	Florida	4	3
+Suwannee, FL	.Suwannee County	Florida	4	3
+Taylor, FL	.Taylor County	Florida	4	3
+Union, FL	.Union County	Florida	4	2
+Volusia, FL	.Volusia County	Florida	4	3
+Wakulla, FL	.Wakulla County	Florida	4	3
+Walton, FL	.Walton County	Florida	4	3
+Washington, FL	.Washington County	Florida	4	3
+GEORGIA	no data	no data	.	.
+Appling, GA	.Appling County	Georgia	4	3
+Atkinson, GA	.Atkinson County	Georgia	4	3
+Bacon, GA	.Bacon County	Georgia	4	3
+Baker, GA	.Baker County	Georgia	4	3
+Baldwin, GA	.Baldwin County	Georgia	4	3
+Banks, GA	.Banks County	Georgia	4	2
+Barrow, GA	.Barrow County	Georgia	4	2
+Bartow, GA	.Bartow County	Georgia	4	2
+Ben Hill, GA	.Ben Hill County	Georgia	4	3
+Berrien, GA	.Berrien County	Georgia	4	3
+Bibb, GA	.Bibb County	Georgia	4	3
+Bleckley, GA	.Bleckley County	Georgia	4	3
+Brantley, GA	.Brantley County	Georgia	4	3
+Brooks, GA	.Brooks County	Georgia	4	3
+Bryan, GA	.Bryan County	Georgia	4	3
+Bulloch, GA	.Bulloch County	Georgia	4	3
+Burke, GA	.Burke County	Georgia	4	3
+Butts, GA	.Butts County	Georgia	4	2
+Calhoun, GA	.Calhoun County	Georgia	4	3
+Camden, GA	.Camden County	Georgia	4	3
+Candler, GA	.Candler County	Georgia	4	3
+Carroll, GA	.Carroll County	Georgia	4	2
+Catoosa, GA	.Catoosa County	Georgia	4	2
+Charlton, GA	.Charlton County	Georgia	4	3
+Chatham, GA	.Chatham County	Georgia	4	3
+Chattahoochee, GA	.Chattahoochee County	Georgia	4	3
+Chattooga, GA	.Chattooga County	Georgia	4	3
+Cherokee, GA	.Cherokee County	Georgia	4	2
+Clarke, GA	.Clarke County	Georgia	4	2
+Clay, GA	.Clay County	Georgia	4	3
+Clayton, GA	.Clayton County	Georgia	4	2
+Clinch, GA	.Clinch County	Georgia	4	3
+Cobb, GA	.Cobb County	Georgia	4	1
+Coffee, GA	.Coffee County	Georgia	4	3
+Colquitt, GA	.Colquitt County	Georgia	4	3
+Columbia, GA	.Columbia County	Georgia	4	3
+Cook, GA	.Cook County	Georgia	4	3
+Coweta, GA	.Coweta County	Georgia	4	2
+Crawford, GA	.Crawford County	Georgia	4	3
+Crisp, GA	.Crisp County	Georgia	4	3
+Dade, GA	.Dade County	Georgia	4	3
+Dawson, GA	.Dawson County	Georgia	4	2
+Decatur, GA	.Decatur County	Georgia	4	3
+De Kalb, GA	.DeKalb County	Georgia	4	1
+Dodge, GA	.Dodge County	Georgia	4	3
+Dooly, GA	.Dooly County	Georgia	4	3
+Dougherty, GA	.Dougherty County	Georgia	4	3
+Douglas, GA	.Douglas County	Georgia	4	2
+Early, GA	.Early County	Georgia	4	3
+Echols, GA	.Echols County	Georgia	4	3
+Effingham, GA	.Effingham County	Georgia	4	3
+Elbert, GA	.Elbert County	Georgia	4	2
+Emanuel, GA	.Emanuel County	Georgia	4	3
+Evans, GA	.Evans County	Georgia	4	3
+Fannin, GA	.Fannin County	Georgia	4	2
+Fayette, GA	.Fayette County	Georgia	4	2
+Floyd, GA	.Floyd County	Georgia	4	2
+Forsyth, GA	.Forsyth County	Georgia	4	2
+Franklin, GA	.Franklin County	Georgia	4	2
+Fulton, GA	.Fulton County	Georgia	4	1
+Gilmer, GA	.Gilmer County	Georgia	4	2
+Glascock, GA	.Glascock County	Georgia	4	3
+Glynn, GA	.Glynn County	Georgia	4	3
+Gordon, GA	.Gordon County	Georgia	4	3
+Grady, GA	.Grady County	Georgia	4	3
+Greene, GA	.Greene County	Georgia	4	2
+Gwinnett, GA	.Gwinnett County	Georgia	4	1
+Habersham, GA	.Habersham County	Georgia	4	2
+Hall, GA	.Hall County	Georgia	4	2
+Hancock, GA	.Hancock County	Georgia	4	3
+Haralson, GA	.Haralson County	Georgia	4	2
+Harris, GA	.Harris County	Georgia	4	2
+Hart, GA	.Hart County	Georgia	4	2
+Heard, GA	.Heard County	Georgia	4	2
+Henry, GA	.Henry County	Georgia	4	2
+Houston, GA	.Houston County	Georgia	4	3
+Irwin, GA	.Irwin County	Georgia	4	3
+Jackson, GA	.Jackson County	Georgia	4	2
+Jasper, GA	.Jasper County	Georgia	4	2
+Jeff Davis, GA	.Jeff Davis County	Georgia	4	3
+Jefferson, GA	.Jefferson County	Georgia	4	3
+Jenkins, GA	.Jenkins County	Georgia	4	3
+Johnson, GA	.Johnson County	Georgia	4	3
+Jones, GA	.Jones County	Georgia	4	3
+Lamar, GA	.Lamar County	Georgia	4	2
+Lanier, GA	.Lanier County	Georgia	4	3
+Laurens, GA	.Laurens County	Georgia	4	3
+Lee, GA	.Lee County	Georgia	4	3
+Liberty, GA	.Liberty County	Georgia	4	3
+Lincoln, GA	.Lincoln County	Georgia	4	3
+Long, GA	.Long County	Georgia	4	3
+Lowndes, GA	.Lowndes County	Georgia	4	3
+Lumpkin, GA	.Lumpkin County	Georgia	4	2
+McDuffie, GA	.McDuffie County	Georgia	4	3
+McIntosh, GA	.McIntosh County	Georgia	4	3
+Macon, GA	.Macon County	Georgia	4	3
+Madison, GA	.Madison County	Georgia	4	2
+Marion, GA	.Marion County	Georgia	4	3
+Meriwether, GA	.Meriwether County	Georgia	4	2
+Miller, GA	.Miller County	Georgia	4	3
+Mitchell, GA	.Mitchell County	Georgia	4	3
+Monroe, GA	.Monroe County	Georgia	4	2
+Montgomery, GA	.Montgomery County	Georgia	4	3
+Morgan, GA	.Morgan County	Georgia	4	2
+Murray, GA	.Murray County	Georgia	4	3
+Muscogee, GA	.Muscogee County	Georgia	4	3
+Newton, GA	.Newton County	Georgia	4	2
+Oconee, GA	.Oconee County	Georgia	4	2
+Oglethorpe, GA	.Oglethorpe County	Georgia	4	2
+Paulding, GA	.Paulding County	Georgia	4	2
+Peach, GA	.Peach County	Georgia	4	3
+Pickens, GA	.Pickens County	Georgia	4	2
+Pierce, GA	.Pierce County	Georgia	4	3
+Pike, GA	.Pike County	Georgia	4	2
+Polk, GA	.Polk County	Georgia	4	3
+Pulaski, GA	.Pulaski County	Georgia	4	3
+Putnam, GA	.Putnam County	Georgia	4	3
+Quitman, GA	.Quitman County	Georgia	4	3
+Rabun, GA	.Rabun County	Georgia	4	2
+Randolph, GA	.Randolph County	Georgia	4	3
+Richmond, GA	.Richmond County	Georgia	4	2
+Rockdale, GA	.Rockdale County	Georgia	4	2
+Schley, GA	.Schley County	Georgia	4	3
+Screven, GA	.Screven County	Georgia	4	3
+Seminole, GA	.Seminole County	Georgia	4	3
+Spalding, GA	.Spalding County	Georgia	4	2
+Stephens, GA	.Stephens County	Georgia	4	2
+Stewart, GA	.Stewart County	Georgia	4	3
+Sumter, GA	.Sumter County	Georgia	4	3
+Talbot, GA	.Talbot County	Georgia	4	2
+Taliaferro, GA	.Taliaferro County	Georgia	4	3
+Tattnall, GA	.Tattnall County	Georgia	4	3
+Taylor, GA	.Taylor County	Georgia	4	3
+Telfair, GA	.Telfair County	Georgia	4	3
+Terrell, GA	.Terrell County	Georgia	4	3
+Thomas, GA	.Thomas County	Georgia	4	3
+Tift, GA	.Tift County	Georgia	4	3
+Toombs, GA	.Toombs County	Georgia	4	3
+Towns, GA	.Towns County	Georgia	4	2
+Treutlen, GA	.Treutlen County	Georgia	4	3
+Troup, GA	.Troup County	Georgia	4	2
+Turner, GA	.Turner County	Georgia	4	3
+Twiggs, GA	.Twiggs County	Georgia	4	3
+Union, GA	.Union County	Georgia	4	2
+Upson, GA	.Upson County	Georgia	4	2
+Walker, GA	.Walker County	Georgia	4	2
+Walton, GA	.Walton County	Georgia	4	2
+Ware, GA	.Ware County	Georgia	4	3
+Warren, GA	.Warren County	Georgia	4	3
+Washington, GA	.Washington County	Georgia	4	3
+Wayne, GA	.Wayne County	Georgia	4	3
+Webster, GA	.Webster County	Georgia	4	3
+Wheeler, GA	.Wheeler County	Georgia	4	3
+White, GA	.White County	Georgia	4	2
+Whitfield, GA	.Whitfield County	Georgia	4	2
+Wilcox, GA	.Wilcox County	Georgia	4	3
+Wilkes, GA	.Wilkes County	Georgia	4	3
+Wilkinson, GA	.Wilkinson County	Georgia	4	3
+Worth, GA	.Worth County	Georgia	4	3
+HAWAII	no data	no data	.	.
+Hawaii, HI	.Hawaii County	Hawaii	9	3
+Honolulu, HI	.Honolulu County	Hawaii	9	3
+Kalawao, HI	.Kalawao County	Hawaii	9	3
+Kauai, HI	.Kauai County	Hawaii	9	3
+Maui, HI	.Maui County	Hawaii	9	3
+IDAHO	no data	no data	.	.
+Ada, ID	.Ada County	Idaho	10	2
+Adams, ID	.Adams County	Idaho	10	3
+Bannock, ID	.Bannock County	Idaho	10	2
+Bear Lake, ID	.Bear Lake County	Idaho	10	2
+Benewah, ID	.Benewah County	Idaho	10	1
+Bingham, ID	.Bingham County	Idaho	10	2
+Blaine, ID	.Blaine County	Idaho	10	1
+Boise, ID	.Boise County	Idaho	10	1
+Bonner, ID	.Bonner County	Idaho	10	1
+Bonneville, ID	.Bonneville County	Idaho	10	2
+Boundary, ID	.Boundary County	Idaho	10	1
+Butte, ID	.Butte County	Idaho	10	1
+Camas, ID	.Camas County	Idaho	10	1
+Canyon, ID	.Canyon County	Idaho	10	2
+Caribou, ID	.Caribou County	Idaho	10	2
+Cassia, ID	.Cassia County	Idaho	10	2
+Clark, ID	.Clark County	Idaho	10	1
+Clearwater, ID	.Clearwater County	Idaho	10	1
+Custer, ID	.Custer County	Idaho	10	1
+Elmore, ID	.Elmore County	Idaho	10	1
+Franklin, ID	.Franklin County	Idaho	10	2
+Fremont, ID	.Fremont County	Idaho	10	1
+Gem, ID	.Gem County	Idaho	10	3
+Gooding, ID	.Gooding County	Idaho	10	1
+Idaho, ID	.Idaho County	Idaho	10	1
+Jefferson, ID	.Jefferson County	Idaho	10	2
+Jerome, ID	.Jerome County	Idaho	10	2
+Kootenai, ID	.Kootenai County	Idaho	10	1
+Latah, ID	.Latah County	Idaho	10	1
+Lemhi, ID	.Lemhi County	Idaho	10	1
+Lewis, ID	.Lewis County	Idaho	10	3
+Lincoln, ID	.Lincoln County	Idaho	10	2
+Madison, ID	.Madison County	Idaho	10	2
+Minidoka, ID	.Minidoka County	Idaho	10	2
+Nez Perce, ID	.Nez Perce County	Idaho	10	3
+Oneida, ID	.Oneida County	Idaho	10	2
+Owyhee, ID	.Owyhee County	Idaho	10	2
+Payette, ID	.Payette County	Idaho	10	2
+Power, ID	.Power County	Idaho	10	2
+Shoshone, ID	.Shoshone County	Idaho	10	1
+Teton, ID	.Teton County	Idaho	10	2
+Twin Falls, ID	.Twin Falls County	Idaho	10	2
+Valley, ID	.Valley County	Idaho	10	1
+Washington, ID	.Washington County	Idaho	10	3
+ILLINOIS	no data	no data	.	.
+Adams, IL	.Adams County	Illinois	5	1
+Alexander, IL	.Alexander County	Illinois	5	3
+Bond, IL	.Bond County	Illinois	5	2
+Boone, IL	.Boone County	Illinois	5	1
+Brown, IL	.Brown County	Illinois	5	1
+Bureau, IL	.Bureau County	Illinois	5	1
+Calhoun, IL	.Calhoun County	Illinois	5	1
+Carroll, IL	.Carroll County	Illinois	5	1
+Cass, IL	.Cass County	Illinois	5	1
+Champaign, IL	.Champaign County	Illinois	5	1
+Christian, IL	.Christian County	Illinois	5	2
+Clark, IL	.Clark County	Illinois	5	2
+Clay, IL	.Clay County	Illinois	5	2
+Clinton, IL	.Clinton County	Illinois	5	2
+Coles, IL	.Coles County	Illinois	5	1
+Cook, IL	.Cook County	Illinois	5	2
+Crawford, IL	.Crawford County	Illinois	5	2
+Cumberland, IL	.Cumberland County	Illinois	5	2
+DeKalb, IL	.DeKalb County	Illinois	5	1
+De Witt, IL	.De Witt County	Illinois	5	1
+Douglas, IL	.Douglas County	Illinois	5	1
+DuPage, IL	.DuPage County	Illinois	5	2
+Edgar, IL	.Edgar County	Illinois	5	1
+Edwards, IL	.Edwards County	Illinois	5	2
+Effingham, IL	.Effingham County	Illinois	5	2
+Fayette, IL	.Fayette County	Illinois	5	2
+Ford, IL	.Ford County	Illinois	5	1
+Franklin, IL	.Franklin County	Illinois	5	2
+Fulton, IL	.Fulton County	Illinois	5	1
+Gallatin, IL	.Gallatin County	Illinois	5	2
+Greene, IL	.Greene County	Illinois	5	1
+Grundy, IL	.Grundy County	Illinois	5	1
+Hamilton, IL	.Hamilton County	Illinois	5	2
+Hancock, IL	.Hancock County	Illinois	5	1
+Hardin, IL	.Hardin County	Illinois	5	2
+Henderson, IL	.Henderson County	Illinois	5	1
+Henry, IL	.Henry County	Illinois	5	1
+Iroquois, IL	.Iroquois County	Illinois	5	1
+Jackson, IL	.Jackson County	Illinois	5	2
+Jasper, IL	.Jasper County	Illinois	5	2
+Jefferson, IL	.Jefferson County	Illinois	5	2
+Jersey, IL	.Jersey County	Illinois	5	1
+Jo Daviess, IL	.Jo Daviess County	Illinois	5	1
+Johnson, IL	.Johnson County	Illinois	5	2
+Kane, IL	.Kane County	Illinois	5	1
+Kankakee, IL	.Kankakee County	Illinois	5	2
+Kendall, IL	.Kendall County	Illinois	5	1
+Knox, IL	.Knox County	Illinois	5	1
+Lake, IL	.Lake County	Illinois	5	2
+La Salle, IL	.LaSalle County	Illinois	5	1
+Lawrence, IL	.Lawrence County	Illinois	5	2
+Lee, IL	.Lee County	Illinois	5	1
+Livingston, IL	.Livingston County	Illinois	5	1
+Logan, IL	.Logan County	Illinois	5	1
+McDonough, IL	.McDonough County	Illinois	5	1
+McHenry, IL	.McHenry County	Illinois	5	2
+McLean, IL	.McLean County	Illinois	5	1
+Macon, IL	.Macon County	Illinois	5	1
+Macoupin, IL	.Macoupin County	Illinois	5	2
+Madison, IL	.Madison County	Illinois	5	2
+Marion, IL	.Marion County	Illinois	5	2
+Marshall, IL	.Marshall County	Illinois	5	1
+Mason, IL	.Mason County	Illinois	5	1
+Massac, IL	.Massac County	Illinois	5	3
+Menard, IL	.Menard County	Illinois	5	1
+Mercer, IL	.Mercer County	Illinois	5	1
+Monroe, IL	.Monroe County	Illinois	5	2
+Montgomery, IL	.Montgomery County	Illinois	5	2
+Morgan, IL	.Morgan County	Illinois	5	1
+Moultrie, IL	.Moultrie County	Illinois	5	1
+Ogle, IL	.Ogle County	Illinois	5	1
+Peoria, IL	.Peoria County	Illinois	5	1
+Perry, IL	.Perry County	Illinois	5	2
+Piatt, IL	.Piatt County	Illinois	5	1
+Pike, IL	.Pike County	Illinois	5	1
+Pope, IL	.Pope County	Illinois	5	2
+Pulaski, IL	.Pulaski County	Illinois	5	3
+Putnam, IL	.Putnam County	Illinois	5	1
+Randolph, IL	.Randolph County	Illinois	5	2
+Richland, IL	.Richland County	Illinois	5	2
+Rock Island, IL	.Rock Island County	Illinois	5	1
+St. Clair, IL	.St. Clair County	Illinois	5	2
+Saline, IL	.Saline County	Illinois	5	2
+Sangamon, IL	.Sangamon County	Illinois	5	1
+Schuyler, IL	.Schuyler County	Illinois	5	1
+Scott, IL	.Scott County	Illinois	5	1
+Shelby, IL	.Shelby County	Illinois	5	2
+Stark, IL	.Stark County	Illinois	5	1
+Stephenson, IL	.Stephenson County	Illinois	5	1
+Tazewell, IL	.Tazewell County	Illinois	5	1
+Union, IL	.Union County	Illinois	5	2
+Vermilion, IL	.Vermilion County	Illinois	5	1
+Wabash, IL	.Wabash County	Illinois	5	2
+Warren, IL	.Warren County	Illinois	5	1
+Washington, IL	.Washington County	Illinois	5	2
+Wayne, IL	.Wayne County	Illinois	5	2
+White, IL	.White County	Illinois	5	2
+Whiteside, IL	.Whiteside County	Illinois	5	1
+Will, IL	.Will County	Illinois	5	2
+Williamson, IL	.Williamson County	Illinois	5	2
+Winnebago, IL	.Winnebago County	Illinois	5	1
+Woodford, IL	.Woodford County	Illinois	5	1
+INDIANA	no data	no data	.	.
+Adams, IN	.Adams County	Indiana	5	1
+Allen, IN	.Allen County	Indiana	5	1
+Bartholomew, IN	.Bartholomew County	Indiana	5	1
+Benton, IN	.Benton County	Indiana	5	1
+Blackford, IN	.Blackford County	Indiana	5	1
+Boone, IN	.Boone County	Indiana	5	1
+Brown, IN	.Brown County	Indiana	5	2
+Carroll, IN	.Carroll County	Indiana	5	1
+Cass, IN	.Cass County	Indiana	5	1
+Clark, IN	.Clark County	Indiana	5	1
+Clay, IN	.Clay County	Indiana	5	2
+Clinton, IN	.Clinton County	Indiana	5	1
+Crawford, IN	.Crawford County	Indiana	5	2
+Daviess, IN	.Daviess County	Indiana	5	2
+Dearborn, IN	.Dearborn County	Indiana	5	2
+Decatur, IN	.Decatur County	Indiana	5	1
+De Kalb, IN	.DeKalb County	Indiana	5	1
+Delaware, IN	.Delaware County	Indiana	5	1
+Dubois, IN	.Dubois County	Indiana	5	2
+Elkhart, IN	.Elkhart County	Indiana	5	1
+Fayette, IN	.Fayette County	Indiana	5	1
+Floyd, IN	.Floyd County	Indiana	5	2
+Fountain, IN	.Fountain County	Indiana	5	1
+Franklin, IN	.Franklin County	Indiana	5	2
+Fulton, IN	.Fulton County	Indiana	5	1
+Gibson, IN	.Gibson County	Indiana	5	2
+Grant, IN	.Grant County	Indiana	5	1
+Greene, IN	.Greene County	Indiana	5	2
+Hamilton, IN	.Hamilton County	Indiana	5	1
+Hancock, IN	.Hancock County	Indiana	5	1
+Harrison, IN	.Harrison County	Indiana	5	1
+Hendricks, IN	.Hendricks County	Indiana	5	1
+Henry, IN	.Henry County	Indiana	5	1
+Howard, IN	.Howard County	Indiana	5	1
+Huntington, IN	.Huntington County	Indiana	5	1
+Jackson, IN	.Jackson County	Indiana	5	2
+Jasper, IN	.Jasper County	Indiana	5	2
+Jay, IN	.Jay County	Indiana	5	1
+Jefferson, IN	.Jefferson County	Indiana	5	2
+Jennings, IN	.Jennings County	Indiana	5	1
+Johnson, IN	.Johnson County	Indiana	5	1
+Knox, IN	.Knox County	Indiana	5	2
+Kosciusko, IN	.Kosciusko County	Indiana	5	1
+Lagrange, IN	.LaGrange County	Indiana	5	1
+Lake, IN	.Lake County	Indiana	5	2
+La Porte, IN	.LaPorte County	Indiana	5	2
+Lawrence, IN	.Lawrence County	Indiana	5	1
+Madison, IN	.Madison County	Indiana	5	1
+Marion, IN	.Marion County	Indiana	5	1
+Marshall, IN	.Marshall County	Indiana	5	1
+Martin, IN	.Martin County	Indiana	5	2
+Miami, IN	.Miami County	Indiana	5	1
+Monroe, IN	.Monroe County	Indiana	5	1
+Montgomery, IN	.Montgomery County	Indiana	5	1
+Morgan, IN	.Morgan County	Indiana	5	2
+Newton, IN	.Newton County	Indiana	5	2
+Noble, IN	.Noble County	Indiana	5	1
+Ohio, IN	.Ohio County	Indiana	5	2
+Orange, IN	.Orange County	Indiana	5	1
+Owen, IN	.Owen County	Indiana	5	2
+Parke, IN	.Parke County	Indiana	5	2
+Perry, IN	.Perry County	Indiana	5	2
+Pike, IN	.Pike County	Indiana	5	2
+Porter, IN	.Porter County	Indiana	5	2
+Posey, IN	.Posey County	Indiana	5	2
+Pulaski, IN	.Pulaski County	Indiana	5	2
+Putnam, IN	.Putnam County	Indiana	5	1
+Randolph, IN	.Randolph County	Indiana	5	1
+Ripley, IN	.Ripley County	Indiana	5	2
+Rush, IN	.Rush County	Indiana	5	1
+St. Joseph, IN	.St. Joseph County	Indiana	5	1
+Scott, IN	.Scott County	Indiana	5	1
+Shelby, IN	.Shelby County	Indiana	5	1
+Spencer, IN	.Spencer County	Indiana	5	2
+Starke, IN	.Starke County	Indiana	5	2
+Steuben, IN	.Steuben County	Indiana	5	1
+Sullivan, IN	.Sullivan County	Indiana	5	2
+Switzerland, IN	.Switzerland County	Indiana	5	2
+Tippecanoe, IN	.Tippecanoe County	Indiana	5	1
+Tipton, IN	.Tipton County	Indiana	5	1
+Union, IN	.Union County	Indiana	5	1
+Vanderburgh, IN	.Vanderburgh County	Indiana	5	2
+Vermillion, IN	.Vermillion County	Indiana	5	1
+Vigo, IN	.Vigo County	Indiana	5	2
+Wabash, IN	.Wabash County	Indiana	5	1
+Warren, IN	.Warren County	Indiana	5	1
+Warrick, IN	.Warrick County	Indiana	5	2
+Washington, IN	.Washington County	Indiana	5	1
+Wayne, IN	.Wayne County	Indiana	5	1
+Wells, IN	.Wells County	Indiana	5	1
+White, IN	.White County	Indiana	5	1
+Whitley, IN	.Whitley County	Indiana	5	1
+IOWA	no data	no data	.	.
+Adair, IA	.Adair County	Iowa	7	1
+Adams, IA	.Adams County	Iowa	7	1
+Allamakee, IA	.Allamakee County	Iowa	7	1
+Appanoose, IA	.Appanoose County	Iowa	7	1
+Audubon, IA	.Audubon County	Iowa	7	1
+Benton, IA	.Benton County	Iowa	7	1
+Black Hawk, IA	.Black Hawk County	Iowa	7	1
+Boone, IA	.Boone County	Iowa	7	1
+Bremer, IA	.Bremer County	Iowa	7	1
+Buchanan, IA	.Buchanan County	Iowa	7	1
+Buena Vista, IA	.Buena Vista County	Iowa	7	1
+Butler, IA	.Butler County	Iowa	7	1
+Calhoun, IA	.Calhoun County	Iowa	7	1
+Carroll, IA	.Carroll County	Iowa	7	1
+Cass, IA	.Cass County	Iowa	7	1
+Cedar, IA	.Cedar County	Iowa	7	1
+Cerro Gordo, IA	.Cerro Gordo County	Iowa	7	1
+Cherokee, IA	.Cherokee County	Iowa	7	1
+Chickasaw, IA	.Chickasaw County	Iowa	7	1
+Clarke, IA	.Clarke County	Iowa	7	1
+Clay, IA	.Clay County	Iowa	7	1
+Clayton, IA	.Clayton County	Iowa	7	1
+Clinton, IA	.Clinton County	Iowa	7	1
+Crawford, IA	.Crawford County	Iowa	7	1
+Dallas, IA	.Dallas County	Iowa	7	1
+Davis, IA	.Davis County	Iowa	7	1
+Decatur, IA	.Decatur County	Iowa	7	1
+Delaware, IA	.Delaware County	Iowa	7	1
+Des Moines, IA	.Des Moines County	Iowa	7	1
+Dickinson, IA	.Dickinson County	Iowa	7	1
+Dubuque, IA	.Dubuque County	Iowa	7	1
+Emmet, IA	.Emmet County	Iowa	7	1
+Fayette, IA	.Fayette County	Iowa	7	1
+Floyd, IA	.Floyd County	Iowa	7	1
+Franklin, IA	.Franklin County	Iowa	7	1
+Fremont, IA	.Fremont County	Iowa	7	1
+Greene, IA	.Greene County	Iowa	7	1
+Grundy, IA	.Grundy County	Iowa	7	1
+Guthrie, IA	.Guthrie County	Iowa	7	1
+Hamilton, IA	.Hamilton County	Iowa	7	1
+Hancock, IA	.Hancock County	Iowa	7	1
+Hardin, IA	.Hardin County	Iowa	7	1
+Harrison, IA	.Harrison County	Iowa	7	1
+Henry, IA	.Henry County	Iowa	7	1
+Howard, IA	.Howard County	Iowa	7	1
+Humboldt, IA	.Humboldt County	Iowa	7	1
+Ida, IA	.Ida County	Iowa	7	1
+Iowa, IA	.Iowa County	Iowa	7	1
+Jackson, IA	.Jackson County	Iowa	7	1
+Jasper, IA	.Jasper County	Iowa	7	1
+Jefferson, IA	.Jefferson County	Iowa	7	1
+Johnson, IA	.Johnson County	Iowa	7	1
+Jones, IA	.Jones County	Iowa	7	1
+Keokuk, IA	.Keokuk County	Iowa	7	1
+Kossuth, IA	.Kossuth County	Iowa	7	1
+Lee, IA	.Lee County	Iowa	7	1
+Linn, IA	.Linn County	Iowa	7	1
+Louisa, IA	.Louisa County	Iowa	7	1
+Lucas, IA	.Lucas County	Iowa	7	1
+Lyon, IA	.Lyon County	Iowa	7	1
+Madison, IA	.Madison County	Iowa	7	1
+Mahaska, IA	.Mahaska County	Iowa	7	1
+Marion, IA	.Marion County	Iowa	7	1
+Marshall, IA	.Marshall County	Iowa	7	1
+Mills, IA	.Mills County	Iowa	7	1
+Mitchell, IA	.Mitchell County	Iowa	7	1
+Monona, IA	.Monona County	Iowa	7	1
+Monroe, IA	.Monroe County	Iowa	7	1
+Montgomery, IA	.Montgomery County	Iowa	7	1
+Muscatine, IA	.Muscatine County	Iowa	7	1
+O'Brien, IA	.O'Brien County	Iowa	7	1
+Osceola, IA	.Osceola County	Iowa	7	1
+Page, IA	.Page County	Iowa	7	1
+Palo Alto, IA	.Palo Alto County	Iowa	7	1
+Plymouth, IA	.Plymouth County	Iowa	7	1
+Pocahontas, IA	.Pocahontas County	Iowa	7	1
+Polk, IA	.Polk County	Iowa	7	1
+Pottawattamie, IA	.Pottawattamie County	Iowa	7	1
+Poweshiek, IA	.Poweshiek County	Iowa	7	1
+Ringgold, IA	.Ringgold County	Iowa	7	1
+Sac, IA	.Sac County	Iowa	7	1
+Scott, IA	.Scott County	Iowa	7	1
+Shelby, IA	.Shelby County	Iowa	7	1
+Sioux, IA	.Sioux County	Iowa	7	1
+Story, IA	.Story County	Iowa	7	1
+Tama, IA	.Tama County	Iowa	7	1
+Taylor, IA	.Taylor County	Iowa	7	1
+Union, IA	.Union County	Iowa	7	1
+Van Buren, IA	.Van Buren County	Iowa	7	1
+Wapello, IA	.Wapello County	Iowa	7	1
+Warren, IA	.Warren County	Iowa	7	1
+Washington, IA	.Washington County	Iowa	7	1
+Wayne, IA	.Wayne County	Iowa	7	1
+Webster, IA	.Webster County	Iowa	7	1
+Winnebago, IA	.Winnebago County	Iowa	7	1
+Winneshiek, IA	.Winneshiek County	Iowa	7	1
+Woodbury, IA	.Woodbury County	Iowa	7	1
+Worth, IA	.Worth County	Iowa	7	1
+Wright, IA	.Wright County	Iowa	7	1
+KANSAS	no data	no data	.	.
+Allen, KS	.Allen County	Kansas	7	2
+Anderson, KS	.Anderson County	Kansas	7	2
+Atchison, KS	.Atchison County	Kansas	7	1
+Barber, KS	.Barber County	Kansas	7	2
+Barton, KS	.Barton County	Kansas	7	1
+Bourbon, KS	.Bourbon County	Kansas	7	2
+Brown, KS	.Brown County	Kansas	7	1
+Butler, KS	.Butler County	Kansas	7	2
+Chase, KS	.Chase County	Kansas	7	2
+Chautauqua, KS	.Chautauqua County	Kansas	7	2
+Cherokee, KS	.Cherokee County	Kansas	7	2
+Cheyenne, KS	.Cheyenne County	Kansas	7	1
+Clark, KS	.Clark County	Kansas	7	2
+Clay, KS	.Clay County	Kansas	7	1
+Cloud, KS	.Cloud County	Kansas	7	1
+Coffey, KS	.Coffey County	Kansas	7	2
+Comanche, KS	.Comanche County	Kansas	7	2
+Cowley, KS	.Cowley County	Kansas	7	2
+Crawford, KS	.Crawford County	Kansas	7	2
+Decatur, KS	.Decatur County	Kansas	7	1
+Dickinson, KS	.Dickinson County	Kansas	7	1
+Doniphan, KS	.Doniphan County	Kansas	7	2
+Douglas, KS	.Douglas County	Kansas	7	1
+Edwards, KS	.Edwards County	Kansas	7	2
+Elk, KS	.Elk County	Kansas	7	2
+Ellis, KS	.Ellis County	Kansas	7	1
+Ellsworth, KS	.Ellsworth County	Kansas	7	1
+Finney, KS	.Finney County	Kansas	7	1
+Ford, KS	.Ford County	Kansas	7	1
+Franklin, KS	.Franklin County	Kansas	7	2
+Geary, KS	.Geary County	Kansas	7	1
+Gove, KS	.Gove County	Kansas	7	1
+Graham, KS	.Graham County	Kansas	7	1
+Grant, KS	.Grant County	Kansas	7	1
+Gray, KS	.Gray County	Kansas	7	1
+Greeley, KS	.Greeley County	Kansas	7	1
+Greenwood, KS	.Greenwood County	Kansas	7	2
+Hamilton, KS	.Hamilton County	Kansas	7	1
+Harper, KS	.Harper County	Kansas	7	2
+Harvey, KS	.Harvey County	Kansas	7	2
+Haskell, KS	.Haskell County	Kansas	7	1
+Hodgeman, KS	.Hodgeman County	Kansas	7	1
+Jackson, KS	.Jackson County	Kansas	7	1
+Jefferson, KS	.Jefferson County	Kansas	7	2
+Jewell, KS	.Jewell County	Kansas	7	1
+Johnson, KS	.Johnson County	Kansas	7	1
+Kearny, KS	.Kearny County	Kansas	7	1
+Kingman, KS	.Kingman County	Kansas	7	1
+Kiowa, KS	.Kiowa County	Kansas	7	1
+Labette, KS	.Labette County	Kansas	7	2
+Lane, KS	.Lane County	Kansas	7	1
+Leavenworth, KS	.Leavenworth County	Kansas	7	1
+Lincoln, KS	.Lincoln County	Kansas	7	1
+Linn, KS	.Linn County	Kansas	7	2
+Logan, KS	.Logan County	Kansas	7	1
+Lyon, KS	.Lyon County	Kansas	7	2
+McPherson, KS	.McPherson County	Kansas	7	1
+Marion, KS	.Marion County	Kansas	7	1
+Marshall, KS	.Marshall County	Kansas	7	1
+Meade, KS	.Meade County	Kansas	7	1
+Miami, KS	.Miami County	Kansas	7	2
+Mitchell, KS	.Mitchell County	Kansas	7	1
+Montgomery, KS	.Montgomery County	Kansas	7	2
+Morris, KS	.Morris County	Kansas	7	2
+Morton, KS	.Morton County	Kansas	7	2
+Nemaha, KS	.Nemaha County	Kansas	7	1
+Neosho, KS	.Neosho County	Kansas	7	2
+Ness, KS	.Ness County	Kansas	7	1
+Norton, KS	.Norton County	Kansas	7	1
+Osage, KS	.Osage County	Kansas	7	2
+Osborne, KS	.Osborne County	Kansas	7	1
+Ottawa, KS	.Ottawa County	Kansas	7	1
+Pawnee, KS	.Pawnee County	Kansas	7	1
+Phillips, KS	.Phillips County	Kansas	7	1
+Pottawatomie, KS	.Pottawatomie County	Kansas	7	1
+Pratt, KS	.Pratt County	Kansas	7	1
+Rawlins, KS	.Rawlins County	Kansas	7	1
+Reno, KS	.Reno County	Kansas	7	2
+Republic, KS	.Republic County	Kansas	7	1
+Rice, KS	.Rice County	Kansas	7	1
+Riley, KS	.Riley County	Kansas	7	1
+Rooks, KS	.Rooks County	Kansas	7	1
+Rush, KS	.Rush County	Kansas	7	1
+Russell, KS	.Russell County	Kansas	7	1
+Saline, KS	.Saline County	Kansas	7	1
+Scott, KS	.Scott County	Kansas	7	1
+Sedgwick, KS	.Sedgwick County	Kansas	7	2
+Seward, KS	.Seward County	Kansas	7	2
+Shawnee, KS	.Shawnee County	Kansas	7	2
+Sheridan, KS	.Sheridan County	Kansas	7	1
+Sherman, KS	.Sherman County	Kansas	7	1
+Smith, KS	.Smith County	Kansas	7	1
+Stafford, KS	.Stafford County	Kansas	7	2
+Stanton, KS	.Stanton County	Kansas	7	1
+Stevens, KS	.Stevens County	Kansas	7	2
+Sumner, KS	.Sumner County	Kansas	7	2
+Thomas, KS	.Thomas County	Kansas	7	1
+Trego, KS	.Trego County	Kansas	7	1
+Wabaunsee, KS	.Wabaunsee County	Kansas	7	2
+Wallace, KS	.Wallace County	Kansas	7	1
+Washington, KS	.Washington County	Kansas	7	1
+Wichita, KS	.Wichita County	Kansas	7	1
+Wilson, KS	.Wilson County	Kansas	7	2
+Woodson, KS	.Woodson County	Kansas	7	2
+Wyandotte, KS	.Wyandotte County	Kansas	7	1
+KENTUCKY	no data	no data	.	.
+Adair, KY	.Adair County	Kentucky	4	1
+Allen, KY	.Allen County	Kentucky	4	1
+Anderson, KY	.Anderson County	Kentucky	4	2
+Ballard, KY	.Ballard County	Kentucky	4	3
+Barren, KY	.Barren County	Kentucky	4	1
+Bath, KY	.Bath County	Kentucky	4	2
+Bell, KY	.Bell County	Kentucky	4	2
+Boone, KY	.Boone County	Kentucky	4	2
+Bourbon, KY	.Bourbon County	Kentucky	4	1
+Boyd, KY	.Boyd County	Kentucky	4	2
+Boyle, KY	.Boyle County	Kentucky	4	1
+Bracken, KY	.Bracken County	Kentucky	4	2
+Breathitt, KY	.Breathitt County	Kentucky	4	2
+Breckinridge, KY	.Breckinridge County	Kentucky	4	2
+Bullitt, KY	.Bullitt County	Kentucky	4	1
+Butler, KY	.Butler County	Kentucky	4	2
+Caldwell, KY	.Caldwell County	Kentucky	4	2
+Calloway, KY	.Calloway County	Kentucky	4	3
+Campbell, KY	.Campbell County	Kentucky	4	2
+Carlisle, KY	.Carlisle County	Kentucky	4	3
+Carroll, KY	.Carroll County	Kentucky	4	2
+Carter, KY	.Carter County	Kentucky	4	2
+Casey, KY	.Casey County	Kentucky	4	1
+Christian, KY	.Christian County	Kentucky	4	2
+Clark, KY	.Clark County	Kentucky	4	1
+Clay, KY	.Clay County	Kentucky	4	2
+Clinton, KY	.Clinton County	Kentucky	4	2
+Crittenden, KY	.Crittenden County	Kentucky	4	2
+Cumberland, KY	.Cumberland County	Kentucky	4	1
+Daviess, KY	.Daviess County	Kentucky	4	2
+Edmonson, KY	.Edmonson County	Kentucky	4	2
+Elliott, KY	.Elliott County	Kentucky	4	2
+Estill, KY	.Estill County	Kentucky	4	2
+Fayette, KY	.Fayette County	Kentucky	4	1
+Fleming, KY	.Fleming County	Kentucky	4	2
+Floyd, KY	.Floyd County	Kentucky	4	2
+Franklin, KY	.Franklin County	Kentucky	4	1
+Fulton, KY	.Fulton County	Kentucky	4	3
+Gallatin, KY	.Gallatin County	Kentucky	4	2
+Garrard, KY	.Garrard County	Kentucky	4	2
+Grant, KY	.Grant County	Kentucky	4	2
+Graves, KY	.Graves County	Kentucky	4	3
+Grayson, KY	.Grayson County	Kentucky	4	2
+Green, KY	.Green County	Kentucky	4	1
+Greenup, KY	.Greenup County	Kentucky	4	2
+Hancock, KY	.Hancock County	Kentucky	4	2
+Hardin, KY	.Hardin County	Kentucky	4	2
+Harlan, KY	.Harlan County	Kentucky	4	2
+Harrison, KY	.Harrison County	Kentucky	4	1
+Hart, KY	.Hart County	Kentucky	4	1
+Henderson, KY	.Henderson County	Kentucky	4	2
+Henry, KY	.Henry County	Kentucky	4	2
+Hickman, KY	.Hickman County	Kentucky	4	3
+Hopkins, KY	.Hopkins County	Kentucky	4	2
+Jackson, KY	.Jackson County	Kentucky	4	2
+Jefferson, KY	.Jefferson County	Kentucky	4	1
+Jessamine, KY	.Jessamine County	Kentucky	4	1
+Johnson, KY	.Johnson County	Kentucky	4	2
+Kenton, KY	.Kenton County	Kentucky	4	2
+Knott, KY	.Knott County	Kentucky	4	2
+Knox, KY	.Knox County	Kentucky	4	2
+Larue, KY	.Larue County	Kentucky	4	2
+Laurel, KY	.Laurel County	Kentucky	4	2
+Lawrence, KY	.Lawrence County	Kentucky	4	2
+Lee, KY	.Lee County	Kentucky	4	2
+Leslie, KY	.Leslie County	Kentucky	4	2
+Letcher, KY	.Letcher County	Kentucky	4	2
+Lewis, KY	.Lewis County	Kentucky	4	2
+Lincoln, KY	.Lincoln County	Kentucky	4	1
+Livingston, KY	.Livingston County	Kentucky	4	2
+Logan, KY	.Logan County	Kentucky	4	2
+Lyon, KY	.Lyon County	Kentucky	4	2
+McCracken, KY	.McCracken County	Kentucky	4	3
+McCreary, KY	.McCreary County	Kentucky	4	2
+McLean, KY	.McLean County	Kentucky	4	2
+Madison, KY	.Madison County	Kentucky	4	2
+Magoffin, KY	.Magoffin County	Kentucky	4	2
+Marion, KY	.Marion County	Kentucky	4	1
+Marshall, KY	.Marshall County	Kentucky	4	3
+Martin, KY	.Martin County	Kentucky	4	2
+Mason, KY	.Mason County	Kentucky	4	2
+Meade, KY	.Meade County	Kentucky	4	2
+Menifee, KY	.Menifee County	Kentucky	4	2
+Mercer, KY	.Mercer County	Kentucky	4	1
+Metcalfe, KY	.Metcalfe County	Kentucky	4	1
+Monroe, KY	.Monroe County	Kentucky	4	1
+Montgomery, KY	.Montgomery County	Kentucky	4	2
+Morgan, KY	.Morgan County	Kentucky	4	2
+Muhlenberg, KY	.Muhlenberg County	Kentucky	4	2
+Nelson, KY	.Nelson County	Kentucky	4	1
+Nicholas, KY	.Nicholas County	Kentucky	4	2
+Ohio, KY	.Ohio County	Kentucky	4	2
+Oldham, KY	.Oldham County	Kentucky	4	2
+Owen, KY	.Owen County	Kentucky	4	2
+Owsley, KY	.Owsley County	Kentucky	4	2
+Pendleton, KY	.Pendleton County	Kentucky	4	1
+Perry, KY	.Perry County	Kentucky	4	2
+Pike, KY	.Pike County	Kentucky	4	2
+Powell, KY	.Powell County	Kentucky	4	2
+Pulaski, KY	.Pulaski County	Kentucky	4	1
+Robertson, KY	.Robertson County	Kentucky	4	1
+Rockcastle, KY	.Rockcastle County	Kentucky	4	2
+Rowan, KY	.Rowan County	Kentucky	4	2
+Russell, KY	.Russell County	Kentucky	4	1
+Scott, KY	.Scott County	Kentucky	4	1
+Shelby, KY	.Shelby County	Kentucky	4	2
+Simpson, KY	.Simpson County	Kentucky	4	2
+Spencer, KY	.Spencer County	Kentucky	4	2
+Taylor, KY	.Taylor County	Kentucky	4	1
+Todd, KY	.Todd County	Kentucky	4	2
+Trigg, KY	.Trigg County	Kentucky	4	2
+Trimble, KY	.Trimble County	Kentucky	4	2
+Union, KY	.Union County	Kentucky	4	2
+Warren, KY	.Warren County	Kentucky	4	1
+Washington, KY	.Washington County	Kentucky	4	2
+Wayne, KY	.Wayne County	Kentucky	4	2
+Webster, KY	.Webster County	Kentucky	4	2
+Whitley, KY	.Whitley County	Kentucky	4	2
+Wolfe, KY	.Wolfe County	Kentucky	4	2
+Woodford, KY	.Woodford County	Kentucky	4	1
+LOUISIANA	no data	no data	.	.
+Acadia, LA	.Acadia Parish	Louisiana	6	3
+Allen, LA	.Allen Parish	Louisiana	6	3
+Ascension, LA	.Ascension Parish	Louisiana	6	3
+Assumption, LA	.Assumption Parish	Louisiana	6	3
+Avoyelles, LA	.Avoyelles Parish	Louisiana	6	3
+Beauregard, LA	.Beauregard Parish	Louisiana	6	3
+Bienville, LA	.Bienville Parish	Louisiana	6	3
+Bossier, LA	.Bossier Parish	Louisiana	6	3
+Caddo, LA	.Caddo Parish	Louisiana	6	3
+Calcasieu, LA	.Calcasieu Parish	Louisiana	6	3
+Caldwell, LA	.Caldwell Parish	Louisiana	6	3
+Cameron, LA	.Cameron Parish	Louisiana	6	3
+Catahoula, LA	.Catahoula Parish	Louisiana	6	3
+Claiborne, LA	.Claiborne Parish	Louisiana	6	3
+Concordia, LA	.Concordia Parish	Louisiana	6	3
+De Soto, LA	.De Soto Parish	Louisiana	6	3
+East Baton Rouge, LA	.East Baton Rouge Parish	Louisiana	6	3
+East Carroll, LA	.East Carroll Parish	Louisiana	6	3
+East Feliciana, LA	.East Feliciana Parish	Louisiana	6	3
+Evangeline, LA	.Evangeline Parish	Louisiana	6	3
+Franklin, LA	.Franklin Parish	Louisiana	6	3
+Grant, LA	.Grant Parish	Louisiana	6	3
+Iberia, LA	.Iberia Parish	Louisiana	6	3
+Iberville, LA	.Iberville Parish	Louisiana	6	3
+Jackson, LA	.Jackson Parish	Louisiana	6	3
+Jefferson, LA	.Jefferson Parish	Louisiana	6	3
+Jefferson Davis, LA	.Jefferson Davis Parish	Louisiana	6	3
+Lafayette, LA	.Lafayette Parish	Louisiana	6	3
+Lafourche, LA	.Lafourche Parish	Louisiana	6	3
+La Salle, LA	.La Salle Parish	Louisiana	6	3
+Lincoln, LA	.Lincoln Parish	Louisiana	6	3
+Livingston, LA	.Livingston Parish	Louisiana	6	3
+Madison, LA	.Madison Parish	Louisiana	6	3
+Morehouse, LA	.Morehouse Parish	Louisiana	6	3
+Natchitoches, LA	.Natchitoches Parish	Louisiana	6	3
+Orleans, LA	.Orleans Parish	Louisiana	6	3
+Ouachita, LA	.Ouachita Parish	Louisiana	6	3
+Plaquemines, LA	.Plaquemines Parish	Louisiana	6	3
+Pointe Coupee, LA	.Pointe Coupee Parish	Louisiana	6	3
+Rapides, LA	.Rapides Parish	Louisiana	6	3
+Red River, LA	.Red River Parish	Louisiana	6	3
+Richland, LA	.Richland Parish	Louisiana	6	3
+Sabine, LA	.Sabine Parish	Louisiana	6	3
+St. Bernard, LA	.St. Bernard Parish	Louisiana	6	3
+St. Charles, LA	.St. Charles Parish	Louisiana	6	3
+St. Helena, LA	.St. Helena Parish	Louisiana	6	3
+St. James, LA	.St. James Parish	Louisiana	6	3
+St. John the Baptist, LA	.St. John the Baptist Parish	Louisiana	6	3
+St. Landry, LA	.St. Landry Parish	Louisiana	6	3
+St. Martin, LA	.St. Martin Parish	Louisiana	6	3
+St. Mary, LA	.St. Mary Parish	Louisiana	6	3
+St. Tammany, LA	.St. Tammany Parish	Louisiana	6	3
+Tangipahoa, LA	.Tangipahoa Parish	Louisiana	6	3
+Tensas, LA	.Tensas Parish	Louisiana	6	3
+Terrebonne, LA	.Terrebonne Parish	Louisiana	6	3
+Union, LA	.Union Parish	Louisiana	6	3
+Vermilion, LA	.Vermilion Parish	Louisiana	6	3
+Vernon, LA	.Vernon Parish	Louisiana	6	3
+Washington, LA	.Washington Parish	Louisiana	6	3
+Webster, LA	.Webster Parish	Louisiana	6	3
+West Baton Rouge, LA	.West Baton Rouge Parish	Louisiana	6	3
+West Carroll, LA	.West Carroll Parish	Louisiana	6	3
+West Feliciana, LA	.West Feliciana Parish	Louisiana	6	3
+Winn, LA	.Winn Parish	Louisiana	6	3
+MAINE	no data	no data	.	.
+Androscoggin, ME	.Androscoggin County	Maine	1	1
+Aroostook, ME	.Aroostook County	Maine	1	1
+Cumberland, ME	.Cumberland County	Maine	1	1
+Franklin, ME	.Franklin County	Maine	1	1
+Hancock, ME	.Hancock County	Maine	1	1
+Kennebec, ME	.Kennebec County	Maine	1	1
+Knox, ME	.Knox County	Maine	1	2
+Lincoln, ME	.Lincoln County	Maine	1	1
+Oxford, ME	.Oxford County	Maine	1	1
+Penobscot, ME	.Penobscot County	Maine	1	1
+Piscataquis, ME	.Piscataquis County	Maine	1	1
+Sagadahoc, ME	.Sagadahoc County	Maine	1	2
+Somerset, ME	.Somerset County	Maine	1	1
+Waldo, ME	.Waldo County	Maine	1	2
+Washington, ME	.Washington County	Maine	1	2
+York, ME	.York County	Maine	1	1
+MARYLAND	no data	no data	.	.
+Allegany, MD	.Allegany County	Maryland	3	2
+Anne Arundel, MD	.Anne Arundel County	Maryland	3	2
+Baltimore, MD	.Baltimore County	Maryland	3	1
+Calvert, MD	.Calvert County	Maryland	3	1
+Caroline, MD	.Caroline County	Maryland	3	3
+Carroll, MD	.Carroll County	Maryland	3	1
+Cecil, MD	.Cecil County	Maryland	3	2
+Charles, MD	.Charles County	Maryland	3	2
+Dorchester, MD	.Dorchester County	Maryland	3	3
+Frederick, MD	.Frederick County	Maryland	3	1
+Garrett, MD	.Garrett County	Maryland	3	2
+Harford, MD	.Harford County	Maryland	3	1
+Howard, MD	.Howard County	Maryland	3	1
+Kent, MD	.Kent County	Maryland	3	3
+Montgomery, MD	.Montgomery County	Maryland	3	1
+Prince George's, MD	.Prince George's County	Maryland	3	2
+Queen Anne's, MD	.Queen Anne's County	Maryland	3	3
+St. Mary's, MD	.St. Mary's County	Maryland	3	2
+Somerset, MD	.Somerset County	Maryland	3	3
+Talbot, MD	.Talbot County	Maryland	3	3
+Washington, MD	.Washington County	Maryland	3	1
+Wicomico, MD	.Wicomico County	Maryland	3	3
+Worcester, MD	.Worcester County	Maryland	3	3
+Baltimore city, MD	.Baltimore city	Maryland	3	2
+MASSACHUSETTS	no data	no data	.	.
+Barnstable, MA	.Barnstable County	Massachusetts	1	2
+Berkshire, MA	.Berkshire County	Massachusetts	1	2
+Bristol, MA	.Bristol County	Massachusetts	1	2
+Dukes, MA	.Dukes County	Massachusetts	1	2
+Essex, MA	.Essex County	Massachusetts	1	1
+Franklin, MA	.Franklin County	Massachusetts	1	2
+Hampden, MA	.Hampden County	Massachusetts	1	2
+Hampshire, MA	.Hampshire County	Massachusetts	1	2
+Middlesex, MA	.Middlesex County	Massachusetts	1	1
+Nantucket, MA	.Nantucket County	Massachusetts	1	2
+Norfolk, MA	.Norfolk County	Massachusetts	1	2
+Plymouth, MA	.Plymouth County	Massachusetts	1	2
+Suffolk, MA	.Suffolk County	Massachusetts	1	3
+Worcester, MA	.Worcester County	Massachusetts	1	1
+MICHIGAN	no data	no data	.	.
+Alcona, MI	.Alcona County	Michigan	5	2
+Alger, MI	.Alger County	Michigan	5	2
+Allegan, MI	.Allegan County	Michigan	5	3
+Alpena, MI	.Alpena County	Michigan	5	2
+Antrim, MI	.Antrim County	Michigan	5	2
+Arenac, MI	.Arenac County	Michigan	5	3
+Baraga, MI	.Baraga County	Michigan	5	2
+Barry, MI	.Barry County	Michigan	5	2
+Bay, MI	.Bay County	Michigan	5	3
+Benzie, MI	.Benzie County	Michigan	5	3
+Berrien, MI	.Berrien County	Michigan	5	3
+Branch, MI	.Branch County	Michigan	5	1
+Calhoun, MI	.Calhoun County	Michigan	5	1
+Cass, MI	.Cass County	Michigan	5	1
+Charlevoix, MI	.Charlevoix County	Michigan	5	2
+Cheboygan, MI	.Cheboygan County	Michigan	5	3
+Chippewa, MI	.Chippewa County	Michigan	5	3
+Clare, MI	.Clare County	Michigan	5	3
+Clinton, MI	.Clinton County	Michigan	5	2
+Crawford, MI	.Crawford County	Michigan	5	3
+Delta, MI	.Delta County	Michigan	5	3
+Dickinson, MI	.Dickinson County	Michigan	5	2
+Eaton, MI	.Eaton County	Michigan	5	2
+Emmet, MI	.Emmet County	Michigan	5	2
+Genesee, MI	.Genesee County	Michigan	5	2
+Gladwin, MI	.Gladwin County	Michigan	5	3
+Gogebic, MI	.Gogebic County	Michigan	5	2
+Grand Traverse, MI	.Grand Traverse County	Michigan	5	3
+Gratiot, MI	.Gratiot County	Michigan	5	3
+Hillsdale, MI	.Hillsdale County	Michigan	5	1
+Houghton, MI	.Houghton County	Michigan	5	2
+Huron, MI	.Huron County	Michigan	5	3
+Ingham, MI	.Ingham County	Michigan	5	2
+Ionia, MI	.Ionia County	Michigan	5	2
+Iosco, MI	.Iosco County	Michigan	5	3
+Iron, MI	.Iron County	Michigan	5	2
+Isabella, MI	.Isabella County	Michigan	5	3
+Jackson, MI	.Jackson County	Michigan	5	1
+Kalamazoo, MI	.Kalamazoo County	Michigan	5	1
+Kalkaska, MI	.Kalkaska County	Michigan	5	3
+Kent, MI	.Kent County	Michigan	5	2
+Keweenaw, MI	.Keweenaw County	Michigan	5	2
+Lake, MI	.Lake County	Michigan	5	3
+Lapeer, MI	.Lapeer County	Michigan	5	2
+Leelanau, MI	.Leelanau County	Michigan	5	2
+Lenawee, MI	.Lenawee County	Michigan	5	1
+Livingston, MI	.Livingston County	Michigan	5	2
+Luce, MI	.Luce County	Michigan	5	3
+Mackinac, MI	.Mackinac County	Michigan	5	3
+Macomb, MI	.Macomb County	Michigan	5	3
+Manistee, MI	.Manistee County	Michigan	5	3
+Marquette, MI	.Marquette County	Michigan	5	2
+Mason, MI	.Mason County	Michigan	5	3
+Mecosta, MI	.Mecosta County	Michigan	5	3
+Menominee, MI	.Menominee County	Michigan	5	2
+Midland, MI	.Midland County	Michigan	5	3
+Missaukee, MI	.Missaukee County	Michigan	5	3
+Monroe, MI	.Monroe County	Michigan	5	2
+Montcalm, MI	.Montcalm County	Michigan	5	2
+Montmorency, MI	.Montmorency County	Michigan	5	2
+Muskegon, MI	.Muskegon County	Michigan	5	3
+Newaygo, MI	.Newaygo County	Michigan	5	3
+Oakland, MI	.Oakland County	Michigan	5	2
+Oceana, MI	.Oceana County	Michigan	5	3
+Ogemaw, MI	.Ogemaw County	Michigan	5	3
+Ontonagon, MI	.Ontonagon County	Michigan	5	3
+Osceola, MI	.Osceola County	Michigan	5	3
+Oscoda, MI	.Oscoda County	Michigan	5	3
+Otsego, MI	.Otsego County	Michigan	5	2
+Ottawa, MI	.Ottawa County	Michigan	5	3
+Presque Isle, MI	.Presque Isle County	Michigan	5	2
+Roscommon, MI	.Roscommon County	Michigan	5	3
+Saginaw, MI	.Saginaw County	Michigan	5	3
+St. Clair, MI	.St. Clair County	Michigan	5	3
+St. Joseph, MI	.St. Joseph County	Michigan	5	1
+Sanilac, MI	.Sanilac County	Michigan	5	2
+Schoolcraft, MI	.Schoolcraft County	Michigan	5	3
+Shiawassee, MI	.Shiawassee County	Michigan	5	2
+Tuscola, MI	.Tuscola County	Michigan	5	3
+Van Buren, MI	.Van Buren County	Michigan	5	3
+Washtenaw, MI	.Washtenaw County	Michigan	5	1
+Wayne, MI	.Wayne County	Michigan	5	3
+Wexford, MI	.Wexford County	Michigan	5	3
+MINNESOTA	no data	no data	.	.
+Aitkin, MN	.Aitkin County	Minnesota	5	2
+Anoka, MN	.Anoka County	Minnesota	5	2
+Becker, MN	.Becker County	Minnesota	5	1
+Beltrami, MN	.Beltrami County	Minnesota	5	2
+Benton, MN	.Benton County	Minnesota	5	2
+Big Stone, MN	.Big Stone County	Minnesota	5	1
+Blue Earth, MN	.Blue Earth County	Minnesota	5	1
+Brown, MN	.Brown County	Minnesota	5	1
+Carlton, MN	.Carlton County	Minnesota	5	2
+Carver, MN	.Carver County	Minnesota	5	1
+Cass, MN	.Cass County	Minnesota	5	2
+Chippewa, MN	.Chippewa County	Minnesota	5	1
+Chisago, MN	.Chisago County	Minnesota	5	2
+Clay, MN	.Clay County	Minnesota	5	1
+Clearwater, MN	.Clearwater County	Minnesota	5	2
+Cook, MN	.Cook County	Minnesota	5	2
+Cottonwood, MN	.Cottonwood County	Minnesota	5	1
+Crow Wing, MN	.Crow Wing County	Minnesota	5	2
+Dakota, MN	.Dakota County	Minnesota	5	1
+Dodge, MN	.Dodge County	Minnesota	5	1
+Douglas, MN	.Douglas County	Minnesota	5	1
+Faribault, MN	.Faribault County	Minnesota	5	1
+Fillmore, MN	.Fillmore County	Minnesota	5	1
+Freeborn, MN	.Freeborn County	Minnesota	5	1
+Goodhue, MN	.Goodhue County	Minnesota	5	1
+Grant, MN	.Grant County	Minnesota	5	1
+Hennepin, MN	.Hennepin County	Minnesota	5	1
+Houston, MN	.Houston County	Minnesota	5	1
+Hubbard, MN	.Hubbard County	Minnesota	5	1
+Isanti, MN	.Isanti County	Minnesota	5	2
+Itasca, MN	.Itasca County	Minnesota	5	2
+Jackson, MN	.Jackson County	Minnesota	5	1
+Kanabec, MN	.Kanabec County	Minnesota	5	1
+Kandiyohi, MN	.Kandiyohi County	Minnesota	5	1
+Kittson, MN	.Kittson County	Minnesota	5	1
+Koochiching, MN	.Koochiching County	Minnesota	5	2
+Lac qui Parle, MN	.Lac qui Parle County	Minnesota	5	1
+Lake, MN	.Lake County	Minnesota	5	2
+Lake of the Woods, MN	.Lake of the Woods County	Minnesota	5	2
+Le Sueur, MN	.Le Sueur County	Minnesota	5	1
+Lincoln, MN	.Lincoln County	Minnesota	5	1
+Lyon, MN	.Lyon County	Minnesota	5	1
+McLeod, MN	.McLeod County	Minnesota	5	1
+Mahnomen, MN	.Mahnomen County	Minnesota	5	1
+Marshall, MN	.Marshall County	Minnesota	5	1
+Martin, MN	.Martin County	Minnesota	5	1
+Meeker, MN	.Meeker County	Minnesota	5	1
+Mille Lacs, MN	.Mille Lacs County	Minnesota	5	2
+Morrison, MN	.Morrison County	Minnesota	5	2
+Mower, MN	.Mower County	Minnesota	5	1
+Murray, MN	.Murray County	Minnesota	5	1
+Nicollet, MN	.Nicollet County	Minnesota	5	1
+Nobles, MN	.Nobles County	Minnesota	5	1
+Norman, MN	.Norman County	Minnesota	5	1
+Olmsted, MN	.Olmsted County	Minnesota	5	1
+Otter Tail, MN	.Otter Tail County	Minnesota	5	1
+Pennington, MN	.Pennington County	Minnesota	5	1
+Pine, MN	.Pine County	Minnesota	5	2
+Pipestone, MN	.Pipestone County	Minnesota	5	1
+Polk, MN	.Polk County	Minnesota	5	1
+Pope, MN	.Pope County	Minnesota	5	1
+Ramsey, MN	.Ramsey County	Minnesota	5	1
+Red Lake, MN	.Red Lake County	Minnesota	5	1
+Redwood, MN	.Redwood County	Minnesota	5	1
+Renville, MN	.Renville County	Minnesota	5	1
+Rice, MN	.Rice County	Minnesota	5	1
+Rock, MN	.Rock County	Minnesota	5	1
+Roseau, MN	.Roseau County	Minnesota	5	1
+St. Louis, MN	.St. Louis County	Minnesota	5	2
+Scott, MN	.Scott County	Minnesota	5	1
+Sherburne, MN	.Sherburne County	Minnesota	5	1
+Sibley, MN	.Sibley County	Minnesota	5	1
+Stearns, MN	.Stearns County	Minnesota	5	1
+Steele, MN	.Steele County	Minnesota	5	1
+Stevens, MN	.Stevens County	Minnesota	5	1
+Swift, MN	.Swift County	Minnesota	5	1
+Todd, MN	.Todd County	Minnesota	5	1
+Traverse, MN	.Traverse County	Minnesota	5	1
+Wabasha, MN	.Wabasha County	Minnesota	5	1
+Wadena, MN	.Wadena County	Minnesota	5	1
+Waseca, MN	.Waseca County	Minnesota	5	1
+Washington, MN	.Washington County	Minnesota	5	1
+Watonwan, MN	.Watonwan County	Minnesota	5	1
+Wilkin, MN	.Wilkin County	Minnesota	5	1
+Winona, MN	.Winona County	Minnesota	5	1
+Wright, MN	.Wright County	Minnesota	5	1
+Yellow Medicine, MN	.Yellow Medicine County	Minnesota	5	1
+MISSISSIPPI	no data	no data	.	.
+Adams, MS	.Adams County	Mississippi	4	3
+Alcorn, MS	.Alcorn County	Mississippi	4	2
+Amite, MS	.Amite County	Mississippi	4	3
+Attala, MS	.Attala County	Mississippi	4	3
+Benton, MS	.Benton County	Mississippi	4	3
+Bolivar, MS	.Bolivar County	Mississippi	4	3
+Calhoun, MS	.Calhoun County	Mississippi	4	3
+Carroll, MS	.Carroll County	Mississippi	4	3
+Chickasaw, MS	.Chickasaw County	Mississippi	4	2
+Choctaw, MS	.Choctaw County	Mississippi	4	3
+Claiborne, MS	.Claiborne County	Mississippi	4	3
+Clarke, MS	.Clarke County	Mississippi	4	3
+Clay, MS	.Clay County	Mississippi	4	2
+Coahoma, MS	.Coahoma County	Mississippi	4	3
+Copiah, MS	.Copiah County	Mississippi	4	3
+Covington, MS	.Covington County	Mississippi	4	3
+DeSoto, MS	.DeSoto County	Mississippi	4	3
+Forrest, MS	.Forrest County	Mississippi	4	3
+Franklin, MS	.Franklin County	Mississippi	4	3
+George, MS	.George County	Mississippi	4	3
+Greene, MS	.Greene County	Mississippi	4	3
+Grenada, MS	.Grenada County	Mississippi	4	3
+Hancock, MS	.Hancock County	Mississippi	4	3
+Harrison, MS	.Harrison County	Mississippi	4	3
+Hinds, MS	.Hinds County	Mississippi	4	3
+Holmes, MS	.Holmes County	Mississippi	4	3
+Humphreys, MS	.Humphreys County	Mississippi	4	3
+Issaquena, MS	.Issaquena County	Mississippi	4	3
+Itawamba, MS	.Itawamba County	Mississippi	4	3
+Jackson, MS	.Jackson County	Mississippi	4	3
+Jasper, MS	.Jasper County	Mississippi	4	3
+Jefferson, MS	.Jefferson County	Mississippi	4	3
+Jefferson Davis, MS	.Jefferson Davis County	Mississippi	4	3
+Jones, MS	.Jones County	Mississippi	4	3
+Kemper, MS	.Kemper County	Mississippi	4	3
+Lafayette, MS	.Lafayette County	Mississippi	4	3
+Lamar, MS	.Lamar County	Mississippi	4	3
+Lauderdale, MS	.Lauderdale County	Mississippi	4	3
+Lawrence, MS	.Lawrence County	Mississippi	4	3
+Leake, MS	.Leake County	Mississippi	4	3
+Lee, MS	.Lee County	Mississippi	4	2
+Leflore, MS	.Leflore County	Mississippi	4	3
+Lincoln, MS	.Lincoln County	Mississippi	4	3
+Lowndes, MS	.Lowndes County	Mississippi	4	2
+Madison, MS	.Madison County	Mississippi	4	3
+Marion, MS	.Marion County	Mississippi	4	3
+Marshall, MS	.Marshall County	Mississippi	4	3
+Monroe, MS	.Monroe County	Mississippi	4	3
+Montgomery, MS	.Montgomery County	Mississippi	4	3
+Neshoba, MS	.Neshoba County	Mississippi	4	3
+Newton, MS	.Newton County	Mississippi	4	3
+Noxubee, MS	.Noxubee County	Mississippi	4	2
+Oktibbeha, MS	.Oktibbeha County	Mississippi	4	3
+Panola, MS	.Panola County	Mississippi	4	3
+Pearl River, MS	.Pearl River County	Mississippi	4	3
+Perry, MS	.Perry County	Mississippi	4	3
+Pike, MS	.Pike County	Mississippi	4	3
+Pontotoc, MS	.Pontotoc County	Mississippi	4	2
+Prentiss, MS	.Prentiss County	Mississippi	4	3
+Quitman, MS	.Quitman County	Mississippi	4	3
+Rankin, MS	.Rankin County	Mississippi	4	3
+Scott, MS	.Scott County	Mississippi	4	3
+Sharkey, MS	.Sharkey County	Mississippi	4	3
+Simpson, MS	.Simpson County	Mississippi	4	3
+Smith, MS	.Smith County	Mississippi	4	3
+Stone, MS	.Stone County	Mississippi	4	3
+Sunflower, MS	.Sunflower County	Mississippi	4	3
+Tallahatchie, MS	.Tallahatchie County	Mississippi	4	3
+Tate, MS	.Tate County	Mississippi	4	3
+Tippah, MS	.Tippah County	Mississippi	4	3
+Tishomingo, MS	.Tishomingo County	Mississippi	4	3
+Tunica, MS	.Tunica County	Mississippi	4	3
+Union, MS	.Union County	Mississippi	4	2
+Walthall, MS	.Walthall County	Mississippi	4	3
+Warren, MS	.Warren County	Mississippi	4	3
+Washington, MS	.Washington County	Mississippi	4	3
+Wayne, MS	.Wayne County	Mississippi	4	3
+Webster, MS	.Webster County	Mississippi	4	3
+Wilkinson, MS	.Wilkinson County	Mississippi	4	3
+Winston, MS	.Winston County	Mississippi	4	3
+Yalobusha, MS	.Yalobusha County	Mississippi	4	3
+Yazoo, MS	.Yazoo County	Mississippi	4	3
+MISSOURI	no data	no data	.	.
+Adair, MO	.Adair County	Missouri	7	2
+Andrew, MO	.Andrew County	Missouri	7	1
+Atchison, MO	.Atchison County	Missouri	7	1
+Audrain, MO	.Audrain County	Missouri	7	2
+Barry, MO	.Barry County	Missouri	7	2
+Barton, MO	.Barton County	Missouri	7	2
+Bates, MO	.Bates County	Missouri	7	2
+Benton, MO	.Benton County	Missouri	7	2
+Bollinger, MO	.Bollinger County	Missouri	7	2
+Boone, MO	.Boone County	Missouri	7	2
+Buchanan, MO	.Buchanan County	Missouri	7	1
+Butler, MO	.Butler County	Missouri	7	3
+Caldwell, MO	.Caldwell County	Missouri	7	2
+Callaway, MO	.Callaway County	Missouri	7	2
+Camden, MO	.Camden County	Missouri	7	2
+Cape Girardeau, MO	.Cape Girardeau County	Missouri	7	2
+Carroll, MO	.Carroll County	Missouri	7	2
+Carter, MO	.Carter County	Missouri	7	2
+Cass, MO	.Cass County	Missouri	7	1
+Cedar, MO	.Cedar County	Missouri	7	2
+Chariton, MO	.Chariton County	Missouri	7	2
+Christian, MO	.Christian County	Missouri	7	2
+Clark, MO	.Clark County	Missouri	7	2
+Clay, MO	.Clay County	Missouri	7	1
+Clinton, MO	.Clinton County	Missouri	7	1
+Cole, MO	.Cole County	Missouri	7	2
+Cooper, MO	.Cooper County	Missouri	7	2
+Crawford, MO	.Crawford County	Missouri	7	2
+Dade, MO	.Dade County	Missouri	7	2
+Dallas, MO	.Dallas County	Missouri	7	2
+Daviess, MO	.Daviess County	Missouri	7	2
+De Kalb, MO	.DeKalb County	Missouri	7	2
+Dent, MO	.Dent County	Missouri	7	2
+Douglas, MO	.Douglas County	Missouri	7	2
+Dunklin, MO	.Dunklin County	Missouri	7	3
+Franklin, MO	.Franklin County	Missouri	7	2
+Gasconade, MO	.Gasconade County	Missouri	7	2
+Gentry, MO	.Gentry County	Missouri	7	2
+Greene, MO	.Greene County	Missouri	7	2
+Grundy, MO	.Grundy County	Missouri	7	2
+Harrison, MO	.Harrison County	Missouri	7	2
+Henry, MO	.Henry County	Missouri	7	2
+Hickory, MO	.Hickory County	Missouri	7	2
+Holt, MO	.Holt County	Missouri	7	1
+Howard, MO	.Howard County	Missouri	7	2
+Howell, MO	.Howell County	Missouri	7	2
+Iron, MO	.Iron County	Missouri	7	1
+Jackson, MO	.Jackson County	Missouri	7	1
+Jasper, MO	.Jasper County	Missouri	7	2
+Jefferson, MO	.Jefferson County	Missouri	7	2
+Johnson, MO	.Johnson County	Missouri	7	2
+Knox, MO	.Knox County	Missouri	7	2
+Laclede, MO	.Laclede County	Missouri	7	2
+Lafayette, MO	.Lafayette County	Missouri	7	2
+Lawrence, MO	.Lawrence County	Missouri	7	2
+Lewis, MO	.Lewis County	Missouri	7	2
+Lincoln, MO	.Lincoln County	Missouri	7	2
+Linn, MO	.Linn County	Missouri	7	2
+Livingston, MO	.Livingston County	Missouri	7	2
+McDonald, MO	.McDonald County	Missouri	7	2
+Macon, MO	.Macon County	Missouri	7	2
+Madison, MO	.Madison County	Missouri	7	2
+Maries, MO	.Maries County	Missouri	7	2
+Marion, MO	.Marion County	Missouri	7	2
+Mercer, MO	.Mercer County	Missouri	7	2
+Miller, MO	.Miller County	Missouri	7	2
+Mississippi, MO	.Mississippi County	Missouri	7	3
+Moniteau, MO	.Moniteau County	Missouri	7	2
+Monroe, MO	.Monroe County	Missouri	7	2
+Montgomery, MO	.Montgomery County	Missouri	7	2
+Morgan, MO	.Morgan County	Missouri	7	2
+New Madrid, MO	.New Madrid County	Missouri	7	3
+Newton, MO	.Newton County	Missouri	7	2
+Nodaway, MO	.Nodaway County	Missouri	7	1
+Oregon, MO	.Oregon County	Missouri	7	2
+Osage, MO	.Osage County	Missouri	7	2
+Ozark, MO	.Ozark County	Missouri	7	2
+Pemiscot, MO	.Pemiscot County	Missouri	7	3
+Perry, MO	.Perry County	Missouri	7	2
+Pettis, MO	.Pettis County	Missouri	7	2
+Phelps, MO	.Phelps County	Missouri	7	2
+Pike, MO	.Pike County	Missouri	7	2
+Platte, MO	.Platte County	Missouri	7	1
+Polk, MO	.Polk County	Missouri	7	2
+Pulaski, MO	.Pulaski County	Missouri	7	2
+Putnam, MO	.Putnam County	Missouri	7	2
+Ralls, MO	.Ralls County	Missouri	7	2
+Randolph, MO	.Randolph County	Missouri	7	2
+Ray, MO	.Ray County	Missouri	7	2
+Reynolds, MO	.Reynolds County	Missouri	7	2
+Ripley, MO	.Ripley County	Missouri	7	2
+St. Charles, MO	.St. Charles County	Missouri	7	2
+St. Clair, MO	.St. Clair County	Missouri	7	2
+Ste. Genevieve, MO	.Ste. Genevieve County	Missouri	7	2
+St. Francois, MO	.St. Francois County	Missouri	7	2
+St. Louis, MO	.St. Louis County	Missouri	7	2
+Saline, MO	.Saline County	Missouri	7	2
+Schuyler, MO	.Schuyler County	Missouri	7	2
+Scotland, MO	.Scotland County	Missouri	7	2
+Scott, MO	.Scott County	Missouri	7	3
+Shannon, MO	.Shannon County	Missouri	7	2
+Shelby, MO	.Shelby County	Missouri	7	2
+Stoddard, MO	.Stoddard County	Missouri	7	3
+Stone, MO	.Stone County	Missouri	7	2
+Sullivan, MO	.Sullivan County	Missouri	7	2
+Taney, MO	.Taney County	Missouri	7	2
+Texas, MO	.Texas County	Missouri	7	2
+Vernon, MO	.Vernon County	Missouri	7	2
+Warren, MO	.Warren County	Missouri	7	2
+Washington, MO	.Washington County	Missouri	7	2
+Wayne, MO	.Wayne County	Missouri	7	2
+Webster, MO	.Webster County	Missouri	7	2
+Worth, MO	.Worth County	Missouri	7	2
+Wright, MO	.Wright County	Missouri	7	2
+St. Louis city, MO	.St. Louis city	Missouri	7	2
+MONTANA	no data	no data	.	.
+Beaverhead, MT	.Beaverhead County	Montana	8	1
+Big Horn, MT	.Big Horn County	Montana	8	1
+Blaine, MT	.Blaine County	Montana	8	1
+Broadwater, MT	.Broadwater County	Montana	8	1
+Carbon, MT	.Carbon County	Montana	8	1
+Carter, MT	.Carter County	Montana	8	1
+Cascade, MT	.Cascade County	Montana	8	1
+Chouteau, MT	.Chouteau County	Montana	8	1
+Custer, MT	.Custer County	Montana	8	1
+Daniels, MT	.Daniels County	Montana	8	1
+Dawson, MT	.Dawson County	Montana	8	1
+Deer Lodge, MT	.Deer Lodge County	Montana	8	1
+Fallon, MT	.Fallon County	Montana	8	1
+Fergus, MT	.Fergus County	Montana	8	1
+Flathead, MT	.Flathead County	Montana	8	1
+Gallatin, MT	.Gallatin County	Montana	8	1
+Garfield, MT	.Garfield County	Montana	8	1
+Glacier, MT	.Glacier County	Montana	8	1
+Golden Valley, MT	.Golden Valley County	Montana	8	2
+Granite, MT	.Granite County	Montana	8	1
+Hill, MT	.Hill County	Montana	8	1
+Jefferson, MT	.Jefferson County	Montana	8	1
+Judith Basin, MT	.Judith Basin County	Montana	8	1
+Lake, MT	.Lake County	Montana	8	1
+Lewis and Clark, MT	.Lewis and Clark County	Montana	8	1
+Liberty, MT	.Liberty County	Montana	8	1
+Lincoln, MT	.Lincoln County	Montana	8	1
+McCone, MT	.McCone County	Montana	8	1
+Madison, MT	.Madison County	Montana	8	1
+Meagher, MT	.Meagher County	Montana	8	1
+Mineral, MT	.Mineral County	Montana	8	1
+Missoula, MT	.Missoula County	Montana	8	1
+Musselshell, MT	.Musselshell County	Montana	8	2
+Park, MT	.Park County	Montana	8	1
+Petroleum, MT	.Petroleum County	Montana	8	2
+Phillips, MT	.Phillips County	Montana	8	1
+Pondera, MT	.Pondera County	Montana	8	1
+Powder River, MT	.Powder River County	Montana	8	1
+Powell, MT	.Powell County	Montana	8	1
+Prairie, MT	.Prairie County	Montana	8	1
+Ravalli, MT	.Ravalli County	Montana	8	1
+Richland, MT	.Richland County	Montana	8	1
+Roosevelt, MT	.Roosevelt County	Montana	8	1
+Rosebud, MT	.Rosebud County	Montana	8	1
+Sanders, MT	.Sanders County	Montana	8	1
+Sheridan, MT	.Sheridan County	Montana	8	1
+Silver Bow, MT	.Silver Bow County	Montana	8	1
+Stillwater, MT	.Stillwater County	Montana	8	1
+Sweet Grass, MT	.Sweet Grass County	Montana	8	2
+Teton, MT	.Teton County	Montana	8	1
+Toole, MT	.Toole County	Montana	8	1
+Treasure, MT	.Treasure County	Montana	8	2
+Valley, MT	.Valley County	Montana	8	1
+Wheatland, MT	.Wheatland County	Montana	8	2
+Wibaux, MT	.Wibaux County	Montana	8	1
+Yellowstone, MT	.Yellowstone County	Montana	8	2
+Yellowstone National Park, MT	Yellowstone National Park, MT	Montana	8	1
+NEBRASKA	no data	no data	.	.
+Adams, NE	.Adams County	Nebraska	7	1
+Antelope, NE	.Antelope County	Nebraska	7	2
+Arthur, NE	.Arthur County	Nebraska	7	3
+Banner, NE	.Banner County	Nebraska	7	2
+Blaine, NE	.Blaine County	Nebraska	7	3
+Boone, NE	.Boone County	Nebraska	7	1
+Box Butte, NE	.Box Butte County	Nebraska	7	2
+Boyd, NE	.Boyd County	Nebraska	7	1
+Brown, NE	.Brown County	Nebraska	7	3
+Buffalo, NE	.Buffalo County	Nebraska	7	2
+Burt, NE	.Burt County	Nebraska	7	1
+Butler, NE	.Butler County	Nebraska	7	1
+Cass, NE	.Cass County	Nebraska	7	1
+Cedar, NE	.Cedar County	Nebraska	7	1
+Chase, NE	.Chase County	Nebraska	7	2
+Cherry, NE	.Cherry County	Nebraska	7	3
+Cheyenne, NE	.Cheyenne County	Nebraska	7	2
+Clay, NE	.Clay County	Nebraska	7	1
+Colfax, NE	.Colfax County	Nebraska	7	1
+Cuming, NE	.Cuming County	Nebraska	7	1
+Custer, NE	.Custer County	Nebraska	7	2
+Dakota, NE	.Dakota County	Nebraska	7	1
+Dawes, NE	.Dawes County	Nebraska	7	2
+Dawson, NE	.Dawson County	Nebraska	7	2
+Deuel, NE	.Deuel County	Nebraska	7	2
+Dixon, NE	.Dixon County	Nebraska	7	1
+Dodge, NE	.Dodge County	Nebraska	7	1
+Douglas, NE	.Douglas County	Nebraska	7	1
+Dundy, NE	.Dundy County	Nebraska	7	2
+Fillmore, NE	.Fillmore County	Nebraska	7	1
+Franklin, NE	.Franklin County	Nebraska	7	1
+Frontier, NE	.Frontier County	Nebraska	7	1
+Furnas, NE	.Furnas County	Nebraska	7	1
+Gage, NE	.Gage County	Nebraska	7	1
+Garden, NE	.Garden County	Nebraska	7	3
+Garfield, NE	.Garfield County	Nebraska	7	3
+Gosper, NE	.Gosper County	Nebraska	7	1
+Grant, NE	.Grant County	Nebraska	7	3
+Greeley, NE	.Greeley County	Nebraska	7	1
+Hall, NE	.Hall County	Nebraska	7	2
+Hamilton, NE	.Hamilton County	Nebraska	7	1
+Harlan, NE	.Harlan County	Nebraska	7	1
+Hayes, NE	.Hayes County	Nebraska	7	1
+Hitchcock, NE	.Hitchcock County	Nebraska	7	1
+Holt, NE	.Holt County	Nebraska	7	3
+Hooker, NE	.Hooker County	Nebraska	7	3
+Howard, NE	.Howard County	Nebraska	7	2
+Jefferson, NE	.Jefferson County	Nebraska	7	1
+Johnson, NE	.Johnson County	Nebraska	7	1
+Kearney, NE	.Kearney County	Nebraska	7	1
+Keith, NE	.Keith County	Nebraska	7	2
+Keya Paha, NE	.Keya Paha County	Nebraska	7	2
+Kimball, NE	.Kimball County	Nebraska	7	2
+Knox, NE	.Knox County	Nebraska	7	1
+Lancaster, NE	.Lancaster County	Nebraska	7	1
+Lincoln, NE	.Lincoln County	Nebraska	7	3
+Logan, NE	.Logan County	Nebraska	7	3
+Loup, NE	.Loup County	Nebraska	7	3
+McPherson, NE	.McPherson County	Nebraska	7	3
+Madison, NE	.Madison County	Nebraska	7	1
+Merrick, NE	.Merrick County	Nebraska	7	2
+Morrill, NE	.Morrill County	Nebraska	7	2
+Nance, NE	.Nance County	Nebraska	7	1
+Nemaha, NE	.Nemaha County	Nebraska	7	1
+Nuckolls, NE	.Nuckolls County	Nebraska	7	1
+Otoe, NE	.Otoe County	Nebraska	7	1
+Pawnee, NE	.Pawnee County	Nebraska	7	1
+Perkins, NE	.Perkins County	Nebraska	7	2
+Phelps, NE	.Phelps County	Nebraska	7	1
+Pierce, NE	.Pierce County	Nebraska	7	1
+Platte, NE	.Platte County	Nebraska	7	1
+Polk, NE	.Polk County	Nebraska	7	1
+Red Willow, NE	.Red Willow County	Nebraska	7	1
+Richardson, NE	.Richardson County	Nebraska	7	1
+Rock, NE	.Rock County	Nebraska	7	3
+Saline, NE	.Saline County	Nebraska	7	1
+Sarpy, NE	.Sarpy County	Nebraska	7	1
+Saunders, NE	.Saunders County	Nebraska	7	1
+Scotts Bluff, NE	.Scotts Bluff County	Nebraska	7	2
+Seward, NE	.Seward County	Nebraska	7	1
+Sheridan, NE	.Sheridan County	Nebraska	7	2
+Sherman, NE	.Sherman County	Nebraska	7	2
+Sioux, NE	.Sioux County	Nebraska	7	2
+Stanton, NE	.Stanton County	Nebraska	7	1
+Thayer, NE	.Thayer County	Nebraska	7	1
+Thomas, NE	.Thomas County	Nebraska	7	3
+Thurston, NE	.Thurston County	Nebraska	7	1
+Valley, NE	.Valley County	Nebraska	7	2
+Washington, NE	.Washington County	Nebraska	7	1
+Wayne, NE	.Wayne County	Nebraska	7	1
+Webster, NE	.Webster County	Nebraska	7	1
+Wheeler, NE	.Wheeler County	Nebraska	7	3
+York, NE	.York County	Nebraska	7	1
+NEVADA	no data	no data	.	.
+Churchill, NV	.Churchill County	Nevada	9	2
+Clark, NV	.Clark County	Nevada	9	3
+Douglas, NV	.Douglas County	Nevada	9	1
+Elko, NV	.Elko County	Nevada	9	2
+Esmeralda, NV	.Esmeralda County	Nevada	9	2
+Eureka, NV	.Eureka County	Nevada	9	1
+Humboldt, NV	.Humboldt County	Nevada	9	2
+Lander, NV	.Lander County	Nevada	9	1
+Lincoln, NV	.Lincoln County	Nevada	9	1
+Lyon, NV	.Lyon County	Nevada	9	1
+Mineral, NV	.Mineral County	Nevada	9	1
+Nye, NV	.Nye County	Nevada	9	2
+Pershing, NV	.Pershing County	Nevada	9	1
+Storey, NV	.Storey County	Nevada	9	2
+Washoe, NV	.Washoe County	Nevada	9	2
+White Pine, NV	.White Pine County	Nevada	9	1
+Carson City city, NV	.Carson City	Nevada	9	1
+NEW HAMPSHIRE	no data	no data	.	.
+Belknap, NH	.Belknap County	New Hampshire	1	2
+Carroll, NH	.Carroll County	New Hampshire	1	1
+Cheshire, NH	.Cheshire County	New Hampshire	1	2
+Coos, NH	.Coos County	New Hampshire	1	2
+Grafton, NH	.Grafton County	New Hampshire	1	2
+Hillsborough, NH	.Hillsborough County	New Hampshire	1	2
+Merrimack, NH	.Merrimack County	New Hampshire	1	2
+Rockingham, NH	.Rockingham County	New Hampshire	1	2
+Strafford, NH	.Strafford County	New Hampshire	1	2
+Sullivan, NH	.Sullivan County	New Hampshire	1	2
+NEW JERSEY	no data	no data	.	.
+Atlantic, NJ	.Atlantic County	New Jersey	2	3
+Bergen, NJ	.Bergen County	New Jersey	2	2
+Burlington, NJ	.Burlington County	New Jersey	2	2
+Camden, NJ	.Camden County	New Jersey	2	2
+Cape May, NJ	.Cape May County	New Jersey	2	3
+Cumberland, NJ	.Cumberland County	New Jersey	2	2
+Essex, NJ	.Essex County	New Jersey	2	2
+Gloucester, NJ	.Gloucester County	New Jersey	2	2
+Hudson, NJ	.Hudson County	New Jersey	2	2
+Hunterdon, NJ	.Hunterdon County	New Jersey	2	1
+Mercer, NJ	.Mercer County	New Jersey	2	1
+Middlesex, NJ	.Middlesex County	New Jersey	2	2
+Monmouth, NJ	.Monmouth County	New Jersey	2	1
+Morris, NJ	.Morris County	New Jersey	2	1
+Ocean, NJ	.Ocean County	New Jersey	2	3
+Passaic, NJ	.Passaic County	New Jersey	2	2
+Salem, NJ	.Salem County	New Jersey	2	2
+Somerset, NJ	.Somerset County	New Jersey	2	1
+Sussex, NJ	.Sussex County	New Jersey	2	1
+Union, NJ	.Union County	New Jersey	2	2
+Warren, NJ	.Warren County	New Jersey	2	1
+NEW MEXICO	no data	no data	.	.
+Bernalillo, NM	.Bernalillo County	New Mexico	6	1
+Catron, NM	.Catron County	New Mexico	6	2
+Chaves, NM	.Chaves County	New Mexico	6	2
+Cibola, NM	.Cibola County	New Mexico	6	2
+Colfax, NM	.Colfax County	New Mexico	6	1
+Curry, NM	.Curry County	New Mexico	6	2
+De Baca, NM	.De Baca County	New Mexico	6	2
+Dona Ana, NM	.Dona Ana County	New Mexico	6	2
+Eddy, NM	.Eddy County	New Mexico	6	2
+Grant, NM	.Grant County	New Mexico	6	2
+Guadalupe, NM	.Guadalupe County	New Mexico	6	2
+Harding, NM	.Harding County	New Mexico	6	2
+Hidalgo, NM	.Hidalgo County	New Mexico	6	2
+Lea, NM	.Lea County	New Mexico	6	2
+Lincoln, NM	.Lincoln County	New Mexico	6	2
+Los Alamos, NM	.Los Alamos County	New Mexico	6	2
+Luna, NM	.Luna County	New Mexico	6	2
+McKinley, NM	.McKinley County	New Mexico	6	2
+Mora, NM	.Mora County	New Mexico	6	1
+Otero, NM	.Otero County	New Mexico	6	2
+Quay, NM	.Quay County	New Mexico	6	2
+Rio Arriba, NM	.Rio Arriba County	New Mexico	6	1
+Roosevelt, NM	.Roosevelt County	New Mexico	6	2
+Sandoval, NM	.Sandoval County	New Mexico	6	2
+San Juan, NM	.San Juan County	New Mexico	6	2
+San Miguel, NM	.San Miguel County	New Mexico	6	1
+Santa Fe, NM	.Santa Fe County	New Mexico	6	1
+Sierra, NM	.Sierra County	New Mexico	6	2
+Socorro, NM	.Socorro County	New Mexico	6	2
+Taos, NM	.Taos County	New Mexico	6	1
+Torrance, NM	.Torrance County	New Mexico	6	2
+Union, NM	.Union County	New Mexico	6	2
+Valencia, NM	.Valencia County	New Mexico	6	2
+NEW YORK	no data	no data	.	.
+Albany, NY	.Albany County	New York	2	1
+Allegany, NY	.Allegany County	New York	2	1
+Bronx, NY	.Bronx County	New York	2	3
+Broome, NY	.Broome County	New York	2	1
+Cattaraugus, NY	.Cattaraugus County	New York	2	1
+Cayuga, NY	.Cayuga County	New York	2	1
+Chautauqua, NY	.Chautauqua County	New York	2	1
+Chemung, NY	.Chemung County	New York	2	1
+Chenango, NY	.Chenango County	New York	2	1
+Clinton, NY	.Clinton County	New York	2	2
+Columbia, NY	.Columbia County	New York	2	1
+Cortland, NY	.Cortland County	New York	2	1
+Delaware, NY	.Delaware County	New York	2	1
+Dutchess, NY	.Dutchess County	New York	2	1
+Erie, NY	.Erie County	New York	2	1
+Essex, NY	.Essex County	New York	2	3
+Franklin, NY	.Franklin County	New York	2	3
+Fulton, NY	.Fulton County	New York	2	3
+Genesee, NY	.Genesee County	New York	2	1
+Greene, NY	.Greene County	New York	2	1
+Hamilton, NY	.Hamilton County	New York	2	3
+Herkimer, NY	.Herkimer County	New York	2	3
+Jefferson, NY	.Jefferson County	New York	2	2
+Kings, NY	.Kings County	New York	2	3
+Lewis, NY	.Lewis County	New York	2	2
+Livingston, NY	.Livingston County	New York	2	1
+Madison, NY	.Madison County	New York	2	1
+Monroe, NY	.Monroe County	New York	2	2
+Montgomery, NY	.Montgomery County	New York	2	2
+Nassau, NY	.Nassau County	New York	2	3
+New York, NY	.New York County	New York	2	3
+Niagara, NY	.Niagara County	New York	2	2
+Oneida, NY	.Oneida County	New York	2	2
+Onondaga, NY	.Onondaga County	New York	2	1
+Ontario, NY	.Ontario County	New York	2	1
+Orange, NY	.Orange County	New York	2	1
+Orleans, NY	.Orleans County	New York	2	2
+Oswego, NY	.Oswego County	New York	2	2
+Otsego, NY	.Otsego County	New York	2	1
+Putnam, NY	.Putnam County	New York	2	1
+Queens, NY	.Queens County	New York	2	3
+Rensselaer, NY	.Rensselaer County	New York	2	1
+Richmond, NY	.Richmond County	New York	2	3
+Rockland, NY	.Rockland County	New York	2	3
+St. Lawrence, NY	.St. Lawrence County	New York	2	2
+Saratoga, NY	.Saratoga County	New York	2	2
+Schenectady, NY	.Schenectady County	New York	2	2
+Schoharie, NY	.Schoharie County	New York	2	1
+Schuyler, NY	.Schuyler County	New York	2	1
+Seneca, NY	.Seneca County	New York	2	1
+Steuben, NY	.Steuben County	New York	2	1
+Suffolk, NY	.Suffolk County	New York	2	3
+Sullivan, NY	.Sullivan County	New York	2	1
+Tioga, NY	.Tioga County	New York	2	1
+Tompkins, NY	.Tompkins County	New York	2	1
+Ulster, NY	.Ulster County	New York	2	1
+Warren, NY	.Warren County	New York	2	3
+Washington, NY	.Washington County	New York	2	1
+Wayne, NY	.Wayne County	New York	2	2
+Westchester, NY	.Westchester County	New York	2	3
+Wyoming, NY	.Wyoming County	New York	2	1
+Yates, NY	.Yates County	New York	2	1
+NORTH CAROLINA	no data	no data	.	.
+Alamance, NC	.Alamance County	North Carolina	4	3
+Alexander, NC	.Alexander County	North Carolina	4	2
+Alleghany, NC	.Alleghany County	North Carolina	4	1
+Anson, NC	.Anson County	North Carolina	4	3
+Ashe, NC	.Ashe County	North Carolina	4	2
+Avery, NC	.Avery County	North Carolina	4	2
+Beaufort, NC	.Beaufort County	North Carolina	4	3
+Bertie, NC	.Bertie County	North Carolina	4	3
+Bladen, NC	.Bladen County	North Carolina	4	3
+Brunswick, NC	.Brunswick County	North Carolina	4	3
+Buncombe, NC	.Buncombe County	North Carolina	4	1
+Burke, NC	.Burke County	North Carolina	4	2
+Cabarrus, NC	.Cabarrus County	North Carolina	4	3
+Caldwell, NC	.Caldwell County	North Carolina	4	2
+Camden, NC	.Camden County	North Carolina	4	3
+Carteret, NC	.Carteret County	North Carolina	4	3
+Caswell, NC	.Caswell County	North Carolina	4	2
+Catawba, NC	.Catawba County	North Carolina	4	2
+Chatham, NC	.Chatham County	North Carolina	4	3
+Cherokee, NC	.Cherokee County	North Carolina	4	1
+Chowan, NC	.Chowan County	North Carolina	4	3
+Clay, NC	.Clay County	North Carolina	4	2
+Cleveland, NC	.Cleveland County	North Carolina	4	2
+Columbus, NC	.Columbus County	North Carolina	4	3
+Craven, NC	.Craven County	North Carolina	4	3
+Cumberland, NC	.Cumberland County	North Carolina	4	3
+Currituck, NC	.Currituck County	North Carolina	4	3
+Dare, NC	.Dare County	North Carolina	4	3
+Davidson, NC	.Davidson County	North Carolina	4	3
+Davie, NC	.Davie County	North Carolina	4	3
+Duplin, NC	.Duplin County	North Carolina	4	3
+Durham, NC	.Durham County	North Carolina	4	3
+Edgecombe, NC	.Edgecombe County	North Carolina	4	3
+Forsyth, NC	.Forsyth County	North Carolina	4	2
+Franklin, NC	.Franklin County	North Carolina	4	2
+Gaston, NC	.Gaston County	North Carolina	4	2
+Gates, NC	.Gates County	North Carolina	4	3
+Graham, NC	.Graham County	North Carolina	4	2
+Granville, NC	.Granville County	North Carolina	4	3
+Greene, NC	.Greene County	North Carolina	4	3
+Guilford, NC	.Guilford County	North Carolina	4	3
+Halifax, NC	.Halifax County	North Carolina	4	3
+Harnett, NC	.Harnett County	North Carolina	4	3
+Haywood, NC	.Haywood County	North Carolina	4	2
+Henderson, NC	.Henderson County	North Carolina	4	1
+Hertford, NC	.Hertford County	North Carolina	4	3
+Hoke, NC	.Hoke County	North Carolina	4	3
+Hyde, NC	.Hyde County	North Carolina	4	3
+Iredell, NC	.Iredell County	North Carolina	4	2
+Jackson, NC	.Jackson County	North Carolina	4	2
+Johnston, NC	.Johnston County	North Carolina	4	3
+Jones, NC	.Jones County	North Carolina	4	3
+Lee, NC	.Lee County	North Carolina	4	3
+Lenoir, NC	.Lenoir County	North Carolina	4	3
+Lincoln, NC	.Lincoln County	North Carolina	4	2
+McDowell, NC	.McDowell County	North Carolina	4	2
+Macon, NC	.Macon County	North Carolina	4	2
+Madison, NC	.Madison County	North Carolina	4	2
+Martin, NC	.Martin County	North Carolina	4	3
+Mecklenburg, NC	.Mecklenburg County	North Carolina	4	3
+Mitchell, NC	.Mitchell County	North Carolina	4	1
+Montgomery, NC	.Montgomery County	North Carolina	4	3
+Moore, NC	.Moore County	North Carolina	4	3
+Nash, NC	.Nash County	North Carolina	4	3
+New Hanover, NC	.New Hanover County	North Carolina	4	3
+Northampton, NC	.Northampton County	North Carolina	4	3
+Onslow, NC	.Onslow County	North Carolina	4	3
+Orange, NC	.Orange County	North Carolina	4	3
+Pamlico, NC	.Pamlico County	North Carolina	4	3
+Pasquotank, NC	.Pasquotank County	North Carolina	4	3
+Pender, NC	.Pender County	North Carolina	4	3
+Perquimans, NC	.Perquimans County	North Carolina	4	3
+Person, NC	.Person County	North Carolina	4	3
+Pitt, NC	.Pitt County	North Carolina	4	3
+Polk, NC	.Polk County	North Carolina	4	2
+Randolph, NC	.Randolph County	North Carolina	4	3
+Richmond, NC	.Richmond County	North Carolina	4	3
+Robeson, NC	.Robeson County	North Carolina	4	3
+Rockingham, NC	.Rockingham County	North Carolina	4	1
+Rowan, NC	.Rowan County	North Carolina	4	3
+Rutherford, NC	.Rutherford County	North Carolina	4	2
+Sampson, NC	.Sampson County	North Carolina	4	3
+Scotland, NC	.Scotland County	North Carolina	4	3
+Stanly, NC	.Stanly County	North Carolina	4	3
+Stokes, NC	.Stokes County	North Carolina	4	2
+Surry, NC	.Surry County	North Carolina	4	2
+Swain, NC	.Swain County	North Carolina	4	2
+Transylvania, NC	.Transylvania County	North Carolina	4	1
+Tyrrell, NC	.Tyrrell County	North Carolina	4	3
+Union, NC	.Union County	North Carolina	4	3
+Vance, NC	.Vance County	North Carolina	4	2
+Wake, NC	.Wake County	North Carolina	4	2
+Warren, NC	.Warren County	North Carolina	4	2
+Washington, NC	.Washington County	North Carolina	4	3
+Watauga, NC	.Watauga County	North Carolina	4	1
+Wayne, NC	.Wayne County	North Carolina	4	3
+Wilkes, NC	.Wilkes County	North Carolina	4	2
+Wilson, NC	.Wilson County	North Carolina	4	3
+Yadkin, NC	.Yadkin County	North Carolina	4	2
+Yancey, NC	.Yancey County	North Carolina	4	2
+NORTH DAKOTA	no data	no data	.	.
+Adams, ND	.Adams County	North Dakota	8	1
+Barnes, ND	.Barnes County	North Dakota	8	1
+Benson, ND	.Benson County	North Dakota	8	1
+Billings, ND	.Billings County	North Dakota	8	1
+Bottineau, ND	.Bottineau County	North Dakota	8	1
+Bowman, ND	.Bowman County	North Dakota	8	1
+Burke, ND	.Burke County	North Dakota	8	1
+Burleigh, ND	.Burleigh County	North Dakota	8	1
+Cass, ND	.Cass County	North Dakota	8	1
+Cavalier, ND	.Cavalier County	North Dakota	8	1
+Dickey, ND	.Dickey County	North Dakota	8	1
+Divide, ND	.Divide County	North Dakota	8	1
+Dunn, ND	.Dunn County	North Dakota	8	1
+Eddy, ND	.Eddy County	North Dakota	8	1
+Emmons, ND	.Emmons County	North Dakota	8	1
+Foster, ND	.Foster County	North Dakota	8	1
+Golden Valley, ND	.Golden Valley County	North Dakota	8	1
+Grand Forks, ND	.Grand Forks County	North Dakota	8	1
+Grant, ND	.Grant County	North Dakota	8	1
+Griggs, ND	.Griggs County	North Dakota	8	1
+Hettinger, ND	.Hettinger County	North Dakota	8	1
+Kidder, ND	.Kidder County	North Dakota	8	1
+La Moure, ND	.LaMoure County	North Dakota	8	1
+Logan, ND	.Logan County	North Dakota	8	1
+McHenry, ND	.McHenry County	North Dakota	8	1
+McIntosh, ND	.McIntosh County	North Dakota	8	1
+McKenzie, ND	.McKenzie County	North Dakota	8	1
+McLean, ND	.McLean County	North Dakota	8	1
+Mercer, ND	.Mercer County	North Dakota	8	1
+Morton, ND	.Morton County	North Dakota	8	1
+Mountrail, ND	.Mountrail County	North Dakota	8	1
+Nelson, ND	.Nelson County	North Dakota	8	1
+Oliver, ND	.Oliver County	North Dakota	8	1
+Pembina, ND	.Pembina County	North Dakota	8	1
+Pierce, ND	.Pierce County	North Dakota	8	1
+Ramsey, ND	.Ramsey County	North Dakota	8	1
+Ransom, ND	.Ransom County	North Dakota	8	1
+Renville, ND	.Renville County	North Dakota	8	1
+Richland, ND	.Richland County	North Dakota	8	1
+Rolette, ND	.Rolette County	North Dakota	8	1
+Sargent, ND	.Sargent County	North Dakota	8	1
+Sheridan, ND	.Sheridan County	North Dakota	8	1
+Sioux, ND	.Sioux County	North Dakota	8	1
+Slope, ND	.Slope County	North Dakota	8	1
+Stark, ND	.Stark County	North Dakota	8	1
+Steele, ND	.Steele County	North Dakota	8	1
+Stutsman, ND	.Stutsman County	North Dakota	8	1
+Towner, ND	.Towner County	North Dakota	8	1
+Traill, ND	.Traill County	North Dakota	8	1
+Walsh, ND	.Walsh County	North Dakota	8	1
+Ward, ND	.Ward County	North Dakota	8	1
+Wells, ND	.Wells County	North Dakota	8	1
+Williams, ND	.Williams County	North Dakota	8	1
+OHIO	no data	no data	.	.
+Adams, OH	.Adams County	Ohio	5	1
+Allen, OH	.Allen County	Ohio	5	1
+Ashland, OH	.Ashland County	Ohio	5	1
+Ashtabula, OH	.Ashtabula County	Ohio	5	2
+Athens, OH	.Athens County	Ohio	5	2
+Auglaize, OH	.Auglaize County	Ohio	5	1
+Belmont, OH	.Belmont County	Ohio	5	1
+Brown, OH	.Brown County	Ohio	5	2
+Butler, OH	.Butler County	Ohio	5	1
+Carroll, OH	.Carroll County	Ohio	5	1
+Champaign, OH	.Champaign County	Ohio	5	1
+Clark, OH	.Clark County	Ohio	5	1
+Clermont, OH	.Clermont County	Ohio	5	2
+Clinton, OH	.Clinton County	Ohio	5	1
+Columbiana, OH	.Columbiana County	Ohio	5	1
+Coshocton, OH	.Coshocton County	Ohio	5	1
+Crawford, OH	.Crawford County	Ohio	5	1
+Cuyahoga, OH	.Cuyahoga County	Ohio	5	2
+Darke, OH	.Darke County	Ohio	5	1
+Defiance, OH	.Defiance County	Ohio	5	2
+Delaware, OH	.Delaware County	Ohio	5	1
+Erie, OH	.Erie County	Ohio	5	2
+Fairfield, OH	.Fairfield County	Ohio	5	1
+Fayette, OH	.Fayette County	Ohio	5	1
+Franklin, OH	.Franklin County	Ohio	5	1
+Fulton, OH	.Fulton County	Ohio	5	2
+Gallia, OH	.Gallia County	Ohio	5	2
+Geauga, OH	.Geauga County	Ohio	5	2
+Greene, OH	.Greene County	Ohio	5	1
+Guernsey, OH	.Guernsey County	Ohio	5	1
+Hamilton, OH	.Hamilton County	Ohio	5	1
+Hancock, OH	.Hancock County	Ohio	5	1
+Hardin, OH	.Hardin County	Ohio	5	1
+Harrison, OH	.Harrison County	Ohio	5	1
+Henry, OH	.Henry County	Ohio	5	2
+Highland, OH	.Highland County	Ohio	5	2
+Hocking, OH	.Hocking County	Ohio	5	2
+Holmes, OH	.Holmes County	Ohio	5	1
+Huron, OH	.Huron County	Ohio	5	1
+Jackson, OH	.Jackson County	Ohio	5	2
+Jefferson, OH	.Jefferson County	Ohio	5	1
+Knox, OH	.Knox County	Ohio	5	1
+Lake, OH	.Lake County	Ohio	5	2
+Lawrence, OH	.Lawrence County	Ohio	5	2
+Licking, OH	.Licking County	Ohio	5	1
+Logan, OH	.Logan County	Ohio	5	1
+Lorain, OH	.Lorain County	Ohio	5	2
+Lucas, OH	.Lucas County	Ohio	5	2
+Madison, OH	.Madison County	Ohio	5	1
+Mahoning, OH	.Mahoning County	Ohio	5	2
+Marion, OH	.Marion County	Ohio	5	1
+Medina, OH	.Medina County	Ohio	5	2
+Meigs, OH	.Meigs County	Ohio	5	2
+Mercer, OH	.Mercer County	Ohio	5	1
+Miami, OH	.Miami County	Ohio	5	1
+Monroe, OH	.Monroe County	Ohio	5	2
+Montgomery, OH	.Montgomery County	Ohio	5	1
+Morgan, OH	.Morgan County	Ohio	5	2
+Morrow, OH	.Morrow County	Ohio	5	1
+Muskingum, OH	.Muskingum County	Ohio	5	1
+Noble, OH	.Noble County	Ohio	5	2
+Ottawa, OH	.Ottawa County	Ohio	5	2
+Paulding, OH	.Paulding County	Ohio	5	2
+Perry, OH	.Perry County	Ohio	5	1
+Pickaway, OH	.Pickaway County	Ohio	5	1
+Pike, OH	.Pike County	Ohio	5	1
+Portage, OH	.Portage County	Ohio	5	2
+Preble, OH	.Preble County	Ohio	5	1
+Putnam, OH	.Putnam County	Ohio	5	2
+Richland, OH	.Richland County	Ohio	5	1
+Ross, OH	.Ross County	Ohio	5	1
+Sandusky, OH	.Sandusky County	Ohio	5	2
+Scioto, OH	.Scioto County	Ohio	5	2
+Seneca, OH	.Seneca County	Ohio	5	1
+Shelby, OH	.Shelby County	Ohio	5	1
+Stark, OH	.Stark County	Ohio	5	1
+Summit, OH	.Summit County	Ohio	5	1
+Trumbull, OH	.Trumbull County	Ohio	5	2
+Tuscarawas, OH	.Tuscarawas County	Ohio	5	1
+Union, OH	.Union County	Ohio	5	1
+Van Wert, OH	.Van Wert County	Ohio	5	1
+Vinton, OH	.Vinton County	Ohio	5	2
+Warren, OH	.Warren County	Ohio	5	1
+Washington, OH	.Washington County	Ohio	5	2
+Wayne, OH	.Wayne County	Ohio	5	1
+Williams, OH	.Williams County	Ohio	5	2
+Wood, OH	.Wood County	Ohio	5	2
+Wyandot, OH	.Wyandot County	Ohio	5	1
+OKLAHOMA	no data	no data	.	.
+Adair, OK	.Adair County	Oklahoma	6	2
+Alfalfa, OK	.Alfalfa County	Oklahoma	6	3
+Atoka, OK	.Atoka County	Oklahoma	6	3
+Beaver, OK	.Beaver County	Oklahoma	6	2
+Beckham, OK	.Beckham County	Oklahoma	6	3
+Blaine, OK	.Blaine County	Oklahoma	6	3
+Bryan, OK	.Bryan County	Oklahoma	6	3
+Caddo, OK	.Caddo County	Oklahoma	6	3
+Canadian, OK	.Canadian County	Oklahoma	6	3
+Carter, OK	.Carter County	Oklahoma	6	3
+Cherokee, OK	.Cherokee County	Oklahoma	6	2
+Choctaw, OK	.Choctaw County	Oklahoma	6	3
+Cimarron, OK	.Cimarron County	Oklahoma	6	2
+Cleveland, OK	.Cleveland County	Oklahoma	6	3
+Coal, OK	.Coal County	Oklahoma	6	3
+Comanche, OK	.Comanche County	Oklahoma	6	3
+Cotton, OK	.Cotton County	Oklahoma	6	3
+Craig, OK	.Craig County	Oklahoma	6	3
+Creek, OK	.Creek County	Oklahoma	6	3
+Custer, OK	.Custer County	Oklahoma	6	3
+Delaware, OK	.Delaware County	Oklahoma	6	2
+Dewey, OK	.Dewey County	Oklahoma	6	3
+Ellis, OK	.Ellis County	Oklahoma	6	2
+Garfield, OK	.Garfield County	Oklahoma	6	3
+Garvin, OK	.Garvin County	Oklahoma	6	3
+Grady, OK	.Grady County	Oklahoma	6	3
+Grant, OK	.Grant County	Oklahoma	6	3
+Greer, OK	.Greer County	Oklahoma	6	3
+Harmon, OK	.Harmon County	Oklahoma	6	3
+Harper, OK	.Harper County	Oklahoma	6	3
+Haskell, OK	.Haskell County	Oklahoma	6	3
+Hughes, OK	.Hughes County	Oklahoma	6	3
+Jackson, OK	.Jackson County	Oklahoma	6	3
+Jefferson, OK	.Jefferson County	Oklahoma	6	3
+Johnston, OK	.Johnston County	Oklahoma	6	3
+Kay, OK	.Kay County	Oklahoma	6	3
+Kingfisher, OK	.Kingfisher County	Oklahoma	6	3
+Kiowa, OK	.Kiowa County	Oklahoma	6	3
+Latimer, OK	.Latimer County	Oklahoma	6	3
+Le Flore, OK	.Le Flore County	Oklahoma	6	3
+Lincoln, OK	.Lincoln County	Oklahoma	6	3
+Logan, OK	.Logan County	Oklahoma	6	3
+Love, OK	.Love County	Oklahoma	6	3
+McClain, OK	.McClain County	Oklahoma	6	3
+McCurtain, OK	.McCurtain County	Oklahoma	6	3
+McIntosh, OK	.McIntosh County	Oklahoma	6	3
+Major, OK	.Major County	Oklahoma	6	3
+Marshall, OK	.Marshall County	Oklahoma	6	3
+Mayes, OK	.Mayes County	Oklahoma	6	2
+Murray, OK	.Murray County	Oklahoma	6	3
+Muskogee, OK	.Muskogee County	Oklahoma	6	3
+Noble, OK	.Noble County	Oklahoma	6	3
+Nowata, OK	.Nowata County	Oklahoma	6	3
+Okfuskee, OK	.Okfuskee County	Oklahoma	6	3
+Oklahoma, OK	.Oklahoma County	Oklahoma	6	3
+Okmulgee, OK	.Okmulgee County	Oklahoma	6	3
+Osage, OK	.Osage County	Oklahoma	6	3
+Ottawa, OK	.Ottawa County	Oklahoma	6	3
+Pawnee, OK	.Pawnee County	Oklahoma	6	3
+Payne, OK	.Payne County	Oklahoma	6	3
+Pittsburg, OK	.Pittsburg County	Oklahoma	6	3
+Pontotoc, OK	.Pontotoc County	Oklahoma	6	3
+Pottawatomie, OK	.Pottawatomie County	Oklahoma	6	3
+Pushmataha, OK	.Pushmataha County	Oklahoma	6	3
+Roger Mills, OK	.Roger Mills County	Oklahoma	6	3
+Rogers, OK	.Rogers County	Oklahoma	6	3
+Seminole, OK	.Seminole County	Oklahoma	6	3
+Sequoyah, OK	.Sequoyah County	Oklahoma	6	2
+Stephens, OK	.Stephens County	Oklahoma	6	3
+Texas, OK	.Texas County	Oklahoma	6	2
+Tillman, OK	.Tillman County	Oklahoma	6	3
+Tulsa, OK	.Tulsa County	Oklahoma	6	3
+Wagoner, OK	.Wagoner County	Oklahoma	6	3
+Washington, OK	.Washington County	Oklahoma	6	3
+Washita, OK	.Washita County	Oklahoma	6	3
+Woods, OK	.Woods County	Oklahoma	6	3
+Woodward, OK	.Woodward County	Oklahoma	6	3
+OREGON	no data	no data	.	.
+Baker, OR	.Baker County	Oregon	10	2
+Benton, OR	.Benton County	Oregon	10	3
+Clackamas, OR	.Clackamas County	Oregon	10	3
+Clatsop, OR	.Clatsop County	Oregon	10	2
+Columbia, OR	.Columbia County	Oregon	10	2
+Coos, OR	.Coos County	Oregon	10	3
+Crook, OR	.Crook County	Oregon	10	2
+Curry, OR	.Curry County	Oregon	10	3
+Deschutes, OR	.Deschutes County	Oregon	10	3
+Douglas, OR	.Douglas County	Oregon	10	3
+Gilliam, OR	.Gilliam County	Oregon	10	2
+Grant, OR	.Grant County	Oregon	10	2
+Harney, OR	.Harney County	Oregon	10	2
+Hood River, OR	.Hood River County	Oregon	10	2
+Jackson, OR	.Jackson County	Oregon	10	3
+Jefferson, OR	.Jefferson County	Oregon	10	2
+Josephine, OR	.Josephine County	Oregon	10	3
+Klamath, OR	.Klamath County	Oregon	10	2
+Lake, OR	.Lake County	Oregon	10	2
+Lane, OR	.Lane County	Oregon	10	3
+Lincoln, OR	.Lincoln County	Oregon	10	3
+Linn, OR	.Linn County	Oregon	10	3
+Malheur, OR	.Malheur County	Oregon	10	2
+Marion, OR	.Marion County	Oregon	10	3
+Morrow, OR	.Morrow County	Oregon	10	2
+Multnomah, OR	.Multnomah County	Oregon	10	2
+Polk, OR	.Polk County	Oregon	10	3
+Sherman, OR	.Sherman County	Oregon	10	2
+Tillamook, OR	.Tillamook County	Oregon	10	3
+Umatilla, OR	.Umatilla County	Oregon	10	2
+Union, OR	.Union County	Oregon	10	2
+Wallowa, OR	.Wallowa County	Oregon	10	3
+Wasco, OR	.Wasco County	Oregon	10	2
+Washington, OR	.Washington County	Oregon	10	2
+Wheeler, OR	.Wheeler County	Oregon	10	2
+Yamhill, OR	.Yamhill County	Oregon	10	2
+PENNSYLVANIA	no data	no data	.	.
+Adams, PA	.Adams County	Pennsylvania	3	1
+Allegheny, PA	.Allegheny County	Pennsylvania	3	1
+Armstrong, PA	.Armstrong County	Pennsylvania	3	1
+Beaver, PA	.Beaver County	Pennsylvania	3	1
+Bedford, PA	.Bedford County	Pennsylvania	3	1
+Berks, PA	.Berks County	Pennsylvania	3	1
+Blair, PA	.Blair County	Pennsylvania	3	1
+Bradford, PA	.Bradford County	Pennsylvania	3	1
+Bucks, PA	.Bucks County	Pennsylvania	3	1
+Butler, PA	.Butler County	Pennsylvania	3	1
+Cambria, PA	.Cambria County	Pennsylvania	3	2
+Cameron, PA	.Cameron County	Pennsylvania	3	1
+Carbon, PA	.Carbon County	Pennsylvania	3	1
+Centre, PA	.Centre County	Pennsylvania	3	1
+Chester, PA	.Chester County	Pennsylvania	3	1
+Clarion, PA	.Clarion County	Pennsylvania	3	1
+Clearfield, PA	.Clearfield County	Pennsylvania	3	1
+Clinton, PA	.Clinton County	Pennsylvania	3	1
+Columbia, PA	.Columbia County	Pennsylvania	3	1
+Crawford, PA	.Crawford County	Pennsylvania	3	2
+Cumberland, PA	.Cumberland County	Pennsylvania	3	1
+Dauphin, PA	.Dauphin County	Pennsylvania	3	1
+Delaware, PA	.Delaware County	Pennsylvania	3	1
+Elk, PA	.Elk County	Pennsylvania	3	2
+Erie, PA	.Erie County	Pennsylvania	3	2
+Fayette, PA	.Fayette County	Pennsylvania	3	2
+Forest, PA	.Forest County	Pennsylvania	3	2
+Franklin, PA	.Franklin County	Pennsylvania	3	1
+Fulton, PA	.Fulton County	Pennsylvania	3	1
+Greene, PA	.Greene County	Pennsylvania	3	2
+Huntingdon, PA	.Huntingdon County	Pennsylvania	3	1
+Indiana, PA	.Indiana County	Pennsylvania	3	1
+Jefferson, PA	.Jefferson County	Pennsylvania	3	2
+Juniata, PA	.Juniata County	Pennsylvania	3	1
+Lackawanna, PA	.Lackawanna County	Pennsylvania	3	1
+Lancaster, PA	.Lancaster County	Pennsylvania	3	1
+Lawrence, PA	.Lawrence County	Pennsylvania	3	2
+Lebanon, PA	.Lebanon County	Pennsylvania	3	1
+Lehigh, PA	.Lehigh County	Pennsylvania	3	1
+Luzerne, PA	.Luzerne County	Pennsylvania	3	1
+Lycoming, PA	.Lycoming County	Pennsylvania	3	1
+McKean, PA	.McKean County	Pennsylvania	3	2
+Mercer, PA	.Mercer County	Pennsylvania	3	2
+Mifflin, PA	.Mifflin County	Pennsylvania	3	1
+Monroe, PA	.Monroe County	Pennsylvania	3	1
+Montgomery, PA	.Montgomery County	Pennsylvania	3	1
+Montour, PA	.Montour County	Pennsylvania	3	1
+Northampton, PA	.Northampton County	Pennsylvania	3	1
+Northumberland, PA	.Northumberland County	Pennsylvania	3	1
+Perry, PA	.Perry County	Pennsylvania	3	1
+Philadelphia, PA	.Philadelphia County	Pennsylvania	3	3
+Pike, PA	.Pike County	Pennsylvania	3	2
+Potter, PA	.Potter County	Pennsylvania	3	2
+Schuylkill, PA	.Schuylkill County	Pennsylvania	3	1
+Snyder, PA	.Snyder County	Pennsylvania	3	1
+Somerset, PA	.Somerset County	Pennsylvania	3	2
+Sullivan, PA	.Sullivan County	Pennsylvania	3	1
+Susquehanna, PA	.Susquehanna County	Pennsylvania	3	1
+Tioga, PA	.Tioga County	Pennsylvania	3	1
+Union, PA	.Union County	Pennsylvania	3	1
+Venango, PA	.Venango County	Pennsylvania	3	1
+Warren, PA	.Warren County	Pennsylvania	3	2
+Washington, PA	.Washington County	Pennsylvania	3	2
+Wayne, PA	.Wayne County	Pennsylvania	3	2
+Westmoreland, PA	.Westmoreland County	Pennsylvania	3	1
+Wyoming, PA	.Wyoming County	Pennsylvania	3	1
+York, PA	.York County	Pennsylvania	3	1
+RHODE ISLAND	no data	no data	.	.
+Bristol, RI	.Bristol County	Rhode Island	1	3
+Kent, RI	.Kent County	Rhode Island	1	1
+Newport, RI	.Newport County	Rhode Island	1	2
+Providence, RI	.Providence County	Rhode Island	1	2
+Washington, RI	.Washington County	Rhode Island	1	1
+SOUTH CAROLINA	no data	no data	.	.
+Abbeville, SC	.Abbeville County	South Carolina	4	2
+Aiken, SC	.Aiken County	South Carolina	4	3
+Allendale, SC	.Allendale County	South Carolina	4	3
+Anderson, SC	.Anderson County	South Carolina	4	2
+Bamberg, SC	.Bamberg County	South Carolina	4	3
+Barnwell, SC	.Barnwell County	South Carolina	4	3
+Beaufort, SC	.Beaufort County	South Carolina	4	3
+Berkeley, SC	.Berkeley County	South Carolina	4	3
+Calhoun, SC	.Calhoun County	South Carolina	4	3
+Charleston, SC	.Charleston County	South Carolina	4	3
+Cherokee, SC	.Cherokee County	South Carolina	4	2
+Chester, SC	.Chester County	South Carolina	4	3
+Chesterfield, SC	.Chesterfield County	South Carolina	4	3
+Clarendon, SC	.Clarendon County	South Carolina	4	3
+Colleton, SC	.Colleton County	South Carolina	4	3
+Darlington, SC	.Darlington County	South Carolina	4	3
+Dillon, SC	.Dillon County	South Carolina	4	3
+Dorchester, SC	.Dorchester County	South Carolina	4	3
+Edgefield, SC	.Edgefield County	South Carolina	4	3
+Fairfield, SC	.Fairfield County	South Carolina	4	3
+Florence, SC	.Florence County	South Carolina	4	3
+Georgetown, SC	.Georgetown County	South Carolina	4	3
+Greenville, SC	.Greenville County	South Carolina	4	1
+Greenwood, SC	.Greenwood County	South Carolina	4	3
+Hampton, SC	.Hampton County	South Carolina	4	3
+Horry, SC	.Horry County	South Carolina	4	3
+Jasper, SC	.Jasper County	South Carolina	4	3
+Kershaw, SC	.Kershaw County	South Carolina	4	3
+Lancaster, SC	.Lancaster County	South Carolina	4	3
+Laurens, SC	.Laurens County	South Carolina	4	2
+Lee, SC	.Lee County	South Carolina	4	3
+Lexington, SC	.Lexington County	South Carolina	4	3
+McCormick, SC	.McCormick County	South Carolina	4	3
+Marion, SC	.Marion County	South Carolina	4	3
+Marlboro, SC	.Marlboro County	South Carolina	4	3
+Newberry, SC	.Newberry County	South Carolina	4	3
+Oconee, SC	.Oconee County	South Carolina	4	2
+Orangeburg, SC	.Orangeburg County	South Carolina	4	3
+Pickens, SC	.Pickens County	South Carolina	4	2
+Richland, SC	.Richland County	South Carolina	4	3
+Saluda, SC	.Saluda County	South Carolina	4	3
+Spartanburg, SC	.Spartanburg County	South Carolina	4	2
+Sumter, SC	.Sumter County	South Carolina	4	3
+Union, SC	.Union County	South Carolina	4	3
+Williamsburg, SC	.Williamsburg County	South Carolina	4	3
+York, SC	.York County	South Carolina	4	2
+SOUTH DAKOTA	no data	no data	.	.
+Aurora, SD	.Aurora County	South Dakota	8	1
+Beadle, SD	.Beadle County	South Dakota	8	1
+Bennett, SD	.Bennett County	South Dakota	8	2
+Bon Homme, SD	.Bon Homme County	South Dakota	8	1
+Brookings, SD	.Brookings County	South Dakota	8	1
+Brown, SD	.Brown County	South Dakota	8	1
+Brule, SD	.Brule County	South Dakota	8	1
+Buffalo, SD	.Buffalo County	South Dakota	8	1
+Butte, SD	.Butte County	South Dakota	8	2
+Campbell, SD	.Campbell County	South Dakota	8	1
+Charles Mix, SD	.Charles Mix County	South Dakota	8	1
+Clark, SD	.Clark County	South Dakota	8	1
+Clay, SD	.Clay County	South Dakota	8	1
+Codington, SD	.Codington County	South Dakota	8	1
+Corson, SD	.Corson County	South Dakota	8	1
+Custer, SD	.Custer County	South Dakota	8	2
+Davison, SD	.Davison County	South Dakota	8	1
+Day, SD	.Day County	South Dakota	8	1
+Deuel, SD	.Deuel County	South Dakota	8	1
+Dewey, SD	.Dewey County	South Dakota	8	2
+Douglas, SD	.Douglas County	South Dakota	8	1
+Edmunds, SD	.Edmunds County	South Dakota	8	1
+Fall River, SD	.Fall River County	South Dakota	8	2
+Faulk, SD	.Faulk County	South Dakota	8	1
+Grant, SD	.Grant County	South Dakota	8	1
+Gregory, SD	.Gregory County	South Dakota	8	2
+Haakon, SD	.Haakon County	South Dakota	8	2
+Hamlin, SD	.Hamlin County	South Dakota	8	1
+Hand, SD	.Hand County	South Dakota	8	1
+Hanson, SD	.Hanson County	South Dakota	8	1
+Harding, SD	.Harding County	South Dakota	8	2
+Hughes, SD	.Hughes County	South Dakota	8	1
+Hutchinson, SD	.Hutchinson County	South Dakota	8	1
+Hyde, SD	.Hyde County	South Dakota	8	1
+Jackson, SD	.Jackson County	South Dakota	8	2
+Jerauld, SD	.Jerauld County	South Dakota	8	1
+Jones, SD	.Jones County	South Dakota	8	2
+Kingsbury, SD	.Kingsbury County	South Dakota	8	1
+Lake, SD	.Lake County	South Dakota	8	1
+Lawrence, SD	.Lawrence County	South Dakota	8	2
+Lincoln, SD	.Lincoln County	South Dakota	8	1
+Lyman, SD	.Lyman County	South Dakota	8	1
+McCook, SD	.McCook County	South Dakota	8	1
+McPherson, SD	.McPherson County	South Dakota	8	1
+Marshall, SD	.Marshall County	South Dakota	8	1
+Meade, SD	.Meade County	South Dakota	8	2
+Mellette, SD	.Mellette County	South Dakota	8	2
+Miner, SD	.Miner County	South Dakota	8	1
+Minnehaha, SD	.Minnehaha County	South Dakota	8	1
+Moody, SD	.Moody County	South Dakota	8	1
+Pennington, SD	.Pennington County	South Dakota	8	2
+Perkins, SD	.Perkins County	South Dakota	8	1
+Potter, SD	.Potter County	South Dakota	8	1
+Roberts, SD	.Roberts County	South Dakota	8	1
+Sanborn, SD	.Sanborn County	South Dakota	8	1
+Shannon, SD	.Shannon County	South Dakota	8	2
+Spink, SD	.Spink County	South Dakota	8	1
+Stanley, SD	.Stanley County	South Dakota	8	1
+Sully, SD	.Sully County	South Dakota	8	1
+Todd, SD	.Todd County	South Dakota	8	2
+Tripp, SD	.Tripp County	South Dakota	8	2
+Turner, SD	.Turner County	South Dakota	8	1
+Union, SD	.Union County	South Dakota	8	1
+Walworth, SD	.Walworth County	South Dakota	8	1
+Yankton, SD	.Yankton County	South Dakota	8	1
+Ziebach, SD	.Ziebach County	South Dakota	8	2
+TENNESSEE	no data	no data	.	.
+Anderson, TN	.Anderson County	Tennessee	4	1
+Bedford, TN	.Bedford County	Tennessee	4	1
+Benton, TN	.Benton County	Tennessee	4	2
+Bledsoe, TN	.Bledsoe County	Tennessee	4	3
+Blount, TN	.Blount County	Tennessee	4	1
+Bradley, TN	.Bradley County	Tennessee	4	1
+Campbell, TN	.Campbell County	Tennessee	4	3
+Cannon, TN	.Cannon County	Tennessee	4	2
+Carroll, TN	.Carroll County	Tennessee	4	3
+Carter, TN	.Carter County	Tennessee	4	2
+Cheatham, TN	.Cheatham County	Tennessee	4	2
+Chester, TN	.Chester County	Tennessee	4	2
+Claiborne, TN	.Claiborne County	Tennessee	4	1
+Clay, TN	.Clay County	Tennessee	4	2
+Cocke, TN	.Cocke County	Tennessee	4	2
+Coffee, TN	.Coffee County	Tennessee	4	2
+Crockett, TN	.Crockett County	Tennessee	4	3
+Cumberland, TN	.Cumberland County	Tennessee	4	3
+Davidson, TN	.Davidson County	Tennessee	4	1
+Decatur, TN	.Decatur County	Tennessee	4	2
+DeKalb, TN	.DeKalb County	Tennessee	4	2
+Dickson, TN	.Dickson County	Tennessee	4	2
+Dyer, TN	.Dyer County	Tennessee	4	3
+Fayette, TN	.Fayette County	Tennessee	4	3
+Fentress, TN	.Fentress County	Tennessee	4	2
+Franklin, TN	.Franklin County	Tennessee	4	3
+Gibson, TN	.Gibson County	Tennessee	4	3
+Giles, TN	.Giles County	Tennessee	4	1
+Grainger, TN	.Grainger County	Tennessee	4	1
+Greene, TN	.Greene County	Tennessee	4	1
+Grundy, TN	.Grundy County	Tennessee	4	3
+Hamblen, TN	.Hamblen County	Tennessee	4	1
+Hamilton, TN	.Hamilton County	Tennessee	4	2
+Hancock, TN	.Hancock County	Tennessee	4	1
+Hardeman, TN	.Hardeman County	Tennessee	4	3
+Hardin, TN	.Hardin County	Tennessee	4	2
+Hawkins, TN	.Hawkins County	Tennessee	4	1
+Haywood, TN	.Haywood County	Tennessee	4	3
+Henderson, TN	.Henderson County	Tennessee	4	2
+Henry, TN	.Henry County	Tennessee	4	3
+Hickman, TN	.Hickman County	Tennessee	4	1
+Houston, TN	.Houston County	Tennessee	4	2
+Humphreys, TN	.Humphreys County	Tennessee	4	1
+Jackson, TN	.Jackson County	Tennessee	4	1
+Jefferson, TN	.Jefferson County	Tennessee	4	1
+Johnson, TN	.Johnson County	Tennessee	4	2
+Knox, TN	.Knox County	Tennessee	4	1
+Lake, TN	.Lake County	Tennessee	4	3
+Lauderdale, TN	.Lauderdale County	Tennessee	4	3
+Lawrence, TN	.Lawrence County	Tennessee	4	1
+Lewis, TN	.Lewis County	Tennessee	4	1
+Lincoln, TN	.Lincoln County	Tennessee	4	1
+Loudon, TN	.Loudon County	Tennessee	4	1
+McMinn, TN	.McMinn County	Tennessee	4	1
+McNairy, TN	.McNairy County	Tennessee	4	2
+Macon, TN	.Macon County	Tennessee	4	2
+Madison, TN	.Madison County	Tennessee	4	3
+Marion, TN	.Marion County	Tennessee	4	3
+Marshall, TN	.Marshall County	Tennessee	4	1
+Maury, TN	.Maury County	Tennessee	4	1
+Meigs, TN	.Meigs County	Tennessee	4	1
+Monroe, TN	.Monroe County	Tennessee	4	1
+Montgomery, TN	.Montgomery County	Tennessee	4	2
+Moore, TN	.Moore County	Tennessee	4	1
+Morgan, TN	.Morgan County	Tennessee	4	3
+Obion, TN	.Obion County	Tennessee	4	3
+Overton, TN	.Overton County	Tennessee	4	2
+Perry, TN	.Perry County	Tennessee	4	1
+Pickett, TN	.Pickett County	Tennessee	4	2
+Polk, TN	.Polk County	Tennessee	4	2
+Putnam, TN	.Putnam County	Tennessee	4	2
+Rhea, TN	.Rhea County	Tennessee	4	3
+Roane, TN	.Roane County	Tennessee	4	1
+Robertson, TN	.Robertson County	Tennessee	4	2
+Rutherford, TN	.Rutherford County	Tennessee	4	1
+Scott, TN	.Scott County	Tennessee	4	3
+Sequatchie, TN	.Sequatchie County	Tennessee	4	3
+Sevier, TN	.Sevier County	Tennessee	4	2
+Shelby, TN	.Shelby County	Tennessee	4	3
+Smith, TN	.Smith County	Tennessee	4	1
+Stewart, TN	.Stewart County	Tennessee	4	2
+Sullivan, TN	.Sullivan County	Tennessee	4	1
+Sumner, TN	.Sumner County	Tennessee	4	2
+Tipton, TN	.Tipton County	Tennessee	4	3
+Trousdale, TN	.Trousdale County	Tennessee	4	1
+Unicoi, TN	.Unicoi County	Tennessee	4	2
+Union, TN	.Union County	Tennessee	4	1
+Van Buren, TN	.Van Buren County	Tennessee	4	2
+Warren, TN	.Warren County	Tennessee	4	2
+Washington, TN	.Washington County	Tennessee	4	1
+Wayne, TN	.Wayne County	Tennessee	4	1
+Weakley, TN	.Weakley County	Tennessee	4	3
+White, TN	.White County	Tennessee	4	2
+Williamson, TN	.Williamson County	Tennessee	4	1
+Wilson, TN	.Wilson County	Tennessee	4	1
+TEXAS	no data	no data	.	.
+Anderson, TX	.Anderson County	Texas	6	3
+Andrews, TX	.Andrews County	Texas	6	3
+Angelina, TX	.Angelina County	Texas	6	3
+Aransas, TX	.Aransas County	Texas	6	3
+Archer, TX	.Archer County	Texas	6	3
+Armstrong, TX	.Armstrong County	Texas	6	2
+Atascosa, TX	.Atascosa County	Texas	6	3
+Austin, TX	.Austin County	Texas	6	3
+Bailey, TX	.Bailey County	Texas	6	2
+Bandera, TX	.Bandera County	Texas	6	3
+Bastrop, TX	.Bastrop County	Texas	6	3
+Baylor, TX	.Baylor County	Texas	6	3
+Bee, TX	.Bee County	Texas	6	3
+Bell, TX	.Bell County	Texas	6	3
+Bexar, TX	.Bexar County	Texas	6	3
+Blanco, TX	.Blanco County	Texas	6	3
+Borden, TX	.Borden County	Texas	6	3
+Bosque, TX	.Bosque County	Texas	6	3
+Bowie, TX	.Bowie County	Texas	6	3
+Brazoria, TX	.Brazoria County	Texas	6	3
+Brazos, TX	.Brazos County	Texas	6	3
+Brewster, TX	.Brewster County	Texas	6	2
+Briscoe, TX	.Briscoe County	Texas	6	3
+Brooks, TX	.Brooks County	Texas	6	3
+Brown, TX	.Brown County	Texas	6	3
+Burleson, TX	.Burleson County	Texas	6	3
+Burnet, TX	.Burnet County	Texas	6	3
+Caldwell, TX	.Caldwell County	Texas	6	3
+Calhoun, TX	.Calhoun County	Texas	6	3
+Callahan, TX	.Callahan County	Texas	6	3
+Cameron, TX	.Cameron County	Texas	6	3
+Camp, TX	.Camp County	Texas	6	3
+Carson, TX	.Carson County	Texas	6	2
+Cass, TX	.Cass County	Texas	6	3
+Castro, TX	.Castro County	Texas	6	2
+Chambers, TX	.Chambers County	Texas	6	3
+Cherokee, TX	.Cherokee County	Texas	6	3
+Childress, TX	.Childress County	Texas	6	3
+Clay, TX	.Clay County	Texas	6	3
+Cochran, TX	.Cochran County	Texas	6	3
+Coke, TX	.Coke County	Texas	6	3
+Coleman, TX	.Coleman County	Texas	6	3
+Collin, TX	.Collin County	Texas	6	3
+Collingsworth, TX	.Collingsworth County	Texas	6	3
+Colorado, TX	.Colorado County	Texas	6	3
+Comal, TX	.Comal County	Texas	6	3
+Comanche, TX	.Comanche County	Texas	6	3
+Concho, TX	.Concho County	Texas	6	3
+Cooke, TX	.Cooke County	Texas	6	3
+Coryell, TX	.Coryell County	Texas	6	3
+Cottle, TX	.Cottle County	Texas	6	3
+Crane, TX	.Crane County	Texas	6	3
+Crockett, TX	.Crockett County	Texas	6	3
+Crosby, TX	.Crosby County	Texas	6	2
+Culberson, TX	.Culberson County	Texas	6	2
+Dallam, TX	.Dallam County	Texas	6	2
+Dallas, TX	.Dallas County	Texas	6	3
+Dawson, TX	.Dawson County	Texas	6	3
+Deaf Smith, TX	.Deaf Smith County	Texas	6	2
+Delta, TX	.Delta County	Texas	6	3
+Denton, TX	.Denton County	Texas	6	3
+De Witt, TX	.DeWitt County	Texas	6	3
+Dickens, TX	.Dickens County	Texas	6	3
+Dimmit, TX	.Dimmit County	Texas	6	3
+Donley, TX	.Donley County	Texas	6	2
+Duval, TX	.Duval County	Texas	6	3
+Eastland, TX	.Eastland County	Texas	6	3
+Ector, TX	.Ector County	Texas	6	3
+Edwards, TX	.Edwards County	Texas	6	3
+Ellis, TX	.Ellis County	Texas	6	3
+El Paso, TX	.El Paso County	Texas	6	3
+Erath, TX	.Erath County	Texas	6	3
+Falls, TX	.Falls County	Texas	6	3
+Fannin, TX	.Fannin County	Texas	6	3
+Fayette, TX	.Fayette County	Texas	6	3
+Fisher, TX	.Fisher County	Texas	6	3
+Floyd, TX	.Floyd County	Texas	6	2
+Foard, TX	.Foard County	Texas	6	3
+Fort Bend, TX	.Fort Bend County	Texas	6	3
+Franklin, TX	.Franklin County	Texas	6	3
+Freestone, TX	.Freestone County	Texas	6	3
+Frio, TX	.Frio County	Texas	6	3
+Gaines, TX	.Gaines County	Texas	6	3
+Galveston, TX	.Galveston County	Texas	6	3
+Garza, TX	.Garza County	Texas	6	2
+Gillespie, TX	.Gillespie County	Texas	6	3
+Glasscock, TX	.Glasscock County	Texas	6	3
+Goliad, TX	.Goliad County	Texas	6	3
+Gonzales, TX	.Gonzales County	Texas	6	3
+Gray, TX	.Gray County	Texas	6	2
+Grayson, TX	.Grayson County	Texas	6	3
+Gregg, TX	.Gregg County	Texas	6	3
+Grimes, TX	.Grimes County	Texas	6	3
+Guadalupe, TX	.Guadalupe County	Texas	6	3
+Hale, TX	.Hale County	Texas	6	2
+Hall, TX	.Hall County	Texas	6	3
+Hamilton, TX	.Hamilton County	Texas	6	3
+Hansford, TX	.Hansford County	Texas	6	2
+Hardeman, TX	.Hardeman County	Texas	6	3
+Hardin, TX	.Hardin County	Texas	6	3
+Harris, TX	.Harris County	Texas	6	3
+Harrison, TX	.Harrison County	Texas	6	3
+Hartley, TX	.Hartley County	Texas	6	2
+Haskell, TX	.Haskell County	Texas	6	3
+Hays, TX	.Hays County	Texas	6	3
+Hemphill, TX	.Hemphill County	Texas	6	2
+Henderson, TX	.Henderson County	Texas	6	3
+Hidalgo, TX	.Hidalgo County	Texas	6	3
+Hill, TX	.Hill County	Texas	6	3
+Hockley, TX	.Hockley County	Texas	6	2
+Hood, TX	.Hood County	Texas	6	3
+Hopkins, TX	.Hopkins County	Texas	6	3
+Houston, TX	.Houston County	Texas	6	3
+Howard, TX	.Howard County	Texas	6	3
+Hudspeth, TX	.Hudspeth County	Texas	6	2
+Hunt, TX	.Hunt County	Texas	6	3
+Hutchinson, TX	.Hutchinson County	Texas	6	2
+Irion, TX	.Irion County	Texas	6	3
+Jack, TX	.Jack County	Texas	6	3
+Jackson, TX	.Jackson County	Texas	6	3
+Jasper, TX	.Jasper County	Texas	6	3
+Jeff Davis, TX	.Jeff Davis County	Texas	6	2
+Jefferson, TX	.Jefferson County	Texas	6	3
+Jim Hogg, TX	.Jim Hogg County	Texas	6	3
+Jim Wells, TX	.Jim Wells County	Texas	6	3
+Johnson, TX	.Johnson County	Texas	6	3
+Jones, TX	.Jones County	Texas	6	3
+Karnes, TX	.Karnes County	Texas	6	3
+Kaufman, TX	.Kaufman County	Texas	6	3
+Kendall, TX	.Kendall County	Texas	6	3
+Kenedy, TX	.Kenedy County	Texas	6	3
+Kent, TX	.Kent County	Texas	6	3
+Kerr, TX	.Kerr County	Texas	6	3
+Kimble, TX	.Kimble County	Texas	6	3
+King, TX	.King County	Texas	6	3
+Kinney, TX	.Kinney County	Texas	6	3
+Kleberg, TX	.Kleberg County	Texas	6	3
+Knox, TX	.Knox County	Texas	6	3
+Lamar, TX	.Lamar County	Texas	6	3
+Lamb, TX	.Lamb County	Texas	6	2
+Lampasas, TX	.Lampasas County	Texas	6	3
+La Salle, TX	.La Salle County	Texas	6	3
+Lavaca, TX	.Lavaca County	Texas	6	3
+Lee, TX	.Lee County	Texas	6	3
+Leon, TX	.Leon County	Texas	6	3
+Liberty, TX	.Liberty County	Texas	6	3
+Limestone, TX	.Limestone County	Texas	6	3
+Lipscomb, TX	.Lipscomb County	Texas	6	2
+Live Oak, TX	.Live Oak County	Texas	6	3
+Llano, TX	.Llano County	Texas	6	2
+Loving, TX	.Loving County	Texas	6	3
+Lubbock, TX	.Lubbock County	Texas	6	2
+Lynn, TX	.Lynn County	Texas	6	2
+McCulloch, TX	.McCulloch County	Texas	6	3
+McLennan, TX	.McLennan County	Texas	6	3
+McMullen, TX	.McMullen County	Texas	6	3
+Madison, TX	.Madison County	Texas	6	3
+Marion, TX	.Marion County	Texas	6	3
+Martin, TX	.Martin County	Texas	6	3
+Mason, TX	.Mason County	Texas	6	2
+Matagorda, TX	.Matagorda County	Texas	6	3
+Maverick, TX	.Maverick County	Texas	6	3
+Medina, TX	.Medina County	Texas	6	3
+Menard, TX	.Menard County	Texas	6	3
+Midland, TX	.Midland County	Texas	6	3
+Milam, TX	.Milam County	Texas	6	3
+Mills, TX	.Mills County	Texas	6	3
+Mitchell, TX	.Mitchell County	Texas	6	3
+Montague, TX	.Montague County	Texas	6	3
+Montgomery, TX	.Montgomery County	Texas	6	3
+Moore, TX	.Moore County	Texas	6	2
+Morris, TX	.Morris County	Texas	6	3
+Motley, TX	.Motley County	Texas	6	3
+Nacogdoches, TX	.Nacogdoches County	Texas	6	3
+Navarro, TX	.Navarro County	Texas	6	3
+Newton, TX	.Newton County	Texas	6	3
+Nolan, TX	.Nolan County	Texas	6	3
+Nueces, TX	.Nueces County	Texas	6	3
+Ochiltree, TX	.Ochiltree County	Texas	6	2
+Oldham, TX	.Oldham County	Texas	6	2
+Orange, TX	.Orange County	Texas	6	3
+Palo Pinto, TX	.Palo Pinto County	Texas	6	3
+Panola, TX	.Panola County	Texas	6	3
+Parker, TX	.Parker County	Texas	6	3
+Parmer, TX	.Parmer County	Texas	6	2
+Pecos, TX	.Pecos County	Texas	6	3
+Polk, TX	.Polk County	Texas	6	3
+Potter, TX	.Potter County	Texas	6	2
+Presidio, TX	.Presidio County	Texas	6	2
+Rains, TX	.Rains County	Texas	6	3
+Randall, TX	.Randall County	Texas	6	2
+Reagan, TX	.Reagan County	Texas	6	3
+Real, TX	.Real County	Texas	6	3
+Red River, TX	.Red River County	Texas	6	3
+Reeves, TX	.Reeves County	Texas	6	2
+Refugio, TX	.Refugio County	Texas	6	3
+Roberts, TX	.Roberts County	Texas	6	2
+Robertson, TX	.Robertson County	Texas	6	3
+Rockwall, TX	.Rockwall County	Texas	6	3
+Runnels, TX	.Runnels County	Texas	6	3
+Rusk, TX	.Rusk County	Texas	6	3
+Sabine, TX	.Sabine County	Texas	6	3
+San Augustine, TX	.San Augustine County	Texas	6	3
+San Jacinto, TX	.San Jacinto County	Texas	6	3
+San Patricio, TX	.San Patricio County	Texas	6	3
+San Saba, TX	.San Saba County	Texas	6	3
+Schleicher, TX	.Schleicher County	Texas	6	3
+Scurry, TX	.Scurry County	Texas	6	3
+Shackelford, TX	.Shackelford County	Texas	6	3
+Shelby, TX	.Shelby County	Texas	6	3
+Sherman, TX	.Sherman County	Texas	6	2
+Smith, TX	.Smith County	Texas	6	3
+Somervell, TX	.Somervell County	Texas	6	3
+Starr, TX	.Starr County	Texas	6	3
+Stephens, TX	.Stephens County	Texas	6	3
+Sterling, TX	.Sterling County	Texas	6	3
+Stonewall, TX	.Stonewall County	Texas	6	3
+Sutton, TX	.Sutton County	Texas	6	3
+Swisher, TX	.Swisher County	Texas	6	2
+Tarrant, TX	.Tarrant County	Texas	6	3
+Taylor, TX	.Taylor County	Texas	6	3
+Terrell, TX	.Terrell County	Texas	6	2
+Terry, TX	.Terry County	Texas	6	3
+Throckmorton, TX	.Throckmorton County	Texas	6	3
+Titus, TX	.Titus County	Texas	6	3
+Tom Green, TX	.Tom Green County	Texas	6	3
+Travis, TX	.Travis County	Texas	6	3
+Trinity, TX	.Trinity County	Texas	6	3
+Tyler, TX	.Tyler County	Texas	6	3
+Upshur, TX	.Upshur County	Texas	6	3
+Upton, TX	.Upton County	Texas	6	3
+Uvalde, TX	.Uvalde County	Texas	6	3
+Val Verde, TX	.Val Verde County	Texas	6	3
+Van Zandt, TX	.Van Zandt County	Texas	6	3
+Victoria, TX	.Victoria County	Texas	6	3
+Walker, TX	.Walker County	Texas	6	3
+Waller, TX	.Waller County	Texas	6	3
+Ward, TX	.Ward County	Texas	6	3
+Washington, TX	.Washington County	Texas	6	3
+Webb, TX	.Webb County	Texas	6	3
+Wharton, TX	.Wharton County	Texas	6	3
+Wheeler, TX	.Wheeler County	Texas	6	3
+Wichita, TX	.Wichita County	Texas	6	3
+Wilbarger, TX	.Wilbarger County	Texas	6	3
+Willacy, TX	.Willacy County	Texas	6	3
+Williamson, TX	.Williamson County	Texas	6	3
+Wilson, TX	.Wilson County	Texas	6	3
+Winkler, TX	.Winkler County	Texas	6	3
+Wise, TX	.Wise County	Texas	6	3
+Wood, TX	.Wood County	Texas	6	3
+Yoakum, TX	.Yoakum County	Texas	6	3
+Young, TX	.Young County	Texas	6	3
+Zapata, TX	.Zapata County	Texas	6	3
+Zavala, TX	.Zavala County	Texas	6	3
+UTAH	no data	no data	.	.
+Beaver, UT	.Beaver County	Utah	8	2
+Box Elder, UT	.Box Elder County	Utah	8	2
+Cache, UT	.Cache County	Utah	8	2
+Carbon, UT	.Carbon County	Utah	8	1
+Daggett, UT	.Daggett County	Utah	8	2
+Davis, UT	.Davis County	Utah	8	2
+Duchesne, UT	.Duchesne County	Utah	8	1
+Emery, UT	.Emery County	Utah	8	2
+Garfield, UT	.Garfield County	Utah	8	2
+Grand, UT	.Grand County	Utah	8	1
+Iron, UT	.Iron County	Utah	8	2
+Juab, UT	.Juab County	Utah	8	2
+Kane, UT	.Kane County	Utah	8	2
+Millard, UT	.Millard County	Utah	8	2
+Morgan, UT	.Morgan County	Utah	8	2
+Piute, UT	.Piute County	Utah	8	1
+Rich, UT	.Rich County	Utah	8	2
+Salt Lake, UT	.Salt Lake County	Utah	8	2
+San Juan, UT	.San Juan County	Utah	8	2
+Sanpete, UT	.Sanpete County	Utah	8	1
+Sevier, UT	.Sevier County	Utah	8	1
+Summit, UT	.Summit County	Utah	8	2
+Tooele, UT	.Tooele County	Utah	8	2
+Uintah, UT	.Uintah County	Utah	8	1
+Utah, UT	.Utah County	Utah	8	2
+Wasatch, UT	.Wasatch County	Utah	8	2
+Washington, UT	.Washington County	Utah	8	2
+Wayne, UT	.Wayne County	Utah	8	2
+Weber, UT	.Weber County	Utah	8	2
+VERMONT	no data	no data	.	.
+Addison, VT	.Addison County	Vermont	1	2
+Bennington, VT	.Bennington County	Vermont	1	2
+Caledonia, VT	.Caledonia County	Vermont	1	2
+Chittenden, VT	.Chittenden County	Vermont	1	3
+Essex, VT	.Essex County	Vermont	1	2
+Franklin, VT	.Franklin County	Vermont	1	2
+Grand Isle, VT	.Grand Isle County	Vermont	1	3
+Lamoille, VT	.Lamoille County	Vermont	1	2
+Orange, VT	.Orange County	Vermont	1	2
+Orleans, VT	.Orleans County	Vermont	1	2
+Rutland, VT	.Rutland County	Vermont	1	2
+Washington, VT	.Washington County	Vermont	1	2
+Windham, VT	.Windham County	Vermont	1	2
+Windsor, VT	.Windsor County	Vermont	1	2
+VIRGINIA	no data	no data	.	.
+Accomack, VA	.Accomack County	Virginia	3	3
+Albemarle, VA	.Albemarle County	Virginia	3	2
+Alleghany, VA	.Alleghany County	Virginia	3	1
+Amelia, VA	.Amelia County	Virginia	3	1
+Amherst, VA	.Amherst County	Virginia	3	2
+Appomattox, VA	.Appomattox County	Virginia	3	1
+Arlington, VA	.Arlington County	Virginia	3	2
+Augusta, VA	.Augusta County	Virginia	3	1
+Bath, VA	.Bath County	Virginia	3	1
+Bedford, VA	.Bedford County	Virginia	3	2
+Bland, VA	.Bland County	Virginia	3	1
+Botetourt, VA	.Botetourt County	Virginia	3	1
+Brunswick, VA	.Brunswick County	Virginia	3	1
+Buchanan, VA	.Buchanan County	Virginia	3	2
+Buckingham, VA	.Buckingham County	Virginia	3	1
+Campbell, VA	.Campbell County	Virginia	3	1
+Caroline, VA	.Caroline County	Virginia	3	3
+Carroll, VA	.Carroll County	Virginia	3	2
+Charles City, VA	.Charles City County	Virginia	3	3
+Charlotte, VA	.Charlotte County	Virginia	3	2
+Chesterfield, VA	.Chesterfield County	Virginia	3	1
+Clarke, VA	.Clarke County	Virginia	3	1
+Craig, VA	.Craig County	Virginia	3	1
+Culpeper, VA	.Culpeper County	Virginia	3	2
+Cumberland, VA	.Cumberland County	Virginia	3	1
+Dickenson, VA	.Dickenson County	Virginia	3	2
+Dinwiddie, VA	.Dinwiddie County	Virginia	3	1
+Essex, VA	.Essex County	Virginia	3	3
+Fairfax, VA	.Fairfax County	Virginia	3	1
+Fauquier, VA	.Fauquier County	Virginia	3	2
+Floyd, VA	.Floyd County	Virginia	3	2
+Fluvanna, VA	.Fluvanna County	Virginia	3	1
+Franklin, VA	.Franklin County	Virginia	3	2
+Frederick, VA	.Frederick County	Virginia	3	1
+Giles, VA	.Giles County	Virginia	3	1
+Gloucester, VA	.Gloucester County	Virginia	3	3
+Goochland, VA	.Goochland County	Virginia	3	1
+Grayson, VA	.Grayson County	Virginia	3	2
+Greene, VA	.Greene County	Virginia	3	2
+Greensville, VA	.Greensville County	Virginia	3	3
+Halifax, VA	.Halifax County	Virginia	3	2
+Hanover, VA	.Hanover County	Virginia	3	3
+Henrico, VA	.Henrico County	Virginia	3	3
+Henry, VA	.Henry County	Virginia	3	1
+Highland, VA	.Highland County	Virginia	3	1
+Isle of Wight, VA	.Isle of Wight County	Virginia	3	3
+James City, VA	.James City County	Virginia	3	3
+King and Queen, VA	.King and Queen County	Virginia	3	3
+King George, VA	.King George County	Virginia	3	3
+King William, VA	.King William County	Virginia	3	3
+Lancaster, VA	.Lancaster County	Virginia	3	3
+Lee, VA	.Lee County	Virginia	3	1
+Loudoun, VA	.Loudoun County	Virginia	3	2
+Louisa, VA	.Louisa County	Virginia	3	1
+Lunenburg, VA	.Lunenburg County	Virginia	3	2
+Madison, VA	.Madison County	Virginia	3	2
+Mathews, VA	.Mathews County	Virginia	3	3
+Mecklenburg, VA	.Mecklenburg County	Virginia	3	2
+Middlesex, VA	.Middlesex County	Virginia	3	3
+Montgomery, VA	.Montgomery County	Virginia	3	1
+Nelson, VA	.Nelson County	Virginia	3	2
+New Kent, VA	.New Kent County	Virginia	3	3
+Northampton, VA	.Northampton County	Virginia	3	3
+Northumberland, VA	.Northumberland County	Virginia	3	3
+Nottoway, VA	.Nottoway County	Virginia	3	1
+Orange, VA	.Orange County	Virginia	3	1
+Page, VA	.Page County	Virginia	3	1
+Patrick, VA	.Patrick County	Virginia	3	1
+Pittsylvania, VA	.Pittsylvania County	Virginia	3	1
+Powhatan, VA	.Powhatan County	Virginia	3	1
+Prince Edward, VA	.Prince Edward County	Virginia	3	2
+Prince George, VA	.Prince George County	Virginia	3	3
+Prince William, VA	.Prince William County	Virginia	3	2
+Pulaski, VA	.Pulaski County	Virginia	3	1
+Rappahannock, VA	.Rappahannock County	Virginia	3	2
+Richmond, VA	.Richmond County	Virginia	3	3
+Roanoke, VA	.Roanoke County	Virginia	3	1
+Rockbridge, VA	.Rockbridge County	Virginia	3	1
+Rockingham, VA	.Rockingham County	Virginia	3	1
+Russell, VA	.Russell County	Virginia	3	1
+Scott, VA	.Scott County	Virginia	3	1
+Shenandoah, VA	.Shenandoah County	Virginia	3	1
+Smyth, VA	.Smyth County	Virginia	3	1
+Southampton, VA	.Southampton County	Virginia	3	3
+Spotsylvania, VA	.Spotsylvania County	Virginia	3	1
+Stafford, VA	.Stafford County	Virginia	3	1
+Surry, VA	.Surry County	Virginia	3	3
+Sussex, VA	.Sussex County	Virginia	3	3
+Tazewell, VA	.Tazewell County	Virginia	3	1
+Warren, VA	.Warren County	Virginia	3	1
+Washington, VA	.Washington County	Virginia	3	1
+Westmoreland, VA	.Westmoreland County	Virginia	3	3
+Wise, VA	.Wise County	Virginia	3	2
+Wythe, VA	.Wythe County	Virginia	3	1
+York, VA	.York County	Virginia	3	3
+Alexandria, VA	Alexandria, VA	VA-CITY	.	3
+Bedford, VA	Bedford, VA	VA-CITY	.	1
+Bristol, VA	Bristol, VA	VA-CITY	.	1
+Buena Vista, VA	Buena Vista, VA	VA-CITY	.	1
+Charlottesville, VA	Charlottesville, VA	VA-CITY	.	2
+Chesapeake, VA	Chesapeake, VA	VA-CITY	.	3
+Clifton Forge, VA	Clifton Forge, VA	VA-CITY	.	1
+Colonial Heights, VA	Colonial Heights, VA	VA-CITY	.	3
+Covington, VA	Covington, VA	VA-CITY	.	1
+Danville, VA	Danville, VA	VA-CITY	.	1
+Emporia, VA	Emporia, VA	VA-CITY	.	3
+Fairfax, VA	Fairfax, VA	VA-CITY	.	1
+Falls Church, VA	Falls Church, VA	VA-CITY	.	1
+Franklin, VA	Franklin, VA	VA-CITY	.	3
+Fredericksburg, VA	Fredericksburg, VA	VA-CITY	.	3
+Galax, VA	Galax, VA	VA-CITY	.	2
+Hampton, VA	Hampton, VA	VA-CITY	.	3
+Harrisonburg, VA	Harrisonburg, VA	VA-CITY	.	1
+Hopewell, VA	Hopewell, VA	VA-CITY	.	3
+Lexington, VA	Lexington, VA	VA-CITY	.	1
+Lynchburg, VA	Lynchburg, VA	VA-CITY	.	2
+Manassas, VA	Manassas, VA	VA-CITY	.	1
+Manassas Park, VA	Manassas Park, VA	VA-CITY	.	1
+Martinsville, VA	Martinsville, VA	VA-CITY	.	3
+Newport News, VA	Newport News, VA	VA-CITY	.	3
+Norfolk, VA	Norfolk, VA	VA-CITY	.	3
+Norton, VA	Norton, VA	VA-CITY	.	2
+Petersburg, VA	Petersburg, VA	VA-CITY	.	1
+Poquoson, VA	Poquoson, VA	VA-CITY	.	3
+Portsmouth, VA	Portsmouth, VA	VA-CITY	.	3
+Radford, VA	Radford, VA	VA-CITY	.	1
+Richmond, VA	Richmond, VA	VA-CITY	.	3
+Roanoke, VA	Roanoke, VA	VA-CITY	.	1
+Salem, VA	Salem, VA	VA-CITY	.	1
+South Boston, VA	South Boston, VA	VA-CITY	.	3
+Staunton, VA	Staunton, VA	VA-CITY	.	1
+Suffolk, VA	Suffolk, VA	VA-CITY	.	3
+Virginia Beach, VA	Virginia Beach, VA	VA-CITY	.	3
+Waynesboro, VA	Waynesboro, VA	VA-CITY	.	1
+Williamsburg, VA	Williamsburg, VA	VA-CITY	.	3
+Winchester, VA	Winchester, VA	VA-CITY	.	1
+WASHINGTON	no data	no data	.	.
+Adams, WA	.Adams County	Washington	10	2
+Asotin, WA	.Asotin County	Washington	10	2
+Benton, WA	.Benton County	Washington	10	2
+Chelan, WA	.Chelan County	Washington	10	3
+Clallam, WA	.Clallam County	Washington	10	3
+Clark, WA	.Clark County	Washington	10	1
+Columbia, WA	.Columbia County	Washington	10	2
+Cowlitz, WA	.Cowlitz County	Washington	10	3
+Douglas, WA	.Douglas County	Washington	10	2
+Ferry, WA	.Ferry County	Washington	10	1
+Franklin, WA	.Franklin County	Washington	10	2
+Garfield, WA	.Garfield County	Washington	10	2
+Grant, WA	.Grant County	Washington	10	2
+Grays Harbor, WA	.Grays Harbor County	Washington	10	3
+Island, WA	.Island County	Washington	10	3
+Jefferson, WA	.Jefferson County	Washington	10	3
+King, WA	.King County	Washington	10	3
+Kitsap, WA	.Kitsap County	Washington	10	3
+Kittitas, WA	.Kittitas County	Washington	10	2
+Klickitat, WA	.Klickitat County	Washington	10	2
+Lewis, WA	.Lewis County	Washington	10	3
+Lincoln, WA	.Lincoln County	Washington	10	2
+Mason, WA	.Mason County	Washington	10	3
+Okanogan, WA	.Okanogan County	Washington	10	1
+Pacific, WA	.Pacific County	Washington	10	3
+Pend Oreille, WA	.Pend Oreille County	Washington	10	1
+Pierce, WA	.Pierce County	Washington	10	3
+San Juan, WA	.San Juan County	Washington	10	3
+Skagit, WA	.Skagit County	Washington	10	3
+Skamania, WA	.Skamania County	Washington	10	1
+Snohomish, WA	.Snohomish County	Washington	10	3
+Spokane, WA	.Spokane County	Washington	10	1
+Stevens, WA	.Stevens County	Washington	10	1
+Thurston, WA	.Thurston County	Washington	10	3
+Wahkiakum, WA	.Wahkiakum County	Washington	10	3
+Walla Walla, WA	.Walla Walla County	Washington	10	2
+Whatcom, WA	.Whatcom County	Washington	10	3
+Whitman, WA	.Whitman County	Washington	10	2
+Yakima, WA	.Yakima County	Washington	10	2
+WEST VIRGINIA	no data	no data	.	.
+Barbour, WV	.Barbour County	West Virginia	3	2
+Berkeley, WV	.Berkeley County	West Virginia	3	1
+Boone, WV	.Boone County	West Virginia	3	3
+Braxton, WV	.Braxton County	West Virginia	3	2
+Brooke, WV	.Brooke County	West Virginia	3	1
+Cabell, WV	.Cabell County	West Virginia	3	2
+Calhoun, WV	.Calhoun County	West Virginia	3	2
+Clay, WV	.Clay County	West Virginia	3	2
+Doddridge, WV	.Doddridge County	West Virginia	3	2
+Fayette, WV	.Fayette County	West Virginia	3	2
+Gilmer, WV	.Gilmer County	West Virginia	3	2
+Grant, WV	.Grant County	West Virginia	3	1
+Greenbrier, WV	.Greenbrier County	West Virginia	3	1
+Hampshire, WV	.Hampshire County	West Virginia	3	1
+Hancock, WV	.Hancock County	West Virginia	3	1
+Hardy, WV	.Hardy County	West Virginia	3	1
+Harrison, WV	.Harrison County	West Virginia	3	2
+Jackson, WV	.Jackson County	West Virginia	3	2
+Jefferson, WV	.Jefferson County	West Virginia	3	1
+Kanawha, WV	.Kanawha County	West Virginia	3	3
+Lewis, WV	.Lewis County	West Virginia	3	2
+Lincoln, WV	.Lincoln County	West Virginia	3	2
+Logan, WV	.Logan County	West Virginia	3	3
+McDowell, WV	.McDowell County	West Virginia	3	3
+Marion, WV	.Marion County	West Virginia	3	2
+Marshall, WV	.Marshall County	West Virginia	3	1
+Mason, WV	.Mason County	West Virginia	3	2
+Mercer, WV	.Mercer County	West Virginia	3	1
+Mineral, WV	.Mineral County	West Virginia	3	1
+Mingo, WV	.Mingo County	West Virginia	3	3
+Monongalia, WV	.Monongalia County	West Virginia	3	1
+Monroe, WV	.Monroe County	West Virginia	3	1
+Morgan, WV	.Morgan County	West Virginia	3	1
+Nicholas, WV	.Nicholas County	West Virginia	3	2
+Ohio, WV	.Ohio County	West Virginia	3	1
+Pendleton, WV	.Pendleton County	West Virginia	3	1
+Pleasants, WV	.Pleasants County	West Virginia	3	2
+Pocahontas, WV	.Pocahontas County	West Virginia	3	1
+Preston, WV	.Preston County	West Virginia	3	1
+Putnam, WV	.Putnam County	West Virginia	3	2
+Raleigh, WV	.Raleigh County	West Virginia	3	2
+Randolph, WV	.Randolph County	West Virginia	3	2
+Ritchie, WV	.Ritchie County	West Virginia	3	2
+Roane, WV	.Roane County	West Virginia	3	2
+Summers, WV	.Summers County	West Virginia	3	1
+Taylor, WV	.Taylor County	West Virginia	3	2
+Tucker, WV	.Tucker County	West Virginia	3	2
+Tyler, WV	.Tyler County	West Virginia	3	2
+Upshur, WV	.Upshur County	West Virginia	3	2
+Wayne, WV	.Wayne County	West Virginia	3	2
+Webster, WV	.Webster County	West Virginia	3	2
+Wetzel, WV	.Wetzel County	West Virginia	3	1
+Wirt, WV	.Wirt County	West Virginia	3	2
+Wood, WV	.Wood County	West Virginia	3	2
+Wyoming, WV	.Wyoming County	West Virginia	3	3
+WISCONSIN	no data	no data	.	.
+Adams, WI	.Adams County	Wisconsin	5	2
+Ashland, WI	.Ashland County	Wisconsin	5	2
+Barron, WI	.Barron County	Wisconsin	5	2
+Bayfield, WI	.Bayfield County	Wisconsin	5	2
+Brown, WI	.Brown County	Wisconsin	5	2
+Buffalo, WI	.Buffalo County	Wisconsin	5	1
+Burnett, WI	.Burnett County	Wisconsin	5	2
+Calumet, WI	.Calumet County	Wisconsin	5	2
+Chippewa, WI	.Chippewa County	Wisconsin	5	2
+Clark, WI	.Clark County	Wisconsin	5	2
+Columbia, WI	.Columbia County	Wisconsin	5	2
+Crawford, WI	.Crawford County	Wisconsin	5	1
+Dane, WI	.Dane County	Wisconsin	5	1
+Dodge, WI	.Dodge County	Wisconsin	5	1
+Door, WI	.Door County	Wisconsin	5	1
+Douglas, WI	.Douglas County	Wisconsin	5	2
+Dunn, WI	.Dunn County	Wisconsin	5	2
+Eau Claire, WI	.Eau Claire County	Wisconsin	5	2
+Florence, WI	.Florence County	Wisconsin	5	2
+Fond du Lac, WI	.Fond du Lac County	Wisconsin	5	1
+Forest, WI	.Forest County	Wisconsin	5	2
+Grant, WI	.Grant County	Wisconsin	5	1
+Green, WI	.Green County	Wisconsin	5	1
+Green Lake, WI	.Green Lake County	Wisconsin	5	1
+Iowa, WI	.Iowa County	Wisconsin	5	1
+Iron, WI	.Iron County	Wisconsin	5	2
+Jackson, WI	.Jackson County	Wisconsin	5	2
+Jefferson, WI	.Jefferson County	Wisconsin	5	1
+Juneau, WI	.Juneau County	Wisconsin	5	2
+Kenosha, WI	.Kenosha County	Wisconsin	5	2
+Kewaunee, WI	.Kewaunee County	Wisconsin	5	2
+La Crosse, WI	.La Crosse County	Wisconsin	5	2
+Lafayette, WI	.Lafayette County	Wisconsin	5	1
+Langlade, WI	.Langlade County	Wisconsin	5	1
+Lincoln, WI	.Lincoln County	Wisconsin	5	2
+Manitowoc, WI	.Manitowoc County	Wisconsin	5	2
+Marathon, WI	.Marathon County	Wisconsin	5	1
+Marinette, WI	.Marinette County	Wisconsin	5	2
+Marquette, WI	.Marquette County	Wisconsin	5	2
+Menominee, WI	.Menominee County	Wisconsin	5	1
+Milwaukee, WI	.Milwaukee County	Wisconsin	5	2
+Monroe, WI	.Monroe County	Wisconsin	5	2
+Oconto, WI	.Oconto County	Wisconsin	5	2
+Oneida, WI	.Oneida County	Wisconsin	5	2
+Outagamie, WI	.Outagamie County	Wisconsin	5	2
+Ozaukee, WI	.Ozaukee County	Wisconsin	5	2
+Pepin, WI	.Pepin County	Wisconsin	5	1
+Pierce, WI	.Pierce County	Wisconsin	5	1
+Polk, WI	.Polk County	Wisconsin	5	2
+Portage, WI	.Portage County	Wisconsin	5	1
+Price, WI	.Price County	Wisconsin	5	2
+Racine, WI	.Racine County	Wisconsin	5	2
+Richland, WI	.Richland County	Wisconsin	5	1
+Rock, WI	.Rock County	Wisconsin	5	1
+Rusk, WI	.Rusk County	Wisconsin	5	2
+St. Croix, WI	.St. Croix County	Wisconsin	5	1
+Sauk, WI	.Sauk County	Wisconsin	5	2
+Sawyer, WI	.Sawyer County	Wisconsin	5	2
+Shawano, WI	.Shawano County	Wisconsin	5	1
+Sheboygan, WI	.Sheboygan County	Wisconsin	5	2
+Taylor, WI	.Taylor County	Wisconsin	5	2
+Trempealeau, WI	.Trempealeau County	Wisconsin	5	2
+Vernon, WI	.Vernon County	Wisconsin	5	1
+Vilas, WI	.Vilas County	Wisconsin	5	2
+Walworth, WI	.Walworth County	Wisconsin	5	1
+Washburn, WI	.Washburn County	Wisconsin	5	2
+Washington, WI	.Washington County	Wisconsin	5	1
+Waukesha, WI	.Waukesha County	Wisconsin	5	1
+Waupaca, WI	.Waupaca County	Wisconsin	5	1
+Waushara, WI	.Waushara County	Wisconsin	5	2
+Winnebago, WI	.Winnebago County	Wisconsin	5	2
+Wood, WI	.Wood County	Wisconsin	5	1
+WYOMING	no data	no data	.	.
+Albany, WY	.Albany County	Wyoming	8	1
+Big Horn, WY	.Big Horn County	Wyoming	8	1
+Campbell, WY	.Campbell County	Wyoming	8	1
+Carbon, WY	.Carbon County	Wyoming	8	1
+Converse, WY	.Converse County	Wyoming	8	1
+Crook, WY	.Crook County	Wyoming	8	1
+Fremont, WY	.Fremont County	Wyoming	8	1
+Goshen, WY	.Goshen County	Wyoming	8	1
+Hot Springs, WY	.Hot Springs County	Wyoming	8	1
+Johnson, WY	.Johnson County	Wyoming	8	1
+Laramie, WY	.Laramie County	Wyoming	8	1
+Lincoln, WY	.Lincoln County	Wyoming	8	1
+Natrona, WY	.Natrona County	Wyoming	8	1
+Niobrara, WY	.Niobrara County	Wyoming	8	1
+Park, WY	.Park County	Wyoming	8	1
+Platte, WY	.Platte County	Wyoming	8	2
+Sheridan, WY	.Sheridan County	Wyoming	8	1
+Sublette, WY	.Sublette County	Wyoming	8	1
+Sweetwater, WY	.Sweetwater County	Wyoming	8	1
+Teton, WY	.Teton County	Wyoming	8	1
+Uinta, WY	.Uinta County	Wyoming	8	1
+Washakie, WY	.Washakie County	Wyoming	8	1
+Weston, WY	.Weston County	Wyoming	8	2
