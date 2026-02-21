@@ -5,7 +5,8 @@
     description = "A detailed breakdown of DIY radon mitigation vs. hiring a professional, including hidden costs and legal implications.",
     content = @`
         <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24 prose prose-slate md:prose-lg max-w-none">
-            <span class="inline-block py-1 px-3 rounded-full bg-indigo-50 text-indigo-700 text-xs font-bold tracking-wider uppercase mb-6">Cost Strategy</span>
+            <a href="/guides" class="not-prose inline-flex items-center gap-1 text-xs font-bold text-slate-400 hover:text-indigo-600 transition-colors uppercase tracking-wider mb-6"><svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg> All Guides</a>
+            <span class="inline-block py-1 px-3 rounded-full bg-indigo-50 text-indigo-700 text-xs font-bold tracking-wider uppercase mb-6 ml-3">Cost Strategy</span>
             <h1 class="font-display font-bold text-4xl text-slate-900 mb-6 tracking-tight">DIY Radon Mitigation vs. Hiring a Professional: The Real Costs</h1>
             <p class="lead text-xl text-slate-600 mb-10 leading-relaxed font-medium pb-10 border-b border-slate-200">
                 With average professional mitigation systems costing between $1,200 and $1,800, many homeowners ask: "Can I just install this myself?" The answer is yes, you can. But a better question is: *Should* you?

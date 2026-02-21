@@ -5,7 +5,8 @@
     description = "Understand the entire radon mitigation timeline, from the initial inspection to the final cleared test result.",
     content = @`
         <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24 prose prose-slate md:prose-lg max-w-none">
-            <span class="inline-block py-1 px-3 rounded-full bg-amber-50 text-amber-700 text-xs font-bold tracking-wider uppercase mb-6">Process & Timeline</span>
+            <a href="/guides" class="not-prose inline-flex items-center gap-1 text-xs font-bold text-slate-400 hover:text-indigo-600 transition-colors uppercase tracking-wider mb-6"><svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg> All Guides</a>
+            <span class="inline-block py-1 px-3 rounded-full bg-amber-50 text-amber-700 text-xs font-bold tracking-wider uppercase mb-6 ml-3">Process &amp; Timeline</span>
             <h1 class="font-display font-bold text-4xl text-slate-900 mb-6 tracking-tight">How Long Does Radon Mitigation Take?</h1>
             <p class="lead text-xl text-slate-600 mb-10 leading-relaxed font-medium pb-10 border-b border-slate-200">
                 You're in the middle of closing on a house, your inspection found high radon, and the clock is ticking. The good news? Radon mitigation is fast. From start to finish, the physical installation generally takes less than a single day.

@@ -68,7 +68,7 @@
     <!-- Glassmorphism Navbar -->
     <header class="sticky top-0 z-50 glass-header">
         <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-            <a href="/radon-cost-calculator" class="flex items-center gap-2 group">
+            <a href="/" class="flex items-center gap-2 group">
                 <div class="w-8 h-8 rounded-lg bg-slate-900 text-white flex items-center justify-center font-display font-bold text-lg shadow-sm group-hover:bg-slate-700 transition-colors">
                     R
                 </div>
@@ -76,6 +76,8 @@
             </a>
             <nav class="hidden md:flex gap-6 text-sm font-medium text-slate-500">
                 <a href="/radon-cost-calculator" class="hover:text-slate-900 transition-colors">Cost Calculator</a>
+                <a href="/guides" class="hover:text-slate-900 transition-colors">Guides</a>
+                <a href="/about" class="hover:text-slate-900 transition-colors">About</a>
             </nav>
         </div>
     </header>
@@ -101,7 +103,8 @@
                         <li><a href="/about" class="hover:text-indigo-600 transition-colors">About Us</a></li>
                         <li><a href="/contact" class="hover:text-indigo-600 transition-colors">Contact</a></li>
                         <li><a href="/radon-cost-calculator" class="hover:text-indigo-600 transition-colors">Cost Calculator</a></li>
-                        <li><a href="/guides" class="hover:text-indigo-600 transition-colors">Mitigation Guides</a></li>
+                        <li><a href="/guides" class="hover:text-indigo-600 transition-colors">Guides</a></li>
+                        <li><a href="/guides/how-to-test-for-radon" class="hover:text-indigo-600 transition-colors">How to Test for Radon</a></li>
                     </ul>
                 </div>
                 <div>

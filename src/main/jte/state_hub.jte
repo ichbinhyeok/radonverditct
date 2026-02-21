@@ -45,6 +45,30 @@
                 @endfor
             </div>
 
+            <!-- Cross-Silo Link to Radon Levels -->
+            <div class="flex flex-col sm:flex-row gap-4 mb-12">
+                <a href="/radon-levels/${stateSlug}"
+                   class="flex items-center gap-3 p-4 rounded-xl border border-slate-200 bg-white hover:border-indigo-300 hover:shadow-md transition-all group flex-1">
+                    <div class="w-10 h-10 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center shrink-0">
+                        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" /></svg>
+                    </div>
+                    <div>
+                        <span class="block font-bold text-sm text-slate-800 group-hover:text-indigo-600 transition-colors">${stateAbbr} Radon Levels by County</span>
+                        <span class="text-xs text-slate-500">View EPA zone data and risk classifications</span>
+                    </div>
+                </a>
+                <a href="/guides/how-to-test-for-radon"
+                   class="flex items-center gap-3 p-4 rounded-xl border border-slate-200 bg-white hover:border-indigo-300 hover:shadow-md transition-all group flex-1">
+                    <div class="w-10 h-10 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0">
+                        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" /></svg>
+                    </div>
+                    <div>
+                        <span class="block font-bold text-sm text-slate-800 group-hover:text-indigo-600 transition-colors">How to Test for Radon</span>
+                        <span class="text-xs text-slate-500">Complete homeowner's testing guide</span>
+                    </div>
+                </a>
+            </div>
+
             <!-- Contextual State Info (Call to Action to pick a county) -->
             <div class="bg-slate-50 rounded-3xl p-8 sm:p-10 border border-slate-100 mt-10">
                 <div class="flex flex-col md:flex-row items-center gap-8 text-center md:text-left">
