@@ -2,6 +2,7 @@ package com.radonverdict.service;
 
 import com.radonverdict.model.County;
 import com.radonverdict.model.PricingConfig;
+import com.radonverdict.model.StateRegulations;
 import com.radonverdict.model.dto.ItemizedReceipt;
 import com.radonverdict.model.dto.PricingRequest;
 import lombok.RequiredArgsConstructor;
@@ -30,23 +31,45 @@ public class PricingCalculatorService {
         }
 
         return calculate(county.getStateAbbr(), county.getCountyName(), request.getFoundationType(),
-                request.getUserIntent());
+                request.getUserIntent(), request.getSqftCategory());
     }
 
     public ItemizedReceipt calculate(String stateAbbr, String countyName, String foundationType, String userIntent) {
+        return calculate(stateAbbr, countyName, foundationType, userIntent, "under_2000");
+    }
+
+    public ItemizedReceipt calculate(String stateAbbr, String countyName, String foundationType, String userIntent,
+            String sqftCategory) {
 
         PricingConfig config = dataLoadService.getPricingConfig();
+        StateRegulations regulations = dataLoadService.getStateRegulations();
+        StateRegulations.StateRule stateRule = regulations != null ? regulations.getStateRules().getOrDefault(
+                stateAbbr.toUpperCase(), regulations.getDefaultStateRule()) : null;
 
         // 2. Load Regional Multiplier
         double multiplier = config.getRegionalMultipliers().getOrDefault(stateAbbr.toUpperCase(),
                 config.getDefaultMultiplier());
 
-        // 3. Materials & Permits (Fixed items, unaffected by state multiplier for now)
-        int matLow = config.getBaseComponents().getMaterials().getLow();
-        int matHigh = config.getBaseComponents().getMaterials().getHigh();
+        // 3. Materials & Permits
+        PricingConfig.Range foundationMatMod = config.getFoundationMaterialModifiers() != null
+                ? config.getFoundationMaterialModifiers().getOrDefault(
+                        foundationType != null ? foundationType.toLowerCase() : "other",
+                        null)
+                : null;
+        int matLowMod = foundationMatMod != null ? foundationMatMod.getLow() : 0;
+        int matHighMod = foundationMatMod != null ? foundationMatMod.getHigh() : 0;
+
+        int matLow = config.getBaseComponents().getMaterials().getLow() + matLowMod;
+        int matHigh = config.getBaseComponents().getMaterials().getHigh() + matHighMod;
 
         int permitsLow = config.getBaseComponents().getPermitsSetup().getLow();
         int permitsHigh = config.getBaseComponents().getPermitsSetup().getHigh();
+
+        // License Premium
+        if (stateRule != null && stateRule.isLicenseRequired()) {
+            permitsLow += 100;
+            permitsHigh += 200;
+        }
 
         // 4. Labor Calculation (Base + Foundation Modifier) * Multiplier
         int laborBaseLow = config.getLaborBase().getLow();
@@ -59,9 +82,15 @@ public class PricingCalculatorService {
         int labLow = (int) Math.round((laborBaseLow + foundationMod.getLow()) * multiplier);
         int labHigh = (int) Math.round((laborBaseHigh + foundationMod.getHigh()) * multiplier);
 
+        // 4.5. Square Footage Multiplier
+        double sqftMult = 1.0;
+        if (sqftCategory != null && config.getSqftMultipliers() != null) {
+            sqftMult = config.getSqftMultipliers().getOrDefault(sqftCategory, 1.0);
+        }
+
         // 5. Totals
-        int totalLow = matLow + labLow + permitsLow;
-        int totalHigh = matHigh + labHigh + permitsHigh;
+        int totalLow = (int) Math.round((matLow + labLow + permitsLow) * sqftMult);
+        int totalHigh = (int) Math.round((matHigh + labHigh + permitsHigh) * sqftMult);
 
         // Sanity Check Bounds
         totalLow = Math.max(totalLow, config.getSanityBounds().getMinTotal());

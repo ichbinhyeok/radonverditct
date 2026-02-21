@@ -16,6 +16,12 @@ public class PricingConfig {
     @JsonProperty("foundation_labor_modifiers")
     private Map<String, Range> foundationLaborModifiers;
 
+    @JsonProperty("foundation_material_modifiers")
+    private Map<String, Range> foundationMaterialModifiers;
+
+    @JsonProperty("sqft_multipliers")
+    private Map<String, Double> sqftMultipliers;
+
     @JsonProperty("regional_multipliers")
     private Map<String, Double> regionalMultipliers;
 

@@ -16,7 +16,7 @@
           hx-trigger="change"
           hx-swap="innerHTML transition:true"
           class="space-y-8"
-          x-data="{ foundation: 'basement', intent: 'buying' }">
+          x-data="{ foundation: 'basement', intent: 'buying', sqftCategory: 'under_2000' }">
         
         <!-- Hidden required fields -->
         <input type="hidden" name="stateSlug" value="${county.getStateSlug()}">
@@ -73,6 +73,26 @@
                     <div class="text-center py-2.5 rounded-lg text-sm font-semibold transition-colors duration-200"
                          :class="intent === 'homeowner' ? 'bg-white text-slate-900 shadow-sm ring-1 ring-black/5' : 'text-slate-500 hover:text-slate-700'">
                         Living Here
+                    </div>
+                </label>
+            </div>
+        </div>
+        <!-- Axis 3: Home Size -->
+        <div>
+            <label class="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-3 text-center">Home Size</label>
+            <div class="bg-slate-100 rounded-xl p-1.5 flex gap-1 relative overflow-hidden ring-1 ring-inset ring-slate-200">
+                <label class="flex-1 cursor-pointer relative z-10">
+                    <input type="radio" name="sqftCategory" value="under_2000" x-model="sqftCategory" class="peer sr-only">
+                    <div class="text-center py-2.5 rounded-lg text-sm font-semibold transition-colors duration-200"
+                         :class="sqftCategory === 'under_2000' ? 'bg-white text-slate-900 shadow-sm ring-1 ring-black/5' : 'text-slate-500 hover:text-slate-700'">
+                        Under 2,000 sq ft
+                    </div>
+                </label>
+                <label class="flex-1 cursor-pointer relative z-10">
+                    <input type="radio" name="sqftCategory" value="over_2000" x-model="sqftCategory" class="peer sr-only">
+                    <div class="text-center py-2.5 rounded-lg text-sm font-semibold transition-colors duration-200"
+                         :class="sqftCategory === 'over_2000' ? 'bg-white text-slate-900 shadow-sm ring-1 ring-black/5' : 'text-slate-500 hover:text-slate-700'">
+                        Over 2,000 sq ft
                     </div>
                 </label>
             </div>

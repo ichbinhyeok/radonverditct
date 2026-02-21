@@ -22,10 +22,11 @@
             ${page.getHeroTitle()}
         </h1>
 
-        <!-- Hero Narrative -->
-        <p class="text-slate-300 text-lg sm:text-xl leading-relaxed font-medium mb-6">
-            ${page.getHeroSummary()}
-        </p>
+        <!-- Hero Narrative & AEO Hook -->
+        <div class="text-slate-300 text-lg sm:text-xl leading-relaxed font-medium mb-6 space-y-4">
+            <p><strong class="text-white">Quick Answer:</strong> The average cost for radon mitigation in <strong>${page.getReceipt().getCountyName()} County</strong> is <strong>$${page.getReceipt().getTotalAvg()}</strong> (typically ranging from $${page.getReceipt().getTotalLow()} to $${page.getReceipt().getTotalHigh()}). This cost primarily depends on your home's foundation type and the complexity of pipe routing.</p>
+            <p>${page.getHeroSummary()}</p>
+        </div>
 
         <!-- Deep Dive Narrative (Glassmorphism inset) -->
         <div class="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-5 sm:p-6 text-sm text-slate-300 leading-relaxed font-medium">

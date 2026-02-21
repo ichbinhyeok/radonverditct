@@ -3,10 +3,14 @@
 
 @param County county
 @param CountyPageContent page
+@param String canonicalUrl = null
+@param String leadSuccessMessage = null
+@param String leadErrorMessage = null
 
 @template.layout.main(
     title = page.getHeroTitle(),
     description = page.getHeroSummary(),
+    canonicalUrl = canonicalUrl,
     content = @`
         <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
             
@@ -29,6 +33,7 @@
                 
                 <!-- Left Column (Simulator + Details) -->
                 <div class="lg:col-span-5 order-2 lg:order-1">
+                    @template.components.radon_level_advisor(county = county)
                     @template.components.simulator_form(county = county)
                     
                     <!-- Foundation Context (Updates dynamically if we made this HTMX too, but for now static default) -->
@@ -76,9 +81,53 @@
                 </div>
             </div>
 
+            <!-- Lead Capture CTA (Injected) -->
+            @template.components.lead_form(county = county, page = page, successMessage = leadSuccessMessage, errorMessage = leadErrorMessage)
+
             <!-- 3. Dynamic FAQs -->
             <div class="max-w-3xl border-t border-slate-200 mt-20 pt-16">
                 @template.components.faq_accordion(page = page)
+            </div>
+
+            <!-- 4. SEO Silo: Nearby Counties -->
+            @if(page.getNearbyCounties() != null && !page.getNearbyCounties().isEmpty())
+            <div class="border-t border-slate-200 mt-20 pt-16 mb-10">
+                <h3 class="font-display font-bold text-2xl text-slate-900 mb-6">Explore Radon Mitigation Costs in Nearby ${county.getStateAbbr()} Counties</h3>
+                <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                    @for(var nearby : page.getNearbyCounties())
+                        <a href="/radon-mitigation-cost/${nearby.getStateSlug()}/${nearby.getCountySlug()}" 
+                           class="block p-4 rounded-xl border border-slate-200 bg-white hover:border-indigo-300 hover:shadow-md transition-all group">
+                            <span class="block font-bold text-slate-800 group-hover:text-indigo-600 transition-colors">${nearby.getCountyName()}</span>
+                            <span class="text-xs text-slate-500 mt-1">Zone ${nearby.getEpaZone()}</span>
+                        </a>
+                    @endfor
+                </div>
+            </div>
+            @endif
+
+            <!-- 5. Sources & Methodology / YMYL Disclaimers -->
+            <div class="border-t border-slate-200 mt-20 pt-16 mb-10 text-sm text-slate-500">
+                <h3 class="font-display font-bold text-xl text-slate-900 mb-4">Sources & Methodology</h3>
+                <p class="mb-6">The radon mitigation cost estimates presented on this page are dynamically calculated using baseline national material averages combined with localized labor multipliers for ${county.getCountyName()} County. </p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div>
+                        <h4 class="font-bold text-slate-700 mb-2">Important Disclaimers</h4>
+                        <ul class="space-y-3 pl-4">
+                            <li class="relative before:content-['•'] before:absolute before:-left-4 before:text-slate-300"><strong class="text-slate-700">Health & Safety:</strong> Information on this site is for educational purposes and is not medical advice. For health concerns, consult qualified professionals.</li>
+                            <li class="relative before:content-['•'] before:absolute before:-left-4 before:text-slate-300"><strong class="text-slate-700">Estimates:</strong> Estimates are general ranges based on typical projects. Actual quotes vary by home conditions and local labor.</li>
+                            <li class="relative before:content-['•'] before:absolute before:-left-4 before:text-slate-300"><strong class="text-slate-700">Zone Data:</strong> Radon zone classifications describe regional potential for elevated indoor radon. They do not predict the radon level in a specific home. Testing is recommended for all homes.</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-slate-700 mb-2">Data Sources</h4>
+                        <ul class="space-y-3 pl-4">
+                            <li class="relative before:content-['•'] before:absolute before:-left-4 before:text-slate-300"><a href="https://www.epa.gov/radon" target="_blank" rel="nofollow noopener" class="text-indigo-600 hover:text-indigo-800 hover:underline transition-colors">US Environmental Protection Agency (EPA) - Action Level</a></li>
+                            <li class="relative before:content-['•'] before:absolute before:-left-4 before:text-slate-300"><a href="https://www.epa.gov/radon/epa-map-radon-zones" target="_blank" rel="nofollow noopener" class="text-indigo-600 hover:text-indigo-800 hover:underline transition-colors">EPA Map of Radon Zones</a></li>
+                            <li class="relative before:content-['•'] before:absolute before:-left-4 before:text-slate-300">National contractor cost guides and local labor indices.</li>
+                        </ul>
+                    </div>
+                </div>
+                <p class="mt-8 text-xs text-slate-400 font-medium">Page Content Last Updated: February 2026</p>
             </div>
             
             <!-- Generate JSON-LD schema for FAQPage -->
@@ -99,6 +148,30 @@
                         @if(i < page.getFaqs().size() - 1),@endif
                         @endfor
                     ]
+                }
+            </script>
+            
+            <!-- Generate JSON-LD schema for BreadcrumbList -->
+            <script type="application/ld+json">
+                {
+                    "@context": "https://schema.org",
+                    "@type": "BreadcrumbList",
+                    "itemListElement": [{
+                        "@type": "ListItem",
+                        "position": 1,
+                        "name": "Home",
+                        "item": "https://radonverdict.com/"
+                    },{
+                        "@type": "ListItem",
+                        "position": 2,
+                        "name": "${county.getStateAbbr()}",
+                        "item": "https://radonverdict.com/radon-mitigation-cost/${county.getStateSlug()}"
+                    },{
+                        "@type": "ListItem",
+                        "position": 3,
+                        "name": "${county.getCountyName()} County",
+                        "item": "https://radonverdict.com/radon-mitigation-cost/${county.getStateSlug()}/${county.getCountySlug()}"
+                    }]
                 }
             </script>
         </div>

@@ -2,6 +2,7 @@
 
 @param String title
 @param String description = "National Radon Mitigation Cost Calculator"
+@param String canonicalUrl = null
 @param Content content
 
 <!DOCTYPE html>
@@ -11,6 +12,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>${title}</title>
     <meta name="description" content="${description}">
+    @if(canonicalUrl != null)
+        <link rel="canonical" href="${canonicalUrl}">
+    @endif
     
     <!-- Google Fonts: Outfit (Display) & Inter (Numbers/Body) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -84,15 +88,33 @@
     <!-- 2026 SaaS Style Minimal Footer -->
     <footer class="bg-white border-t border-slate-100 mt-20">
         <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-            <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
-                <div>
-                    <span class="font-display font-bold text-lg tracking-tight text-slate-900">RadonVerdict</span>
-                    <p class="mt-2 text-sm text-slate-400">
-                        Empowering homeowners with localized mitigation data.
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div class="col-span-1 md:col-span-2">
+                    <span class="font-display font-bold text-lg tracking-tight text-slate-900">Radon<span class="text-slate-400">Verdict</span></span>
+                    <p class="mt-4 text-sm text-slate-500 leading-relaxed max-w-sm">
+                        Empowering homeowners with localized data. We analyze EPA zone risks, structure types, and local labor rates to provide precise estimates.
                     </p>
                 </div>
+                <div>
+                    <h4 class="font-bold text-slate-900 mb-4 text-sm uppercase tracking-wider">Company</h4>
+                    <ul class="space-y-3 text-sm font-medium text-slate-500">
+                        <li><a href="/about" class="hover:text-indigo-600 transition-colors">About Us</a></li>
+                        <li><a href="/contact" class="hover:text-indigo-600 transition-colors">Contact</a></li>
+                        <li><a href="/radon-cost-calculator" class="hover:text-indigo-600 transition-colors">Cost Calculator</a></li>
+                        <li><a href="/guides" class="hover:text-indigo-600 transition-colors">Mitigation Guides</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-bold text-slate-900 mb-4 text-sm uppercase tracking-wider">Legal</h4>
+                    <ul class="space-y-3 text-sm font-medium text-slate-500">
+                        <li><a href="/privacy" class="hover:text-indigo-600 transition-colors">Privacy Policy</a></li>
+                        <li><a href="/terms" class="hover:text-indigo-600 transition-colors">Terms of Service</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-slate-100 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
                 <div class="text-xs text-slate-400 font-medium">
-                    &copy; 2026 RadonVerdict. Not affiliated with the US EPA.
+                    &copy; 2026 RadonVerdict. Not affiliated with the US EPA or any government agency.
                 </div>
             </div>
         </div>

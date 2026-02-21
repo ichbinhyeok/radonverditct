@@ -95,6 +95,8 @@ public class PageController {
 
         model.addAttribute("county", county);
         model.addAttribute("page", pageContent);
+        model.addAttribute("canonicalUrl",
+                "https://radonverdict.com/radon-mitigation-cost/" + stateSlug + "/" + countySlug);
 
         return "county_hub";
     }
@@ -106,6 +108,7 @@ public class PageController {
             @RequestParam String countySlug,
             @RequestParam String foundation,
             @RequestParam String intent,
+            @RequestParam(defaultValue = "under_2000") String sqftCategory,
             Model model) {
 
         String key = stateSlug.toLowerCase() + "/" + countySlug.toLowerCase();
@@ -114,10 +117,10 @@ public class PageController {
         if (county == null) {
             // Fallback: just return empty receipt
             model.addAttribute("page", contentService.buildPageContent(
-                    dataLoadService.getCountByFipsMap().values().iterator().next(), foundation, intent));
+                    dataLoadService.getCountByFipsMap().values().iterator().next(), foundation, intent, sqftCategory));
         } else {
             // Build full content based on the new user selection
-            CountyPageContent pageContent = contentService.buildPageContent(county, foundation, intent);
+            CountyPageContent pageContent = contentService.buildPageContent(county, foundation, intent, sqftCategory);
             model.addAttribute("page", pageContent);
         }
 

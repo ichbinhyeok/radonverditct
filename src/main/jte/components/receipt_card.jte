@@ -60,8 +60,43 @@
             </div>
         </div>
         
+        <!-- Semantic Table for AI / AEO Crawlers (Visually Hidden) -->
+        <table class="sr-only">
+            <caption>Average Local Radon Mitigation Cost Breakdown for ${receipt.getCountyName()} County</caption>
+            <thead>
+                <tr>
+                    <th scope="col">Component</th>
+                    <th scope="col">Average Cost</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>System Materials</td>
+                    <td>$${receipt.getMaterialsAvg()}</td>
+                </tr>
+                <tr>
+                    <td>Specialized Labor</td>
+                    <td>$${receipt.getLaborAvg()}</td>
+                </tr>
+                <tr>
+                    <td>Permits & Setup</td>
+                    <td>$${receipt.getPermitsSetupAvg()}</td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <th scope="row">Estimated Total Range</th>
+                    <td>$${receipt.getTotalLow()} - $${receipt.getTotalHigh()}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Average Total</th>
+                    <td>$${receipt.getTotalAvg()}</td>
+                </tr>
+            </tfoot>
+        </table>
+
         <!-- Context Note -->
-        <div class="mt-6 flex items-start gap-3 p-4 bg-slate-50/50 rounded-xl border border-slate-100">
+        <div class="mt-8 flex items-start gap-3 p-4 bg-slate-50/50 rounded-xl border border-slate-100">
             <svg class="w-5 h-5 text-slate-400 mt-0.5 shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path></svg>
             <p class="text-[13px] text-slate-500 font-medium leading-relaxed">Prices are dynamically adjusted for local market multipliers and represent standard sub-slab or basement installations. Real contractor pricing may vary based on structural complexity.</p>
         </div>

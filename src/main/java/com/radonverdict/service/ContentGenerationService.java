@@ -32,6 +32,11 @@ public class ContentGenerationService {
          * This single method assembles everything the frontend template needs.
          */
         public CountyPageContent buildPageContent(County county, String foundationType, String userIntent) {
+                return buildPageContent(county, foundationType, userIntent, "under_2000");
+        }
+
+        public CountyPageContent buildPageContent(County county, String foundationType, String userIntent,
+                        String sqftCategory) {
 
                 String zoneKey = String.valueOf(county.getEpaZone());
                 String stateAbbr = county.getStateAbbr();
@@ -43,7 +48,7 @@ public class ContentGenerationService {
 
                 // 1. Get the receipt first (needed for placeholder resolution in text)
                 ItemizedReceipt receipt = pricingCalculatorService.calculate(
-                                stateAbbr, countyName, foundationType, userIntent);
+                                stateAbbr, countyName, foundationType, userIntent, sqftCategory);
 
                 // 2. Resolve Zone Description
                 ContentTemplates.ZoneDescription zoneDesc = templates.getZoneDescriptions().getOrDefault(
@@ -70,6 +75,13 @@ public class ContentGenerationService {
                 List<CountyPageContent.FaqItem> faqs = buildFaqs(
                                 faqTemplates, zoneKey, stateRule, ctx);
 
+                // 6.5 Calculate nearby counties for SEO siloing
+                List<County> nearbyCounties = dataLoadService.getCountyBySlugMap().values().stream()
+                                .filter(c -> c.getStateAbbr().equals(stateAbbr)
+                                                && !c.getCountySlug().equals(county.getCountySlug()))
+                                .limit(6)
+                                .toList();
+
                 // 7. Assemble Final DTO
                 return CountyPageContent.builder()
                                 .heroTitle("Radon Mitigation Cost in " + countyName + ", " + stateAbbr)
@@ -92,6 +104,7 @@ public class ContentGenerationService {
                                 .licenseNote(resolve(stateRule.getLicenseNote(), ctx))
                                 .faqs(faqs)
                                 .receipt(receipt)
+                                .nearbyCounties(nearbyCounties)
                                 .build();
         }
 

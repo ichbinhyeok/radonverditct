@@ -48,6 +48,9 @@ public class CountyPageContent {
     // Itemized Receipt (from PricingCalculatorService)
     private ItemizedReceipt receipt;
 
+    // SEO Silo: Neighboring Counties in the same state
+    private List<com.radonverdict.model.County> nearbyCounties;
+
     @Data
     @Builder
     public static class FaqItem {
