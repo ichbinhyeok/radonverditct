@@ -1,0 +1,60 @@
+package com.radonverdict.model.dto;
+
+import com.radonverdict.model.ContentTemplates;
+import com.radonverdict.model.FaqTemplates;
+import com.radonverdict.model.StateRegulations;
+import lombok.Builder;
+import lombok.Data;
+
+import java.util.List;
+
+/**
+ * Assembled, ready-to-render page content for a single county.
+ * Every field is pre-resolved with county/state/zone specifics.
+ * No hardcoded text should exist outside this DTO and the source JSON
+ * templates.
+ */
+@Data
+@Builder
+public class CountyPageContent {
+
+    // Hero Section
+    private String heroTitle;
+    private String heroSummary; // Zone-aware summary
+    private String riskLevel; // "High", "Moderate", "Low", "Unclassified"
+    private String badgeColor; // "red", "yellow", "green", "gray"
+
+    // Risk Narrative
+    private String riskNarrative;
+
+    // Intent-specific Content
+    private String intentSectionTitle;
+    private String intentIntro;
+    private List<String> intentSteps;
+    private String intentProTip;
+
+    // Foundation Description
+    private String foundationLabel;
+    private String foundationCostContext;
+    private String foundationNegotiationNote;
+
+    // State Regulation
+    private boolean disclosureRequired;
+    private String disclosureSummary;
+    private String stateProgramUrl;
+    private boolean licenseRequired;
+    private String licenseNote;
+
+    // Dynamic FAQ (zone-specific + universal, all placeholders resolved)
+    private List<FaqItem> faqs;
+
+    // Itemized Receipt (from PricingCalculatorService)
+    private ItemizedReceipt receipt;
+
+    @Data
+    @Builder
+    public static class FaqItem {
+        private String question;
+        private String answer;
+    }
+}

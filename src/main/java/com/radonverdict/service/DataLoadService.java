@@ -2,9 +2,7 @@ package com.radonverdict.service;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.radonverdict.model.County;
-import com.radonverdict.model.PricingConfig;
-import com.radonverdict.model.ReferenceSource;
+import com.radonverdict.model.*;
 import com.radonverdict.model.dto.EpaZoneDto;
 import com.radonverdict.model.dto.GeoCountyDto;
 import jakarta.annotation.PostConstruct;
@@ -38,6 +36,12 @@ public class DataLoadService {
     private List<ReferenceSource> referenceSources;
     @Getter
     private PricingConfig pricingConfig;
+    @Getter
+    private ContentTemplates contentTemplates;
+    @Getter
+    private StateRegulations stateRegulations;
+    @Getter
+    private FaqTemplates faqTemplates;
 
     @PostConstruct
     public void init() {
@@ -94,6 +98,24 @@ public class DataLoadService {
             pricingConfig = readJson("data/pricing_config.json", new TypeReference<PricingConfig>() {
             });
             log.info("Loaded pricing config. Default Multiplier: {}", pricingConfig.getDefaultMultiplier());
+
+            // 7. Load Content Templates
+            contentTemplates = readJson("data/content_templates.json", new TypeReference<ContentTemplates>() {
+            });
+            log.info("Loaded content templates: {} zones, {} foundations, {} intents",
+                    contentTemplates.getZoneDescriptions().size(),
+                    contentTemplates.getFoundationDescriptions().size(),
+                    contentTemplates.getIntentContent().size());
+
+            // 8. Load State Regulations
+            stateRegulations = readJson("data/state_regulations.json", new TypeReference<StateRegulations>() {
+            });
+            log.info("Loaded state regulations for {} states", stateRegulations.getStateRules().size());
+
+            // 9. Load FAQ Templates
+            faqTemplates = readJson("data/faq_templates.json", new TypeReference<FaqTemplates>() {
+            });
+            log.info("Loaded FAQ templates: {} pools", faqTemplates.getFaqPool().size());
 
             log.info("In-memory data load complete.");
 

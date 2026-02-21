@@ -1,0 +1,64 @@
+{
+    "faq_pool": {
+        "zone_1": [
+            {
+                "question": "Why is {countyName}, {stateAbbr} classified as high risk for radon?",
+                "answer": "The EPA classifies {countyName} as Zone 1 because the predicted average indoor radon screening level exceeds 4 pCi/L. This is primarily due to the geological composition of the area — certain rock types (granite, shale, phosphate) naturally contain higher concentrations of uranium, which decays into radon gas."
+            },
+            {
+                "question": "How likely is it that a home in {countyName} will need radon mitigation?",
+                "answer": "In Zone 1 counties like {countyName}, a significant percentage of homes test above the EPA's 4.0 pCi/L action level. While every home is different, the probability is substantially higher than the national average. Testing is essential before making any purchase decision."
+            },
+            {
+                "question": "Is radon mitigation mandatory in {countyName}?",
+                "answer": "Radon mitigation is not federally mandated. However, the EPA strongly recommends mitigation when levels exceed 4.0 pCi/L. In {stateAbbr}, {regulationNote}. Many mortgage lenders and home insurers in Zone 1 areas require or encourage radon testing."
+            }
+        ],
+        "zone_2": [
+            {
+                "question": "Should I still test for radon in {countyName} even though it's Zone 2?",
+                "answer": "Absolutely. Zone 2 means the county average is between 2-4 pCi/L, but individual homes can test well above or below this range. The EPA recommends testing all homes regardless of zone. In {countyName}, approximately 1 in 5 homes may test above the action level."
+            },
+            {
+                "question": "Is radon a deal-breaker when buying a home in {countyName}?",
+                "answer": "No. Radon is a solvable problem. A mitigation system in {countyName} typically costs between ${totalLow} and ${totalHigh}, is installed in one day, and reduces levels by 80-99%. It should be treated as a negotiation point, not a deal-breaker."
+            }
+        ],
+        "zone_3": [
+            {
+                "question": "If {countyName} is low risk, do I really need a radon test?",
+                "answer": "Yes. The EPA's official recommendation is to test every home, regardless of zone. Zone 3 represents a county-wide average below 2 pCi/L, but localized geological features can produce elevated levels in individual homes. The test costs $15-$30 and takes 2-7 days."
+            },
+            {
+                "question": "Can a home in {countyName} really have high radon despite being Zone 3?",
+                "answer": "Yes. The EPA has documented homes in Zone 3 areas testing above 20 pCi/L (5x the action level). Radon entry depends on highly localized factors: cracks in the foundation, soil permeability directly beneath your home, and ventilation patterns."
+            }
+        ],
+        "universal": [
+            {
+                "question": "How much does radon mitigation cost in {countyName}, {stateAbbr}?",
+                "answer": "Based on local labor rates and material costs, radon mitigation in {countyName} typically costs between ${totalLow} and ${totalHigh}, with an average of ${totalAvg}. The final cost depends on your foundation type (basement, crawl space, or slab) and the complexity of the installation."
+            },
+            {
+                "question": "Who pays for radon mitigation — the buyer or the seller?",
+                "answer": "This is negotiable. In most real estate transactions, the buyer requests a Seller Credit (closing credit) to cover the cost of mitigation. The buyer then hires their own contractor after closing. In {stateAbbr}, {disclosureNote}."
+            },
+            {
+                "question": "How long does radon mitigation take to install?",
+                "answer": "A standard sub-slab depressurization system is typically installed in 4-8 hours by a certified professional. The system begins reducing radon levels immediately, and a post-mitigation test is usually conducted 24-48 hours after installation."
+            },
+            {
+                "question": "What type of radon mitigation system is most common in {countyName}?",
+                "answer": "The most common and effective system is Active Sub-slab Depressurization (ASD). A pipe is inserted through or below the foundation slab, and a small fan continuously draws radon gas from beneath the home and exhausts it above the roofline, where it safely disperses."
+            },
+            {
+                "question": "Does radon mitigation increase my home's resale value?",
+                "answer": "Yes. A properly mitigated home with documentation removes a major buyer objection. In {countyName}, where the average mitigation costs ${totalAvg}, the return on investment is highly favorable — especially in Zone {epaZone} areas where buyers actively screen for radon."
+            },
+            {
+                "question": "Can I install a radon mitigation system myself in {stateAbbr}?",
+                "answer": "While DIY radon mitigation is technically possible, it is strongly discouraged. Improper installation can fail to reduce radon levels or even increase them. In {stateAbbr}, {licenseNote}. The EPA recommends hiring a certified professional."
+            }
+        ]
+    }
+}

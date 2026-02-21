@@ -1,8 +1,10 @@
 package com.radonverdict.controller;
 
 import com.radonverdict.model.County;
+import com.radonverdict.model.dto.CountyPageContent;
 import com.radonverdict.model.dto.ItemizedReceipt;
 import com.radonverdict.model.dto.PricingRequest;
+import com.radonverdict.service.ContentGenerationService;
 import com.radonverdict.service.DataLoadService;
 import com.radonverdict.service.PricingCalculatorService;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +23,7 @@ public class PageController {
 
     private final DataLoadService dataLoadService;
     private final PricingCalculatorService calcService;
+    private final ContentGenerationService contentService;
 
     @GetMapping("/")
     public String home() {
@@ -30,16 +33,13 @@ public class PageController {
     @GetMapping("/radon-cost-calculator")
     public String globalCalculator(Model model) {
         model.addAttribute("title", "National Radon Mitigation Cost Calculator 2026");
-        // default receipt for global
         ItemizedReceipt defaultReceipt = calcService.calculate("US", "National Average", "other", "homeowner");
         model.addAttribute("defaultReceipt", defaultReceipt);
-        return "calculator"; // JTE template
+        return "calculator";
     }
 
     @GetMapping("/radon-mitigation-cost/{stateSlug}")
     public String stateHub(@PathVariable String stateSlug, Model model) {
-        // Here we could filter counties by state and load state-level data
-        // For MVP, if it exists in any county stateSlug, it's valid
         boolean validState = dataLoadService.getCountyBySlugMap().values().stream()
                 .anyMatch(c -> c.getStateSlug().equalsIgnoreCase(stateSlug));
 
@@ -59,36 +59,38 @@ public class PageController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "County not found");
         }
 
-        // Static Rendering (for AEO / Indexing / Default View)
-        // By default, showing buying intent and basement foundation for conservative
-        // logic
-        ItemizedReceipt defaultReceipt = calcService.calculate(
-                county.getStateAbbr(), county.getCountyName(), "basement", "buying");
+        // Build the FULL page content (Zone + State regulation + Intent + FAQ +
+        // Receipt)
+        CountyPageContent pageContent = contentService.buildPageContent(county, "basement", "buying");
 
         model.addAttribute("county", county);
-        model.addAttribute("defaultReceipt", defaultReceipt);
+        model.addAttribute("page", pageContent);
 
-        return "county_hub"; // JTE template
+        return "county_hub";
     }
 
-    // HTMX Endpoint for dynamically updating the Interactive Receipt fragment!
+    // HTMX Endpoint: recalculates receipt + content fragment based on user input
     @PostMapping("/htmx/calculate-receipt")
     public String calculateReceiptFragment(
-            @RequestParam String zipCode,
+            @RequestParam String stateSlug,
+            @RequestParam String countySlug,
             @RequestParam String foundation,
             @RequestParam String intent,
             Model model) {
 
-        PricingRequest req = PricingRequest.builder()
-                .zipCode(zipCode)
-                .foundationType(foundation)
-                .userIntent(intent)
-                .build();
+        String key = stateSlug.toLowerCase() + "/" + countySlug.toLowerCase();
+        County county = dataLoadService.getCountyBySlugMap().get(key);
 
-        ItemizedReceipt newReceipt = calcService.calculate(req);
-        model.addAttribute("receipt", newReceipt);
+        if (county == null) {
+            // Fallback: just return empty receipt
+            model.addAttribute("page", contentService.buildPageContent(
+                    dataLoadService.getCountByFipsMap().values().iterator().next(), foundation, intent));
+        } else {
+            // Build full content based on the new user selection
+            CountyPageContent pageContent = contentService.buildPageContent(county, foundation, intent);
+            model.addAttribute("page", pageContent);
+        }
 
-        // This resolves to a specific JTE fragment file (e.g., fragments/receipt.jte)
         return "fragments/receipt";
     }
 }

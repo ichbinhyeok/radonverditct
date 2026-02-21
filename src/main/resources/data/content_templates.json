@@ -1,0 +1,100 @@
+{
+    "zone_descriptions": {
+        "1": {
+            "risk_level": "High",
+            "badge_color": "red",
+            "hero_summary": "is classified as EPA Zone 1 (High Risk). Home inspections in this area frequently detect radon levels above the 4.0 pCi/L action threshold. Mitigation is strongly recommended before closing on any property.",
+            "risk_narrative": "Homes in {countyName} have a predicted average indoor radon screening level greater than 4 pCi/L. This places {countyName} in the highest-risk category defined by the EPA. Geological surveys indicate that the underlying rock and soil formations in this region naturally produce elevated levels of uranium decay, which releases radon gas into foundations.",
+            "buyer_warning": "If you are purchasing a home in {countyName}, do not waive the radon inspection contingency. Given the Zone 1 classification, there is a statistically significant probability that the home will test above the EPA action level. Budget for mitigation as part of your closing costs.",
+            "seller_advisory": "Sellers in {countyName} should proactively test and mitigate before listing. In Zone 1 areas, buyers and their agents are highly aware of radon risk, and a clean radon report can accelerate the sale and justify your asking price.",
+            "homeowner_guidance": "If you have lived in your {countyName} home for years without testing, the EPA strongly recommends testing immediately. Long-term exposure to elevated radon is the second leading cause of lung cancer in the United States."
+        },
+        "2": {
+            "risk_level": "Moderate",
+            "badge_color": "yellow",
+            "hero_summary": "is classified as EPA Zone 2 (Moderate Risk). While average radon levels are below the federal action level, individual homes can still test high depending on foundation type and soil conditions. Testing is recommended.",
+            "risk_narrative": "Homes in {countyName} have a predicted average indoor radon screening level between 2 and 4 pCi/L. While this is below the EPA's 4.0 pCi/L action level, it does not mean your home is safe. Radon concentrations vary dramatically from house to house, even within the same neighborhood, due to differences in foundation construction, soil permeability, and ventilation.",
+            "buyer_warning": "Even though {countyName} is in Zone 2, you should still include a radon test in your home inspection. Approximately 1 in 5 homes in Zone 2 areas test above the action level. A $150 test can save you thousands in unexpected post-closing costs.",
+            "seller_advisory": "In Zone 2 areas like {countyName}, savvy buyers will request radon testing. Having a recent test result below 4.0 pCi/L ready removes a potential negotiation obstacle and speeds up closing.",
+            "homeowner_guidance": "The EPA recommends testing every home for radon regardless of geographic zone. In {countyName}, moderate geological risk means your home could still have elevated levels, especially in basements or ground-floor living spaces."
+        },
+        "3": {
+            "risk_level": "Low",
+            "badge_color": "green",
+            "hero_summary": "is classified as EPA Zone 3 (Low Risk). Average indoor radon levels in this area are generally below 2 pCi/L. However, the EPA recommends testing all homes regardless of zone classification, as elevated levels can occur anywhere.",
+            "risk_narrative": "Homes in {countyName} have a predicted average indoor radon screening level below 2 pCi/L. This is the lowest-risk zone defined by the EPA. However, it is critical to understand that zone classifications represent county-wide averages — individual homes can and do test above the action level even in Zone 3 areas.",
+            "buyer_warning": "While {countyName} is in Zone 3, a radon test during inspection is still a wise investment. Some homes in low-risk zones have tested as high as 20+ pCi/L due to localized geological features. The test is inexpensive relative to the health risk.",
+            "seller_advisory": "In Zone 3 areas like {countyName}, radon testing is less commonly demanded by buyers. However, providing a clean radon test result proactively signals transparency and can be a differentiator in a competitive market.",
+            "homeowner_guidance": "Even in low-risk zones like {countyName}, the EPA's official position is clear: test your home. Radon is odorless and invisible, and the only way to know your home's level is to test."
+        },
+        "0": {
+            "risk_level": "Unclassified",
+            "badge_color": "gray",
+            "hero_summary": "does not have an EPA zone classification. This typically applies to newer counties, territories, or areas where sufficient geological data was unavailable at the time of the EPA's survey. Testing is always recommended.",
+            "risk_narrative": "The EPA has not assigned a radon zone classification to {countyName}. This does not mean the area is safe or unsafe — it simply means the county was not included in the original EPA radon zone survey. The absence of data should be treated as a reason to test, not a reason to skip testing.",
+            "buyer_warning": "Because {countyName} lacks an EPA zone classification, you cannot rely on regional averages to assess risk. A radon test during your home inspection is essential.",
+            "seller_advisory": "Without zone data for {countyName}, buyers may be uncertain about radon risk. Providing a clean test result removes ambiguity and builds confidence in your listing.",
+            "homeowner_guidance": "With no EPA classification for {countyName}, the only way to understand your home's radon exposure is through direct testing. The EPA recommends all homes be tested."
+        }
+    },
+    "foundation_descriptions": {
+        "basement": {
+            "label": "Basement",
+            "cost_context": "Basement foundations are the most common installation type. The mitigation system typically runs a PVC pipe from below the basement slab, through the house, and out the roof. This is the standard installation and carries the lowest labor complexity.",
+            "negotiation_note": "Basement installations are well-understood by contractors, so quotes should be competitive. If you receive a quote significantly above our estimate, get a second opinion."
+        },
+        "crawlspace": {
+            "label": "Crawl Space",
+            "cost_context": "Crawl space foundations require additional work to seal the ground surface with a vapor barrier before the suction point can be installed. This adds material and labor costs compared to a standard basement installation.",
+            "negotiation_note": "Crawl space jobs take longer and use more materials. Expect quotes 10-25% higher than basement installations in the same area."
+        },
+        "slab": {
+            "label": "Slab-on-Grade",
+            "cost_context": "Slab-on-grade foundations require the contractor to core-drill through the concrete slab to install the suction point. This can be more labor-intensive, especially if the slab is thick or reinforced.",
+            "negotiation_note": "Slab drilling requires specialized equipment. If your home has post-tension cables in the slab, make sure the contractor checks before drilling — hitting a cable can cause structural damage."
+        },
+        "other": {
+            "label": "Other / Unknown",
+            "cost_context": "If your foundation type is unknown or a hybrid (e.g., partial basement with crawl space), the contractor will need to assess the home before providing a firm quote. Our estimate uses a moderate baseline.",
+            "negotiation_note": "For non-standard foundations, always get at least 2-3 quotes. Complexity varies significantly and so do prices."
+        }
+    },
+    "intent_content": {
+        "buying": {
+            "section_title": "Buying a Home in {countyName}? Here's Your Radon Action Plan",
+            "intro": "You're in the middle of one of the biggest financial decisions of your life. A high radon test result during inspection can feel like a deal-breaker — but it doesn't have to be. Here's exactly what to do.",
+            "steps": [
+                "Do NOT panic. Radon mitigation is routine and well-understood. It does not mean the house is defective.",
+                "Do NOT ask the seller to hire the contractor. You want to choose your own certified professional.",
+                "DO request a Seller Credit (also called a Closing Credit) equal to the estimated mitigation cost.",
+                "Use the itemized estimate above as documentation to justify the credit amount to the seller's agent.",
+                "After closing, hire a state-certified radon mitigator and pay using the credit you received."
+            ],
+            "pro_tip": "Frame the request as 'I'd like a ${totalAvg} closing credit for radon mitigation' rather than 'Fix the radon.' Sellers are far more likely to agree to a credit than to manage a repair themselves."
+        },
+        "selling": {
+            "section_title": "Selling a Home in {countyName}? Radon Strategy for Sellers",
+            "intro": "If a buyer's inspection reveals high radon, you'll face a negotiation. Being proactive about radon can save your deal and your leverage.",
+            "steps": [
+                "Get your home tested BEFORE listing. A clean result (<4.0 pCi/L) is a selling point.",
+                "If the result is high, mitigate before listing. You can market the home as 'Radon Mitigated' — a trust signal for buyers.",
+                "If mitigation isn't done before offers come in, be prepared to offer a closing credit of approximately ${totalAvg}.",
+                "Keep the mitigation receipt; post-mitigation test results below 2.0 pCi/L show the system works.",
+                "Never refuse to address radon. In {stateAbbr}, failing to disclose known radon issues can create legal liability."
+            ],
+            "pro_tip": "A mitigated home with documentation often sells faster than one where radon is unaddressed. Think of the ~${totalAvg} investment as deal insurance."
+        },
+        "homeowner": {
+            "section_title": "Already Living in {countyName}? What to Know About Radon in Your Home",
+            "intro": "You've been in your home for a while and you're now learning about radon. Here's the straightforward truth: testing is cheap, fast, and could save your life.",
+            "steps": [
+                "Buy a short-term radon test kit (~$15-$30) or a continuous radon monitor (~$150-$200) for ongoing tracking.",
+                "Place the test in the lowest livable level of your home (usually the basement or ground floor).",
+                "If results are above 4.0 pCi/L, contact a certified radon mitigator. The cost is approximately ${totalAvg} in {countyName}.",
+                "After mitigation, retest to confirm levels have dropped below 2.0 pCi/L.",
+                "Consider a long-term test (90+ days) for the most accurate reading of your year-round exposure."
+            ],
+            "pro_tip": "Radon mitigation systems typically reduce levels by 80-99%. A $${totalAvg} system can take a home from 10 pCi/L down to under 1 pCi/L."
+        }
+    }
+}
