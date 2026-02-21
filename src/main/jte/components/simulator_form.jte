@@ -15,9 +15,19 @@
           hx-target="#receipt-container"
           hx-trigger="change"
           hx-swap="innerHTML transition:true"
-          class="space-y-8"
-          x-data="{ foundation: 'basement', intent: 'buying', sqftCategory: 'under_2000' }">
+          @htmx:after-request="showToast = false; setTimeout(() => showToast = true, 50); clearTimeout(hideTimeout); hideTimeout = setTimeout(() => showToast = false, 3000)"
+          class="space-y-8 relative"
+          x-data="{ foundation: 'basement', intent: 'buying', sqftCategory: 'under_2000', showToast: false, hideTimeout: null }">
         
+        <!-- Animated Toast Notification (Triggered after HTMX swap) -->
+        <div x-show="showToast" 
+             x-transition.opacity.duration.300ms
+             class="absolute -top-14 left-1/2 -translate-x-1/2 z-50 bg-slate-800 border border-slate-700 text-white px-4 py-2 rounded-full shadow-xl text-xs sm:text-sm font-bold flex items-center gap-2 whitespace-nowrap"
+             style="display: none;">
+            <svg class="w-4 h-4 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg>
+            Estimate & Strategy Updated ↓
+        </div>
+
         <!-- Hidden required fields -->
         <input type="hidden" name="stateSlug" value="${county.getStateSlug()}">
         <input type="hidden" name="countySlug" value="${county.getCountySlug()}">
