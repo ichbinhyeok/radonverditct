@@ -8,7 +8,7 @@
 @param String canonicalUrl = null
 
 @template.layout.main(
-    title = "Radon Levels in " + county.getCountyName() + " County, " + county.getStateAbbr() + " — 2026 EPA Data",
+    title = "Radon Levels in " + county.getCountyName() + " County, " + county.getStateAbbr() + " — " + java.time.LocalDate.now().getYear() + " EPA Data",
     description = "Current radon levels and EPA zone data for " + county.getCountyName() + " County, " + county.getStateAbbr() + ". Understand your risk, learn testing options, and see what action to take based on your reading.",
     canonicalUrl = canonicalUrl,
     content = @`
@@ -445,7 +445,7 @@
                     Testing is the only reliable method to determine your home's radon concentration. This content is for informational purposes
                     and is not medical advice.
                 </p>
-                <p class="mt-4 text-xs text-slate-400 font-medium">Page Content Last Updated: February 2026</p>
+                <p class="mt-4 text-xs text-slate-400 font-medium">Page Content Last Updated: ${java.time.LocalDate.now().getMonth().getDisplayName(java.time.format.TextStyle.FULL, java.util.Locale.US)} ${java.time.LocalDate.now().getYear()}</p>
             </div>
 
             <!-- Schema.org structured data -->

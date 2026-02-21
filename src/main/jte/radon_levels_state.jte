@@ -9,7 +9,7 @@
 @param long zone3Count = 0
 
 @template.layout.main(
-    title = stateAbbr + " Radon Levels by County — 2026 EPA Zone Data",
+    title = stateAbbr + " Radon Levels by County — " + java.time.LocalDate.now().getYear() + " EPA Zone Data",
     description = "Interactive radon level map and EPA zone data for every county in " + stateAbbr + ". Find your county's risk classification and learn what to do next.",
     canonicalUrl = "https://radonverdict.com/radon-levels/" + stateSlug,
     content = @`
@@ -28,7 +28,7 @@
             <div class="text-center mb-12">
                 <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-slate-100 text-xs font-bold text-slate-600 uppercase tracking-widest mb-6">
                     <span class="w-2 h-2 rounded-full bg-indigo-500"></span>
-                    EPA Zone Data 2026
+                    EPA Zone Data ${java.time.LocalDate.now().getYear()}
                 </div>
 
                 <h1 class="font-display font-black text-4xl sm:text-5xl text-slate-900 mb-4">${stateAbbr} Radon Levels</h1>

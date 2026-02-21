@@ -154,7 +154,7 @@
                         </ul>
                     </div>
                 </div>
-                <p class="mt-8 text-xs text-slate-400 font-medium">Page Content Last Updated: February 2026</p>
+                <p class="mt-8 text-xs text-slate-400 font-medium">Page Content Last Updated: ${java.time.LocalDate.now().getMonth().getDisplayName(java.time.format.TextStyle.FULL, java.util.Locale.US)} ${java.time.LocalDate.now().getYear()}</p>
             </div>
             
             <!-- Generate JSON-LD schema for FAQPage -->

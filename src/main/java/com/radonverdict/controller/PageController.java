@@ -37,7 +37,7 @@ public class PageController {
 
     @GetMapping("/radon-cost-calculator")
     public String globalCalculator(Model model) {
-        model.addAttribute("title", "National Radon Mitigation Cost Calculator 2026");
+        model.addAttribute("title", "National Radon Mitigation Cost Calculator " + java.time.LocalDate.now().getYear());
         ItemizedReceipt defaultReceipt = calcService.calculate("US", "National Average", "other", "homeowner");
         model.addAttribute("defaultReceipt", defaultReceipt);
 

@@ -18,7 +18,7 @@
             <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
                 <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold tracking-wider uppercase bg-brand-500/10 text-brand-300 border border-brand-500/20 mb-6">
                     <span class="w-2 h-2 rounded-full bg-brand-400"></span>
-                    2026 Data Updated
+                    ${java.time.LocalDate.now().getYear()} Data Updated
                 </span>
                 
                 <h1 class="font-display font-black text-4xl sm:text-5xl lg:text-6xl text-white tracking-tighter leading-tight mb-6">

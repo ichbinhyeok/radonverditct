@@ -6,7 +6,7 @@
 @param List<County> counties
 
 @template.layout.main(
-    title = stateAbbr + " Radon Mitigation Costs 2026",
+    title = stateAbbr + " Radon Mitigation Costs " + java.time.LocalDate.now().getYear(),
     description = "View estimated radon mitigation costs and local contractor pricing for " + stateAbbr + " counties.",
     content = @`
         <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10">

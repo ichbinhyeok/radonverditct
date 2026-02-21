@@ -6,7 +6,7 @@
     content = @`
         <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24 prose prose-slate">
             <h1 class="font-display font-bold text-4xl text-slate-900 mb-8 tracking-tight">Privacy Policy</h1>
-            <p class="text-sm text-slate-500 mb-10">Last Updated: February 2026</p>
+            <p class="text-sm text-slate-500 mb-10">Last Updated: ${java.time.LocalDate.now().getMonth().getDisplayName(java.time.format.TextStyle.FULL, java.util.Locale.US)} ${java.time.LocalDate.now().getYear()}</p>
 
             <h2 class="font-display font-bold text-2xl text-slate-900 mt-10 mb-4">1. Introduction</h2>
             <p class="text-slate-600 mb-6">
