@@ -59,6 +59,26 @@
                 "question": "Can I install a radon mitigation system myself in {stateAbbr}?",
                 "answer": "While DIY radon mitigation is technically possible, it is strongly discouraged. Improper installation can fail to reduce radon levels or even increase them. In {stateAbbr}, {licenseNote}. The EPA recommends hiring a certified professional."
             }
+        ],
+        "state_disclosure_yes": [
+            {
+                "question": "Is radon disclosure required when selling a home in {stateAbbr}?",
+                "answer": "Yes. In {stateAbbr}, {regulationNote}. Sellers who fail to disclose known radon test results may face legal liability after the sale closes."
+            },
+            {
+                "question": "What happens if a seller in {stateAbbr} hides radon test results?",
+                "answer": "In {stateAbbr}, concealing known radon levels violates state disclosure requirements. Buyers can pursue legal remedies including rescission of the sale or damages for the cost of mitigation (approximately ${totalAvg} in {countyName})."
+            }
+        ],
+        "state_disclosure_no": [
+            {
+                "question": "Does {stateAbbr} require radon testing before selling a home?",
+                "answer": "No. {stateAbbr} does not have a specific radon disclosure or testing mandate for real estate transactions. However, the EPA recommends testing all homes, and buyers in {countyName} should request a radon test during the inspection period."
+            },
+            {
+                "question": "Should I still test for radon even though {stateAbbr} doesn't require it?",
+                "answer": "Absolutely. The absence of a state mandate does not mean absence of risk. Radon is a health hazard regardless of legal requirements. In {countyName} (Zone {epaZone}), testing costs $15-$30 and takes 2-7 days — a small investment compared to the health risks of long-term exposure."
+            }
         ]
     }
 }

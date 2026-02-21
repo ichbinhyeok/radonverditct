@@ -1,53 +1,39 @@
 {
     "state_rules": {
-        "IL": {
-            "disclosure_required": true,
-            "disclosure_summary": "Illinois requires sellers to disclose known radon test results to buyers under the Residential Real Property Disclosure Act.",
-            "state_program_url": "https://iema.illinois.gov/radon/",
-            "license_required": true,
-            "license_note": "Illinois requires radon mitigation professionals to be licensed by the Illinois Emergency Management Agency (IEMA)."
-        },
-        "OH": {
-            "disclosure_required": true,
-            "disclosure_summary": "Ohio requires sellers to disclose known radon levels on the Ohio Residential Property Disclosure Form.",
-            "state_program_url": "https://odh.ohio.gov/know-our-programs/radon/radon",
-            "license_required": true,
-            "license_note": "Ohio requires radon testers and mitigators to be licensed by the Ohio Department of Health."
-        },
-        "PA": {
-            "disclosure_required": true,
-            "disclosure_summary": "Pennsylvania requires radon disclosure through the Seller's Property Disclosure Statement. The PA DEP also provides radon-specific guidance for real estate transactions.",
-            "state_program_url": "https://www.dep.pa.gov/Business/RadiationProtection/RadonDivision/Pages/default.aspx",
-            "license_required": true,
-            "license_note": "Pennsylvania requires certification for radon testing and mitigation professionals through the PA DEP."
-        },
-        "NY": {
+        "AL": {
             "disclosure_required": false,
-            "disclosure_summary": "New York does not have a state-mandated radon disclosure requirement, but sellers must complete the Property Condition Disclosure Statement, and failing to disclose known issues can create legal liability.",
-            "state_program_url": "https://www.health.ny.gov/environmental/radiological/radon/",
+            "disclosure_summary": "Alabama does not have specific radon disclosure requirements for real estate transactions.",
+            "state_program_url": "https://www.alabamapublichealth.gov/radon/",
             "license_required": false,
-            "license_note": "New York does not require state licensing for radon professionals, but the NRPP and AARST certifications are industry standard."
+            "license_note": "Alabama does not require state licensing for radon professionals. Look for NRPP or AARST-certified professionals."
         },
-        "NJ": {
+        "AK": {
+            "disclosure_required": false,
+            "disclosure_summary": "Alaska does not mandate radon disclosure. However, general property disclosure requirements apply.",
+            "state_program_url": "https://www.epa.gov/radon",
+            "license_required": false,
+            "license_note": "Alaska does not require state licensing for radon professionals."
+        },
+        "AZ": {
             "disclosure_required": true,
-            "disclosure_summary": "New Jersey requires radon testing and disclosure for all real estate transactions in Tier 1 counties under the Radon Hazard Subcode.",
-            "state_program_url": "https://www.nj.gov/dep/rpp/radon/",
-            "license_required": true,
-            "license_note": "New Jersey requires certification for radon testers and mitigators through the NJ DEP."
-        },
-        "FL": {
-            "disclosure_required": false,
-            "disclosure_summary": "Florida does not mandate radon disclosure in real estate transactions, but the Florida Building Code requires radon-resistant construction in Zone 1 counties.",
-            "state_program_url": "http://www.floridahealth.gov/environmental-health/radon/",
+            "disclosure_summary": "Arizona requires sellers to disclose all known material facts about the property, including radon test results, via the Seller's Property Disclosure Statement (SPDS).",
+            "state_program_url": "https://www.azdhs.gov/preparedness/epidemiology-disease-control/radiation-regulatory/index.php",
             "license_required": false,
-            "license_note": "Florida does not require state licensing for radon professionals. Look for NRPP or AARST-certified professionals."
+            "license_note": "Arizona does not require state licensing for radon professionals. NRPP or AARST certification is recommended."
         },
-        "TX": {
+        "AR": {
             "disclosure_required": false,
-            "disclosure_summary": "Texas does not have specific radon disclosure requirements. Most Texas counties are in EPA Zone 3 (low risk), but isolated areas can have elevated readings.",
-            "state_program_url": "https://www.dshs.texas.gov/radiation/radon.aspx",
+            "disclosure_summary": "Arkansas does not have specific radon disclosure requirements in real estate transactions.",
+            "state_program_url": "https://www.healthy.arkansas.gov/programs-services/topics/radon",
             "license_required": false,
-            "license_note": "Texas does not require state licensing for radon professionals."
+            "license_note": "Arkansas does not require state licensing for radon professionals."
+        },
+        "CA": {
+            "disclosure_required": true,
+            "disclosure_summary": "California requires sellers to complete the Transfer Disclosure Statement (TDS), which covers known environmental hazards including radon.",
+            "state_program_url": "https://www.cdph.ca.gov/Programs/CEH/DRSEM/Pages/EMB/Radon.aspx",
+            "license_required": false,
+            "license_note": "California does not require specific radon licensing. Look for NRPP or AARST-certified professionals."
         },
         "CO": {
             "disclosure_required": true,
@@ -56,12 +42,61 @@
             "license_required": false,
             "license_note": "Colorado does not require state licensing but strongly recommends using NRPP or AARST-certified professionals."
         },
-        "MN": {
+        "CT": {
             "disclosure_required": true,
-            "disclosure_summary": "Minnesota requires radon disclosure at the time of sale. The Minnesota Department of Health provides extensive radon resources for homebuyers and sellers.",
-            "state_program_url": "https://www.health.state.mn.us/communities/environment/air/radon/index.html",
+            "disclosure_summary": "Connecticut requires sellers to disclose known radon levels through the Residential Property Condition Disclosure Report.",
+            "state_program_url": "https://portal.ct.gov/DPH/Environmental-Health/Radon/Radon-Program",
             "license_required": true,
-            "license_note": "Minnesota requires radon mitigation professionals to be licensed by the Minnesota Department of Health."
+            "license_note": "Connecticut requires radon testers and mitigators to be certified by the Connecticut DPH."
+        },
+        "DE": {
+            "disclosure_required": true,
+            "disclosure_summary": "Delaware requires sellers to disclose known material defects including radon through the Seller's Disclosure of Real Property Condition Report.",
+            "state_program_url": "https://dhss.delaware.gov/dph/hsp/radon.html",
+            "license_required": false,
+            "license_note": "Delaware does not require specific radon licensing. NRPP or AARST certification is recommended."
+        },
+        "FL": {
+            "disclosure_required": false,
+            "disclosure_summary": "Florida does not mandate radon disclosure in real estate transactions, but the Florida Building Code requires radon-resistant construction in Zone 1 counties.",
+            "state_program_url": "http://www.floridahealth.gov/environmental-health/radon/",
+            "license_required": false,
+            "license_note": "Florida does not require state licensing for radon professionals. Look for NRPP or AARST-certified professionals."
+        },
+        "GA": {
+            "disclosure_required": false,
+            "disclosure_summary": "Georgia does not have specific radon disclosure requirements. General property disclosure laws apply.",
+            "state_program_url": "https://dph.georgia.gov/environmental-health/indoor-air-quality/radon",
+            "license_required": false,
+            "license_note": "Georgia does not require state licensing for radon professionals."
+        },
+        "HI": {
+            "disclosure_required": true,
+            "disclosure_summary": "Hawaii requires sellers to complete a Seller's Real Property Disclosure Statement covering known defects and environmental hazards.",
+            "state_program_url": "https://health.hawaii.gov/irhb/radon/",
+            "license_required": false,
+            "license_note": "Hawaii does not require specific radon licensing."
+        },
+        "ID": {
+            "disclosure_required": true,
+            "disclosure_summary": "Idaho requires sellers to complete a Property Condition Disclosure Form, which covers known environmental hazards including radon.",
+            "state_program_url": "https://www.epa.gov/radon",
+            "license_required": false,
+            "license_note": "Idaho does not require state licensing for radon professionals."
+        },
+        "IL": {
+            "disclosure_required": true,
+            "disclosure_summary": "Illinois requires sellers to disclose known radon test results to buyers under the Residential Real Property Disclosure Act.",
+            "state_program_url": "https://iema.illinois.gov/radon/",
+            "license_required": true,
+            "license_note": "Illinois requires radon mitigation professionals to be licensed by the Illinois Emergency Management Agency (IEMA)."
+        },
+        "IN": {
+            "disclosure_required": true,
+            "disclosure_summary": "Indiana requires sellers to complete the Residential Real Estate Sales Disclosure Form, including any known radon test results.",
+            "state_program_url": "https://www.in.gov/isdh/24346.htm",
+            "license_required": true,
+            "license_note": "Indiana requires radon measurement and mitigation professionals to be licensed by the Indiana State Department of Health."
         },
         "IA": {
             "disclosure_required": true,
@@ -69,6 +104,258 @@
             "state_program_url": "https://idph.iowa.gov/radon",
             "license_required": true,
             "license_note": "Iowa requires certification for radon measurement and mitigation professionals."
+        },
+        "KS": {
+            "disclosure_required": true,
+            "disclosure_summary": "Kansas requires sellers to disclose known material defects through the Seller's Disclosure Statement.",
+            "state_program_url": "https://www.kdheks.gov/radiation/radon.html",
+            "license_required": true,
+            "license_note": "Kansas requires radon professionals to be certified by the KDHE."
+        },
+        "KY": {
+            "disclosure_required": true,
+            "disclosure_summary": "Kentucky requires sellers to complete a Seller's Disclosure of Property Condition form, covering known environmental hazards.",
+            "state_program_url": "https://chfs.ky.gov/agencies/dph/dphps/emb/Pages/radon.aspx",
+            "license_required": false,
+            "license_note": "Kentucky does not require state licensing for radon professionals. NRPP or AARST certification is recommended."
+        },
+        "LA": {
+            "disclosure_required": false,
+            "disclosure_summary": "Louisiana does not have specific radon disclosure requirements in real estate transactions.",
+            "state_program_url": "https://www.epa.gov/radon",
+            "license_required": false,
+            "license_note": "Louisiana does not require state licensing for radon professionals."
+        },
+        "ME": {
+            "disclosure_required": true,
+            "disclosure_summary": "Maine requires sellers to disclose known defects through the Property Disclosure Statement, including radon test results.",
+            "state_program_url": "https://www.maine.gov/dhhs/mecdc/environmental-health/air/indoor/radon.htm",
+            "license_required": false,
+            "license_note": "Maine does not require specific radon licensing. NRPP or AARST certification is recommended."
+        },
+        "MD": {
+            "disclosure_required": true,
+            "disclosure_summary": "Maryland requires sellers to disclose environmental hazards including radon through the Residential Property Disclosure and Disclaimer Statement.",
+            "state_program_url": "https://mde.maryland.gov/programs/air/radon/Pages/index.aspx",
+            "license_required": false,
+            "license_note": "Maryland does not require specific radon licensing but recommends NRPP or AARST-certified professionals."
+        },
+        "MA": {
+            "disclosure_required": false,
+            "disclosure_summary": "Massachusetts does not have a mandatory seller disclosure form. Radon disclosure is not specifically required but concealment of known issues creates legal liability.",
+            "state_program_url": "https://www.mass.gov/radon",
+            "license_required": false,
+            "license_note": "Massachusetts does not require state licensing for radon professionals."
+        },
+        "MI": {
+            "disclosure_required": true,
+            "disclosure_summary": "Michigan requires sellers to complete a Seller's Disclosure Statement that includes environmental hazards such as radon.",
+            "state_program_url": "https://www.michigan.gov/egle/about/organization/drinking-water-and-environmental-health/radon",
+            "license_required": false,
+            "license_note": "Michigan does not require specific radon licensing. NRPP or AARST certification is recommended."
+        },
+        "MN": {
+            "disclosure_required": true,
+            "disclosure_summary": "Minnesota requires radon disclosure at the time of sale. The Minnesota Department of Health provides extensive radon resources for homebuyers and sellers.",
+            "state_program_url": "https://www.health.state.mn.us/communities/environment/air/radon/index.html",
+            "license_required": true,
+            "license_note": "Minnesota requires radon mitigation professionals to be licensed by the Minnesota Department of Health."
+        },
+        "MS": {
+            "disclosure_required": false,
+            "disclosure_summary": "Mississippi does not have specific radon disclosure requirements in real estate transactions.",
+            "state_program_url": "https://www.epa.gov/radon",
+            "license_required": false,
+            "license_note": "Mississippi does not require state licensing for radon professionals."
+        },
+        "MO": {
+            "disclosure_required": true,
+            "disclosure_summary": "Missouri requires sellers to complete a Seller's Disclosure Statement, which includes known environmental hazards.",
+            "state_program_url": "https://health.mo.gov/living/environment/radon/",
+            "license_required": true,
+            "license_note": "Missouri requires radon professionals to be licensed by the Missouri Department of Health and Senior Services."
+        },
+        "MT": {
+            "disclosure_required": false,
+            "disclosure_summary": "Montana does not have specific radon disclosure requirements. General property disclosure laws apply.",
+            "state_program_url": "https://www.epa.gov/radon",
+            "license_required": false,
+            "license_note": "Montana does not require state licensing for radon professionals."
+        },
+        "NE": {
+            "disclosure_required": true,
+            "disclosure_summary": "Nebraska requires sellers to disclose known defects through the Seller Property Condition Disclosure Statement.",
+            "state_program_url": "http://dhhs.ne.gov/Pages/Radon.aspx",
+            "license_required": true,
+            "license_note": "Nebraska requires radon professionals to be certified by the NDHHS."
+        },
+        "NV": {
+            "disclosure_required": true,
+            "disclosure_summary": "Nevada requires sellers to complete a Seller's Real Property Disclosure Form covering environmental hazards.",
+            "state_program_url": "https://www.epa.gov/radon",
+            "license_required": false,
+            "license_note": "Nevada does not require specific radon licensing."
+        },
+        "NH": {
+            "disclosure_required": true,
+            "disclosure_summary": "New Hampshire requires sellers to disclose known environmental hazards. The NH DHHS offers radon testing resources.",
+            "state_program_url": "https://www.dhhs.nh.gov/dphs/rem/radon/index.htm",
+            "license_required": false,
+            "license_note": "New Hampshire does not require specific radon licensing. NRPP or AARST certification is recommended."
+        },
+        "NJ": {
+            "disclosure_required": true,
+            "disclosure_summary": "New Jersey requires radon testing and disclosure for all real estate transactions in Tier 1 counties under the Radon Hazard Subcode.",
+            "state_program_url": "https://www.nj.gov/dep/rpp/radon/",
+            "license_required": true,
+            "license_note": "New Jersey requires certification for radon testers and mitigators through the NJ DEP."
+        },
+        "NM": {
+            "disclosure_required": true,
+            "disclosure_summary": "New Mexico requires sellers to complete a Property Condition Disclosure Statement including known environmental hazards.",
+            "state_program_url": "https://www.env.nm.gov/radiation/radon/",
+            "license_required": false,
+            "license_note": "New Mexico does not require specific radon licensing."
+        },
+        "NY": {
+            "disclosure_required": false,
+            "disclosure_summary": "New York does not have a state-mandated radon disclosure requirement, but sellers must complete the Property Condition Disclosure Statement, and failing to disclose known issues can create legal liability.",
+            "state_program_url": "https://www.health.ny.gov/environmental/radiological/radon/",
+            "license_required": false,
+            "license_note": "New York does not require state licensing for radon professionals, but the NRPP and AARST certifications are industry standard."
+        },
+        "NC": {
+            "disclosure_required": true,
+            "disclosure_summary": "North Carolina requires sellers to complete a Residential Property and Owners' Association Disclosure Statement, covering environmental hazards.",
+            "state_program_url": "https://www.ncdhhs.gov/divisions/health-service-regulation/radiation-protection-section/radon-program",
+            "license_required": false,
+            "license_note": "North Carolina does not require specific radon licensing. NRPP or AARST certification is recommended."
+        },
+        "ND": {
+            "disclosure_required": true,
+            "disclosure_summary": "North Dakota requires sellers to complete a Seller's Property Condition Disclosure Statement.",
+            "state_program_url": "https://deq.nd.gov/AQ/Radon/",
+            "license_required": false,
+            "license_note": "North Dakota does not require specific radon licensing."
+        },
+        "OH": {
+            "disclosure_required": true,
+            "disclosure_summary": "Ohio requires sellers to disclose known radon levels on the Ohio Residential Property Disclosure Form.",
+            "state_program_url": "https://odh.ohio.gov/know-our-programs/radon/radon",
+            "license_required": true,
+            "license_note": "Ohio requires radon testers and mitigators to be licensed by the Ohio Department of Health."
+        },
+        "OK": {
+            "disclosure_required": true,
+            "disclosure_summary": "Oklahoma requires sellers to complete a Residential Property Condition Disclosure Statement covering known defects.",
+            "state_program_url": "https://www.epa.gov/radon",
+            "license_required": false,
+            "license_note": "Oklahoma does not require specific radon licensing."
+        },
+        "OR": {
+            "disclosure_required": true,
+            "disclosure_summary": "Oregon requires sellers to complete a Seller's Property Disclosure Statement, which includes environmental hazards.",
+            "state_program_url": "https://www.oregon.gov/oha/PH/HealthyEnvironments/RadiationProtection/Radon/Pages/index.aspx",
+            "license_required": false,
+            "license_note": "Oregon does not require specific radon licensing. NRPP or AARST certification is recommended."
+        },
+        "PA": {
+            "disclosure_required": true,
+            "disclosure_summary": "Pennsylvania requires radon disclosure through the Seller's Property Disclosure Statement. The PA DEP also provides radon-specific guidance for real estate transactions.",
+            "state_program_url": "https://www.dep.pa.gov/Business/RadiationProtection/RadonDivision/Pages/default.aspx",
+            "license_required": true,
+            "license_note": "Pennsylvania requires certification for radon testing and mitigation professionals through the PA DEP."
+        },
+        "RI": {
+            "disclosure_required": true,
+            "disclosure_summary": "Rhode Island requires sellers to disclose known environmental hazards through the Residential Real Estate Sales Disclosure.",
+            "state_program_url": "https://health.ri.gov/healthrisks/poisoning/radon/",
+            "license_required": false,
+            "license_note": "Rhode Island does not require specific radon licensing."
+        },
+        "SC": {
+            "disclosure_required": true,
+            "disclosure_summary": "South Carolina requires sellers to complete a Seller's Disclosure of Property Condition, covering known defects.",
+            "state_program_url": "https://www.scdhec.gov/environment/bureau-environmental-health-services/radon-south-carolina",
+            "license_required": false,
+            "license_note": "South Carolina does not require specific radon licensing."
+        },
+        "SD": {
+            "disclosure_required": true,
+            "disclosure_summary": "South Dakota requires sellers to disclose known property conditions through a Property Condition Disclosure Statement.",
+            "state_program_url": "https://www.epa.gov/radon",
+            "license_required": false,
+            "license_note": "South Dakota does not require specific radon licensing."
+        },
+        "TN": {
+            "disclosure_required": true,
+            "disclosure_summary": "Tennessee requires sellers to complete a Residential Property Condition Disclosure covering known defects and hazards.",
+            "state_program_url": "https://www.tn.gov/environment/program-areas/opsp-policy-and-sustainable-practices/community-assistance/radon.html",
+            "license_required": false,
+            "license_note": "Tennessee does not require specific radon licensing."
+        },
+        "TX": {
+            "disclosure_required": false,
+            "disclosure_summary": "Texas does not have specific radon disclosure requirements. Most Texas counties are in EPA Zone 3 (low risk), but isolated areas can have elevated readings.",
+            "state_program_url": "https://www.dshs.texas.gov/radiation/radon.aspx",
+            "license_required": false,
+            "license_note": "Texas does not require state licensing for radon professionals."
+        },
+        "UT": {
+            "disclosure_required": true,
+            "disclosure_summary": "Utah requires sellers to disclose known defects through the Seller's Property Condition Disclosure.",
+            "state_program_url": "https://deq.utah.gov/air-quality/radon",
+            "license_required": false,
+            "license_note": "Utah does not require specific radon licensing."
+        },
+        "VT": {
+            "disclosure_required": true,
+            "disclosure_summary": "Vermont requires sellers to disclose known lead and environmental hazards. Radon falls under general disclosure obligations.",
+            "state_program_url": "https://www.healthvermont.gov/environment/radon",
+            "license_required": false,
+            "license_note": "Vermont does not require specific radon licensing."
+        },
+        "VA": {
+            "disclosure_required": true,
+            "disclosure_summary": "Virginia requires sellers to complete a Residential Property Disclosure Statement covering known defects and environmental hazards including radon.",
+            "state_program_url": "https://www.vdh.virginia.gov/radiological-health/radon-in-virginia/",
+            "license_required": false,
+            "license_note": "Virginia does not require specific radon licensing. NRPP or AARST certification is recommended."
+        },
+        "WA": {
+            "disclosure_required": true,
+            "disclosure_summary": "Washington requires sellers to complete a Seller Disclosure Statement (Form 17) covering environmental hazards.",
+            "state_program_url": "https://www.doh.wa.gov/CommunityandEnvironment/Radiation/Radon",
+            "license_required": false,
+            "license_note": "Washington does not require specific radon licensing."
+        },
+        "WV": {
+            "disclosure_required": false,
+            "disclosure_summary": "West Virginia does not have specific radon disclosure requirements. General caveat emptor laws apply.",
+            "state_program_url": "https://www.epa.gov/radon",
+            "license_required": false,
+            "license_note": "West Virginia does not require state licensing for radon professionals."
+        },
+        "WI": {
+            "disclosure_required": true,
+            "disclosure_summary": "Wisconsin requires sellers to complete a Real Estate Condition Report that includes known radon test results and environmental hazards.",
+            "state_program_url": "https://www.dhs.wisconsin.gov/radon/index.htm",
+            "license_required": false,
+            "license_note": "Wisconsin does not require specific radon licensing. NRPP or AARST certification is recommended."
+        },
+        "WY": {
+            "disclosure_required": false,
+            "disclosure_summary": "Wyoming does not have specific radon disclosure requirements. General property disclosure laws apply.",
+            "state_program_url": "https://www.epa.gov/radon",
+            "license_required": false,
+            "license_note": "Wyoming does not require state licensing for radon professionals."
+        },
+        "DC": {
+            "disclosure_required": true,
+            "disclosure_summary": "Washington D.C. requires sellers to provide a Seller's Disclosure Statement covering known environmental conditions.",
+            "state_program_url": "https://dchealth.dc.gov/",
+            "license_required": false,
+            "license_note": "D.C. does not require specific radon licensing. NRPP or AARST certification is recommended."
         }
     },
     "default_state_rule": {

@@ -1,8 +1,5 @@
 package com.radonverdict.model.dto;
 
-import com.radonverdict.model.ContentTemplates;
-import com.radonverdict.model.FaqTemplates;
-import com.radonverdict.model.StateRegulations;
 import lombok.Builder;
 import lombok.Data;
 

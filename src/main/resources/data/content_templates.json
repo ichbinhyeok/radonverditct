@@ -94,7 +94,7 @@
                 "After mitigation, retest to confirm levels have dropped below 2.0 pCi/L.",
                 "Consider a long-term test (90+ days) for the most accurate reading of your year-round exposure."
             ],
-            "pro_tip": "Radon mitigation systems typically reduce levels by 80-99%. A $${totalAvg} system can take a home from 10 pCi/L down to under 1 pCi/L."
+            "pro_tip": "Radon mitigation systems typically reduce levels by 80-99%. A ${totalAvg} system can take a home from 10 pCi/L down to under 1 pCi/L."
         }
     }
 }

@@ -69,9 +69,6 @@ public class PricingCalculatorService {
 
         int totalAvg = (totalLow + totalHigh) / 2;
 
-        // 6. Generate Negotiation Advice
-        String advice = generateAdvice(userIntent, totalAvg);
-
         return ItemizedReceipt.builder()
                 .materialsLow(matLow)
                 .materialsHigh(matHigh)
@@ -82,25 +79,9 @@ public class PricingCalculatorService {
                 .totalLow(totalLow)
                 .totalHigh(totalHigh)
                 .totalAvg(totalAvg)
-                .negotiationAdvice(advice)
                 .countyName(countyName)
                 .stateAbbr(stateAbbr)
                 .build();
-    }
-
-    private String generateAdvice(String intent, int totalAvg) {
-        if ("buying".equalsIgnoreCase(intent)) {
-            return "As a buyer, do not ask the seller to do the work themselves. " +
-                    "Request a Seller Credit (Closing Credit) of $" + totalAvg + " based on this estimate. " +
-                    "This lets you hire a trusted professional directly after closing.";
-        } else if ("selling".equalsIgnoreCase(intent)) {
-            return "Buyers will likely demand a credit for mitigation. " +
-                    "You can proactively mitigate to market the home as 'Radon Safe', " +
-                    "or offer an upfront credit of $" + totalAvg + " to prevent the buyer from walking away.";
-        } else {
-            return "Investing approximately $" + totalAvg + " in a professional mitigation system " +
-                    "protects your family's health from lung cancer risk and permanently increases your home's resale value.";
-        }
     }
 
     private ItemizedReceipt fallbackGlobalEstimate() {

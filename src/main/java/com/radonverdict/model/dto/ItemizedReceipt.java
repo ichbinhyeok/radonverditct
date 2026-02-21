@@ -19,7 +19,6 @@ public class ItemizedReceipt {
     private int totalHigh;
     private int totalAvg;
 
-    private String negotiationAdvice;
     private String countyName;
     private String stateAbbr;
 }

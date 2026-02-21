@@ -3,7 +3,6 @@ package com.radonverdict.controller;
 import com.radonverdict.model.County;
 import com.radonverdict.model.dto.CountyPageContent;
 import com.radonverdict.model.dto.ItemizedReceipt;
-import com.radonverdict.model.dto.PricingRequest;
 import com.radonverdict.service.ContentGenerationService;
 import com.radonverdict.service.DataLoadService;
 import com.radonverdict.service.PricingCalculatorService;

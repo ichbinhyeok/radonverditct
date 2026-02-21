@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -23,148 +24,149 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class ContentGenerationService {
 
-    private final DataLoadService dataLoadService;
-    private final PricingCalculatorService pricingCalculatorService;
+        private final DataLoadService dataLoadService;
+        private final PricingCalculatorService pricingCalculatorService;
 
-    /**
-     * Build the complete page content for a given county.
-     * This single method assembles everything the frontend template needs.
-     */
-    public CountyPageContent buildPageContent(County county, String foundationType, String userIntent) {
+        /**
+         * Build the complete page content for a given county.
+         * This single method assembles everything the frontend template needs.
+         */
+        public CountyPageContent buildPageContent(County county, String foundationType, String userIntent) {
 
-        String zoneKey = String.valueOf(county.getEpaZone());
-        String stateAbbr = county.getStateAbbr();
-        String countyName = county.getCountyName();
+                String zoneKey = String.valueOf(county.getEpaZone());
+                String stateAbbr = county.getStateAbbr();
+                String countyName = county.getCountyName();
 
-        ContentTemplates templates = dataLoadService.getContentTemplates();
-        StateRegulations regulations = dataLoadService.getStateRegulations();
-        FaqTemplates faqTemplates = dataLoadService.getFaqTemplates();
+                ContentTemplates templates = dataLoadService.getContentTemplates();
+                StateRegulations regulations = dataLoadService.getStateRegulations();
+                FaqTemplates faqTemplates = dataLoadService.getFaqTemplates();
 
-        // 1. Get the receipt first (needed for placeholder resolution in text)
-        ItemizedReceipt receipt = pricingCalculatorService.calculate(
-                stateAbbr, countyName, foundationType, userIntent);
+                // 1. Get the receipt first (needed for placeholder resolution in text)
+                ItemizedReceipt receipt = pricingCalculatorService.calculate(
+                                stateAbbr, countyName, foundationType, userIntent);
 
-        // 2. Resolve Zone Description
-        ContentTemplates.ZoneDescription zoneDesc = templates.getZoneDescriptions().getOrDefault(
-                zoneKey, templates.getZoneDescriptions().get("0"));
+                // 2. Resolve Zone Description
+                ContentTemplates.ZoneDescription zoneDesc = templates.getZoneDescriptions().getOrDefault(
+                                zoneKey, templates.getZoneDescriptions().get("0"));
 
-        // 3. Resolve State Regulation
-        StateRegulations.StateRule stateRule = regulations.getStateRules().getOrDefault(
-                stateAbbr.toUpperCase(), regulations.getDefaultStateRule());
+                // 3. Resolve State Regulation
+                StateRegulations.StateRule stateRule = regulations.getStateRules().getOrDefault(
+                                stateAbbr.toUpperCase(), regulations.getDefaultStateRule());
 
-        // 4. Resolve Foundation Description
-        String safeFoundation = (foundationType != null) ? foundationType.toLowerCase() : "other";
-        ContentTemplates.FoundationDescription foundationDesc = templates.getFoundationDescriptions().getOrDefault(
-                safeFoundation, templates.getFoundationDescriptions().get("other"));
+                // 4. Resolve Foundation Description
+                String safeFoundation = (foundationType != null) ? foundationType.toLowerCase() : "other";
+                ContentTemplates.FoundationDescription foundationDesc = templates.getFoundationDescriptions()
+                                .getOrDefault(
+                                                safeFoundation, templates.getFoundationDescriptions().get("other"));
 
-        // 5. Resolve Intent Content
-        String safeIntent = (userIntent != null) ? userIntent.toLowerCase() : "homeowner";
-        ContentTemplates.IntentContent intentContent = templates.getIntentContent().getOrDefault(
-                safeIntent, templates.getIntentContent().get("homeowner"));
+                // 5. Resolve Intent Content
+                String safeIntent = (userIntent != null) ? userIntent.toLowerCase() : "homeowner";
+                ContentTemplates.IntentContent intentContent = templates.getIntentContent().getOrDefault(
+                                safeIntent, templates.getIntentContent().get("homeowner"));
 
-        // 6. Build Dynamic FAQs (zone-specific + universal)
-        List<CountyPageContent.FaqItem> faqs = buildFaqs(
-                faqTemplates, zoneKey, county, receipt, stateRule);
+                // 6. Build Dynamic FAQs (zone-specific + universal)
+                Map<String, String> ctx = buildContext(countyName, stateAbbr, receipt, zoneKey, stateRule);
 
-        // 7. Placeholder context map for text resolution
-        Map<String, String> ctx = Map.of(
-                "{countyName}", countyName,
-                "{stateAbbr}", stateAbbr,
-                "{totalLow}", String.valueOf(receipt.getTotalLow()),
-                "{totalHigh}", String.valueOf(receipt.getTotalHigh()),
-                "{totalAvg}", String.valueOf(receipt.getTotalAvg()),
-                "{epaZone}", zoneKey,
-                "{regulationNote}", stateRule.getDisclosureSummary(),
-                "{disclosureNote}", stateRule.isDisclosureRequired()
-                        ? "radon disclosure is required during property sales"
-                        : "there is no specific radon disclosure mandate, but general disclosure laws may apply",
-                "{licenseNote}", stateRule.getLicenseNote());
+                List<CountyPageContent.FaqItem> faqs = buildFaqs(
+                                faqTemplates, zoneKey, stateRule, ctx);
 
-        // 8. Assemble Final DTO
-        return CountyPageContent.builder()
-                .heroTitle("Radon Mitigation Cost in " + countyName + ", " + stateAbbr)
-                .heroSummary(resolve(countyName + " " + zoneDesc.getHeroSummary(), ctx))
-                .riskLevel(zoneDesc.getRiskLevel())
-                .badgeColor(zoneDesc.getBadgeColor())
-                .riskNarrative(resolve(zoneDesc.getRiskNarrative(), ctx))
-                .intentSectionTitle(resolve(intentContent.getSectionTitle(), ctx))
-                .intentIntro(resolve(intentContent.getIntro(), ctx))
-                .intentSteps(intentContent.getSteps().stream()
-                        .map(s -> resolve(s, ctx)).toList())
-                .intentProTip(resolve(intentContent.getProTip(), ctx))
-                .foundationLabel(foundationDesc.getLabel())
-                .foundationCostContext(resolve(foundationDesc.getCostContext(), ctx))
-                .foundationNegotiationNote(resolve(foundationDesc.getNegotiationNote(), ctx))
-                .disclosureRequired(stateRule.isDisclosureRequired())
-                .disclosureSummary(resolve(stateRule.getDisclosureSummary(), ctx))
-                .stateProgramUrl(stateRule.getStateProgramUrl())
-                .licenseRequired(stateRule.isLicenseRequired())
-                .licenseNote(resolve(stateRule.getLicenseNote(), ctx))
-                .faqs(faqs)
-                .receipt(receipt)
-                .build();
-    }
-
-    /**
-     * Build FAQs: Zone-specific questions + universal questions.
-     * All placeholders are resolved against the current county context.
-     */
-    private List<CountyPageContent.FaqItem> buildFaqs(
-            FaqTemplates faqTemplates, String zoneKey,
-            County county, ItemizedReceipt receipt,
-            StateRegulations.StateRule stateRule) {
-
-        List<CountyPageContent.FaqItem> result = new ArrayList<>();
-
-        Map<String, String> ctx = Map.of(
-                "{countyName}", county.getCountyName(),
-                "{stateAbbr}", county.getStateAbbr(),
-                "{totalLow}", String.valueOf(receipt.getTotalLow()),
-                "{totalHigh}", String.valueOf(receipt.getTotalHigh()),
-                "{totalAvg}", String.valueOf(receipt.getTotalAvg()),
-                "{epaZone}", zoneKey,
-                "{regulationNote}", stateRule.getDisclosureSummary(),
-                "{disclosureNote}", stateRule.isDisclosureRequired()
-                        ? "radon disclosure is required during property sales"
-                        : "there is no specific radon disclosure mandate",
-                "{licenseNote}", stateRule.getLicenseNote());
-
-        // Add zone-specific FAQs
-        String zonePoolKey = "zone_" + zoneKey;
-        List<FaqTemplates.FaqEntry> zoneFaqs = faqTemplates.getFaqPool().get(zonePoolKey);
-        if (zoneFaqs != null) {
-            for (FaqTemplates.FaqEntry entry : zoneFaqs) {
-                result.add(CountyPageContent.FaqItem.builder()
-                        .question(resolve(entry.getQuestion(), ctx))
-                        .answer(resolve(entry.getAnswer(), ctx))
-                        .build());
-            }
+                // 7. Assemble Final DTO
+                return CountyPageContent.builder()
+                                .heroTitle("Radon Mitigation Cost in " + countyName + ", " + stateAbbr)
+                                .heroSummary(resolve(countyName + " " + zoneDesc.getHeroSummary(), ctx))
+                                .riskLevel(zoneDesc.getRiskLevel())
+                                .badgeColor(zoneDesc.getBadgeColor())
+                                .riskNarrative(resolve(zoneDesc.getRiskNarrative(), ctx))
+                                .intentSectionTitle(resolve(intentContent.getSectionTitle(), ctx))
+                                .intentIntro(resolve(intentContent.getIntro(), ctx))
+                                .intentSteps(intentContent.getSteps().stream()
+                                                .map(s -> resolve(s, ctx)).toList())
+                                .intentProTip(resolve(intentContent.getProTip(), ctx))
+                                .foundationLabel(foundationDesc.getLabel())
+                                .foundationCostContext(resolve(foundationDesc.getCostContext(), ctx))
+                                .foundationNegotiationNote(resolve(foundationDesc.getNegotiationNote(), ctx))
+                                .disclosureRequired(stateRule.isDisclosureRequired())
+                                .disclosureSummary(resolve(stateRule.getDisclosureSummary(), ctx))
+                                .stateProgramUrl(stateRule.getStateProgramUrl())
+                                .licenseRequired(stateRule.isLicenseRequired())
+                                .licenseNote(resolve(stateRule.getLicenseNote(), ctx))
+                                .faqs(faqs)
+                                .receipt(receipt)
+                                .build();
         }
 
-        // Add universal FAQs
-        List<FaqTemplates.FaqEntry> universalFaqs = faqTemplates.getFaqPool().get("universal");
-        if (universalFaqs != null) {
-            for (FaqTemplates.FaqEntry entry : universalFaqs) {
-                result.add(CountyPageContent.FaqItem.builder()
-                        .question(resolve(entry.getQuestion(), ctx))
-                        .answer(resolve(entry.getAnswer(), ctx))
-                        .build());
-            }
+        /**
+         * Build a reusable placeholder context map.
+         */
+        private Map<String, String> buildContext(
+                        String countyName, String stateAbbr, ItemizedReceipt receipt,
+                        String zoneKey, StateRegulations.StateRule stateRule) {
+                Map<String, String> ctx = new HashMap<>();
+                ctx.put("{countyName}", countyName);
+                ctx.put("{stateAbbr}", stateAbbr);
+                ctx.put("{totalLow}", String.valueOf(receipt.getTotalLow()));
+                ctx.put("{totalHigh}", String.valueOf(receipt.getTotalHigh()));
+                ctx.put("{totalAvg}", String.valueOf(receipt.getTotalAvg()));
+                ctx.put("${totalAvg}", "$" + receipt.getTotalAvg());
+                ctx.put("${totalLow}", "$" + receipt.getTotalLow());
+                ctx.put("${totalHigh}", "$" + receipt.getTotalHigh());
+                ctx.put("{epaZone}", zoneKey);
+                ctx.put("{regulationNote}", stateRule.getDisclosureSummary());
+                ctx.put("{disclosureNote}", stateRule.isDisclosureRequired()
+                                ? "radon disclosure is required during property sales"
+                                : "there is no specific radon disclosure mandate, but general disclosure laws may apply");
+                ctx.put("{licenseNote}", stateRule.getLicenseNote());
+                return ctx;
         }
 
-        return result;
-    }
+        /**
+         * Build FAQs: Zone-specific questions + universal questions.
+         */
+        private List<CountyPageContent.FaqItem> buildFaqs(
+                        FaqTemplates faqTemplates, String zoneKey,
+                        StateRegulations.StateRule stateRule, Map<String, String> ctx) {
 
-    /**
-     * Resolve all {placeholder} tokens in a template string.
-     */
-    private String resolve(String template, Map<String, String> context) {
-        if (template == null)
-            return "";
-        String result = template;
-        for (Map.Entry<String, String> entry : context.entrySet()) {
-            result = result.replace(entry.getKey(), entry.getValue());
+                List<CountyPageContent.FaqItem> result = new ArrayList<>();
+
+                // Add zone-specific FAQs
+                String zonePoolKey = "zone_" + zoneKey;
+                addFaqPool(faqTemplates, zonePoolKey, ctx, result);
+
+                // Add state-specific disclosure FAQs
+                String disclosurePoolKey = stateRule.isDisclosureRequired()
+                                ? "state_disclosure_yes"
+                                : "state_disclosure_no";
+                addFaqPool(faqTemplates, disclosurePoolKey, ctx, result);
+
+                // Add universal FAQs
+                addFaqPool(faqTemplates, "universal", ctx, result);
+
+                return result;
         }
-        return result;
-    }
+
+        private void addFaqPool(FaqTemplates faqTemplates, String poolKey,
+                        Map<String, String> ctx, List<CountyPageContent.FaqItem> result) {
+                List<FaqTemplates.FaqEntry> entries = faqTemplates.getFaqPool().get(poolKey);
+                if (entries != null) {
+                        for (FaqTemplates.FaqEntry entry : entries) {
+                                result.add(CountyPageContent.FaqItem.builder()
+                                                .question(resolve(entry.getQuestion(), ctx))
+                                                .answer(resolve(entry.getAnswer(), ctx))
+                                                .build());
+                        }
+                }
+        }
+
+        /**
+         * Resolve all {placeholder} tokens in a template string.
+         */
+        private String resolve(String template, Map<String, String> context) {
+                if (template == null)
+                        return "";
+                String result = template;
+                for (Map.Entry<String, String> entry : context.entrySet()) {
+                        result = result.replace(entry.getKey(), entry.getValue());
+                }
+                return result;
+        }
 }
