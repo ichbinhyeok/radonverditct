@@ -80,6 +80,12 @@
                         <input type="hidden" name="stateAbbr" value="${county.getStateAbbr()}">
                         <input type="hidden" name="consentVersion" value="v1.0">
                         
+                        <!-- Honeypot Field -->
+                        <div style="display:none;" aria-hidden="true">
+                            <label for="additionalPhone">Additional Phone</label>
+                            <input type="text" name="additionalPhone" id="additionalPhone" tabindex="-1" autocomplete="off">
+                        </div>
+
                         <div>
                             <label for="customerName" class="block text-sm font-medium text-slate-700">Full Name</label>
                             <input type="text" name="customerName" id="customerName" required class="mt-1 block w-full rounded-lg border-slate-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm py-2 px-3 border">

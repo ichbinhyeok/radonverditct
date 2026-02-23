@@ -8,7 +8,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.time.LocalDate;
 import java.util.Collection;
 
 @Controller
@@ -36,7 +35,7 @@ public class SitemapController {
     private void addSitemapUrl(StringBuilder xml, String path) {
         xml.append("<sitemap>");
         xml.append("<loc>").append(BASE_URL).append(path).append("</loc>");
-        xml.append("<lastmod>").append(LocalDate.now().toString()).append("</lastmod>");
+        xml.append("<lastmod>").append("2026-02-01").append("</lastmod>");
         xml.append("</sitemap>");
     }
 
@@ -124,7 +123,7 @@ public class SitemapController {
     private void addUrl(StringBuilder xml, String path, String priority) {
         xml.append("<url>");
         xml.append("<loc>").append(BASE_URL).append(path).append("</loc>");
-        xml.append("<lastmod>").append(LocalDate.now().toString()).append("</lastmod>");
+        xml.append("<lastmod>").append("2026-02-01").append("</lastmod>");
         xml.append("<changefreq>monthly</changefreq>");
         xml.append("<priority>").append(priority).append("</priority>");
         xml.append("</url>");

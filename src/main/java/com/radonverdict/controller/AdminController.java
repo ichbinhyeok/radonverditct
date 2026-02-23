@@ -1,23 +1,54 @@
 package com.radonverdict.controller;
 
-import com.radonverdict.repository.LeadRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Sort;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+@Slf4j
 @Controller
 @RequiredArgsConstructor
 public class AdminController {
 
-    private final LeadRepository leadRepository;
+    private static final String CSV_FILE_PATH = "data/leads.csv";
 
     @GetMapping("/admin/leads")
     public String viewLeads(Model model) {
         model.addAttribute("title", "Admin | Leads Dashboard");
-        // Sort by submittedAt descending
-        model.addAttribute("leads", leadRepository.findAll(Sort.by(Sort.Direction.DESC, "submittedAt")));
+
+        List<String[]> leadsList = new ArrayList<>();
+        try {
+            Path path = Paths.get(CSV_FILE_PATH);
+            if (Files.exists(path)) {
+                List<String> lines = Files.readAllLines(path);
+                // Skip header logic implicitly if reversing, or deal with it.
+                if (!lines.isEmpty()) {
+                    // Remove header
+                    lines.remove(0);
+                    for (String line : lines) {
+                        // Very naive CSV split by ","
+                        String[] cols = line.split("\",\"");
+                        for (int i = 0; i < cols.length; i++) {
+                            cols[i] = cols[i].replace("\"", "");
+                        }
+                        leadsList.add(cols);
+                    }
+                    Collections.reverse(leadsList); // Latest first
+                }
+            }
+        } catch (Exception e) {
+            log.error("Error reading leads CSV", e);
+        }
+
+        model.addAttribute("leadsList", leadsList);
         return "pages/admin_leads";
     }
 }

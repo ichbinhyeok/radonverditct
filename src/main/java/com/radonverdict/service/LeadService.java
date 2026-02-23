@@ -2,20 +2,31 @@ package com.radonverdict.service;
 
 import com.radonverdict.model.dto.LeadSubmissionRequest;
 import com.radonverdict.model.entity.Lead;
-import com.radonverdict.repository.LeadRepository;
+// import com.radonverdict.repository.LeadRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
 public class LeadService {
 
-    private final LeadRepository leadRepository;
+    // private final LeadRepository leadRepository;
+
+    private static final String CSV_FILE_PATH = "data/leads.csv";
 
     /**
-     * Safely stores a new lead into the H2 database
+     * Safely stores a new lead into a CSV file
      */
     public void submitLead(LeadSubmissionRequest request, String ipAddress, String userAgent) {
 
@@ -38,9 +49,46 @@ public class LeadService {
                 .userAgent(userAgent)
                 .build();
 
-        leadRepository.save(lead);
-        log.info("New lead captured and saved for county: {}, State: {}", request.getCountySlug(),
+        // leadRepository.save(lead);
+        saveToCsv(lead);
+
+        log.info("New lead captured and saved into CSV for county: {}, State: {}", request.getCountySlug(),
                 request.getStateAbbr());
+    }
+
+    private void saveToCsv(Lead lead) {
+        try {
+            Path path = Paths.get(CSV_FILE_PATH);
+            Files.createDirectories(path.getParent());
+            boolean isNewFile = !Files.exists(path);
+
+            try (PrintWriter pw = new PrintWriter(new FileWriter(path.toFile(), true))) {
+                if (isNewFile) {
+                    pw.println("Date,Name,Phone,Email,Zip,State,County,Foundation,Tested");
+                }
+
+                String date = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+                pw.printf("\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\"%n",
+                        date,
+                        escapeCsv(lead.getCustomerName()),
+                        escapeCsv(lead.getCustomerPhone()),
+                        escapeCsv(lead.getCustomerEmail() != null ? lead.getCustomerEmail() : ""),
+                        escapeCsv(lead.getZipCode()),
+                        escapeCsv(lead.getStateAbbr()),
+                        escapeCsv(lead.getCountySlug()),
+                        escapeCsv(lead.getFoundationType() != null ? lead.getFoundationType() : ""),
+                        lead.getIsTested() != null ? lead.getIsTested().toString() : "");
+            }
+        } catch (IOException e) {
+            log.error("Failed to write lead to CSV", e);
+            throw new RuntimeException("Could not save lead data", e);
+        }
+    }
+
+    private String escapeCsv(String val) {
+        if (val == null)
+            return "";
+        return val.replace("\"", "\"\"");
     }
 
     private String getConsentSnapshot(String version) {
