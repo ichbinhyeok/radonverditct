@@ -194,15 +194,16 @@
             </p>
 
             <!-- CTA Section -->
-            <div class="not-prose bg-gradient-to-br from-slate-900 to-slate-800 rounded-2xl p-8 mt-12 text-white">
-                <h3 class="font-display font-bold text-xl text-white mb-3">Already have your test results?</h3>
-                <p class="text-slate-300 mb-6 text-sm leading-relaxed">Check your radon level against EPA and WHO thresholds, then get an itemized mitigation cost estimate specific to your county.</p>
-                <div class="flex flex-col sm:flex-row gap-3">
-                    <a href="/radon-cost-calculator" class="inline-flex items-center justify-center px-6 py-3 border border-transparent text-sm font-bold rounded-xl text-slate-900 bg-white hover:bg-slate-100 transition">
-                        Get Cost Estimate →
+            <div class="not-prose bg-indigo-50 border border-indigo-100 rounded-2xl p-8 mt-12 text-slate-900 shadow-sm relative overflow-hidden">
+                <div class="absolute top-0 right-0 -mr-16 -mt-16 w-32 h-32 rounded-full bg-indigo-200 opacity-50 blur-2xl"></div>
+                <h3 class="font-display font-bold text-xl text-indigo-950 mb-3 relative z-10">Check mitigation costs &amp; local requirements for your county.</h3>
+                <p class="text-indigo-800 mb-6 text-sm leading-relaxed relative z-10">Check your radon level against EPA and WHO thresholds, then get an itemized mitigation cost estimate specific to your state’s labor rates and foundation types.</p>
+                <div class="flex flex-col sm:flex-row gap-3 relative z-10">
+                    <a href="/radon-cost-calculator" class="inline-flex items-center justify-center px-6 py-3 border border-transparent text-sm font-bold rounded-xl text-white bg-indigo-600 hover:bg-indigo-700 transition shadow-sm">
+                        Calculate My Local Cost →
                     </a>
-                    <a href="/guides/diy-vs-professional-radon-mitigation" class="inline-flex items-center justify-center px-6 py-3 border border-slate-600 text-sm font-bold rounded-xl text-white hover:border-slate-400 transition">
-                        DIY vs. Professional Guide
+                    <a href="/guides/diy-vs-professional-radon-mitigation" class="inline-flex items-center justify-center px-6 py-3 border border-indigo-200 text-sm font-bold rounded-xl text-indigo-800 bg-white hover:bg-indigo-50 transition">
+                        DIY vs. Professional
                     </a>
                 </div>
             </div>

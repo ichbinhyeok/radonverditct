@@ -103,6 +103,12 @@
 
             <!-- Team & Expertise -->
             <h2 class="font-display font-bold text-2xl text-slate-900 mt-12 mb-4">Our Expertise &amp; Transparency</h2>
+            <div class="bg-indigo-50 border-l-4 border-indigo-600 p-6 rounded-r-xl mb-6">
+                <p class="text-sm text-indigo-900 font-semibold mb-2">Reviewed &amp; Calibrated for Compliance</p>
+                <p class="text-xs text-indigo-800 leading-relaxed">
+                    Our technical algorithms and editorial models strictly adhere to the guidelines set forth in the <strong>EPA 402/K-12/002 Document (A Citizen's Guide to Radon)</strong> and the <strong>ANSI/AARST MAH 2019 National Standards</strong>. Pricing models are calibrated against regional building codes to ensure realistic, safe mitigation frameworks.
+                </p>
+            </div>
             <p class="text-slate-600 mb-6">
                 RadonVerdict relies on publicly available data from the Environmental Protection Agency (EPA), state health departments, and aggregated industry labor statistics. <strong>We are not government officials or certified mitigators ourselves.</strong> We are software engineers and data analysts who specialize in making complex public data accessible and actionable.
             </p>

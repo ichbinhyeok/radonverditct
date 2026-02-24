@@ -109,6 +109,28 @@
                     <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
                     <span>Source: US Census Bureau, American Community Survey (Data retrieved ${county.getStats().getRetrievedAt()})</span>
                 </div>
+                
+                <!-- Radon Insight Synthesis Box (AEO & Local Moat) -->
+                <div class="mt-8 bg-indigo-50/50 border border-indigo-100 rounded-2xl p-6 sm:p-8 flex items-start gap-4">
+                    <div class="flex-shrink-0 w-12 h-12 bg-indigo-100 text-indigo-600 rounded-full flex items-center justify-center">
+                        <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                    </div>
+                    <div>
+                        <h4 class="font-display font-bold text-lg text-indigo-900 mb-2">🏡 ${county.getCountyName()} Data Insight</h4>
+                        <p class="text-sm text-indigo-800 leading-relaxed font-medium">
+                            @if(county.getEpaZone() == 1 && county.getStats().getMetrics().getBuiltBefore1980Pct() > 40.0)
+                                ${county.getCountyName()} is categorized as a high-risk <strong>EPA Zone ${county.getEpaZone()}</strong>, while over <strong>${county.getStats().getMetrics().getBuiltBefore1980Pct()}%</strong> of local housing was built before 1980. Older foundations are significantly more prone to crack settling, which means standard sub-slab depressurization might require specialized sealing work and additional suction points. This local architectural reality often drives up hardware costs slightly above the usual regional base rate.
+                            @elseif(county.getEpaZone() == 1)
+                                As a high-risk <strong>EPA Zone ${county.getEpaZone()}</strong> area, ${county.getCountyName()} homes have an elevated statistical probability of failing indoor radon tests. Despite only <strong>${county.getStats().getMetrics().getBuiltBefore1980Pct()}%</strong> of the local properties being built before 1980, the aggressive geological conditions mean mitigation systems usually require commercial-grade fans rather than standard residential models, keeping installation rates firm.
+                            @elseif(county.getStats().getMetrics().getBuiltBefore1980Pct() > 50.0)
+                                While this is a moderate/low-risk Zone ${county.getEpaZone()} county, more than <strong>${county.getStats().getMetrics().getBuiltBefore1980Pct()}%</strong> of houses here were constructed before 1980. The aging architecture in ${county.getCountyName()} often features dirt crawl spaces or deteriorating basement seals. Contractors frequently need to lay down new vapor barriers before installing Active Soil Depressurization (ASD) systems, making labor a prominent factor in local pricing.
+                            @else
+                                ${county.getCountyName()} is an <strong>EPA Zone ${county.getEpaZone()}</strong> area with a relatively modern housing stock, featuring only <strong>${county.getStats().getMetrics().getBuiltBefore1980Pct()}%</strong> of homes built prior to 1980. Because newer builds frequently contain passive radon pipes integrated during early construction, local contractors often only need to add an exhaust fan to “activate” the system. This naturally results in faster installations and highly competitive labor rates compared to neighboring counties.
+                            @endif
+                        </p>
+                    </div>
+                </div>
+
             </div>
             @endif
 
