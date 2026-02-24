@@ -25,14 +25,14 @@
                 RadonVerdict relies on data from the Environmental Protection Agency (EPA) to determine risk zones, but we are not affiliated with, endorsed by, or sponsored by the EPA, the US Government, or any State Department of Health. The responsibility for addressing radon hazards lies entirely with the homeowner.
             </p>
 
-            <h2 class="font-display font-bold text-2xl text-slate-900 mt-10 mb-4">4. Lead Generation and Contractors</h2>
+            <h2 class="font-display font-bold text-2xl text-slate-900 mt-10 mb-4">4. Waitlist and Notifications</h2>
             <p class="text-slate-600 mb-6">
-                When you submit a request for an estimate, you authorize us to transmit your information to third-party radon mitigation professionals. We do not perform the mitigation services ourselves. We do not guarantee the quality of work, pricing, or licensing status of the third-party providers. It is your responsibility to verify the credentials, insurance, and state certifications of any contractor you hire.
+                When you submit a request for an action plan or join our waitlist, you authorize us to notify you when trusted local mitigation professionals become available in your area. We do not perform the mitigation services ourselves. We do not guarantee the quality of work, pricing, or licensing status of the third-party providers. It is your responsibility to verify the credentials, insurance, and state certifications of any contractor you hire.
             </p>
 
-            <h2 class="font-display font-bold text-2xl text-slate-900 mt-10 mb-4">5. TCPA Consent</h2>
+            <h2 class="font-display font-bold text-2xl text-slate-900 mt-10 mb-4">5. Contact Consent</h2>
             <p class="text-slate-600 mb-6">
-                By submitting your phone number, you explicitly provide your signature and consent to receive calls and text messages from RadonVerdict and its network of contractors at the number you provided. You understand that these calls may be generated using automated technology and that your consent is not a condition of purchasing any goods or services.
+                By providing your contact information, you consent to receive direct communications (emails and/or text messages if provided) from RadonVerdict regarding your personalized radon action plan, educational materials, and availability alerts for local contractors. You may opt out of these communications at any time.
             </p>
             
             <h2 class="font-display font-bold text-2xl text-slate-900 mt-10 mb-4">6. Limitation of Liability</h2>

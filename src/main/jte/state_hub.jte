@@ -6,7 +6,7 @@
 @param List<County> counties
 
 @template.layout.main(
-    title = stateAbbr + " Radon Mitigation Costs " + java.time.LocalDate.now().getYear(),
+    title = stateAbbr + " Radon Mitigation Costs 2026",
     description = "View estimated radon mitigation costs and local contractor pricing for " + stateAbbr + " counties.",
     content = @`
         <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
@@ -28,7 +28,7 @@
                     ${stateAbbr}
                 </h1>
                 <p class="text-slate-500 text-lg sm:text-xl leading-relaxed font-medium max-w-2xl mx-auto">
-                    Select your county below to view itemized mitigation estimates, local labor rates, and EPA zone risk factors.
+                    Select your county below to view itemized mitigation estimates, regional labor rates, and EPA zone risk factors.
                 </p>
             </div>
 

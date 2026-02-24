@@ -21,8 +21,8 @@
                 <li><strong>Identity Data:</strong> First name and last name.</li>
                 <li><strong>Contact Data:</strong> Phone number and email address.</li>
                 <li><strong>Location Data:</strong> ZIP code, county, and state.</li>
-                <li><strong>Property Data:</strong> Information about your home, such as foundation type.</li>
-                <li><strong>Technical Data:</strong> Internet protocol (IP) address, your login data, browser type and version, time zone setting and location.</li>
+                <li><strong>Property Data:</strong> Information about your home, such as foundation type and previous test results.</li>
+                <li><strong>Consent Metadata:</strong> IP address, browser user-agent, and the exact consent language agreed to at the time of submission.</li>
             </ul>
 
             <h2 class="font-display font-bold text-2xl text-slate-900 mt-10 mb-4">3. How We Use Your Data</h2>
@@ -30,14 +30,15 @@
                 We will only use your personal data when the law allows us to. Most commonly, we will use your personal data in the following circumstances:
             </p>
             <ul class="list-disc pl-6 text-slate-600 mb-6 space-y-2">
-                <li>Where we need to match you with state-certified local radon mitigation professionals to provide you with the quote/estimate you requested.</li>
+                <li>Where we need to provide your personalized radon action plan and add you to our waitlist.</li>
+                <li>Where we contact you to notify you of local contractor availability in your area.</li>
                 <li>Where it is necessary for our legitimate interests (or those of a third party) and your interests and fundamental rights do not override those interests.</li>
                 <li>Where we need to comply with a legal or regulatory obligation.</li>
             </ul>
 
             <h2 class="font-display font-bold text-2xl text-slate-900 mt-10 mb-4">4. Disclosures of Your Personal Data</h2>
             <p class="text-slate-600 mb-6">
-                By submitting a request for a quote, you explicitly consent to your information being shared with up to four (4) certified local contractors in your geographical area. We securely transmit this data exclusively for the purpose of facilitating the home service requested. 
+                By submitting a request, you explicitly consent to your information being used to provide an action plan and to notify you when trusted local mitigation professionals become available in your geographical area. We securely store this data and do not sell it to unauthorized data brokers. 
             </p>
             
             <h2 class="font-display font-bold text-2xl text-slate-900 mt-10 mb-4">5. Data Security & Analytics</h2>

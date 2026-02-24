@@ -62,6 +62,18 @@ public class DataLoadService {
             epaZones.forEach(z -> epaZoneMap.put(z.getFips(), z));
             log.info("Loaded {} EPA Zones", epaZones.size());
 
+            // 2.5 Load County Stats (Data Moat)
+            Map<String, CountyStats> countyStatsMap = new HashMap<>();
+            try {
+                Map<String, CountyStats> rawStats = readJson("data/county_stats.json",
+                        new TypeReference<Map<String, CountyStats>>() {
+                        });
+                countyStatsMap.putAll(rawStats);
+                log.info("Loaded {} County Stats", countyStatsMap.size());
+            } catch (Exception e) {
+                log.warn("Failed to load county_stats.json. Data moat will be disabled. Error: {}", e.getMessage());
+            }
+
             // 3. Merge into County map
             for (GeoCountyDto geo : geoCounties) {
                 EpaZoneDto epa = epaZoneMap.get(geo.getFips());
@@ -76,6 +88,7 @@ public class DataLoadService {
                         .countySlug(geo.getCountySlug())
                         .epaZone(zone)
                         .zoneLabel(zoneLabel)
+                        .stats(countyStatsMap.get(geo.getFips()))
                         .build();
 
                 countByFipsMap.put(county.getFips(), county);

@@ -6,10 +6,12 @@
 @param String title
 @param ItemizedReceipt defaultReceipt
 @param Map<String, List<County>> stateMap
+@param boolean noindex = false
 
 @template.layout.main(
     title = title,
     description = "Estimate radon mitigation costs in your area. Enter your ZIP code to get a customized, itemized receipt for your local county.",
+    noindex = noindex,
     content = @`
         <!-- Hero Search Section -->
         <div class="bg-slate-900 pt-20 pb-32 border-b border-slate-800 relative overflow-hidden">
@@ -18,7 +20,7 @@
             <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
                 <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold tracking-wider uppercase bg-slate-800 text-slate-300 border border-slate-700 shadow-sm mb-6">
                     <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
-                    ${java.time.LocalDate.now().getYear()} Data Updated
+                    2026 Data Updated
                 </span>
                 
                 <h1 class="font-display font-black text-4xl sm:text-5xl lg:text-6xl text-white tracking-tighter leading-tight mb-6">

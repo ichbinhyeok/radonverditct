@@ -50,7 +50,12 @@ public class SitemapController {
         addUrl(xml, "/", "1.0");
         addUrl(xml, "/radon-cost-calculator", "0.9");
         addUrl(xml, "/about", "0.8");
+        addUrl(xml, "/contact", "0.8");
         addUrl(xml, "/guides", "0.8");
+
+        // 1.5 Trust Pages (YMYL)
+        addUrl(xml, "/privacy", "0.5");
+        addUrl(xml, "/terms", "0.5");
 
         // 2. All 11 Guides
         addUrl(xml, "/guides/diy-vs-professional-radon-mitigation", "0.7");
@@ -86,6 +91,11 @@ public class SitemapController {
         // Zone 1 & 2 pSEO Pages (High Priority)
         Collection<County> counties = dataLoadService.getCountyBySlugMap().values();
         for (County county : counties) {
+            boolean hasDataMoat = county.getStats() != null && county.getStats().getMetrics() != null
+                    && county.getStats().getMetrics().getTotalHousingUnits() > 0;
+            if (!hasDataMoat)
+                continue;
+
             if (county.getEpaZone() == 1 || county.getEpaZone() == 2) {
                 // Cost Calculator pSEO
                 addUrl(xml, "/radon-mitigation-cost/" + county.getStateSlug() + "/" + county.getCountySlug(), "0.8");
@@ -108,6 +118,11 @@ public class SitemapController {
         // Zone 3 pSEO Pages (Low Priority)
         Collection<County> counties = dataLoadService.getCountyBySlugMap().values();
         for (County county : counties) {
+            boolean hasDataMoat = county.getStats() != null && county.getStats().getMetrics() != null
+                    && county.getStats().getMetrics().getTotalHousingUnits() > 0;
+            if (!hasDataMoat)
+                continue;
+
             if (county.getEpaZone() == 3) {
                 // Cost Calculator pSEO
                 addUrl(xml, "/radon-mitigation-cost/" + county.getStateSlug() + "/" + county.getCountySlug(), "0.4");

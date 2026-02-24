@@ -36,10 +36,14 @@ public class PageController {
     }
 
     @GetMapping("/radon-cost-calculator")
-    public String globalCalculator(Model model) {
-        model.addAttribute("title", "National Radon Mitigation Cost Calculator " + java.time.LocalDate.now().getYear());
+    public String globalCalculator(@RequestParam(name = "error", required = false) String error, Model model) {
+        model.addAttribute("title", "National Radon Mitigation Cost Calculator 2026");
         ItemizedReceipt defaultReceipt = calcService.calculate("US", "National Average", "other", "homeowner");
         model.addAttribute("defaultReceipt", defaultReceipt);
+
+        if (error != null) {
+            model.addAttribute("noindex", true);
+        }
 
         // Group counties by state for the directory
         Map<String, List<County>> stateMap = dataLoadService.getCountyBySlugMap().values().stream()

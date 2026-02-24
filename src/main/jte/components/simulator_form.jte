@@ -15,9 +15,32 @@
           hx-target="#receipt-container"
           hx-trigger="change"
           hx-swap="innerHTML transition:true"
-          @htmx:after-request="showToast = false; setTimeout(() => showToast = true, 50); clearTimeout(hideTimeout); hideTimeout = setTimeout(() => showToast = false, 3000)"
+          @htmx:after-request="
+            showToast = false; 
+            setTimeout(() => showToast = true, 50); 
+            clearTimeout(hideTimeout); 
+            hideTimeout = setTimeout(() => showToast = false, 3000);
+            if (typeof gtag === 'function') {
+                gtag('event', 'estimator_result_viewed', { event_category: 'engagement', event_label: countySlug + ' - ' + foundation + ' - ' + intent });
+            }
+          "
           class="space-y-8 relative"
-          x-data="{ foundation: 'basement', intent: 'buying', sqftCategory: 'under_2000', showToast: false, hideTimeout: null }">
+          x-data="{ 
+              foundation: 'basement', 
+              intent: 'buying', 
+              sqftCategory: 'under_2000', 
+              showToast: false, 
+              hideTimeout: null,
+              countySlug: '${county.getCountySlug()}',
+              hasStarted: false,
+              trackStart() {
+                  if (!this.hasStarted && typeof gtag === 'function') {
+                      this.hasStarted = true;
+                      gtag('event', 'estimator_start', { event_category: 'engagement', event_label: this.countySlug });
+                  }
+              }
+          }"
+          @change="trackStart; if(typeof gtag === 'function') gtag('event', 'estimator_step_complete', { event_category: 'engagement', event_label: $event.target.name + ': ' + $event.target.value });">
         
         <!-- Animated Toast Notification (Triggered after HTMX swap) -->
         <div x-show="showToast" 

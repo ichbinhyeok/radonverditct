@@ -82,8 +82,14 @@ public class ContentGenerationService {
                                 .limit(6)
                                 .toList();
 
+                // 6.7 Evaluate indexing quality gate
+                boolean isIndexable = (county.getStats() != null
+                                && county.getStats().getMetrics() != null
+                                && county.getStats().getMetrics().getTotalHousingUnits() > 0);
+
                 // 7. Assemble Final DTO
                 return CountyPageContent.builder()
+                                .indexable(isIndexable)
                                 .heroTitle("Radon Mitigation Cost in " + countyName + ", " + stateAbbr)
                                 .heroSummary(resolve(countyName + " " + zoneDesc.getHeroSummary(), ctx))
                                 .riskLevel(zoneDesc.getRiskLevel())

@@ -304,7 +304,7 @@
                             <h3 class="font-display font-bold text-lg mb-3">Already Know Your Level?</h3>
                             <p class="text-sm text-indigo-100 leading-relaxed mb-5">
                                 If your test shows 4.0 pCi/L or higher, get an itemized cost estimate specific to
-                                ${county.getCountyName()} County — including local labor rates and permit requirements.
+                                ${county.getCountyName()} County — including regional labor rates and permit requirements.
                             </p>
                             <a href="/radon-mitigation-cost/${county.getStateSlug()}/${county.getCountySlug()}"
                                class="flex items-center justify-center gap-2 w-full py-3.5 rounded-xl bg-white text-indigo-700 font-bold text-sm hover:bg-indigo-50 transition-colors shadow-sm">
@@ -401,10 +401,10 @@
                 </div>
             </div>
 
-            <!-- Nearby Counties -->
+            <!-- Explore Other Counties -->
             @if(nearbyCounties != null && !nearbyCounties.isEmpty())
             <div class="border-t border-slate-200 pt-16 mb-10">
-                <h3 class="font-display font-bold text-2xl text-slate-900 mb-6">Radon Levels in Nearby ${county.getStateAbbr()} Counties</h3>
+                <h3 class="font-display font-bold text-2xl text-slate-900 mb-6">Explore Other ${county.getStateAbbr()} Counties</h3>
                 <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
                     @for(var nearby : nearbyCounties)
                         <a href="/radon-levels/${nearby.getStateSlug()}/${nearby.getCountySlug()}"
@@ -445,7 +445,7 @@
                     Testing is the only reliable method to determine your home's radon concentration. This content is for informational purposes
                     and is not medical advice.
                 </p>
-                <p class="mt-4 text-xs text-slate-400 font-medium">Page Content Last Updated: ${java.time.LocalDate.now().getMonth().getDisplayName(java.time.format.TextStyle.FULL, java.util.Locale.US)} ${java.time.LocalDate.now().getYear()}</p>
+                <p class="mt-4 text-xs text-slate-400 font-medium">Page Content Last Reviewed: February 2026</p>
             </div>
 
             <!-- Schema.org structured data -->

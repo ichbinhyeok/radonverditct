@@ -13,4 +13,7 @@ public class County {
     private String countySlug;
     private int epaZone;
     private String zoneLabel;
+
+    // Loaded from county_stats.json (Census data)
+    private CountyStats stats;
 }

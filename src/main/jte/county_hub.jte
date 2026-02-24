@@ -11,6 +11,7 @@
     title = page.getHeroTitle(),
     description = page.getHeroSummary(),
     canonicalUrl = canonicalUrl,
+    noindex = !page.isIndexable(),
     content = @`
         <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
             
@@ -84,6 +85,33 @@
             <!-- Lead Capture CTA (Injected) -->
             @template.components.lead_form(county = county, page = page, successMessage = leadSuccessMessage, errorMessage = leadErrorMessage)
 
+            <!-- 2.5 Local Data Moat -->
+            @if(county.getStats() != null && county.getStats().getMetrics() != null && county.getStats().getMetrics().getTotalHousingUnits() > 0)
+            <div class="border-t border-slate-200 mt-20 pt-16 mb-10">
+                <h3 class="font-display font-bold text-2xl text-slate-900 mb-6">${county.getCountyName()} County Housing Statistics</h3>
+                <p class="text-slate-600 mb-6">Housing characteristics like age and foundation type can heavily influence radon risks and mitigation costs. Here is a snapshot of ${county.getCountyName()} County's real estate data.</p>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="bg-indigo-50 border border-indigo-100 rounded-2xl p-6 shadow-sm">
+                        <span class="block text-indigo-900 text-sm font-semibold uppercase tracking-wider mb-2">Total Housing Units</span>
+                        <span class="block text-3xl font-display font-bold text-indigo-700">${String.format("%,d", county.getStats().getMetrics().getTotalHousingUnits())}</span>
+                    </div>
+                    <div class="bg-emerald-50 border border-emerald-100 rounded-2xl p-6 shadow-sm">
+                        <span class="block text-emerald-900 text-sm font-semibold uppercase tracking-wider mb-2">Built Before 1980</span>
+                        <span class="block text-3xl font-display font-bold text-emerald-700">${county.getStats().getMetrics().getBuiltBefore1980Pct()}%</span>
+                        <p class="text-xs text-emerald-800 mt-2">Older homes often require different sub-slab depressurization techniques.</p>
+                    </div>
+                    <div class="bg-amber-50 border border-amber-100 rounded-2xl p-6 shadow-sm">
+                        <span class="block text-amber-900 text-sm font-semibold uppercase tracking-wider mb-2">Median Home Value</span>
+                        <span class="block text-3xl font-display font-bold text-amber-700">$${String.format("%,d", county.getStats().getMetrics().getMedianHomeValue())}</span>
+                    </div>
+                </div>
+                <div class="mt-4 flex items-center gap-2 text-xs text-slate-500">
+                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                    <span>Source: US Census Bureau, American Community Survey (Data retrieved ${county.getStats().getRetrievedAt()})</span>
+                </div>
+            </div>
+            @endif
+
             <!-- 3. Dynamic FAQs -->
             <div class="max-w-3xl border-t border-slate-200 mt-20 pt-16">
                 @template.components.faq_accordion(page = page)
@@ -154,7 +182,7 @@
                         </ul>
                     </div>
                 </div>
-                <p class="mt-8 text-xs text-slate-400 font-medium">Page Content Last Updated: ${java.time.LocalDate.now().getMonth().getDisplayName(java.time.format.TextStyle.FULL, java.util.Locale.US)} ${java.time.LocalDate.now().getYear()}</p>
+                <p class="mt-8 text-xs text-slate-400 font-medium">Page Content Framework Last Reviewed: February 2026</p>
             </div>
             
             <!-- Generate JSON-LD schema for FAQPage -->

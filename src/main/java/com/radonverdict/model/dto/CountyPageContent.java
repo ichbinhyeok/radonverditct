@@ -15,6 +15,9 @@ import java.util.List;
 @Builder
 public class CountyPageContent {
 
+    @Builder.Default
+    private boolean indexable = true;
+
     // Hero Section
     private String heroTitle;
     private String heroSummary; // Zone-aware summary

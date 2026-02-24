@@ -94,7 +94,7 @@ public class LeadService {
     private String getConsentSnapshot(String version) {
         // Normally this would come from a loaded JSON like lead_consent_templates.json
         if ("v1.0".equals(version)) {
-            return "Prior to submitting, I consent to be contacted by local radon professionals to provide quotes for mitigation services.";
+            return "Prior to submitting, I consent to be contacted regarding my personalized radon action plan and local contractor availability.";
         }
         return "I consent to be contacted by a local radon representative.";
     }

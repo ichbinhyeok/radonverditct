@@ -54,7 +54,7 @@
 
             <div class="bg-slate-900 rounded-2xl p-8 mt-12 text-white">
                 <h3 class="font-display font-bold text-xl text-white mb-3">Don't guess on price. Connect with local pros.</h3>
-                <p class="text-slate-300 mb-6">Get actual quotes from certified contractors near you, backed by our county-specific cost algorithms.</p>
+                <p class="text-slate-300 mb-6">Get actual quotes from certified contractors near you, backed by our regional cost algorithms.</p>
                 <a href="/radon-cost-calculator" class="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-bold rounded-lg text-slate-900 bg-white hover:bg-slate-100 transition">
                     Start Local Quote
                 </a>
