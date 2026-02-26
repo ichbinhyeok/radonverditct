@@ -30,6 +30,15 @@ class SeoBehaviorIntegrationTest {
     }
 
     @Test
+    void canonicalFilterUsesCfVisitorSchemeToAvoidHttpsLoop() throws Exception {
+        mockMvc.perform(get("/radon-cost-calculator")
+                        .header("X-Forwarded-Proto", "http")
+                        .header("X-Forwarded-Host", "radonverdict.com")
+                        .header("CF-Visitor", "{\"scheme\":\"https\"}"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
     void mixedCaseCountySlugRedirectsToCanonicalPath() throws Exception {
         mockMvc.perform(get("/radon-levels/PuErTo-RiCo/PONCE-MUNICIPIO"))
                 .andExpect(status().isMovedPermanently())

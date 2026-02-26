@@ -13,10 +13,14 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 import java.net.URI;
 import java.util.Locale;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Component
 @Order(Ordered.HIGHEST_PRECEDENCE)
 public class CanonicalUrlRedirectFilter extends OncePerRequestFilter {
+
+    private static final Pattern CF_VISITOR_SCHEME_PATTERN = Pattern.compile("\"scheme\"\\s*:\\s*\"([^\"]+)\"");
 
     private final URI canonicalBaseUri;
     private final boolean enforceCanonicalHost;
@@ -41,10 +45,7 @@ public class CanonicalUrlRedirectFilter extends OncePerRequestFilter {
         String canonicalHost = canonicalBaseUri.getHost() == null ? "radonverdict.com"
                 : canonicalBaseUri.getHost().toLowerCase(Locale.ROOT);
 
-        String forwardedProto = firstHeaderValue(request.getHeader("X-Forwarded-Proto"));
-        String currentScheme = (forwardedProto == null || forwardedProto.isBlank())
-                ? request.getScheme()
-                : forwardedProto;
+        String currentScheme = resolveCurrentScheme(request);
 
         String forwardedHost = firstHeaderValue(request.getHeader("X-Forwarded-Host"));
         String currentHost = (forwardedHost == null || forwardedHost.isBlank())
@@ -73,6 +74,32 @@ public class CanonicalUrlRedirectFilter extends OncePerRequestFilter {
         }
 
         filterChain.doFilter(request, response);
+    }
+
+    private String resolveCurrentScheme(HttpServletRequest request) {
+        String cfVisitorScheme = parseCloudflareVisitorScheme(request.getHeader("CF-Visitor"));
+        if (cfVisitorScheme != null && !cfVisitorScheme.isBlank()) {
+            return cfVisitorScheme;
+        }
+
+        String forwardedProto = firstHeaderValue(request.getHeader("X-Forwarded-Proto"));
+        if (forwardedProto != null && !forwardedProto.isBlank()) {
+            return forwardedProto;
+        }
+
+        return request.getScheme();
+    }
+
+    private String parseCloudflareVisitorScheme(String cfVisitorHeader) {
+        if (cfVisitorHeader == null || cfVisitorHeader.isBlank()) {
+            return null;
+        }
+
+        Matcher matcher = CF_VISITOR_SCHEME_PATTERN.matcher(cfVisitorHeader);
+        if (!matcher.find()) {
+            return null;
+        }
+        return matcher.group(1);
     }
 
     private boolean isSafeMethod(String method) {
