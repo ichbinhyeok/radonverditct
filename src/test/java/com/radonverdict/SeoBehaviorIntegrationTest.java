@@ -39,6 +39,15 @@ class SeoBehaviorIntegrationTest {
     }
 
     @Test
+    void canonicalFilterSkipsSchemeRedirectForCloudflareProxyWithoutCfVisitor() throws Exception {
+        mockMvc.perform(get("/radon-cost-calculator")
+                        .header("X-Forwarded-Proto", "http")
+                        .header("X-Forwarded-Host", "radonverdict.com")
+                        .header("CF-Connecting-IP", "198.51.100.9"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
     void mixedCaseCountySlugRedirectsToCanonicalPath() throws Exception {
         mockMvc.perform(get("/radon-levels/PuErTo-RiCo/PONCE-MUNICIPIO"))
                 .andExpect(status().isMovedPermanently())
