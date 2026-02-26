@@ -59,8 +59,66 @@ public class CountyPageContent {
     // Itemized Receipt (from PricingCalculatorService)
     private ItemizedReceipt receipt;
 
+    // Comparison benchmarks (same input conditions)
+    private int stateAverageTotal;
+    private int nationalAverageTotal;
+
+    // Current calculator context used for explanation blocks
+    private String selectedFoundationType;
+    private String selectedIntent;
+    private String selectedSqftCategory;
+
     // SEO Silo: Neighboring Counties in the same state
     private List<com.radonverdict.model.County> nearbyCounties;
+
+    public int getComparisonMaxTotal() {
+        int county = receipt != null ? receipt.getTotalAvg() : 0;
+        return Math.max(county, Math.max(stateAverageTotal, nationalAverageTotal));
+    }
+
+    public int getCountyVsStateDeltaPct() {
+        if (stateAverageTotal <= 0 || receipt == null) {
+            return 0;
+        }
+        return (int) Math.round(((receipt.getTotalAvg() - stateAverageTotal) * 100.0) / stateAverageTotal);
+    }
+
+    public int getCountyVsNationalDeltaPct() {
+        if (nationalAverageTotal <= 0 || receipt == null) {
+            return 0;
+        }
+        return (int) Math.round(((receipt.getTotalAvg() - nationalAverageTotal) * 100.0) / nationalAverageTotal);
+    }
+
+    public String getSelectedFoundationLabel() {
+        if (selectedFoundationType == null) {
+            return "Other / Not Sure";
+        }
+        return switch (selectedFoundationType.toLowerCase()) {
+            case "basement" -> "Basement";
+            case "crawlspace" -> "Crawl Space";
+            case "slab" -> "Slab-on-Grade";
+            default -> "Other / Not Sure";
+        };
+    }
+
+    public String getSelectedIntentLabel() {
+        if (selectedIntent == null) {
+            return "Living Here";
+        }
+        return switch (selectedIntent.toLowerCase()) {
+            case "buying" -> "Buying";
+            case "selling" -> "Selling";
+            default -> "Living Here";
+        };
+    }
+
+    public String getSelectedSqftLabel() {
+        if ("over_2000".equalsIgnoreCase(selectedSqftCategory)) {
+            return "Over 2,000 sq ft";
+        }
+        return "Under 2,000 sq ft";
+    }
 
     @Data
     @Builder

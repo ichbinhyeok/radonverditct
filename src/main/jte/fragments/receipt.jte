@@ -16,9 +16,13 @@
             <div class="flex flex-col">
                 <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest leading-none mb-1.5">Est. Total</p>
                 <p class="font-display font-extrabold text-2xl text-white tabular-nums leading-none">$${page.getReceipt().getTotalAvg()}</p>
+                <p class="text-[10px] text-slate-400 mt-1">No obligation, 30-second form</p>
             </div>
-            <a href="#estimate-form" onclick="event.preventDefault(); document.getElementById('estimate-form').scrollIntoView({behavior: 'smooth'})" class="bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-bold py-2.5 px-6 rounded-xl shadow-md whitespace-nowrap transition-transform active:scale-95 flex items-center gap-2">
-                Get Quotes
+            <a href="#estimate-form"
+               data-track-event="mobile_cta_click"
+               onclick="event.preventDefault(); document.getElementById('estimate-form').scrollIntoView({behavior: 'smooth'})"
+               class="bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-bold py-2.5 px-6 rounded-xl shadow-md whitespace-nowrap transition-transform active:scale-95 flex items-center gap-2">
+                Start Free Plan
                 <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
             </a>
         </div>

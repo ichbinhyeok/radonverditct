@@ -50,9 +50,15 @@ public class ContentGenerationService {
                 StateRegulations regulations = dataLoadService.getStateRegulations();
                 FaqTemplates faqTemplates = dataLoadService.getFaqTemplates();
 
+                String safeSqftCategory = (sqftCategory == null || sqftCategory.isBlank()) ? "under_2000" : sqftCategory;
+
                 // 1. Get the receipt first (needed for placeholder resolution in text)
                 ItemizedReceipt receipt = pricingCalculatorService.calculate(
-                                stateAbbr, countyName, foundationType, userIntent, sqftCategory);
+                                stateAbbr, countyName, foundationType, userIntent, safeSqftCategory);
+                ItemizedReceipt stateAverageReceipt = pricingCalculatorService.calculate(
+                                stateAbbr, "State Average", foundationType, userIntent, safeSqftCategory);
+                ItemizedReceipt nationalAverageReceipt = pricingCalculatorService.calculate(
+                                "US", "National Average", foundationType, userIntent, safeSqftCategory);
 
                 // 2. Resolve Zone Description
                 ContentTemplates.ZoneDescription zoneDesc = templates.getZoneDescriptions().getOrDefault(
@@ -72,7 +78,6 @@ public class ContentGenerationService {
                 String safeIntent = (userIntent != null) ? userIntent.toLowerCase() : "homeowner";
                 ContentTemplates.IntentContent intentContent = templates.getIntentContent().getOrDefault(
                                 safeIntent, templates.getIntentContent().get("homeowner"));
-
                 // 6. Build Dynamic FAQs (zone-specific + universal)
                 Map<String, String> ctx = buildContext(areaName, stateAbbr, receipt, zoneKey, stateRule);
 
@@ -122,6 +127,11 @@ public class ContentGenerationService {
                                 .licenseNote(resolve(stateRule.getLicenseNote(), ctx))
                                 .faqs(faqs)
                                 .receipt(receipt)
+                                .stateAverageTotal(stateAverageReceipt.getTotalAvg())
+                                .nationalAverageTotal(nationalAverageReceipt.getTotalAvg())
+                                .selectedFoundationType(safeFoundation)
+                                .selectedIntent(safeIntent)
+                                .selectedSqftCategory(safeSqftCategory)
                                 .nearbyCounties(nearbyCounties)
                                 .build();
         }

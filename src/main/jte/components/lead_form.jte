@@ -17,26 +17,26 @@
             <!-- Left side: Value Prop -->
             <div class="flex-1 text-white">
                 <span class="inline-block py-1 px-3 rounded-full bg-indigo-500/20 text-indigo-300 text-xs font-bold tracking-wider uppercase mb-4">
-                    Personalized Action Plan
+                    Free 30-Second Action Plan
                 </span>
                 <h3 class="text-3xl font-display font-bold mb-4 tracking-tight leading-tight">
-                    Do I need mitigation<br>in ${county.getAreaDisplayName()}?
+                    Should I mitigate now<br>in ${county.getAreaDisplayName()}?
                 </h3>
                 <p class="text-slate-300 text-lg mb-6 leading-relaxed">
-                    Join our free waitlist. Answer a few questions about your home to get a personalized, risk-based recommendation. We'll outline your options and notify you when top-rated, certified local professionals have availability.
+                    Tell us a few details and get a personalized plan based on local risk, foundation type, and cost range. No obligation and no auto-enrollment.
                 </p>
                 <ul class="space-y-3">
                     <li class="flex items-center text-slate-300">
                         <svg class="h-5 w-5 text-indigo-400 mr-3 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path></svg>
-                        Risk assessment based on your home
+                        Local risk and budget fit summary
                     </li>
                     <li class="flex items-center text-slate-300">
                         <svg class="h-5 w-5 text-indigo-400 mr-3 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path></svg>
-                        Customized next steps
+                        Clear next steps for buying, selling, or staying
                     </li>
                     <li class="flex items-center text-slate-300">
                         <svg class="h-5 w-5 text-indigo-400 mr-3 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path></svg>
-                        Be notified when local pros are available
+                        Follow-up capped to relevant updates only
                     </li>
                 </ul>
             </div>
@@ -73,6 +73,11 @@
                         </div>
                     </div>
                 @else
+                    <div class="mb-5 grid grid-cols-1 sm:grid-cols-3 gap-2">
+                        <div class="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-xs text-slate-600 font-medium">Reply window: typically within 24 hours</div>
+                        <div class="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-xs text-slate-600 font-medium">No obligation to hire anyone</div>
+                        <div class="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-xs text-slate-600 font-medium">No call blasts or list selling</div>
+                    </div>
                     <form action="/submit-lead" method="POST" class="space-y-4"
                           x-data="{ 
                               hasStartedForm: false,
@@ -105,11 +110,11 @@
                         <div class="grid grid-cols-2 gap-4">
                             <div>
                                 <label for="customerPhone" class="block text-sm font-medium text-slate-700">Phone</label>
-                                <input type="tel" name="customerPhone" id="customerPhone" @focus="trackFormStart" required class="mt-1 block w-full rounded-lg border-slate-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm py-2 px-3 border">
+                                <input type="tel" name="customerPhone" id="customerPhone" @focus="trackFormStart" required placeholder="(555) 123-4567" class="mt-1 block w-full rounded-lg border-slate-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm py-2 px-3 border">
                             </div>
                             <div>
                                 <label for="zipCode" class="block text-sm font-medium text-slate-700">ZIP Code</label>
-                                <input type="text" name="zipCode" id="zipCode" @focus="trackFormStart" required class="mt-1 block w-full rounded-lg border-slate-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm py-2 px-3 border">
+                                <input type="text" name="zipCode" id="zipCode" @focus="trackFormStart" required placeholder="e.g. 90210" class="mt-1 block w-full rounded-lg border-slate-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm py-2 px-3 border">
                             </div>
                         </div>
 
@@ -164,11 +169,14 @@
                         </div>
 
                         <button type="submit" class="w-full flex justify-center py-3 px-4 border border-transparent rounded-xl shadow-sm text-sm font-bold text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors mt-6">
-                            Get My Action Plan
+                            Start My Free 30-Second Plan
                         </button>
                         <p class="text-center text-[10px] text-slate-400 mt-3 flex items-center justify-center">
                             <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd"></path></svg>
                             Your information is secure.
+                        </p>
+                        <p class="text-center text-[10px] text-slate-400">
+                            We contact only for your local radon plan and availability updates.
                         </p>
                     </form>
                 @endif

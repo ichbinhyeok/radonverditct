@@ -80,4 +80,13 @@ class SeoBehaviorIntegrationTest {
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("<lastmod>2026-02-24</lastmod>")));
     }
+
+    @Test
+    void countyPageShowsTrustSummaryAndCostBenchmarks() throws Exception {
+        mockMvc.perform(get("/radon-mitigation-cost/california/los-angeles-county"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("Your 30-second local estimate snapshot")))
+                .andExpect(content().string(containsString("Why this estimate looks like this")))
+                .andExpect(content().string(containsString("vs State vs National")));
+    }
 }

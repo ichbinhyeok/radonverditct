@@ -109,6 +109,9 @@
             @if(aeo != null)
                 @template.components.aeo_answer_block(block = aeo)
             @endif
+            @template.components.quick_trust_summary(county = county, page = page, trust = trust)
+            @template.components.why_price_breakdown(page = page)
+            @template.components.cost_benchmark_compare(county = county, page = page)
 
             <!-- 2. Grid Layout for Simulator and Receipt -->
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 mt-16 mb-20">
@@ -204,7 +207,7 @@
                         <ul class="space-y-3 text-sm text-indigo-800 leading-relaxed font-medium">
                             @if(page.getLocalInsights() != null && !page.getLocalInsights().isEmpty())
                                 @for(var insight : page.getLocalInsights())
-                                    <li class="relative pl-5 before:content-['•'] before:absolute before:left-0 before:text-indigo-500">${insight}</li>
+                                    <li class="relative pl-5 before:content-['*'] before:absolute before:left-0 before:text-indigo-500">${insight}</li>
                                 @endfor
                             @endif
                         </ul>
