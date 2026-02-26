@@ -1,0 +1,12 @@
+{
+    "name": "radonverdict",
+    "version": "1.0.0",
+    "description": "RadonVerdict Frontend Build",
+    "scripts": {
+        "build:css": "tailwindcss -i ./src/main/resources/static/css/tailwind.css -o ./src/main/resources/static/css/style.css --minify",
+        "watch:css": "tailwindcss -i ./src/main/resources/static/css/tailwind.css -o ./src/main/resources/static/css/style.css --watch"
+    },
+    "devDependencies": {
+        "tailwindcss": "^3.4.1"
+    }
+}

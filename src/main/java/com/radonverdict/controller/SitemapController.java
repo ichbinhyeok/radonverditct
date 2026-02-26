@@ -188,7 +188,9 @@ public class SitemapController {
         if (configuredLastmod != null && !configuredLastmod.isBlank()) {
             return configuredLastmod;
         }
-        return LocalDate.now().toString();
+        // Use a static approach like first day of the current month
+        LocalDate now = LocalDate.now();
+        return LocalDate.of(now.getYear(), now.getMonth(), 1).toString();
     }
 
     @GetMapping(value = "/robots.txt", produces = MediaType.TEXT_PLAIN_VALUE)
@@ -197,6 +199,7 @@ public class SitemapController {
         return "User-agent: *\n" +
                 "Allow: /\n" +
                 "Disallow: /admin/\n" +
+                "Disallow: /htmx/\n" +
                 "Sitemap: " + normalizedBaseUrl() + "/sitemap.xml";
     }
 }

@@ -45,6 +45,31 @@
         <script type="application/ld+json">
             {
                 "@context": "https://schema.org",
+                "@type": "HomeAndConstructionBusiness",
+                "name": "RadonVerdict ${county.getCountyName()} County",
+                "url": "https://radonverdict.com${canonicalUrl != null ? canonicalUrl : ""}",
+                "description": "Radon mitigation cost estimates and services for ${county.getCountyName()} County, ${county.getStateAbbr()}.",
+                "areaServed": {
+                    "@type": "AdministrativeArea",
+                    "name": "${county.getCountyName()} County"
+                },
+                "makesOffer": {
+                    "@type": "Offer",
+                    "itemOffered": {
+                        "@type": "Service",
+                        "name": "Radon Mitigation System Installation Estimate"
+                    },
+                    "priceSpecification": {
+                        "@type": "PriceSpecification",
+                        "price": "${page.getReceipt().getTotalAvg()}",
+                        "priceCurrency": "USD"
+                    }
+                }
+            }
+        </script>
+        <script type="application/ld+json">
+            {
+                "@context": "https://schema.org",
                 "@type": "BreadcrumbList",
                 "itemListElement": [{
                     "@type": "ListItem",

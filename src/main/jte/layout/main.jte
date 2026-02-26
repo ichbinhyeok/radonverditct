@@ -113,52 +113,32 @@
         ${headContent}
     @endif
     
+    <!-- Open Graph & Social Cards -->
+    <meta property="og:title" content="${title}">
+    <meta property="og:description" content="${description}">
+    <meta property="og:type" content="website">
+    @if(canonicalUrl != null)
+        <meta property="og:url" content="${canonicalUrl}">
+    @endif
+    <meta property="og:site_name" content="RadonVerdict">
+    <meta property="og:image" content="https://radonverdict.com/images/default-og.png">
+    
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="${title}">
+    <meta name="twitter:description" content="${description}">
+    <meta name="twitter:image" content="https://radonverdict.com/images/default-og.png">
+    
     <!-- Google Fonts: Outfit (Display) & Inter (Numbers/Body) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;700;800;900&display=swap" rel="stylesheet">
     
-    <!-- Tailwind CSS CDN (Configured for startup look) -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                        display: ['Outfit', 'sans-serif'],
-                    },
-                    colors: {
-                        brand: {
-                            50: '#f8fafc',
-                            100: '#f1f5f9',
-                            400: '#94a3b8',
-                            500: '#64748b',
-                            600: '#475569',
-                            900: '#0f172a', /* Deep slate navy for premium feel */
-                        }
-                    }
-                }
-            }
-        }
-    </script>
+    <!-- Pre-built locally hosted Tailwind CSS -->
+    <link href="/css/style.css" rel="stylesheet">
     
     <!-- HTMX & Alpine.js -->
     <script src="https://unpkg.com/htmx.org@1.9.10"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.13.3/dist/cdn.min.js"></script>
-    
-    <style>
-        .glass-header {
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border-bottom: 1px solid rgba(226, 232, 240, 0.8);
-        }
-        .tabular-nums {
-            font-variant-numeric: tabular-nums;
-        }
-        [x-cloak] { display: none !important; }
-    </style>
 </head>
 <body class="bg-slate-50 text-slate-800 font-sans antialiased selection:bg-brand-900 selection:text-white flex flex-col min-h-screen">
     
