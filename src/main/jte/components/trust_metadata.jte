@@ -44,6 +44,14 @@
             <dt class="text-slate-500">Indexing Status</dt>
             <dd class="text-slate-900 font-medium">@if(quality.isIndexable()) Indexable @else Noindex @endif</dd>
         </div>
+        <div>
+            <dt class="text-slate-500">Uniqueness Score</dt>
+            <dd class="text-slate-900 font-medium">${quality.getSimilarityScore()} / 100</dd>
+        </div>
+        <div>
+            <dt class="text-slate-500">Similarity Cohort</dt>
+            <dd class="text-slate-900 font-medium">${quality.getSimilarityCohortSize()} pages</dd>
+        </div>
         @endif
     </dl>
 
@@ -68,6 +76,9 @@
     @if(quality != null && quality.getReasons() != null && !quality.getReasons().isEmpty())
     <p class="mt-4 text-xs text-slate-500">
         Automated quality checks: ${String.join(", ", quality.getReasons())}
+        @if(quality.getSimilarityFingerprint() != null && !quality.getSimilarityFingerprint().isBlank())
+            (fingerprint: ${quality.getSimilarityFingerprint()})
+        @endif
     </p>
     @endif
 </section>

@@ -3,13 +3,18 @@ package com.radonverdict.service;
 import com.radonverdict.model.County;
 import com.radonverdict.model.dto.CountyPageContent;
 import com.radonverdict.model.dto.PageQualityResult;
+import com.radonverdict.model.dto.SimilarityAssessment;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class PageQualityService {
+
+    private final SimilarityEngineService similarityEngineService;
 
     public PageQualityResult scoreMitigationCountyPage(County county, CountyPageContent page) {
         int score = 100;
@@ -35,8 +40,9 @@ public class PageQualityService {
         }
 
         if (county.getEpaZone() <= 0) {
-            score -= 10;
-            reasons.add("unknown_epa_zone");
+            score -= 20;
+            criticalDataMissing = true;
+            reasons.add("unknown_epa_zone_data_pending");
         }
 
         if (page != null) {
@@ -70,11 +76,21 @@ public class PageQualityService {
             score = 0;
         }
 
+        SimilarityAssessment similarity = similarityEngineService.assessMitigationPage(county,
+                page != null ? page.getReceipt() : null);
+        score -= similarityPenalty(similarity, reasons);
+        if (score < 0) {
+            score = 0;
+        }
+
         boolean indexable = !criticalDataMissing && score >= 65;
         return PageQualityResult.builder()
                 .score(score)
                 .indexable(indexable)
                 .reasons(reasons)
+                .similarityScore(similarity.getUniquenessScore())
+                .similarityCohortSize(similarity.getCohortSize())
+                .similarityFingerprint(similarity.getFingerprint())
                 .build();
     }
 
@@ -102,8 +118,9 @@ public class PageQualityService {
         }
 
         if (county.getEpaZone() <= 0) {
-            score -= 8;
-            reasons.add("unknown_epa_zone");
+            score -= 20;
+            criticalDataMissing = true;
+            reasons.add("unknown_epa_zone_data_pending");
         }
 
         if (nearbyCountyCount < 3) {
@@ -115,11 +132,20 @@ public class PageQualityService {
             score = 0;
         }
 
+        SimilarityAssessment similarity = similarityEngineService.assessLevelsPage(county);
+        score -= similarityPenalty(similarity, reasons);
+        if (score < 0) {
+            score = 0;
+        }
+
         boolean indexable = !criticalDataMissing && score >= 65;
         return PageQualityResult.builder()
                 .score(score)
                 .indexable(indexable)
                 .reasons(reasons)
+                .similarityScore(similarity.getUniquenessScore())
+                .similarityCohortSize(similarity.getCohortSize())
+                .similarityFingerprint(similarity.getFingerprint())
                 .build();
     }
 
@@ -139,5 +165,28 @@ public class PageQualityService {
         }
 
         return normalizedLeft.equals(normalizedRight);
+    }
+
+    private int similarityPenalty(SimilarityAssessment similarity, List<String> reasons) {
+        if (similarity == null) {
+            return 0;
+        }
+        int penalty = 0;
+        if (similarity.getCohortSize() >= 250) {
+            penalty += 12;
+            reasons.add("similarity_cluster_very_large");
+        } else if (similarity.getCohortSize() >= 120) {
+            penalty += 8;
+            reasons.add("similarity_cluster_large");
+        } else if (similarity.getCohortSize() >= 60) {
+            penalty += 4;
+            reasons.add("similarity_cluster_medium");
+        }
+
+        if (similarity.getUniquenessScore() < 50) {
+            penalty += 8;
+            reasons.add("low_uniqueness_score");
+        }
+        return penalty;
     }
 }

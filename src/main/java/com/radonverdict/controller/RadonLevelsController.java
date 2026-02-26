@@ -17,6 +17,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.servlet.view.RedirectView;
 
 import java.util.Comparator;
 import java.util.List;
@@ -34,8 +35,11 @@ public class RadonLevelsController {
     @Value("${app.feature.monetization-hooks.enabled:false}")
     private boolean monetizationHooksEnabled;
 
+    @Value("${app.site.base-url:https://radonverdict.com}")
+    private String baseUrl;
+
     @GetMapping("/radon-levels/{stateSlug}")
-    public String stateLevelsHub(@PathVariable("stateSlug") String stateSlug, Model model) {
+    public Object stateLevelsHub(@PathVariable("stateSlug") String stateSlug, Model model) {
         List<County> stateCounties = dataLoadService.getCountyBySlugMap().values().stream()
                 .filter(c -> c.getStateSlug().equalsIgnoreCase(stateSlug))
                 .sorted(Comparator.comparing(County::getCountyName))
@@ -44,6 +48,11 @@ public class RadonLevelsController {
         if (stateCounties.isEmpty())
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
 
+        String canonicalStateSlug = stateCounties.get(0).getStateSlug();
+        if (!canonicalStateSlug.equals(stateSlug)) {
+            return permanentRedirect("/radon-levels/" + canonicalStateSlug);
+        }
+
         String stateAbbr = stateCounties.get(0).getStateAbbr();
 
         // Count zones for state-level insight
@@ -51,7 +60,7 @@ public class RadonLevelsController {
         long zone2Count = stateCounties.stream().filter(c -> c.getEpaZone() == 2).count();
         long zone3Count = stateCounties.stream().filter(c -> c.getEpaZone() == 3).count();
 
-        model.addAttribute("stateSlug", stateSlug);
+        model.addAttribute("stateSlug", canonicalStateSlug);
         model.addAttribute("stateAbbr", stateAbbr);
         model.addAttribute("counties", stateCounties);
         model.addAttribute("zone1Count", zone1Count);
@@ -62,13 +71,17 @@ public class RadonLevelsController {
     }
 
     @GetMapping("/radon-levels/{stateSlug}/{countySlug}")
-    public String countyLevelsPage(@PathVariable("stateSlug") String stateSlug,
+    public Object countyLevelsPage(@PathVariable("stateSlug") String stateSlug,
             @PathVariable("countySlug") String countySlug, Model model) {
         String key = stateSlug.toLowerCase() + "/" + countySlug.toLowerCase();
         County county = dataLoadService.getCountyBySlugMap().get(key);
 
         if (county == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "County not found");
+        }
+
+        if (!county.getStateSlug().equals(stateSlug) || !county.getCountySlug().equals(countySlug)) {
+            return permanentRedirect("/radon-levels/" + county.getStateSlug() + "/" + county.getCountySlug());
         }
 
         // Get state regulation data
@@ -102,7 +115,7 @@ public class RadonLevelsController {
         model.addAttribute("relatedLinks", internalLinkService.buildRadonLevelsCountyLinks(county, nearbyCounties));
         model.addAttribute("monetizationHooksEnabled", monetizationHooksEnabled);
         model.addAttribute("canonicalUrl",
-                "https://radonverdict.com/radon-levels/" + stateSlug + "/" + countySlug);
+                normalizedBaseUrl() + "/radon-levels/" + county.getStateSlug() + "/" + county.getCountySlug());
 
         return "radon_levels_county";
     }
@@ -129,13 +142,13 @@ public class RadonLevelsController {
         }
 
         return AeoAnswerBlock.builder()
-                .question("What radon risk level should homeowners assume in " + county.getCountyName() + " County?")
-                .directAnswer(county.getCountyName() + " County is currently categorized as " + zoneText + ". "
+                .question("What radon risk level should homeowners assume in " + county.getAreaDisplayName() + "?")
+                .directAnswer(county.getAreaDisplayName() + " is currently categorized as " + zoneText + ". "
                         + actionText)
                 .evidenceRows(List.of(
                         AeoAnswerBlock.Row.builder()
-                                .label("County")
-                                .value(county.getCountyName() + " County, " + county.getStateAbbr())
+                                .label("Area")
+                                .value(county.getAreaDisplayName() + ", " + county.getStateAbbr())
                                 .build(),
                         AeoAnswerBlock.Row.builder()
                                 .label("EPA Zone")
@@ -147,5 +160,18 @@ public class RadonLevelsController {
                                 .build()))
                 .sources(trust != null ? trust.getSources() : List.of())
                 .build();
+    }
+
+    private String normalizedBaseUrl() {
+        if (baseUrl == null || baseUrl.isBlank()) {
+            return "https://radonverdict.com";
+        }
+        return baseUrl.endsWith("/") ? baseUrl.substring(0, baseUrl.length() - 1) : baseUrl;
+    }
+
+    private RedirectView permanentRedirect(String path) {
+        RedirectView view = new RedirectView(normalizedBaseUrl() + path, false);
+        view.setStatusCode(HttpStatus.MOVED_PERMANENTLY);
+        return view;
     }
 }

@@ -3,6 +3,7 @@ package com.radonverdict.service;
 import com.radonverdict.model.*;
 import com.radonverdict.model.dto.CountyPageContent;
 import com.radonverdict.model.dto.ItemizedReceipt;
+import com.radonverdict.model.dto.SimilarityAssessment;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -26,6 +27,8 @@ public class ContentGenerationService {
 
         private final DataLoadService dataLoadService;
         private final PricingCalculatorService pricingCalculatorService;
+        private final CountyInsightService countyInsightService;
+        private final SimilarityEngineService similarityEngineService;
 
         /**
          * Build the complete page content for a given county.
@@ -41,6 +44,7 @@ public class ContentGenerationService {
                 String zoneKey = String.valueOf(county.getEpaZone());
                 String stateAbbr = county.getStateAbbr();
                 String countyName = county.getCountyName();
+                String areaName = county.getAreaDisplayName();
 
                 ContentTemplates templates = dataLoadService.getContentTemplates();
                 StateRegulations regulations = dataLoadService.getStateRegulations();
@@ -70,7 +74,7 @@ public class ContentGenerationService {
                                 safeIntent, templates.getIntentContent().get("homeowner"));
 
                 // 6. Build Dynamic FAQs (zone-specific + universal)
-                Map<String, String> ctx = buildContext(countyName, stateAbbr, receipt, zoneKey, stateRule);
+                Map<String, String> ctx = buildContext(areaName, stateAbbr, receipt, zoneKey, stateRule);
 
                 List<CountyPageContent.FaqItem> faqs = buildFaqs(
                                 faqTemplates, zoneKey, stateRule, ctx);
@@ -82,6 +86,10 @@ public class ContentGenerationService {
                                 .limit(6)
                                 .toList();
 
+                SimilarityAssessment similarity = similarityEngineService.assessMitigationPage(county, receipt);
+                List<String> localInsights = new ArrayList<>(countyInsightService.buildLocalInsights(county, receipt));
+                localInsights.addAll(similarityEngineService.buildDifferentiationNarratives(county, receipt, similarity));
+
                 // 6.7 Evaluate indexing quality gate
                 boolean isIndexable = (county.getStats() != null
                                 && county.getStats().getMetrics() != null
@@ -90,11 +98,15 @@ public class ContentGenerationService {
                 // 7. Assemble Final DTO
                 return CountyPageContent.builder()
                                 .indexable(isIndexable)
-                                .heroTitle("Radon Mitigation Cost in " + countyName + ", " + stateAbbr)
-                                .heroSummary(resolve(countyName + " " + zoneDesc.getHeroSummary(), ctx))
+                                .heroTitle("Radon Mitigation Cost in " + areaName + ", " + stateAbbr)
+                                .heroSummary(resolve(areaName + " " + zoneDesc.getHeroSummary(), ctx))
                                 .riskLevel(zoneDesc.getRiskLevel())
                                 .badgeColor(zoneDesc.getBadgeColor())
                                 .riskNarrative(resolve(zoneDesc.getRiskNarrative(), ctx))
+                                .localInsights(localInsights)
+                                .similarityUniquenessScore(similarity.getUniquenessScore())
+                                .similarityCohortSize(similarity.getCohortSize())
+                                .similarityFingerprint(similarity.getFingerprint())
                                 .intentSectionTitle(resolve(intentContent.getSectionTitle(), ctx))
                                 .intentIntro(resolve(intentContent.getIntro(), ctx))
                                 .intentSteps(intentContent.getSteps().stream()
@@ -118,10 +130,10 @@ public class ContentGenerationService {
          * Build a reusable placeholder context map.
          */
         private Map<String, String> buildContext(
-                        String countyName, String stateAbbr, ItemizedReceipt receipt,
+                        String areaName, String stateAbbr, ItemizedReceipt receipt,
                         String zoneKey, StateRegulations.StateRule stateRule) {
                 Map<String, String> ctx = new HashMap<>();
-                ctx.put("{countyName}", countyName);
+                ctx.put("{countyName}", areaName);
                 ctx.put("{stateAbbr}", stateAbbr);
                 ctx.put("{totalLow}", String.valueOf(receipt.getTotalLow()));
                 ctx.put("{totalHigh}", String.valueOf(receipt.getTotalHigh()));

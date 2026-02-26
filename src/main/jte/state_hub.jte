@@ -38,7 +38,7 @@
                 @for(County county : counties)
                     <a href="/radon-mitigation-cost/${stateSlug}/${county.getCountySlug()}" 
                        class="flex items-center justify-between p-4 bg-white rounded-xl shadow-sm border border-slate-200 hover:border-brand-400 hover:shadow-md hover:bg-brand-50 transition-all group">
-                        <span class="font-display font-semibold text-slate-700 group-hover:text-brand-800">${county.getCountyName()}</span>
+                        <span class="font-display font-semibold text-slate-700 group-hover:text-brand-800">${county.getAreaDisplayName()}</span>
                         <svg class="w-4 h-4 text-slate-300 group-hover:text-brand-500 transform group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
                         </svg>

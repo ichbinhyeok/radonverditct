@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.servlet.view.RedirectView;
 
 import java.util.Comparator;
 import java.util.List;
@@ -42,6 +43,9 @@ public class PageController {
 
     @Value("${app.feature.monetization-hooks.enabled:false}")
     private boolean monetizationHooksEnabled;
+
+    @Value("${app.site.base-url:https://radonverdict.com}")
+    private String baseUrl;
 
     @GetMapping("/")
     public String home() {
@@ -82,7 +86,7 @@ public class PageController {
     }
 
     @GetMapping("/radon-mitigation-cost/{stateSlug}")
-    public String stateHub(@PathVariable("stateSlug") String stateSlug, Model model) {
+    public Object stateHub(@PathVariable("stateSlug") String stateSlug, Model model) {
         List<County> stateCounties = dataLoadService.getCountyBySlugMap().values().stream()
                 .filter(c -> c.getStateSlug().equalsIgnoreCase(stateSlug))
                 .sorted(Comparator.comparing(County::getCountyName))
@@ -91,20 +95,29 @@ public class PageController {
         if (stateCounties.isEmpty())
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
 
-        model.addAttribute("stateSlug", stateSlug);
+        String canonicalStateSlug = stateCounties.get(0).getStateSlug();
+        if (!canonicalStateSlug.equals(stateSlug)) {
+            return permanentRedirect("/radon-mitigation-cost/" + canonicalStateSlug);
+        }
+
+        model.addAttribute("stateSlug", canonicalStateSlug);
         model.addAttribute("stateAbbr", stateCounties.get(0).getStateAbbr());
         model.addAttribute("counties", stateCounties);
         return "state_hub";
     }
 
     @GetMapping("/radon-mitigation-cost/{stateSlug}/{countySlug}")
-    public String countyPage(@PathVariable("stateSlug") String stateSlug, @PathVariable("countySlug") String countySlug,
+    public Object countyPage(@PathVariable("stateSlug") String stateSlug, @PathVariable("countySlug") String countySlug,
             Model model) {
         String key = stateSlug.toLowerCase() + "/" + countySlug.toLowerCase();
         County county = dataLoadService.getCountyBySlugMap().get(key);
 
         if (county == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "County not found");
+        }
+
+        if (!county.getStateSlug().equals(stateSlug) || !county.getCountySlug().equals(countySlug)) {
+            return permanentRedirect("/radon-mitigation-cost/" + county.getStateSlug() + "/" + county.getCountySlug());
         }
 
         // Build the FULL page content (Zone + State regulation + Intent + FAQ +
@@ -124,7 +137,7 @@ public class PageController {
         model.addAttribute("relatedLinks", internalLinkService.buildMitigationCountyLinks(county, pageContent));
         model.addAttribute("monetizationHooksEnabled", monetizationHooksEnabled);
         model.addAttribute("canonicalUrl",
-                "https://radonverdict.com/radon-mitigation-cost/" + stateSlug + "/" + countySlug);
+                normalizedBaseUrl() + "/radon-mitigation-cost/" + county.getStateSlug() + "/" + county.getCountySlug());
 
         return "county_hub";
     }
@@ -160,13 +173,13 @@ public class PageController {
             return null;
         }
 
-        String answer = "Estimated average mitigation cost in " + county.getCountyName() + " County is $"
+        String answer = "Estimated average mitigation cost in " + county.getAreaDisplayName() + " is $"
                 + page.getReceipt().getTotalAvg() + ", with a common range of $"
                 + page.getReceipt().getTotalLow() + " to $" + page.getReceipt().getTotalHigh()
                 + ". Final pricing depends on foundation type, home size, and routing complexity.";
 
         return AeoAnswerBlock.builder()
-                .question("How much does radon mitigation cost in " + county.getCountyName() + " County?")
+                .question("How much does radon mitigation cost in " + county.getAreaDisplayName() + "?")
                 .directAnswer(answer)
                 .evidenceRows(List.of(
                         AeoAnswerBlock.Row.builder()
@@ -189,5 +202,18 @@ public class PageController {
                                 .build()))
                 .sources(trust != null ? trust.getSources() : List.of())
                 .build();
+    }
+
+    private String normalizedBaseUrl() {
+        if (baseUrl == null || baseUrl.isBlank()) {
+            return "https://radonverdict.com";
+        }
+        return baseUrl.endsWith("/") ? baseUrl.substring(0, baseUrl.length() - 1) : baseUrl;
+    }
+
+    private RedirectView permanentRedirect(String path) {
+        RedirectView view = new RedirectView(normalizedBaseUrl() + path, false);
+        view.setStatusCode(HttpStatus.MOVED_PERMANENTLY);
+        return view;
     }
 }

@@ -11,4 +11,7 @@ public class PageQualityResult {
     private int score;
     private boolean indexable;
     private List<String> reasons;
+    private int similarityScore;
+    private int similarityCohortSize;
+    private String similarityFingerprint;
 }

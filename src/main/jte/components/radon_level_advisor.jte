@@ -32,7 +32,7 @@
 
     <div class="text-center mb-6">
         <h3 class="font-display font-bold text-slate-900 text-xl tracking-tight">Your Radon Reading</h3>
-        <p class="text-slate-500 text-sm mt-1 font-medium">Enter your home's measured level or use the ${county.getCountyName()} County average</p>
+        <p class="text-slate-500 text-sm mt-1 font-medium">Enter your home's measured level or use the ${county.getAreaDisplayName()} average</p>
     </div>
 
     <!-- The Big Number Display -->

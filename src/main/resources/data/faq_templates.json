@@ -17,7 +17,7 @@
         "zone_2": [
             {
                 "question": "Should I still test for radon in {countyName} even though it's Zone 2?",
-                "answer": "Absolutely. Zone 2 means the county average is between 2-4 pCi/L, but individual homes can test well above or below this range. The EPA recommends testing all homes regardless of zone. In {countyName}, approximately 1 in 5 homes may test above the action level."
+                "answer": "Absolutely. Zone 2 means the county average is between 2-4 pCi/L, but individual homes can test well above or below this range. The EPA recommends testing all homes regardless of zone. Your home-level reading can differ substantially from the county average."
             },
             {
                 "question": "Is radon a deal-breaker when buying a home in {countyName}?",

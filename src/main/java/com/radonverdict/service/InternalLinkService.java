@@ -25,7 +25,7 @@ public class InternalLinkService {
         }
 
         add(links, InternalLinkItem.builder()
-                .title(county.getCountyName() + " County Radon Levels")
+                .title(county.getAreaDisplayName() + " Radon Levels")
                 .description("EPA zone interpretation and testing guidance.")
                 .url("/radon-levels/" + county.getStateSlug() + "/" + county.getCountySlug())
                 .bucket("zone")
@@ -57,7 +57,7 @@ public class InternalLinkService {
 
         for (County nearby : sameZoneNearby) {
             add(links, InternalLinkItem.builder()
-                    .title("Cost in " + nearby.getCountyName() + " County")
+                    .title("Cost in " + nearby.getAreaDisplayName())
                     .description("Compare same-zone county pricing in " + county.getStateAbbr() + ".")
                     .url("/radon-mitigation-cost/" + nearby.getStateSlug() + "/" + nearby.getCountySlug())
                     .bucket("zone")
@@ -74,7 +74,7 @@ public class InternalLinkService {
         }
 
         add(links, InternalLinkItem.builder()
-                .title("Mitigation Cost in " + county.getCountyName() + " County")
+                .title("Mitigation Cost in " + county.getAreaDisplayName())
                 .description("Itemized local estimate by foundation and home size.")
                 .url("/radon-mitigation-cost/" + county.getStateSlug() + "/" + county.getCountySlug())
                 .bucket("cost")
@@ -98,7 +98,7 @@ public class InternalLinkService {
 
         if (nearbyCounties != null) {
             nearbyCounties.stream().limit(3).forEach(nearby -> add(links, InternalLinkItem.builder()
-                    .title(nearby.getCountyName() + " County Levels")
+                    .title(nearby.getAreaDisplayName() + " Levels")
                     .description("Nearby county comparison in " + county.getStateAbbr() + ".")
                     .url("/radon-levels/" + nearby.getStateSlug() + "/" + nearby.getCountySlug())
                     .bucket("nearby")

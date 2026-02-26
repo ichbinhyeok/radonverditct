@@ -24,6 +24,9 @@ public class SitemapController {
     @Value("${app.site.lastmod:}")
     private String configuredLastmod;
 
+    @Value("${app.site.include-unknown-sitemap:false}")
+    private boolean includeUnknownSitemap;
+
     @GetMapping(value = "/sitemap.xml", produces = MediaType.APPLICATION_XML_VALUE)
     @ResponseBody
     public String generateSitemapIndex() {
@@ -34,7 +37,9 @@ public class SitemapController {
         addSitemapUrl(xml, "/sitemap-core.xml");
         addSitemapUrl(xml, "/sitemap-zone-high.xml");
         addSitemapUrl(xml, "/sitemap-zone-low.xml");
-        addSitemapUrl(xml, "/sitemap-zone-unknown.xml");
+        if (includeUnknownSitemap) {
+            addSitemapUrl(xml, "/sitemap-zone-unknown.xml");
+        }
 
         xml.append("</sitemapindex>");
         return xml.toString();
@@ -104,9 +109,11 @@ public class SitemapController {
 
             if (county.getEpaZone() == 1 || county.getEpaZone() == 2) {
                 // Cost Calculator pSEO
-                addUrl(xml, "/radon-mitigation-cost/" + county.getStateSlug() + "/" + county.getCountySlug(), "0.8");
+                addUrl(xml, "/radon-mitigation-cost/" + county.getStateSlug() + "/" + county.getCountySlug(), "0.8",
+                        resolveCountyLastmod(county));
                 // Radon Levels pSEO
-                addUrl(xml, "/radon-levels/" + county.getStateSlug() + "/" + county.getCountySlug(), "0.8");
+                addUrl(xml, "/radon-levels/" + county.getStateSlug() + "/" + county.getCountySlug(), "0.8",
+                        resolveCountyLastmod(county));
             }
         }
 
@@ -129,9 +136,11 @@ public class SitemapController {
 
             if (county.getEpaZone() == 3) {
                 // Cost Calculator pSEO
-                addUrl(xml, "/radon-mitigation-cost/" + county.getStateSlug() + "/" + county.getCountySlug(), "0.4");
+                addUrl(xml, "/radon-mitigation-cost/" + county.getStateSlug() + "/" + county.getCountySlug(), "0.4",
+                        resolveCountyLastmod(county));
                 // Radon Levels pSEO
-                addUrl(xml, "/radon-levels/" + county.getStateSlug() + "/" + county.getCountySlug(), "0.4");
+                addUrl(xml, "/radon-levels/" + county.getStateSlug() + "/" + county.getCountySlug(), "0.4",
+                        resolveCountyLastmod(county));
             }
         }
 
@@ -153,8 +162,10 @@ public class SitemapController {
                 continue;
 
             if (county.getEpaZone() <= 0) {
-                addUrl(xml, "/radon-mitigation-cost/" + county.getStateSlug() + "/" + county.getCountySlug(), "0.3");
-                addUrl(xml, "/radon-levels/" + county.getStateSlug() + "/" + county.getCountySlug(), "0.3");
+                addUrl(xml, "/radon-mitigation-cost/" + county.getStateSlug() + "/" + county.getCountySlug(), "0.3",
+                        resolveCountyLastmod(county));
+                addUrl(xml, "/radon-levels/" + county.getStateSlug() + "/" + county.getCountySlug(), "0.3",
+                        resolveCountyLastmod(county));
             }
         }
 
@@ -169,9 +180,13 @@ public class SitemapController {
     }
 
     private void addUrl(StringBuilder xml, String path, String priority) {
+        addUrl(xml, path, priority, resolveLastmod());
+    }
+
+    private void addUrl(StringBuilder xml, String path, String priority, String lastmod) {
         xml.append("<url>");
         xml.append("<loc>").append(normalizedBaseUrl()).append(path).append("</loc>");
-        xml.append("<lastmod>").append(resolveLastmod()).append("</lastmod>");
+        xml.append("<lastmod>").append(lastmod).append("</lastmod>");
         xml.append("<changefreq>monthly</changefreq>");
         xml.append("<priority>").append(priority).append("</priority>");
         xml.append("</url>");
@@ -191,6 +206,16 @@ public class SitemapController {
         // Use a static approach like first day of the current month
         LocalDate now = LocalDate.now();
         return LocalDate.of(now.getYear(), now.getMonth(), 1).toString();
+    }
+
+    private String resolveCountyLastmod(County county) {
+        if (county != null
+                && county.getStats() != null
+                && county.getStats().getRetrievedAt() != null
+                && county.getStats().getRetrievedAt().matches("^\\d{4}-\\d{2}-\\d{2}$")) {
+            return county.getStats().getRetrievedAt();
+        }
+        return resolveLastmod();
     }
 
     @GetMapping(value = "/robots.txt", produces = MediaType.TEXT_PLAIN_VALUE)

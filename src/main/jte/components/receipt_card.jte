@@ -13,7 +13,7 @@
         <div class="flex items-start justify-between mb-10">
             <div>
                 <h3 class="font-display font-extrabold text-slate-900 text-2xl tracking-tight">Official Estimate</h3>
-                <p class="text-slate-400 text-sm mt-1 font-medium tracking-wide uppercase">${receipt.getCountyName()} County, ${receipt.getStateAbbr()}</p>
+                <p class="text-slate-400 text-sm mt-1 font-medium tracking-wide uppercase">${receipt.getAreaDisplayName()}, ${receipt.getStateAbbr()}</p>
             </div>
             <!-- Trust Seal -->
             <div class="w-10 h-10 bg-emerald-50 rounded-full flex items-center justify-center border border-emerald-100 shadow-sm">
@@ -64,7 +64,7 @@
         <div class="mt-8 rounded-2xl border border-slate-200 overflow-hidden">
             <table class="w-full text-sm">
                 <caption class="text-left px-4 py-3 bg-slate-50 font-semibold text-slate-700">
-                    Average Local Cost Breakdown for ${receipt.getCountyName()} County
+                    Average Local Cost Breakdown for ${receipt.getAreaDisplayName()}
                 </caption>
                 <thead class="bg-white">
                     <tr class="border-t border-slate-200">

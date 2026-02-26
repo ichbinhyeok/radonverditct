@@ -20,7 +20,7 @@
                     Personalized Action Plan
                 </span>
                 <h3 class="text-3xl font-display font-bold mb-4 tracking-tight leading-tight">
-                    Do I need mitigation<br>in ${county.getCountyName()}?
+                    Do I need mitigation<br>in ${county.getAreaDisplayName()}?
                 </h3>
                 <p class="text-slate-300 text-lg mb-6 leading-relaxed">
                     Join our free waitlist. Answer a few questions about your home to get a personalized, risk-based recommendation. We'll outline your options and notify you when top-rated, certified local professionals have availability.

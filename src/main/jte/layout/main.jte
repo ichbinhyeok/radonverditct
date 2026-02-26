@@ -107,7 +107,7 @@
         <link rel="canonical" href="${canonicalUrl}">
     @endif
     @if(noindex)
-        <meta name="robots" content="noindex, nofollow">
+        <meta name="robots" content="noindex, follow">
     @endif
     @if(headContent != null)
         ${headContent}

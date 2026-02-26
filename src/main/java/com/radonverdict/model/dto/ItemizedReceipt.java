@@ -3,6 +3,8 @@ package com.radonverdict.model.dto;
 import lombok.Builder;
 import lombok.Data;
 
+import java.util.Locale;
+
 @Data
 @Builder
 public class ItemizedReceipt {
@@ -32,5 +34,44 @@ public class ItemizedReceipt {
 
     public int getPermitsSetupAvg() {
         return (permitsSetupLow + permitsSetupHigh) / 2;
+    }
+
+    public String getAreaTypeLabel() {
+        if (countyName == null || countyName.isBlank()) {
+            return "County";
+        }
+
+        String normalized = countyName.toLowerCase(Locale.ROOT);
+        if (normalized.contains("city and borough")) {
+            return "City and Borough";
+        }
+        if (normalized.endsWith("census area")) {
+            return "Census Area";
+        }
+        if (normalized.endsWith("municipio")) {
+            return "Municipio";
+        }
+        if (normalized.endsWith("parish")) {
+            return "Parish";
+        }
+        if (normalized.endsWith("borough")) {
+            return "Borough";
+        }
+        if (normalized.endsWith("city")) {
+            return "City";
+        }
+        return "County";
+    }
+
+    public String getAreaDisplayName() {
+        if (countyName == null || countyName.isBlank()) {
+            return "";
+        }
+        String areaType = getAreaTypeLabel().toLowerCase(Locale.ROOT);
+        String normalized = countyName.toLowerCase(Locale.ROOT);
+        if (normalized.endsWith(areaType)) {
+            return countyName;
+        }
+        return countyName + " " + getAreaTypeLabel();
     }
 }

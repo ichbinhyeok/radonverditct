@@ -46,12 +46,12 @@
             {
                 "@context": "https://schema.org",
                 "@type": "HomeAndConstructionBusiness",
-                "name": "RadonVerdict ${county.getCountyName()} County",
+                "name": "RadonVerdict ${county.getAreaDisplayName()}",
                 "url": "https://radonverdict.com${canonicalUrl != null ? canonicalUrl : ""}",
-                "description": "Radon mitigation cost estimates and services for ${county.getCountyName()} County, ${county.getStateAbbr()}.",
+                "description": "Radon mitigation cost estimates and services for ${county.getAreaDisplayName()}, ${county.getStateAbbr()}.",
                 "areaServed": {
                     "@type": "AdministrativeArea",
-                    "name": "${county.getCountyName()} County"
+                    "name": "${county.getAreaDisplayName()}"
                 },
                 "makesOffer": {
                     "@type": "Offer",
@@ -84,7 +84,7 @@
                 },{
                     "@type": "ListItem",
                     "position": 3,
-                    "name": "${county.getCountyName()} County",
+                    "name": "${county.getAreaDisplayName()}",
                     "item": "https://radonverdict.com/radon-mitigation-cost/${county.getStateSlug()}/${county.getCountySlug()}"
                 }]
             }
@@ -100,7 +100,7 @@
                     <li><span class="mx-1 text-slate-300">/</span></li>
                     <li><a href="/radon-mitigation-cost/${county.getStateSlug()}" class="hover:text-slate-900 transition-colors uppercase">${county.getStateAbbr()}</a></li>
                     <li><span class="mx-1 text-slate-300">/</span></li>
-                    <li class="text-slate-900 font-semibold" aria-current="page">${county.getCountyName()} County</li>
+                    <li class="text-slate-900 font-semibold" aria-current="page">${county.getAreaDisplayName()}</li>
                 </ol>
             </nav>
 
@@ -172,8 +172,8 @@
             <!-- 2.5 Local Data Moat -->
             @if(county.getStats() != null && county.getStats().getMetrics() != null && county.getStats().getMetrics().getTotalHousingUnits() > 0)
             <div class="border-t border-slate-200 mt-20 pt-16 mb-10">
-                <h3 class="font-display font-bold text-2xl text-slate-900 mb-6">${county.getCountyName()} County Housing Statistics</h3>
-                <p class="text-slate-600 mb-6">Housing characteristics like age and foundation type can heavily influence radon risks and mitigation costs. Here is a snapshot of ${county.getCountyName()} County's real estate data.</p>
+                <h3 class="font-display font-bold text-2xl text-slate-900 mb-6">${county.getAreaDisplayName()} Housing Statistics</h3>
+                <p class="text-slate-600 mb-6">Housing characteristics like age and foundation type can heavily influence radon risks and mitigation costs. Here is a snapshot of ${county.getAreaDisplayName()} real estate data.</p>
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                     <div class="bg-indigo-50 border border-indigo-100 rounded-2xl p-6 shadow-sm">
                         <span class="block text-indigo-900 text-sm font-semibold uppercase tracking-wider mb-2">Total Housing Units</span>
@@ -200,18 +200,14 @@
                         <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
                     </div>
                     <div>
-                        <h4 class="font-display font-bold text-lg text-indigo-900 mb-2">Local Insight: ${county.getCountyName()} Data Insight</h4>
-                        <p class="text-sm text-indigo-800 leading-relaxed font-medium">
-                            @if(county.getEpaZone() == 1 && county.getStats().getMetrics().getBuiltBefore1980Pct() > 40.0)
-                                ${county.getCountyName()} is categorized as a high-risk <strong>EPA Zone ${county.getEpaZone()}</strong>, while over <strong>${county.getStats().getMetrics().getBuiltBefore1980Pct()}%</strong> of local housing was built before 1980. Older foundations are significantly more prone to crack settling, which means standard sub-slab depressurization might require specialized sealing work and additional suction points. This local architectural reality often drives up hardware costs slightly above the usual regional base rate.
-                            @elseif(county.getEpaZone() == 1)
-                                As a high-risk <strong>EPA Zone ${county.getEpaZone()}</strong> area, ${county.getCountyName()} homes have an elevated statistical probability of failing indoor radon tests. Despite only <strong>${county.getStats().getMetrics().getBuiltBefore1980Pct()}%</strong> of the local properties being built before 1980, the aggressive geological conditions mean mitigation systems usually require commercial-grade fans rather than standard residential models, keeping installation rates firm.
-                            @elseif(county.getStats().getMetrics().getBuiltBefore1980Pct() > 50.0)
-                                While this is a moderate/low-risk Zone ${county.getEpaZone()} county, more than <strong>${county.getStats().getMetrics().getBuiltBefore1980Pct()}%</strong> of houses here were constructed before 1980. The aging architecture in ${county.getCountyName()} often features dirt crawl spaces or deteriorating basement seals. Contractors frequently need to lay down new vapor barriers before installing Active Soil Depressurization (ASD) systems, making labor a prominent factor in local pricing.
-                            @else
-                                ${county.getCountyName()} is an <strong>EPA Zone ${county.getEpaZone()}</strong> area with a relatively modern housing stock, featuring only <strong>${county.getStats().getMetrics().getBuiltBefore1980Pct()}%</strong> of homes built prior to 1980. Because newer builds frequently contain passive radon pipes integrated during early construction, local contractors often only need to add an exhaust fan to "activate" the system. This naturally results in faster installations and highly competitive labor rates compared to neighboring counties.
+                        <h4 class="font-display font-bold text-lg text-indigo-900 mb-2">Local Insight: ${county.getAreaDisplayName()}</h4>
+                        <ul class="space-y-3 text-sm text-indigo-800 leading-relaxed font-medium">
+                            @if(page.getLocalInsights() != null && !page.getLocalInsights().isEmpty())
+                                @for(var insight : page.getLocalInsights())
+                                    <li class="relative pl-5 before:content-['•'] before:absolute before:left-0 before:text-indigo-500">${insight}</li>
+                                @endfor
                             @endif
-                        </p>
+                        </ul>
                     </div>
                 </div>
 
@@ -224,13 +220,13 @@
             </div>
 
             @template.components.related_links(
-                title = "Related Radon Resources for " + county.getCountyName() + " County",
+                title = "Related Radon Resources for " + county.getAreaDisplayName(),
                 links = relatedLinks
             )
 
             <!-- Cross-Silo: Radon Level Data & Guides -->
             <div class="border-t border-slate-200 mt-20 pt-12 mb-10">
-                <h3 class="font-display font-bold text-lg text-slate-900 mb-4">More About Radon in ${county.getCountyName()} County</h3>
+                <h3 class="font-display font-bold text-lg text-slate-900 mb-4">More About Radon in ${county.getAreaDisplayName()}</h3>
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <a href="/radon-levels/${county.getStateSlug()}/${county.getCountySlug()}"
                        class="flex items-center gap-3 p-4 rounded-xl border border-slate-200 bg-white hover:border-indigo-300 hover:shadow-md transition-all group">
@@ -238,7 +234,7 @@
                             <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" /></svg>
                         </div>
                         <div>
-                            <span class="block font-bold text-sm text-slate-800 group-hover:text-indigo-600 transition-colors">${county.getCountyName()} County Radon Levels</span>
+                            <span class="block font-bold text-sm text-slate-800 group-hover:text-indigo-600 transition-colors">${county.getAreaDisplayName()} Radon Levels</span>
                             <span class="text-xs text-slate-500">EPA zone data, health risks, and testing guidance</span>
                         </div>
                     </a>
@@ -263,7 +259,7 @@
                     @for(var nearby : page.getNearbyCounties())
                         <a href="/radon-mitigation-cost/${nearby.getStateSlug()}/${nearby.getCountySlug()}" 
                            class="block p-4 rounded-xl border border-slate-200 bg-white hover:border-indigo-300 hover:shadow-md transition-all group">
-                            <span class="block font-bold text-slate-800 group-hover:text-indigo-600 transition-colors">${nearby.getCountyName()}</span>
+                            <span class="block font-bold text-slate-800 group-hover:text-indigo-600 transition-colors">${nearby.getAreaDisplayName()}</span>
                             <span class="text-xs text-slate-500 mt-1">Zone ${nearby.getEpaZone()}</span>
                         </a>
                     @endfor
@@ -274,7 +270,7 @@
             <!-- 5. Sources & Methodology / YMYL Disclaimers -->
             <div class="border-t border-slate-200 mt-20 pt-16 mb-10 text-sm text-slate-500">
                 <h3 class="font-display font-bold text-xl text-slate-900 mb-4">Sources & Methodology</h3>
-                <p class="mb-6">The radon mitigation cost estimates presented on this page are dynamically calculated using baseline national material averages combined with localized labor multipliers for ${county.getCountyName()} County. </p>
+                <p class="mb-6">The radon mitigation cost estimates presented on this page are dynamically calculated using baseline national material averages combined with localized labor multipliers for ${county.getAreaDisplayName()}. </p>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                     <div>
                         <h4 class="font-bold text-slate-700 mb-2">Important Disclaimers</h4>

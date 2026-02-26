@@ -59,7 +59,7 @@
                     <a href="/radon-levels/${c.getStateSlug()}/${c.getCountySlug()}"
                        class="flex items-center justify-between p-4 rounded-xl bg-white border border-slate-200 hover:border-indigo-300 hover:shadow-md transition-all group">
                         <div>
-                            <span class="block font-semibold text-sm text-slate-800 group-hover:text-indigo-600 transition-colors">${c.getCountyName()}</span>
+                            <span class="block font-semibold text-sm text-slate-800 group-hover:text-indigo-600 transition-colors">${c.getAreaDisplayName()}</span>
                             <span class="text-xs
                                 @if(c.getEpaZone() == 1) text-red-500
                                 @elseif(c.getEpaZone() == 2) text-amber-500
