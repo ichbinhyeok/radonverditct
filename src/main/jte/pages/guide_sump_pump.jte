@@ -17,7 +17,7 @@
                 Most basements are constructed with a concrete slab resting over a bed of crushed gravel and dirt. To manage groundwater, contractors dig a deep hole (the sump pit) directly into that dirt, installing a pump to push water out. 
             </p>
             <p class="text-slate-600 mb-6 font-bold text-red-600">
-                If the homeowner leaves the pit open or covers it with a cheap, unsealed plastic lid, thousands of cubic feet of soil gas—including toxic radon—free-flows directly into the basement air.
+                If the homeowner leaves the pit open or covers it with a cheap, unsealed plastic lid, thousands of cubic feet of soil gas-including toxic radon-free-flows directly into the basement air.
             </p>
 
             <h3 class="font-display font-bold text-xl text-slate-800 mt-8 mb-3">Why You Cannot Install a Radon System Without Sealing It</h3>
@@ -48,7 +48,7 @@
                 <h3 class="font-display font-bold text-xl text-white mb-3">Does your basement layout include a sump pump?</h3>
                 <p class="text-slate-300 mb-6 text-sm leading-relaxed">Factoring in sump pumps and foundation cracks alters the final installation cost. Get an itemized breakdown.</p>
                 <a href="/radon-cost-calculator" class="inline-flex items-center justify-center px-6 py-3 border border-transparent text-sm font-bold rounded-xl text-slate-900 bg-white hover:bg-slate-100 transition">
-                    Get an Itemized Quote →
+                    Get an Itemized Quote ->
                 </a>
             </div>
         </div>

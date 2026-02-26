@@ -55,9 +55,9 @@
             <div class="bg-indigo-50 border border-indigo-100 rounded-2xl p-8 mt-12 text-slate-900 shadow-sm relative overflow-hidden">
                 <div class="absolute top-0 right-0 -mr-16 -mt-16 w-32 h-32 rounded-full bg-indigo-200 opacity-50 blur-2xl"></div>
                 <h3 class="font-display font-bold text-xl text-indigo-950 mb-3 relative z-10">Check mitigation costs &amp; local requirements for your county.</h3>
-                <p class="text-indigo-800 mb-6 text-sm leading-relaxed relative z-10">Don't guess on price or rely on national averages. See an itemized cost estimate specific to your state’s labor rates and foundation types.</p>
+                <p class="text-indigo-800 mb-6 text-sm leading-relaxed relative z-10">Don't guess on price or rely on national averages. See an itemized cost estimate specific to your state's labor rates and foundation types.</p>
                 <a href="/radon-cost-calculator" class="inline-flex items-center justify-center px-6 py-3 border border-transparent text-sm font-bold rounded-xl text-white bg-indigo-600 hover:bg-indigo-700 transition relative z-10 shadow-sm">
-                    Calculate My Local Cost →
+                    Calculate My Local Cost ->
                 </a>
             </div>
         </div>

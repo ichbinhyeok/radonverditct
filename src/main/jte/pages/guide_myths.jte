@@ -14,7 +14,7 @@
 
             <h2 class="font-display font-bold text-2xl text-slate-900 mt-12 mb-4">The Myth: Deadly Kitchen Counters</h2>
             <p class="text-slate-600 mb-6">
-                In the late 2000s, news syndicates erupted with panic pieces claiming imported granite slab countertops were silently poisoning homeowners. The panic is based on a grain of scientific truth: granite is an igneous rock formed from crystallized magma, and naturally contains trace elements of uranium, thorium, and radium—the very elements that decay into invisible radon gas.
+                In the late 2000s, news syndicates erupted with panic pieces claiming imported granite slab countertops were silently poisoning homeowners. The panic is based on a grain of scientific truth: granite is an igneous rock formed from crystallized magma, and naturally contains trace elements of uranium, thorium, and radium-the very elements that decay into invisible radon gas.
             </p>
 
             <h2 class="font-display font-bold text-2xl text-slate-900 mt-12 mb-4">The Fact: The Soil Exceeds The Slab by a Massive Margin</h2>
@@ -51,7 +51,7 @@
                 <h3 class="font-display font-bold text-xl text-white mb-3">Fix the Foundation, Keep the Granite</h3>
                 <p class="text-slate-300 mb-6 text-sm leading-relaxed">Before tearing apart your kitchen, see how much it costs to properly depressurize the soil beneath your entire house. It's often cheaper than a new set of countertops.</p>
                 <a href="/radon-cost-calculator" class="inline-flex items-center justify-center px-6 py-3 border border-transparent text-sm font-bold rounded-xl text-slate-900 bg-white hover:bg-slate-100 transition">
-                    Get Basement Mitigation Cost →
+                    Get Basement Mitigation Cost ->
                 </a>
             </div>
         </div>

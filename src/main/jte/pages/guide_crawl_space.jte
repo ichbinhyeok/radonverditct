@@ -29,7 +29,7 @@
             </p>
 
             <div class="bg-indigo-50 border border-indigo-200 rounded-2xl p-6 mb-8 mt-6">
-                <h3 class="font-display font-bold text-indigo-900 mb-2">💰 Why Crawl Spaces Cost $800 to $1,500 Extra</h3>
+                <h3 class="font-display font-bold text-indigo-900 mb-2">Cost: Why Crawl Spaces Cost $800 to $1,500 Extra</h3>
                 <ul class="text-sm text-indigo-800 space-y-3">
                     <li><strong>Labor:</strong> Crawling on your hands and knees dragging heavy rolls of plastic in a 3-foot high dark space takes an entire day.</li>
                     <li><strong>Materials:</strong> Specialized vapor barriers, massive amounts of polyurethane caulk, and structural tape add hundreds of dollars in hard costs.</li>
@@ -47,7 +47,7 @@
                 <h3 class="font-display font-bold text-xl text-white mb-3">Have a Dirt Crawl Space?</h3>
                 <p class="text-slate-300 mb-6 text-sm leading-relaxed">Use our calculator to toggle 'Crawl Space' vs 'Basement' and see the itemized price difference in your county.</p>
                 <a href="/radon-cost-calculator" class="inline-flex items-center justify-center px-6 py-3 border border-transparent text-sm font-bold rounded-xl text-slate-900 bg-white hover:bg-slate-100 transition">
-                    Calculate Foundation Costs →
+                    Calculate Foundation Costs ->
                 </a>
             </div>
         </div>

@@ -32,7 +32,7 @@
             </p>
 
             <div class="bg-amber-50 border border-amber-200 rounded-2xl p-6 mb-8 mt-6">
-                <h3 class="font-display font-bold text-amber-900 mb-2">🧊 Diagnosis 3: Gurgling Water Sounds (Winter Only)</h3>
+                <h3 class="font-display font-bold text-amber-900 mb-2">Note: Diagnosis 3: Gurgling Water Sounds (Winter Only)</h3>
                 <p class="text-sm text-amber-800 space-y-3">
                     If your fan sounds like a bong or a bubbling fish tank, congratulations: your system is successfully pulling hundreds of gallons of moisture out of the earth. But the condensation is running back down the pipe, pooling above the engine impellers, and possibly freezing. The fan must be re-pitched or bypassed so water can drain back to the sub-slab pit.
                 </p>
@@ -49,7 +49,7 @@
                 <h3 class="font-display font-bold text-xl text-white mb-3">Time for a Replacement?</h3>
                 <p class="text-slate-300 mb-6 text-sm leading-relaxed">Don't try to wire a powerful 120V fan in a cramped attic if you aren't comfortable. Find a local pro to swap your fan today.</p>
                 <a href="/radon-cost-calculator" class="inline-flex items-center justify-center px-6 py-3 border border-transparent text-sm font-bold rounded-xl text-slate-900 bg-white hover:bg-slate-100 transition">
-                    Find Mitigation Repairs →
+                    Find Mitigation Repairs ->
                 </a>
             </div>
         </div>

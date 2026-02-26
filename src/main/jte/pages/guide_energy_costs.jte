@@ -17,7 +17,7 @@
                 Good news: modern radon mitigation fans are incredibly energy efficient.
             </p>
             <p class="text-slate-600 mb-6">
-                Most residential models—such as the popular Fantech RN1 or RadonAway RP145—are engineered with low-draw, continuous-duty motors. Depending on the size of your home and the permeability of the soil beneath your slab, these fans pull anywhere from 40 to 80 watts of electricity per hour. By comparison, leaving a single 60-watt incandescent light bulb on overnight draws nearly the same amount of power.
+                Most residential models-such as the popular Fantech RN1 or RadonAway RP145-are engineered with low-draw, continuous-duty motors. Depending on the size of your home and the permeability of the soil beneath your slab, these fans pull anywhere from 40 to 80 watts of electricity per hour. By comparison, leaving a single 60-watt incandescent light bulb on overnight draws nearly the same amount of power.
             </p>
 
             <h3 class="font-display font-bold text-xl text-slate-800 mt-8 mb-3">Calculating the Exact Monthly Cost</h3>
@@ -55,7 +55,7 @@
                 <h3 class="font-display font-bold text-xl text-white mb-3">Need to Install an Efficient System?</h3>
                 <p class="text-slate-300 mb-6 text-sm leading-relaxed">Calculate exactly how much a full active radon mitigation system costs to install locally before pricing out the electric bill.</p>
                 <a href="/radon-cost-calculator" class="inline-flex items-center justify-center px-6 py-3 border border-transparent text-sm font-bold rounded-xl text-slate-900 bg-white hover:bg-slate-100 transition">
-                    View Mitigation Setup Costs →
+                    View Mitigation Setup Costs ->
                 </a>
             </div>
         </div>

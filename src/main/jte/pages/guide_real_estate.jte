@@ -23,7 +23,7 @@
             </p>
 
             <div class="bg-blue-50 border border-blue-200 rounded-2xl p-6 mb-8 mt-6">
-                <h3 class="font-display font-bold text-blue-900 mb-2">💡 Negotiation Options</h3>
+                <h3 class="font-display font-bold text-blue-900 mb-2">Tip: Negotiation Options</h3>
                 <ul class="text-sm text-blue-800 space-y-3">
                     <li><strong>Option 1: Seller Installs Before Closing.</strong> The seller hires a contractor and pays out of pocket. <em>Buyer tip:</em> Insist that a certified NRPP/AARST professional is used, so the seller doesn't hire a cheap, unqualified handyman.</li>
                     <li><strong>Option 2: Closing Credit (Escrow).</strong> The seller gives the buyer a $1,500 credit at closing. <em>Seller tip:</em> This is often better, as you don't have to deal with contractors while trying to pack and move.</li>
@@ -41,7 +41,7 @@
                 <h3 class="font-display font-bold text-xl text-white mb-3">Get a Quote for Your Negotiation</h3>
                 <p class="text-slate-300 mb-6 text-sm leading-relaxed">If you need to ask for a seller credit, you need to know exactly how much the system will cost in your specific county.</p>
                 <a href="/radon-cost-calculator" class="inline-flex items-center justify-center px-6 py-3 border border-transparent text-sm font-bold rounded-xl text-slate-900 bg-white hover:bg-slate-100 transition">
-                    Calculate Mitigation Cost →
+                    Calculate Mitigation Cost ->
                 </a>
             </div>
         </div>

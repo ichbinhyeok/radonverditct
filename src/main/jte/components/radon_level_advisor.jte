@@ -105,7 +105,7 @@
                 </svg>
             </div>
             <div>
-                <h4 class="font-display font-bold text-amber-900 text-lg">Elevated — Consider Action</h4>
+                <h4 class="font-display font-bold text-amber-900 text-lg">Elevated - Consider Action</h4>
                 <p class="text-sm text-amber-800 leading-relaxed mt-1">
                     Your reading passes the US EPA threshold (4.0 pCi/L) but exceeds the <strong>World Health Organization's recommended limit of 2.7 pCi/L</strong>.
                     This is equivalent to smoking approximately <strong x-text="cigarettes"></strong> cigarettes per day.
@@ -135,7 +135,7 @@
                 </svg>
             </div>
             <div>
-                <h4 class="font-display font-bold text-red-900 text-lg">⚠ Action Required — EPA Threshold Exceeded</h4>
+                <h4 class="font-display font-bold text-red-900 text-lg">Warning: Action Required - EPA Threshold Exceeded</h4>
                 <p class="text-sm text-red-800 leading-relaxed mt-1">
                     At <strong x-text="parseFloat(level).toFixed(1)"></strong> pCi/L, your exposure is equivalent to smoking
                     <strong x-text="cigarettes"></strong> cigarettes every day.
@@ -155,13 +155,13 @@
                     </div>
                     <div class="text-center">
                         <div class="text-[10px] sm:text-xs font-bold text-emerald-500 uppercase tracking-widest">After</div>
-                        <div class="font-display font-black text-xl sm:text-2xl text-emerald-600 tabular-nums whitespace-nowrap" x-text="postMitigationLow + '–' + postMitigationHigh"></div>
+                        <div class="font-display font-black text-xl sm:text-2xl text-emerald-600 tabular-nums whitespace-nowrap" x-text="postMitigationLow + '-' + postMitigationHigh"></div>
                     </div>
                 </div>
 
                 <p class="text-xs text-red-600 mt-3 font-semibold">
-                    Typical mitigation systems reduce radon by 80–99%.
-                    <strong>See your itemized cost estimate below ↓</strong>
+                    Typical mitigation systems reduce radon by 80-99%.
+                    <strong>See your itemized cost estimate below down</strong>
                 </p>
             </div>
         </div>

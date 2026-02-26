@@ -66,7 +66,7 @@
                 Radon is invisible, odorless, and tasteless. You cannot detect it without a test. The EPA estimates that <strong>1 in every 15 US homes</strong> has radon levels above the 4.0 pCi/L action threshold. Even homes in "low-risk" EPA zones can have dangerously elevated readings due to localized geological conditions.
             </p>
             <p class="text-slate-600 mb-6">
-                Testing is inexpensive ($15–$200 depending on method), takes minutes to set up, and provides a definitive answer. There is no scenario in which skipping this test makes sense.
+                Testing is inexpensive ($15-$200 depending on method), takes minutes to set up, and provides a definitive answer. There is no scenario in which skipping this test makes sense.
             </p>
 
             <h2 class="font-display font-bold text-2xl text-slate-900 mt-12 mb-4">The 3 Types of Radon Tests</h2>
@@ -80,24 +80,24 @@
                         </svg>
                     </div>
                     <div>
-                        <h3 class="font-display font-bold text-lg text-slate-900 mb-2">Short-Term Test Kits (2–7 Days)</h3>
+                        <h3 class="font-display font-bold text-lg text-slate-900 mb-2">Short-Term Test Kits (2-7 Days)</h3>
                         <p class="text-sm text-slate-600 leading-relaxed mb-3">
-                            Charcoal canisters or alpha-track detectors that absorb radon over 2–7 days. You mail the kit to a certified lab, which returns your result in about a week. This is the most common first test.
+                            Charcoal canisters or alpha-track detectors that absorb radon over 2-7 days. You mail the kit to a certified lab, which returns your result in about a week. This is the most common first test.
                         </p>
                         <div class="grid grid-cols-2 gap-3 text-xs">
                             <div class="bg-emerald-50 rounded-lg p-3">
                                 <span class="font-bold text-emerald-700 block mb-1">Pros</span>
-                                <span class="text-emerald-600">Fast results · Cheapest option · Available everywhere</span>
+                                <span class="text-emerald-600">Fast results - Cheapest option - Available everywhere</span>
                             </div>
                             <div class="bg-red-50 rounded-lg p-3">
                                 <span class="font-bold text-red-700 block mb-1">Cons</span>
-                                <span class="text-red-600">Snapshot only · Affected by weather · Can be invalidated</span>
+                                <span class="text-red-600">Snapshot only - Affected by weather - Can be invalidated</span>
                             </div>
                         </div>
-                        <div class="mt-3 text-sm font-bold text-slate-900">Cost: $15–$30</div>
+                        <div class="mt-3 text-sm font-bold text-slate-900">Cost: $15-$30</div>
                         <a href="https://www.amazon.com/s?k=radon+test+kit+charcoal+short+term" target="_blank" rel="noopener nofollow"
                            class="inline-flex items-center gap-2 mt-3 px-4 py-2 rounded-lg bg-slate-900 text-white text-xs font-bold hover:bg-slate-800 transition-colors">
-                            Shop Short-Term Kits →
+                            Shop Short-Term Kits ->
                         </a>
                     </div>
                 </div>
@@ -119,14 +119,14 @@
                         <div class="grid grid-cols-2 gap-3 text-xs">
                             <div class="bg-emerald-50 rounded-lg p-3">
                                 <span class="font-bold text-emerald-700 block mb-1">Pros</span>
-                                <span class="text-emerald-600">Most accurate average · Accounts for seasons · EPA gold standard</span>
+                                <span class="text-emerald-600">Most accurate average - Accounts for seasons - EPA gold standard</span>
                             </div>
                             <div class="bg-red-50 rounded-lg p-3">
                                 <span class="font-bold text-red-700 block mb-1">Cons</span>
-                                <span class="text-red-600">Slow results · No real-time feedback · Easy to forget</span>
+                                <span class="text-red-600">Slow results - No real-time feedback - Easy to forget</span>
                             </div>
                         </div>
-                        <div class="mt-3 text-sm font-bold text-slate-900">Cost: $25–$40</div>
+                        <div class="mt-3 text-sm font-bold text-slate-900">Cost: $25-$40</div>
                     </div>
                 </div>
             </div>
@@ -147,17 +147,17 @@
                         <div class="grid grid-cols-2 gap-3 text-xs">
                             <div class="bg-emerald-50 rounded-lg p-3">
                                 <span class="font-bold text-emerald-700 block mb-1">Pros</span>
-                                <span class="text-emerald-600">Real-time data · Reusable · Smart home integration</span>
+                                <span class="text-emerald-600">Real-time data - Reusable - Smart home integration</span>
                             </div>
                             <div class="bg-red-50 rounded-lg p-3">
                                 <span class="font-bold text-red-700 block mb-1">Cons</span>
-                                <span class="text-red-600">Higher upfront cost · Needs calibration · Battery dependent</span>
+                                <span class="text-red-600">Higher upfront cost - Needs calibration - Battery dependent</span>
                             </div>
                         </div>
-                        <div class="mt-3 text-sm font-bold text-slate-900">Cost: $150–$250 (consumer) · $1,500+ (professional)</div>
+                        <div class="mt-3 text-sm font-bold text-slate-900">Cost: $150-$250 (consumer) - $1,500+ (professional)</div>
                         <a href="https://www.amazon.com/s?k=digital+radon+detector+monitor" target="_blank" rel="noopener nofollow"
                            class="inline-flex items-center gap-2 mt-3 px-4 py-2 rounded-lg bg-slate-900 text-white text-xs font-bold hover:bg-slate-800 transition-colors">
-                            Shop Digital Monitors →
+                            Shop Digital Monitors ->
                         </a>
                     </div>
                 </div>
@@ -169,20 +169,20 @@
             </p>
 
             <ol class="list-decimal pl-6 text-slate-600 mb-6 space-y-3">
-                <li><strong>Lowest livable level.</strong> Place the test in the lowest level of the home that is regularly occupied — usually the basement or ground floor. Garages and storage rooms don't count.</li>
-                <li><strong>2–5 feet above the floor.</strong> Radon is heavier than air but mixes continuously. Testing at breathing height (a table or shelf) gives the most relevant result.</li>
+                <li><strong>Lowest livable level.</strong> Place the test in the lowest level of the home that is regularly occupied - usually the basement or ground floor. Garages and storage rooms don't count.</li>
+                <li><strong>2-5 feet above the floor.</strong> Radon is heavier than air but mixes continuously. Testing at breathing height (a table or shelf) gives the most relevant result.</li>
                 <li><strong>Away from exterior walls, windows, and doors.</strong> At least 20 inches from exterior walls and 12 inches from any window or door. Drafts dilute local readings.</li>
                 <li><strong>Away from sump pits and foundation cracks.</strong> These are radon entry points and will produce artificially high readings that don't represent the room's average level.</li>
                 <li><strong>Closed-house conditions.</strong> Keep windows and doors closed for 12 hours before the test begins and throughout the test duration. Normal entry/exit is fine. Do not run whole-house fans.</li>
             </ol>
 
             <div class="not-prose bg-amber-50 border border-amber-200 rounded-2xl p-6 mb-8">
-                <h3 class="font-display font-bold text-amber-900 mb-2">⚠ Common Invalidation Mistakes</h3>
+                <h3 class="font-display font-bold text-amber-900 mb-2">Warning: Common Invalidation Mistakes</h3>
                 <ul class="text-sm text-amber-800 space-y-2 leading-relaxed">
-                    <li>&bull; <strong>Leaving windows open</strong> — even cracked windows dilute radon readings by 30–50%</li>
-                    <li>&bull; <strong>Testing during renovation</strong> — open walls and disturbed foundation material can spike readings</li>
-                    <li>&bull; <strong>HVAC changes mid-test</strong> — switching from AC to heat (or vice versa) alters air pressure dynamics</li>
-                    <li>&bull; <strong>Placing near humidity sources</strong> — bathrooms and laundry areas produce moisture that interferes with charcoal kits</li>
+                    <li>&bull; <strong>Leaving windows open</strong> - even cracked windows dilute radon readings by 30-50%</li>
+                    <li>&bull; <strong>Testing during renovation</strong> - open walls and disturbed foundation material can spike readings</li>
+                    <li>&bull; <strong>HVAC changes mid-test</strong> - switching from AC to heat (or vice versa) alters air pressure dynamics</li>
+                    <li>&bull; <strong>Placing near humidity sources</strong> - bathrooms and laundry areas produce moisture that interferes with charcoal kits</li>
                 </ul>
             </div>
 
@@ -204,12 +204,12 @@
                             <td class="px-4 py-3 text-slate-600">No action needed. Re-test every 2 years.</td>
                         </tr>
                         <tr>
-                            <td class="px-4 py-3 font-semibold text-amber-600">2.0 – 4.0</td>
+                            <td class="px-4 py-3 font-semibold text-amber-600">2.0 - 4.0</td>
                             <td class="px-4 py-3 text-slate-700">Moderate</td>
                             <td class="px-4 py-3 text-slate-600">Consider mitigation (WHO recommends action at 2.7). Confirm with long-term test.</td>
                         </tr>
                         <tr>
-                            <td class="px-4 py-3 font-semibold text-red-600">4.0 – 8.0</td>
+                            <td class="px-4 py-3 font-semibold text-red-600">4.0 - 8.0</td>
                             <td class="px-4 py-3 text-slate-700">High</td>
                             <td class="px-4 py-3 text-slate-600">Mitigate within a few months. Confirm with second short-term test.</td>
                         </tr>
@@ -229,16 +229,16 @@
             <h2 class="font-display font-bold text-2xl text-slate-900 mt-12 mb-4">When to Re-Test (Even If Your First Test Was Low)</h2>
             <p class="text-slate-600 mb-4">Radon levels fluctuate. A one-time test provides a snapshot, not a guarantee. The EPA recommends re-testing in these scenarios:</p>
             <ul class="list-disc pl-6 text-slate-600 mb-6 space-y-2">
-                <li><strong>Every 2 years</strong> as routine maintenance — even if previous tests were low</li>
-                <li><strong>After major renovation</strong> — especially if you've altered the foundation, waterproofing, or HVAC system</li>
-                <li><strong>After any real estate transaction</strong> — tests conducted under "closed house" conditions for sales may not reflect normal living patterns</li>
-                <li><strong>Seasonal change</strong> — radon levels typically peak during winter when homes are sealed and heating systems create negative pressure. A summer test may underrepresent your actual annual average by 20–50%</li>
+                <li><strong>Every 2 years</strong> as routine maintenance - even if previous tests were low</li>
+                <li><strong>After major renovation</strong> - especially if you've altered the foundation, waterproofing, or HVAC system</li>
+                <li><strong>After any real estate transaction</strong> - tests conducted under "closed house" conditions for sales may not reflect normal living patterns</li>
+                <li><strong>Seasonal change</strong> - radon levels typically peak during winter when homes are sealed and heating systems create negative pressure. A summer test may underrepresent your actual annual average by 20-50%</li>
             </ul>
 
             <h2 class="font-display font-bold text-2xl text-slate-900 mt-12 mb-4">Professional Testing vs. DIY</h2>
             <p class="text-slate-600 mb-6">
-                Professional radon testing (by a certified NRPP or AARST professional) costs $150–$300 and uses calibrated continuous monitors that log hourly data with tamper-detection.
-                This is the standard required for real estate transactions in most states. However, for personal screening purposes, a $15–$30 charcoal canister provides
+                Professional radon testing (by a certified NRPP or AARST professional) costs $150-$300 and uses calibrated continuous monitors that log hourly data with tamper-detection.
+                This is the standard required for real estate transactions in most states. However, for personal screening purposes, a $15-$30 charcoal canister provides
                 a reliable initial reading. If the result is borderline (near 4.0 pCi/L), follow up with professional testing or a long-term kit.
             </p>
 
@@ -246,10 +246,10 @@
             <div class="not-prose bg-indigo-50 border border-indigo-100 rounded-2xl p-8 mt-12 text-slate-900 shadow-sm relative overflow-hidden">
                 <div class="absolute top-0 right-0 -mr-16 -mt-16 w-32 h-32 rounded-full bg-indigo-200 opacity-50 blur-2xl"></div>
                 <h3 class="font-display font-bold text-xl text-indigo-950 mb-3 relative z-10">Check mitigation costs &amp; local requirements for your county.</h3>
-                <p class="text-indigo-800 mb-6 text-sm leading-relaxed relative z-10">Check your radon level against EPA and WHO thresholds, then get an itemized mitigation cost estimate specific to your state’s labor rates and foundation types.</p>
+                <p class="text-indigo-800 mb-6 text-sm leading-relaxed relative z-10">Check your radon level against EPA and WHO thresholds, then get an itemized mitigation cost estimate specific to your state's labor rates and foundation types.</p>
                 <div class="flex flex-col sm:flex-row gap-3 relative z-10">
                     <a href="/radon-cost-calculator" class="inline-flex items-center justify-center px-6 py-3 border border-transparent text-sm font-bold rounded-xl text-white bg-indigo-600 hover:bg-indigo-700 transition shadow-sm">
-                        Calculate My Local Cost →
+                        Calculate My Local Cost ->
                     </a>
                     <a href="/guides/diy-vs-professional-radon-mitigation" class="inline-flex items-center justify-center px-6 py-3 border border-indigo-200 text-sm font-bold rounded-xl text-indigo-800 bg-white hover:bg-indigo-50 transition">
                         DIY vs. Professional
@@ -260,7 +260,7 @@
             <!-- Source Citation -->
             <div class="mt-8 p-4 rounded-xl bg-indigo-50 border border-indigo-100">
                 <p class="text-xs text-indigo-800 font-semibold not-prose">
-                    📊 Sources: EPA "A Citizen's Guide to Radon" (EPA 402/K-12/002), EPA "Home Buyer's and Seller's Guide to Radon", WHO Handbook on Indoor Radon (2009). All testing protocol recommendations follow ANSI/AARST MAH 2019 standards.
+                    Sources: EPA "A Citizen's Guide to Radon" (EPA 402/K-12/002), EPA "Home Buyer's and Seller's Guide to Radon", WHO Handbook on Indoor Radon (2009). All testing protocol recommendations follow ANSI/AARST MAH 2019 standards.
                 </p>
             </div>
 

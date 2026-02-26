@@ -28,7 +28,7 @@
                 <li><strong>Home Size Multipliers:</strong> Larger homes require more PVC piping, additional suction points, and more powerful fans.</li>
             </ul>
 
-            <!-- Data Sources — Transparency Section -->
+            <!-- Data Sources - Transparency Section -->
             <h2 class="font-display font-bold text-2xl text-slate-900 mt-12 mb-4">Our Data Sources</h2>
             <p class="text-slate-600 mb-4">
                 Every number on RadonVerdict is traceable to a public data source. We do not fabricate statistics or estimates.
@@ -41,7 +41,7 @@
                     <div>
                         <h3 class="font-bold text-sm text-slate-900">EPA Map of Radon Zones</h3>
                         <p class="text-xs text-slate-500 mt-0.5">County-level radon zone classifications (Zone 1, 2, 3). This data drives our risk assessments and zone-conditional content.</p>
-                        <a href="https://www.epa.gov/radon/epa-map-radon-zones" target="_blank" rel="nofollow noopener" class="text-xs font-semibold text-indigo-600 hover:underline mt-1 inline-block">epa.gov/radon/epa-map-radon-zones →</a>
+                        <a href="https://www.epa.gov/radon/epa-map-radon-zones" target="_blank" rel="nofollow noopener" class="text-xs font-semibold text-indigo-600 hover:underline mt-1 inline-block">epa.gov/radon/epa-map-radon-zones -></a>
                     </div>
                 </div>
 
@@ -52,7 +52,7 @@
                     <div>
                         <h3 class="font-bold text-sm text-slate-900">Bureau of Labor Statistics (BLS)</h3>
                         <p class="text-xs text-slate-500 mt-0.5">Regional wage data for HVAC/insulation workers (SOC 49-9021) and plumbers (SOC 47-2152) used to estimate labor costs by state.</p>
-                        <a href="https://www.bls.gov/oes/" target="_blank" rel="nofollow noopener" class="text-xs font-semibold text-indigo-600 hover:underline mt-1 inline-block">bls.gov/oes →</a>
+                        <a href="https://www.bls.gov/oes/" target="_blank" rel="nofollow noopener" class="text-xs font-semibold text-indigo-600 hover:underline mt-1 inline-block">bls.gov/oes -></a>
                     </div>
                 </div>
 
@@ -61,9 +61,9 @@
                         NAS
                     </div>
                     <div>
-                        <h3 class="font-bold text-sm text-slate-900">National Academy of Sciences — BEIR VI Report</h3>
+                        <h3 class="font-bold text-sm text-slate-900">National Academy of Sciences - BEIR VI Report</h3>
                         <p class="text-xs text-slate-500 mt-0.5">Basis for our health risk statistics (21,000 annual US lung cancer deaths from radon, cigarette-equivalent exposure calculations).</p>
-                        <a href="https://nap.nationalacademies.org/catalog/5499/health-effects-of-exposure-to-radon-beir-vi" target="_blank" rel="nofollow noopener" class="text-xs font-semibold text-indigo-600 hover:underline mt-1 inline-block">nap.nationalacademies.org →</a>
+                        <a href="https://nap.nationalacademies.org/catalog/5499/health-effects-of-exposure-to-radon-beir-vi" target="_blank" rel="nofollow noopener" class="text-xs font-semibold text-indigo-600 hover:underline mt-1 inline-block">nap.nationalacademies.org -></a>
                     </div>
                 </div>
 
@@ -73,8 +73,8 @@
                     </div>
                     <div>
                         <h3 class="font-bold text-sm text-slate-900">WHO Handbook on Indoor Radon (2009)</h3>
-                        <p class="text-xs text-slate-500 mt-0.5">Source for the 2.7 pCi/L (100 Bq/m³) international reference level cited in our radon level assessments.</p>
-                        <a href="https://www.who.int/publications/i/item/9789241547673" target="_blank" rel="nofollow noopener" class="text-xs font-semibold text-indigo-600 hover:underline mt-1 inline-block">who.int →</a>
+                        <p class="text-xs text-slate-500 mt-0.5">Source for the 2.7 pCi/L (100 Bq/m3) international reference level cited in our radon level assessments.</p>
+                        <a href="https://www.who.int/publications/i/item/9789241547673" target="_blank" rel="nofollow noopener" class="text-xs font-semibold text-indigo-600 hover:underline mt-1 inline-block">who.int -></a>
                     </div>
                 </div>
 
@@ -113,12 +113,12 @@
                 RadonVerdict relies on publicly available data from the Environmental Protection Agency (EPA), state health departments, and aggregated industry labor statistics. <strong>We are not government officials or certified mitigators ourselves.</strong> We are software engineers and data analysts who specialize in making complex public data accessible and actionable.
             </p>
             <p class="text-slate-600 mb-6">
-                Our pricing model is built on the same data that certified radon professionals use for their own estimates, supplemented with regional cost-of-living adjustments from the Bureau of Labor Statistics. While no algorithm can replace an on-site inspection, our estimates consistently fall within 10–15% of actual contractor quotes based on user feedback.
+                Our pricing model is built on the same data that certified radon professionals use for their own estimates, supplemented with regional cost-of-living adjustments from the Bureau of Labor Statistics. While no algorithm can replace an on-site inspection, our estimates consistently fall within 10-15% of actual contractor quotes based on user feedback.
             </p>
 
             <!-- YMYL Disclaimer -->
             <div class="not-prose bg-amber-50 border border-amber-200 rounded-2xl p-6 mt-8 mb-8">
-                <h3 class="font-display font-bold text-amber-900 text-sm mb-2">⚠ Important Health Disclaimer</h3>
+                <h3 class="font-display font-bold text-amber-900 text-sm mb-2">Warning: Important Health Disclaimer</h3>
                 <p class="text-xs text-amber-800 leading-relaxed">
                     Radon is a known carcinogen classified by the EPA, WHO, and IARC. The information on RadonVerdict is presented for educational and informational purposes only. It is <strong>not</strong> a substitute for professional medical advice, radon testing by a certified professional, or consultation with a licensed contractor. Always test your home and consult qualified professionals before making mitigation decisions. If you suspect high radon exposure, contact your state radon program or the EPA's radon hotline at 1-800-SOS-RADON.
                 </p>

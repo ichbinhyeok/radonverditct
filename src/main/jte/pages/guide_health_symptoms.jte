@@ -13,7 +13,7 @@
             </p>
 
             <div class="bg-red-50 border border-red-200 rounded-2xl p-6 mb-8 mt-6">
-                <h3 class="font-display font-bold text-red-900 mb-2">⚠ Medical Disclaimer (YMYL)</h3>
+                <h3 class="font-display font-bold text-red-900 mb-2">Warning: Medical Disclaimer (YMYL)</h3>
                 <p class="text-sm text-red-800 leading-relaxed m-0">
                     The information provided here is for educational purposes only. If you are experiencing respiratory distress, chronic cough, or any physical symptoms described below, contact a physician immediately.
                 </p>
@@ -61,7 +61,7 @@
                         Read the Testing Guide
                     </a>
                     <a href="/radon-cost-calculator" class="inline-flex items-center justify-center px-6 py-3 border border-transparent text-sm font-bold rounded-xl text-indigo-700 bg-white hover:bg-slate-100 transition">
-                        Find Mitigators →
+                        Find Mitigators ->
                     </a>
                 </div>
             </div>
@@ -69,7 +69,7 @@
             <!-- Source Citation -->
             <div class="mt-8 p-4 rounded-xl bg-indigo-50 border border-indigo-100">
                 <p class="text-xs text-indigo-800 font-semibold not-prose">
-                    📊 Sources: Centers for Disease Control and Prevention (CDC), World Health Organization (WHO), US Surgeon General Health Advisory.
+                    Sources: Centers for Disease Control and Prevention (CDC), World Health Organization (WHO), US Surgeon General Health Advisory.
                 </p>
             </div>
         </div>

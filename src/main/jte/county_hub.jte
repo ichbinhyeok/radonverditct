@@ -200,7 +200,7 @@
                         <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
                     </div>
                     <div>
-                        <h4 class="font-display font-bold text-lg text-indigo-900 mb-2">🏡 ${county.getCountyName()} Data Insight</h4>
+                        <h4 class="font-display font-bold text-lg text-indigo-900 mb-2">Local Insight: ${county.getCountyName()} Data Insight</h4>
                         <p class="text-sm text-indigo-800 leading-relaxed font-medium">
                             @if(county.getEpaZone() == 1 && county.getStats().getMetrics().getBuiltBefore1980Pct() > 40.0)
                                 ${county.getCountyName()} is categorized as a high-risk <strong>EPA Zone ${county.getEpaZone()}</strong>, while over <strong>${county.getStats().getMetrics().getBuiltBefore1980Pct()}%</strong> of local housing was built before 1980. Older foundations are significantly more prone to crack settling, which means standard sub-slab depressurization might require specialized sealing work and additional suction points. This local architectural reality often drives up hardware costs slightly above the usual regional base rate.
@@ -209,7 +209,7 @@
                             @elseif(county.getStats().getMetrics().getBuiltBefore1980Pct() > 50.0)
                                 While this is a moderate/low-risk Zone ${county.getEpaZone()} county, more than <strong>${county.getStats().getMetrics().getBuiltBefore1980Pct()}%</strong> of houses here were constructed before 1980. The aging architecture in ${county.getCountyName()} often features dirt crawl spaces or deteriorating basement seals. Contractors frequently need to lay down new vapor barriers before installing Active Soil Depressurization (ASD) systems, making labor a prominent factor in local pricing.
                             @else
-                                ${county.getCountyName()} is an <strong>EPA Zone ${county.getEpaZone()}</strong> area with a relatively modern housing stock, featuring only <strong>${county.getStats().getMetrics().getBuiltBefore1980Pct()}%</strong> of homes built prior to 1980. Because newer builds frequently contain passive radon pipes integrated during early construction, local contractors often only need to add an exhaust fan to “activate” the system. This naturally results in faster installations and highly competitive labor rates compared to neighboring counties.
+                                ${county.getCountyName()} is an <strong>EPA Zone ${county.getEpaZone()}</strong> area with a relatively modern housing stock, featuring only <strong>${county.getStats().getMetrics().getBuiltBefore1980Pct()}%</strong> of homes built prior to 1980. Because newer builds frequently contain passive radon pipes integrated during early construction, local contractors often only need to add an exhaust fan to "activate" the system. This naturally results in faster installations and highly competitive labor rates compared to neighboring counties.
                             @endif
                         </p>
                     </div>
@@ -249,7 +249,7 @@
                         </div>
                         <div>
                             <span class="block font-bold text-sm text-slate-800 group-hover:text-indigo-600 transition-colors">How to Test for Radon</span>
-                            <span class="text-xs text-slate-500">Complete testing guide — kits, placement, results</span>
+                            <span class="text-xs text-slate-500">Complete testing guide - kits, placement, results</span>
                         </div>
                     </a>
                 </div>
@@ -279,17 +279,17 @@
                     <div>
                         <h4 class="font-bold text-slate-700 mb-2">Important Disclaimers</h4>
                         <ul class="space-y-3 pl-4">
-                            <li class="relative before:content-['•'] before:absolute before:-left-4 before:text-slate-300"><strong class="text-slate-700">Health & Safety:</strong> Information on this site is for educational purposes and is not medical advice. For health concerns, consult qualified professionals.</li>
-                            <li class="relative before:content-['•'] before:absolute before:-left-4 before:text-slate-300"><strong class="text-slate-700">Estimates:</strong> Estimates are general ranges based on typical projects. Actual quotes vary by home conditions and local labor.</li>
-                            <li class="relative before:content-['•'] before:absolute before:-left-4 before:text-slate-300"><strong class="text-slate-700">Zone Data:</strong> Radon zone classifications describe regional potential for elevated indoor radon. They do not predict the radon level in a specific home. Testing is recommended for all homes.</li>
+                            <li class="relative before:content-['*'] before:absolute before:-left-4 before:text-slate-300"><strong class="text-slate-700">Health & Safety:</strong> Information on this site is for educational purposes and is not medical advice. For health concerns, consult qualified professionals.</li>
+                            <li class="relative before:content-['*'] before:absolute before:-left-4 before:text-slate-300"><strong class="text-slate-700">Estimates:</strong> Estimates are general ranges based on typical projects. Actual quotes vary by home conditions and local labor.</li>
+                            <li class="relative before:content-['*'] before:absolute before:-left-4 before:text-slate-300"><strong class="text-slate-700">Zone Data:</strong> Radon zone classifications describe regional potential for elevated indoor radon. They do not predict the radon level in a specific home. Testing is recommended for all homes.</li>
                         </ul>
                     </div>
                     <div>
                         <h4 class="font-bold text-slate-700 mb-2">Data Sources</h4>
                         <ul class="space-y-3 pl-4">
-                            <li class="relative before:content-['•'] before:absolute before:-left-4 before:text-slate-300"><a href="https://www.epa.gov/radon" target="_blank" rel="nofollow noopener" class="text-indigo-600 hover:text-indigo-800 hover:underline transition-colors">US Environmental Protection Agency (EPA) - Action Level</a></li>
-                            <li class="relative before:content-['•'] before:absolute before:-left-4 before:text-slate-300"><a href="https://www.epa.gov/radon/epa-map-radon-zones" target="_blank" rel="nofollow noopener" class="text-indigo-600 hover:text-indigo-800 hover:underline transition-colors">EPA Map of Radon Zones</a></li>
-                            <li class="relative before:content-['•'] before:absolute before:-left-4 before:text-slate-300">National contractor cost guides and local labor indices.</li>
+                            <li class="relative before:content-['*'] before:absolute before:-left-4 before:text-slate-300"><a href="https://www.epa.gov/radon" target="_blank" rel="nofollow noopener" class="text-indigo-600 hover:text-indigo-800 hover:underline transition-colors">US Environmental Protection Agency (EPA) - Action Level</a></li>
+                            <li class="relative before:content-['*'] before:absolute before:-left-4 before:text-slate-300"><a href="https://www.epa.gov/radon/epa-map-radon-zones" target="_blank" rel="nofollow noopener" class="text-indigo-600 hover:text-indigo-800 hover:underline transition-colors">EPA Map of Radon Zones</a></li>
+                            <li class="relative before:content-['*'] before:absolute before:-left-4 before:text-slate-300">National contractor cost guides and local labor indices.</li>
                         </ul>
                     </div>
                 </div>

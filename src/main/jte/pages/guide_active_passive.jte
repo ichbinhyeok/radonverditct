@@ -30,13 +30,13 @@
                 An "active system," known as Active Sub-Slab Depressurization (ASD), takes the exact same PVC pipe network but aggressively powers it with an inline radon mitigation fan (typically mounted in the attic or exterior). 
             </p>
             <p class="text-slate-600 mb-6">
-                <strong>How it works:</strong> The fan creates a permanent negative pressure vacuum under the concrete slab. Instead of relying on a weak natural draft, the fan aggressively sucks the radon out of the dirt and blasts it out the roof. Active systems are highly reliable and regularly reduce toxic indoor air levels by 80–99%, pulling readings down to 1.5 pCi/L or lower.
+                <strong>How it works:</strong> The fan creates a permanent negative pressure vacuum under the concrete slab. Instead of relying on a weak natural draft, the fan aggressively sucks the radon out of the dirt and blasts it out the roof. Active systems are highly reliable and regularly reduce toxic indoor air levels by 80-99%, pulling readings down to 1.5 pCi/L or lower.
             </p>
 
             <div class="bg-indigo-50 border border-indigo-200 rounded-2xl p-6 mb-8 mt-6">
                 <h3 class="font-display font-bold text-indigo-900 mb-2">Can you upgrade passive to active?</h3>
                 <p class="text-sm text-indigo-800 space-y-3">
-                    Yes! The brilliance of modern new construction building codes is the "Activating a Passive System" process. If you test your new home and the passive pipe isn't cutting it, a certified mitigator simply cuts a section of the existing PVC in the attic, glues in a $200 radon fan, wires it to a junction box, and places a u-tube manometer in your basement. Boom—your system is now active for a few hundred dollars.
+                    Yes! The brilliance of modern new construction building codes is the "Activating a Passive System" process. If you test your new home and the passive pipe isn't cutting it, a certified mitigator simply cuts a section of the existing PVC in the attic, glues in a $200 radon fan, wires it to a junction box, and places a u-tube manometer in your basement. Boom-your system is now active for a few hundred dollars.
                 </p>
             </div>
 
@@ -53,7 +53,7 @@
                 <h3 class="font-display font-bold text-xl text-white mb-3">Needs a fan added to your system?</h3>
                 <p class="text-slate-300 mb-6 text-sm leading-relaxed">Calculate exactly how much an active system retrofit costs in your local county.</p>
                 <a href="/radon-cost-calculator" class="inline-flex items-center justify-center px-6 py-3 border border-transparent text-sm font-bold rounded-xl text-slate-900 bg-white hover:bg-slate-100 transition">
-                    Get Active System Estimate →
+                    Get Active System Estimate ->
                 </a>
             </div>
         </div>

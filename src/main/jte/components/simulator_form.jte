@@ -48,7 +48,7 @@
              class="absolute -top-14 left-1/2 -translate-x-1/2 z-50 bg-slate-800 border border-slate-700 text-white px-4 py-2 rounded-full shadow-xl text-xs sm:text-sm font-bold flex items-center gap-2 whitespace-nowrap"
              style="display: none;">
             <svg class="w-4 h-4 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg>
-            Estimate & Strategy Updated ↓
+            Estimate & Strategy Updated down
         </div>
 
         <!-- Hidden required fields -->
