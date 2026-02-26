@@ -3,19 +3,26 @@ package com.radonverdict.controller;
 import com.radonverdict.model.County;
 import com.radonverdict.service.DataLoadService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.Collection;
+import java.time.LocalDate;
 
 @Controller
 @RequiredArgsConstructor
 public class SitemapController {
 
     private final DataLoadService dataLoadService;
-    private final String BASE_URL = "https://radonverdict.com"; // Final live domain
+
+    @Value("${app.site.base-url:https://radonverdict.com}")
+    private String baseUrl;
+
+    @Value("${app.site.lastmod:}")
+    private String configuredLastmod;
 
     @GetMapping(value = "/sitemap.xml", produces = MediaType.APPLICATION_XML_VALUE)
     @ResponseBody
@@ -27,6 +34,7 @@ public class SitemapController {
         addSitemapUrl(xml, "/sitemap-core.xml");
         addSitemapUrl(xml, "/sitemap-zone-high.xml");
         addSitemapUrl(xml, "/sitemap-zone-low.xml");
+        addSitemapUrl(xml, "/sitemap-zone-unknown.xml");
 
         xml.append("</sitemapindex>");
         return xml.toString();
@@ -34,8 +42,8 @@ public class SitemapController {
 
     private void addSitemapUrl(StringBuilder xml, String path) {
         xml.append("<sitemap>");
-        xml.append("<loc>").append(BASE_URL).append(path).append("</loc>");
-        xml.append("<lastmod>").append("2026-02-01").append("</lastmod>");
+        xml.append("<loc>").append(normalizedBaseUrl()).append(path).append("</loc>");
+        xml.append("<lastmod>").append(resolveLastmod()).append("</lastmod>");
         xml.append("</sitemap>");
     }
 
@@ -91,9 +99,7 @@ public class SitemapController {
         // Zone 1 & 2 pSEO Pages (High Priority)
         Collection<County> counties = dataLoadService.getCountyBySlugMap().values();
         for (County county : counties) {
-            boolean hasDataMoat = county.getStats() != null && county.getStats().getMetrics() != null
-                    && county.getStats().getMetrics().getTotalHousingUnits() > 0;
-            if (!hasDataMoat)
+            if (!hasDataMoat(county))
                 continue;
 
             if (county.getEpaZone() == 1 || county.getEpaZone() == 2) {
@@ -118,9 +124,7 @@ public class SitemapController {
         // Zone 3 pSEO Pages (Low Priority)
         Collection<County> counties = dataLoadService.getCountyBySlugMap().values();
         for (County county : counties) {
-            boolean hasDataMoat = county.getStats() != null && county.getStats().getMetrics() != null
-                    && county.getStats().getMetrics().getTotalHousingUnits() > 0;
-            if (!hasDataMoat)
+            if (!hasDataMoat(county))
                 continue;
 
             if (county.getEpaZone() == 3) {
@@ -135,13 +139,56 @@ public class SitemapController {
         return xml.toString();
     }
 
+    @GetMapping(value = "/sitemap-zone-unknown.xml", produces = MediaType.APPLICATION_XML_VALUE)
+    @ResponseBody
+    public String generateZoneUnknownSitemap() {
+        StringBuilder xml = new StringBuilder();
+        xml.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
+        xml.append("<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">");
+
+        // Counties with missing zone assignments (data pending / unknown)
+        Collection<County> counties = dataLoadService.getCountyBySlugMap().values();
+        for (County county : counties) {
+            if (!hasDataMoat(county))
+                continue;
+
+            if (county.getEpaZone() <= 0) {
+                addUrl(xml, "/radon-mitigation-cost/" + county.getStateSlug() + "/" + county.getCountySlug(), "0.3");
+                addUrl(xml, "/radon-levels/" + county.getStateSlug() + "/" + county.getCountySlug(), "0.3");
+            }
+        }
+
+        xml.append("</urlset>");
+        return xml.toString();
+    }
+
+    private boolean hasDataMoat(County county) {
+        return county.getStats() != null
+                && county.getStats().getMetrics() != null
+                && county.getStats().getMetrics().getTotalHousingUnits() > 0;
+    }
+
     private void addUrl(StringBuilder xml, String path, String priority) {
         xml.append("<url>");
-        xml.append("<loc>").append(BASE_URL).append(path).append("</loc>");
-        xml.append("<lastmod>").append("2026-02-01").append("</lastmod>");
+        xml.append("<loc>").append(normalizedBaseUrl()).append(path).append("</loc>");
+        xml.append("<lastmod>").append(resolveLastmod()).append("</lastmod>");
         xml.append("<changefreq>monthly</changefreq>");
         xml.append("<priority>").append(priority).append("</priority>");
         xml.append("</url>");
+    }
+
+    private String normalizedBaseUrl() {
+        if (baseUrl == null || baseUrl.isBlank()) {
+            return "https://radonverdict.com";
+        }
+        return baseUrl.endsWith("/") ? baseUrl.substring(0, baseUrl.length() - 1) : baseUrl;
+    }
+
+    private String resolveLastmod() {
+        if (configuredLastmod != null && !configuredLastmod.isBlank()) {
+            return configuredLastmod;
+        }
+        return LocalDate.now().toString();
     }
 
     @GetMapping(value = "/robots.txt", produces = MediaType.TEXT_PLAIN_VALUE)
@@ -150,6 +197,6 @@ public class SitemapController {
         return "User-agent: *\n" +
                 "Allow: /\n" +
                 "Disallow: /admin/\n" +
-                "Sitemap: " + BASE_URL + "/sitemap.xml";
+                "Sitemap: " + normalizedBaseUrl() + "/sitemap.xml";
     }
 }

@@ -1,12 +1,19 @@
 package com.radonverdict.controller;
 
 import com.radonverdict.model.County;
+import com.radonverdict.model.dto.AeoAnswerBlock;
 import com.radonverdict.model.dto.CountyPageContent;
 import com.radonverdict.model.dto.ItemizedReceipt;
+import com.radonverdict.model.dto.PageQualityResult;
+import com.radonverdict.model.dto.TrustMetadata;
 import com.radonverdict.service.ContentGenerationService;
 import com.radonverdict.service.DataLoadService;
+import com.radonverdict.service.InternalLinkService;
+import com.radonverdict.service.PageQualityService;
 import com.radonverdict.service.PricingCalculatorService;
+import com.radonverdict.service.TrustMetadataService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -29,6 +36,12 @@ public class PageController {
     private final DataLoadService dataLoadService;
     private final PricingCalculatorService calcService;
     private final ContentGenerationService contentService;
+    private final PageQualityService pageQualityService;
+    private final TrustMetadataService trustMetadataService;
+    private final InternalLinkService internalLinkService;
+
+    @Value("${app.feature.monetization-hooks.enabled:false}")
+    private boolean monetizationHooksEnabled;
 
     @GetMapping("/")
     public String home() {
@@ -97,9 +110,19 @@ public class PageController {
         // Build the FULL page content (Zone + State regulation + Intent + FAQ +
         // Receipt)
         CountyPageContent pageContent = contentService.buildPageContent(county, "basement", "buying");
+        PageQualityResult quality = pageQualityService.scoreMitigationCountyPage(county, pageContent);
+        pageContent.setIndexable(quality.isIndexable());
+
+        TrustMetadata trust = trustMetadataService.forCountyPage(county);
+        AeoAnswerBlock aeo = buildMitigationAeoBlock(county, pageContent, trust);
 
         model.addAttribute("county", county);
         model.addAttribute("page", pageContent);
+        model.addAttribute("quality", quality);
+        model.addAttribute("trust", trust);
+        model.addAttribute("aeo", aeo);
+        model.addAttribute("relatedLinks", internalLinkService.buildMitigationCountyLinks(county, pageContent));
+        model.addAttribute("monetizationHooksEnabled", monetizationHooksEnabled);
         model.addAttribute("canonicalUrl",
                 "https://radonverdict.com/radon-mitigation-cost/" + stateSlug + "/" + countySlug);
 
@@ -130,5 +153,41 @@ public class PageController {
         }
 
         return "fragments/receipt";
+    }
+
+    private AeoAnswerBlock buildMitigationAeoBlock(County county, CountyPageContent page, TrustMetadata trust) {
+        if (county == null || page == null || page.getReceipt() == null) {
+            return null;
+        }
+
+        String answer = "Estimated average mitigation cost in " + county.getCountyName() + " County is $"
+                + page.getReceipt().getTotalAvg() + ", with a common range of $"
+                + page.getReceipt().getTotalLow() + " to $" + page.getReceipt().getTotalHigh()
+                + ". Final pricing depends on foundation type, home size, and routing complexity.";
+
+        return AeoAnswerBlock.builder()
+                .question("How much does radon mitigation cost in " + county.getCountyName() + " County?")
+                .directAnswer(answer)
+                .evidenceRows(List.of(
+                        AeoAnswerBlock.Row.builder()
+                                .label("EPA Zone")
+                                .value(county.getEpaZone() > 0 ? "Zone " + county.getEpaZone() : "Unclassified")
+                                .build(),
+                        AeoAnswerBlock.Row.builder()
+                                .label("Average Cost")
+                                .value("$" + page.getReceipt().getTotalAvg())
+                                .build(),
+                        AeoAnswerBlock.Row.builder()
+                                .label("Typical Range")
+                                .value("$" + page.getReceipt().getTotalLow() + " - $" + page.getReceipt().getTotalHigh())
+                                .build(),
+                        AeoAnswerBlock.Row.builder()
+                                .label("Housing Units (Census)")
+                                .value(county.getStats() != null && county.getStats().getMetrics() != null
+                                        ? String.format("%,d", county.getStats().getMetrics().getTotalHousingUnits())
+                                        : "Data unavailable")
+                                .build()))
+                .sources(trust != null ? trust.getSources() : List.of())
+                .build();
     }
 }

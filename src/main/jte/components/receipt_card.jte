@@ -60,40 +60,44 @@
             </div>
         </div>
         
-        <!-- Semantic Table for AI / AEO Crawlers (Visually Hidden) -->
-        <table class="sr-only">
-            <caption>Average Local Radon Mitigation Cost Breakdown for ${receipt.getCountyName()} County</caption>
-            <thead>
-                <tr>
-                    <th scope="col">Component</th>
-                    <th scope="col">Average Cost</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>System Materials</td>
-                    <td>$${receipt.getMaterialsAvg()}</td>
-                </tr>
-                <tr>
-                    <td>Specialized Labor</td>
-                    <td>$${receipt.getLaborAvg()}</td>
-                </tr>
-                <tr>
-                    <td>Permits & Setup</td>
-                    <td>$${receipt.getPermitsSetupAvg()}</td>
-                </tr>
-            </tbody>
-            <tfoot>
-                <tr>
-                    <th scope="row">Estimated Total Range</th>
-                    <td>$${receipt.getTotalLow()} - $${receipt.getTotalHigh()}</td>
-                </tr>
-                <tr>
-                    <th scope="row">Average Total</th>
-                    <td>$${receipt.getTotalAvg()}</td>
-                </tr>
-            </tfoot>
-        </table>
+        <!-- Visible semantic table for AEO and snippet extraction -->
+        <div class="mt-8 rounded-2xl border border-slate-200 overflow-hidden">
+            <table class="w-full text-sm">
+                <caption class="text-left px-4 py-3 bg-slate-50 font-semibold text-slate-700">
+                    Average Local Cost Breakdown for ${receipt.getCountyName()} County
+                </caption>
+                <thead class="bg-white">
+                    <tr class="border-t border-slate-200">
+                        <th scope="col" class="px-4 py-3 text-left font-semibold text-slate-700">Component</th>
+                        <th scope="col" class="px-4 py-3 text-left font-semibold text-slate-700">Average Cost</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100">
+                    <tr>
+                        <td class="px-4 py-3 text-slate-700">System Materials</td>
+                        <td class="px-4 py-3 text-slate-900 font-medium">$${receipt.getMaterialsAvg()}</td>
+                    </tr>
+                    <tr>
+                        <td class="px-4 py-3 text-slate-700">Specialized Labor</td>
+                        <td class="px-4 py-3 text-slate-900 font-medium">$${receipt.getLaborAvg()}</td>
+                    </tr>
+                    <tr>
+                        <td class="px-4 py-3 text-slate-700">Permits & Setup</td>
+                        <td class="px-4 py-3 text-slate-900 font-medium">$${receipt.getPermitsSetupAvg()}</td>
+                    </tr>
+                </tbody>
+                <tfoot class="bg-slate-50 border-t border-slate-200">
+                    <tr>
+                        <th scope="row" class="px-4 py-3 text-left font-semibold text-slate-800">Estimated Total Range</th>
+                        <td class="px-4 py-3 text-slate-900 font-semibold">$${receipt.getTotalLow()} - $${receipt.getTotalHigh()}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row" class="px-4 py-3 text-left font-semibold text-slate-800">Average Total</th>
+                        <td class="px-4 py-3 text-slate-900 font-semibold">$${receipt.getTotalAvg()}</td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
 
         <!-- Context Note -->
         <div class="mt-8 flex items-start gap-3 p-4 bg-slate-50/50 rounded-xl border border-slate-100">

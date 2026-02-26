@@ -1,11 +1,20 @@
 package com.radonverdict.controller;
 
+import com.radonverdict.model.dto.AeoAnswerBlock;
+import com.radonverdict.model.dto.TrustMetadata;
+import com.radonverdict.service.TrustMetadataService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import java.util.List;
+
 @Controller
+@RequiredArgsConstructor
 public class GuideController {
+
+    private final TrustMetadataService trustMetadataService;
 
     @GetMapping("/guides")
     public String guidesHub(Model model) {
@@ -28,6 +37,18 @@ public class GuideController {
     @GetMapping("/guides/how-to-test-for-radon")
     public String guideRadonTesting(Model model) {
         model.addAttribute("title", "How to Test for Radon: Complete Homeowner's Guide | RadonVerdict");
+        TrustMetadata trust = trustMetadataService.forGuidePage();
+        model.addAttribute("trust", trust);
+        model.addAttribute("aeo", AeoAnswerBlock.builder()
+                .question("What is the fastest reliable way to test a home for radon?")
+                .directAnswer("Use a short-term EPA-listed radon kit in the lowest livable level for 2 to 7 days under closed-house conditions, then send it to the lab. Re-test or confirm with long-term monitoring if results are elevated.")
+                .evidenceRows(List.of(
+                        AeoAnswerBlock.Row.builder().label("Primary Method").value("Short-term charcoal kit").build(),
+                        AeoAnswerBlock.Row.builder().label("Test Window").value("2 to 7 days").build(),
+                        AeoAnswerBlock.Row.builder().label("EPA Action Level").value("4.0 pCi/L").build(),
+                        AeoAnswerBlock.Row.builder().label("WHO Reference").value("2.7 pCi/L").build()))
+                .sources(trust != null ? trust.getSources() : List.of())
+                .build());
         return "pages/guide_radon_testing";
     }
 

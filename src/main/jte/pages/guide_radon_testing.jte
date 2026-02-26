@@ -1,8 +1,54 @@
+@import com.radonverdict.model.dto.AeoAnswerBlock
+@import com.radonverdict.model.dto.TrustMetadata
+
 @param String title
+@param AeoAnswerBlock aeo = null
+@param TrustMetadata trust = null
 
 @template.layout.main(
     title = title,
     description = "Complete guide to radon testing: how to test, which kit to buy, understanding results, and when to retest. Expert-level advice from RadonVerdict.",
+    headContent = @`
+        <script type="application/ld+json">
+            {
+                "@context": "https://schema.org",
+                "@type": "HowTo",
+                "name": "How to Test Your Home for Radon",
+                "description": "Radon testing is the only way to know if your home has dangerous radon levels. This guide covers how to test, place your kit, and interpret the results.",
+                "totalTime": "P3D",
+                "estimatedCost": {
+                    "@type": "MonetaryAmount",
+                    "currency": "USD",
+                    "value": "20.00"
+                },
+                "supply": [
+                    { "@type": "HowToSupply", "name": "Short-Term Charcoal Radon Test Kit" }
+                ],
+                "step": [
+                    {
+                        "@type": "HowToStep",
+                        "name": "Buy a Test Kit",
+                        "text": "Purchase a short-term charcoal test kit online or from a local hardware store. Place it in the lowest livable level of your home, such as a basement, about 2-5 feet above the floor."
+                    },
+                    {
+                        "@type": "HowToStep",
+                        "name": "Maintain Closed-House Conditions",
+                        "text": "Keep doors and windows closed (except for normal entry/exit) for 12 hours before starting the test and during the entire 2-7 day test period. Do not run whole-house fans."
+                    },
+                    {
+                        "@type": "HowToStep",
+                        "name": "Wait 2-7 Days and Mail to Lab",
+                        "text": "Leave the kit absorbing radon for the duration specified by the manufacturer (usually 48 to 96 hours). Afterward, seal the kit immediately and mail it to the certified lab for analysis."
+                    },
+                    {
+                        "@type": "HowToStep",
+                        "name": "Read Your Results",
+                        "text": "If results are below 2.0 pCi/L, no action is needed. If between 2.0 and 4.0 pCi/L, consider mitigation. If above 4.0 pCi/L, the EPA recommends mitigating your home within a few months."
+                    }
+                ]
+            }
+        </script>
+    `,
     content = @`
         <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24 prose prose-slate md:prose-lg max-w-none">
             <a href="/guides" class="not-prose inline-flex items-center gap-1 text-xs font-bold text-slate-400 hover:text-indigo-600 transition-colors uppercase tracking-wider mb-6"><svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg> All Guides</a>
@@ -11,6 +57,9 @@
             <p class="lead text-xl text-slate-600 mb-10 leading-relaxed font-medium pb-10 border-b border-slate-200">
                 Radon testing is the only way to know if your home has dangerous radon levels. This guide covers every testing method, how to interpret your results, and the critical mistakes that invalidate tests.
             </p>
+            @if(aeo != null)
+                @template.components.aeo_answer_block(block = aeo)
+            @endif
 
             <h2 class="font-display font-bold text-2xl text-slate-900 mt-12 mb-4">Why Testing Is Non-Negotiable</h2>
             <p class="text-slate-600 mb-4">
@@ -215,46 +264,9 @@
                 </p>
             </div>
 
-            <!-- AEO / Rich Snippet: HowTo Schema.org Data for AI Agents & Search Engines -->
-            <script type="application/ld+json">
-                {
-                    "@context": "https://schema.org",
-                    "@type": "HowTo",
-                    "name": "How to Test Your Home for Radon",
-                    "description": "Radon testing is the only way to know if your home has dangerous radon levels. This guide covers how to test, place your kit, and interpret the results.",
-                    "totalTime": "P3D",
-                    "estimatedCost": {
-                        "@type": "MonetaryAmount",
-                        "currency": "USD",
-                        "value": "20.00"
-                    },
-                    "supply": [
-                        { "@type": "HowToSupply", "name": "Short-Term Charcoal Radon Test Kit" }
-                    ],
-                    "step": [
-                        {
-                            "@type": "HowToStep",
-                            "name": "Buy a Test Kit",
-                            "text": "Purchase a short-term charcoal test kit online or from a local hardware store. Place it in the lowest livable level of your home, such as a basement, about 2-5 feet above the floor."
-                        },
-                        {
-                            "@type": "HowToStep",
-                            "name": "Maintain Closed-House Conditions",
-                            "text": "Keep doors and windows closed (except for normal entry/exit) for 12 hours before starting the test and during the entire 2-7 day test period. Do not run whole-house fans."
-                        },
-                        {
-                            "@type": "HowToStep",
-                            "name": "Wait 2-7 Days and Mail to Lab",
-                            "text": "Leave the kit absorbing radon for the duration specified by the manufacturer (usually 48 to 96 hours). Afterward, seal the kit immediately and mail it to the certified lab for analysis."
-                        },
-                        {
-                            "@type": "HowToStep",
-                            "name": "Read Your Results",
-                            "text": "If results are below 2.0 pCi/L, no action is needed. If between 2.0 and 4.0 pCi/L, consider mitigation. If above 4.0 pCi/L, the EPA recommends mitigating your home within a few months."
-                        }
-                    ]
-                }
-            </script>
+            @if(trust != null)
+                @template.components.trust_metadata(trust = trust)
+            @endif
         </div>
     `
 )

@@ -4,6 +4,7 @@
 @param String description = "National Radon Mitigation Cost Calculator"
 @param String canonicalUrl = null
 @param boolean noindex = false
+@param Content headContent = null
 @param Content content
 
 <!DOCTYPE html>
@@ -22,6 +23,84 @@
 
       gtag('config', 'G-7C2TPP3S8N');
     </script>
+    <script>
+      (function () {
+        const telemetryEndpoint = '/api/telemetry/events';
+        const sentScrollDepth = new Set();
+
+        function sendServerEvent(payload) {
+          const body = JSON.stringify(payload);
+          if (navigator.sendBeacon) {
+            const blob = new Blob([body], { type: 'application/json' });
+            navigator.sendBeacon(telemetryEndpoint, blob);
+            return;
+          }
+          fetch(telemetryEndpoint, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: body,
+            keepalive: true
+          }).catch(function () {});
+        }
+
+        window.rvTrack = function (eventName, payload) {
+          const safePayload = payload || {};
+          if (typeof gtag === 'function') {
+            gtag('event', eventName, safePayload);
+          }
+          sendServerEvent({
+            event: eventName,
+            payload: safePayload,
+            path: window.location.pathname,
+            ts: new Date().toISOString()
+          });
+        };
+
+        function trackScrollDepth() {
+          const doc = document.documentElement;
+          const scrollable = Math.max(doc.scrollHeight - window.innerHeight, 1);
+          const depth = Math.round((window.scrollY / scrollable) * 100);
+          [25, 50, 75, 90].forEach(function (threshold) {
+            if (depth >= threshold && !sentScrollDepth.has(threshold)) {
+              sentScrollDepth.add(threshold);
+              window.rvTrack('scroll_depth', { percent: threshold });
+            }
+          });
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+          window.rvTrack('page_view', { title: document.title });
+
+          window.addEventListener('scroll', trackScrollDepth, { passive: true });
+
+          document.addEventListener('click', function (event) {
+            const trackedElement = event.target.closest('[data-track-event]');
+            if (trackedElement) {
+              window.rvTrack(trackedElement.dataset.trackEvent, {
+                label: trackedElement.dataset.trackLabel || '',
+                href: trackedElement.getAttribute('href') || ''
+              });
+              return;
+            }
+
+            const link = event.target.closest('a[href]');
+            if (!link) {
+              return;
+            }
+
+            const href = link.getAttribute('href');
+            if (!href || href.startsWith('/') || href.startsWith('#')) {
+              return;
+            }
+
+            const sameHost = href.indexOf(window.location.host) !== -1;
+            if (!sameHost) {
+              window.rvTrack('outbound_click', { href: href, text: (link.textContent || '').trim() });
+            }
+          }, true);
+        });
+      })();
+    </script>
     <meta name="description" content="${description}">
     <link rel="icon" type="image/svg+xml" href="/favicon.svg">
     @if(canonicalUrl != null)
@@ -29,6 +108,9 @@
     @endif
     @if(noindex)
         <meta name="robots" content="noindex, nofollow">
+    @endif
+    @if(headContent != null)
+        ${headContent}
     @endif
     
     <!-- Google Fonts: Outfit (Display) & Inter (Numbers/Body) -->

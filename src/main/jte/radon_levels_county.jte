@@ -1,16 +1,83 @@
 @import com.radonverdict.model.County
 @import com.radonverdict.model.StateRegulations.StateRule
+@import com.radonverdict.model.dto.AeoAnswerBlock
+@import com.radonverdict.model.dto.InternalLinkItem
+@import com.radonverdict.model.dto.PageQualityResult
+@import com.radonverdict.model.dto.TrustMetadata
 @import java.util.List
 
 @param County county
 @param StateRule stateRule = null
 @param List<County> nearbyCounties = null
 @param String canonicalUrl = null
+@param boolean noindex = false
+@param AeoAnswerBlock aeo = null
+@param List<InternalLinkItem> relatedLinks = null
+@param PageQualityResult quality = null
+@param TrustMetadata trust = null
+@param boolean monetizationHooksEnabled = false
 
 @template.layout.main(
     title = "Radon Levels in " + county.getCountyName() + " County, " + county.getStateAbbr() + " — " + java.time.LocalDate.now().getYear() + " EPA Data",
     description = "Current radon levels and EPA zone data for " + county.getCountyName() + " County, " + county.getStateAbbr() + ". Understand your risk, learn testing options, and see what action to take based on your reading.",
     canonicalUrl = canonicalUrl,
+    noindex = noindex,
+    headContent = @`
+        <script type="application/ld+json">
+            {
+                "@context": "https://schema.org",
+                "@type": "FAQPage",
+                "mainEntity": [
+                    {
+                        "@type": "Question",
+                        "name": "What is the average radon level in ${county.getCountyName()} County, ${county.getStateAbbr()}?",
+                        "acceptedAnswer": {
+                            "@type": "Answer",
+                            "text": "${county.getCountyName()} County is classified as @if(county.getEpaZone() == 1)EPA Zone 1 (High Risk). The predicted average indoor radon screening level exceeds 4.0 pCi/L, which is above the EPA action level.@elseif(county.getEpaZone() == 2)EPA Zone 2 (Moderate Risk). The predicted average indoor screening level is between 2.0 and 4.0 pCi/L.@elseif(county.getEpaZone() == 3)EPA Zone 3 (Low Risk). The predicted average indoor screening level is below 2.0 pCi/L.@else an unclassified EPA zone (Data Pending). The EPA zone for this county is currently unclassified in our source data. Please rely on direct home testing to determine risk.@endif The EPA recommends testing all homes regardless of zone."
+                        }
+                    },
+                    {
+                        "@type": "Question",
+                        "name": "Is radon a problem in ${county.getCountyName()} County?",
+                        "acceptedAnswer": {
+                            "@type": "Answer",
+                            "text": "@if(county.getEpaZone() == 1)Yes, ${county.getCountyName()} County is in EPA Zone 1 (High Risk). Most homes should be tested and many will need mitigation.@elseif(county.getEpaZone() == 2)${county.getCountyName()} County is in EPA Zone 2 (Moderate Risk). Many individual homes can still have elevated levels above the EPA action threshold.@elseif(county.getEpaZone() == 3)${county.getCountyName()} County is in EPA Zone 3 (Low Risk), but elevated radon has been found in homes in every zone. Testing is always recommended.@else ${county.getCountyName()} County does not currently have a published EPA zone assignment in our dataset. Because radon risk can vary significantly by home, testing is strongly recommended.@endif"
+                        }
+                    },
+                    {
+                        "@type": "Question",
+                        "name": "How do I test for radon in ${county.getCountyName()} County?",
+                        "acceptedAnswer": {
+                            "@type": "Answer",
+                            "text": "Purchase a short-term radon test kit ($15–$30) from a hardware store or online. Place it in the lowest livable level of your home for 2–7 days with closed-house conditions, then mail it to the lab. For continuous monitoring, consider a digital radon detector ($150–$200)."
+                        }
+                    }
+                ]
+            }
+        </script>
+        <script type="application/ld+json">
+            {
+                "@context": "https://schema.org",
+                "@type": "BreadcrumbList",
+                "itemListElement": [{
+                    "@type": "ListItem",
+                    "position": 1,
+                    "name": "Home",
+                    "item": "https://radonverdict.com/"
+                },{
+                    "@type": "ListItem",
+                    "position": 2,
+                    "name": "${county.getStateAbbr()} Radon Levels",
+                    "item": "https://radonverdict.com/radon-levels/${county.getStateSlug()}"
+                },{
+                    "@type": "ListItem",
+                    "position": 3,
+                    "name": "${county.getCountyName()} County",
+                    "item": "https://radonverdict.com/radon-levels/${county.getStateSlug()}/${county.getCountySlug()}"
+                }]
+            }
+        </script>
+    `,
     content = @`
         <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
 
@@ -33,19 +100,22 @@
                     <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider mb-6
                         @if(county.getEpaZone() == 1) bg-red-500/20 text-red-300
                         @elseif(county.getEpaZone() == 2) bg-amber-500/20 text-amber-300
-                        @else bg-emerald-500/20 text-emerald-300
+                        @elseif(county.getEpaZone() == 3) bg-emerald-500/20 text-emerald-300
+                        @else bg-slate-500/20 text-slate-200
                         @endif
                     ">
                         <span class="w-2 h-2 rounded-full
                             @if(county.getEpaZone() == 1) bg-red-400
                             @elseif(county.getEpaZone() == 2) bg-amber-400
-                            @else bg-emerald-400
+                            @elseif(county.getEpaZone() == 3) bg-emerald-400
+                            @else bg-slate-300
                             @endif
                         "></span>
-                        EPA Zone ${county.getEpaZone()} —
+                        EPA Zone ${county.getEpaZone() > 0 ? Integer.toString(county.getEpaZone()) : "Unclassified"} —
                         @if(county.getEpaZone() == 1) High Risk
                         @elseif(county.getEpaZone() == 2) Moderate Risk
-                        @else Low Risk
+                        @elseif(county.getEpaZone() == 3) Low Risk
+                        @else Data Pending
                         @endif
                     </div>
 
@@ -63,14 +133,22 @@
                             ${county.getCountyName()} County is classified as <strong class="text-white">EPA Zone 2 (Moderate Risk)</strong>.
                             Predicted average indoor screening levels fall between 2.0 and 4.0 pCi/L.
                             While below the EPA action level, many individual homes still test above 4.0 due to local soil conditions and foundation type.
-                        @else
+                        @elseif(county.getEpaZone() == 3)
                             ${county.getCountyName()} County is classified as <strong class="text-white">EPA Zone 3 (Low Risk)</strong>.
                             Predicted average indoor screening levels are below 2.0 pCi/L.
                             However, the EPA recommends testing all homes regardless of zone — elevated readings have been found in every state.
+                        @else
+                            ${county.getCountyName()} County currently has <strong class="text-white">no published EPA zone assignment</strong> in our source dataset.
+                            Because zone data is unavailable for this county, the safest approach is direct home testing.
+                            <strong class="text-slate-200">Use a short-term kit first, then follow up with mitigation planning if results are elevated.</strong>
                         @endif
                     </p>
                 </div>
             </div>
+
+            @if(aeo != null)
+                @template.components.aeo_answer_block(block = aeo)
+            @endif
 
             <!-- Main Two-Column Layout -->
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 mb-20">
@@ -157,8 +235,10 @@
                                 a Serious Concern
                             @elseif(county.getEpaZone() == 2)
                                 Worth Monitoring
-                            @else
+                            @elseif(county.getEpaZone() == 3)
                                 Still Relevant
+                            @else
+                                Worth Testing
                             @endif
                             in ${county.getCountyName()} County
                         </h2>
@@ -195,7 +275,7 @@
                                 If you have children, spend significant time in below-grade rooms, or are buying/selling a home,
                                 testing is essential even in a Zone 2 area.
                             </p>
-                        @else
+                        @elseif(county.getEpaZone() == 3)
                             <p class="text-sm text-slate-700 leading-relaxed mb-4">
                                 ${county.getCountyName()} County is classified as EPA Zone 3, with predicted average indoor screening levels below 2.0 pCi/L.
                                 This does <strong>not</strong> mean radon is absent — it means the statistical average is low.
@@ -208,6 +288,19 @@
                             <p class="text-sm text-slate-700 leading-relaxed">
                                 The Surgeon General and EPA recommend testing all homes, regardless of geographic zone.
                                 A simple short-term test kit ($15–$30) provides results within a few days and can give you peace of mind.
+                            </p>
+                        @else
+                            <p class="text-sm text-slate-700 leading-relaxed mb-4">
+                                ${county.getCountyName()} County currently has no published EPA zone assignment in our source dataset.
+                                This does <strong>not</strong> mean the county is low risk or radon free.
+                            </p>
+                            <p class="text-sm text-slate-700 leading-relaxed mb-4">
+                                Missing classification can happen due to source-data gaps, mapping updates, or jurisdiction edge cases.
+                                Radon risk is still home specific and can vary significantly by foundation type, ventilation, and underlying geology.
+                            </p>
+                            <p class="text-sm text-slate-700 leading-relaxed">
+                                The EPA and Surgeon General recommend testing all homes regardless of county zone status.
+                                Start with a short-term test kit and follow up with confirmatory testing if your result is elevated.
                             </p>
                         @endif
                     </div>
@@ -359,6 +452,9 @@
                     </div>
                 </div>
             </div>
+            @if(monetizationHooksEnabled)
+                @template.components.monetization_hooks(countyName = county.getCountyName(), stateAbbr = county.getStateAbbr())
+            @endif
 
             <!-- How to Test Section -->
             <div class="border-t border-slate-200 pt-16 mb-20">
@@ -401,6 +497,11 @@
                 </div>
             </div>
 
+            @template.components.related_links(
+                title = "Related Radon Resources for " + county.getCountyName() + " County",
+                links = relatedLinks
+            )
+
             <!-- Explore Other Counties -->
             @if(nearbyCounties != null && !nearbyCounties.isEmpty())
             <div class="border-t border-slate-200 pt-16 mb-10">
@@ -410,10 +511,11 @@
                         <a href="/radon-levels/${nearby.getStateSlug()}/${nearby.getCountySlug()}"
                            class="block p-4 rounded-xl border border-slate-200 bg-white hover:border-indigo-300 hover:shadow-md transition-all group">
                             <span class="block font-bold text-slate-800 group-hover:text-indigo-600 transition-colors">${nearby.getCountyName()}</span>
-                            <span class="text-xs text-slate-500 mt-1">Zone ${nearby.getEpaZone()} ·
+                            <span class="text-xs text-slate-500 mt-1">Zone ${nearby.getEpaZone() > 0 ? Integer.toString(nearby.getEpaZone()) : "Unclassified"} ·
                                 @if(nearby.getEpaZone() == 1) High Risk
                                 @elseif(nearby.getEpaZone() == 2) Moderate
-                                @else Low Risk
+                                @elseif(nearby.getEpaZone() == 3) Low Risk
+                                @else Data Pending
                                 @endif
                             </span>
                         </a>
@@ -447,64 +549,10 @@
                 </p>
                 <p class="mt-4 text-xs text-slate-400 font-medium">Page Content Last Reviewed: February 2026</p>
             </div>
+            @if(trust != null)
+                @template.components.trust_metadata(trust = trust, quality = quality)
+            @endif
 
-            <!-- Schema.org structured data -->
-            <script type="application/ld+json">
-                {
-                    "@context": "https://schema.org",
-                    "@type": "FAQPage",
-                    "mainEntity": [
-                        {
-                            "@type": "Question",
-                            "name": "What is the average radon level in ${county.getCountyName()} County, ${county.getStateAbbr()}?",
-                            "acceptedAnswer": {
-                                "@type": "Answer",
-                                "text": "${county.getCountyName()} County is classified as EPA Zone ${county.getEpaZone()} (${county.getZoneLabel()}). @if(county.getEpaZone() == 1)The predicted average indoor radon screening level exceeds 4.0 pCi/L, which is above the EPA action level.@elseif(county.getEpaZone() == 2)The predicted average indoor screening level is between 2.0 and 4.0 pCi/L.@else The predicted average indoor screening level is below 2.0 pCi/L.@endif The EPA recommends testing all homes regardless of zone."
-                            }
-                        },
-                        {
-                            "@type": "Question",
-                            "name": "Is radon a problem in ${county.getCountyName()} County?",
-                            "acceptedAnswer": {
-                                "@type": "Answer",
-                                "text": "@if(county.getEpaZone() == 1)Yes, ${county.getCountyName()} County is in EPA Zone 1 (High Risk). Most homes should be tested and many will need mitigation.@elseif(county.getEpaZone() == 2)${county.getCountyName()} County is in EPA Zone 2 (Moderate Risk). Many individual homes can still have elevated levels above the EPA action threshold.@else ${county.getCountyName()} County is in EPA Zone 3 (Low Risk), but elevated radon has been found in homes in every zone. Testing is always recommended.@endif"
-                            }
-                        },
-                        {
-                            "@type": "Question",
-                            "name": "How do I test for radon in ${county.getCountyName()} County?",
-                            "acceptedAnswer": {
-                                "@type": "Answer",
-                                "text": "Purchase a short-term radon test kit ($15–$30) from a hardware store or online. Place it in the lowest livable level of your home for 2–7 days with closed-house conditions, then mail it to the lab. For continuous monitoring, consider a digital radon detector ($150–$200)."
-                            }
-                        }
-                    ]
-                }
-            </script>
-
-            <!-- BreadcrumbList Schema -->
-            <script type="application/ld+json">
-                {
-                    "@context": "https://schema.org",
-                    "@type": "BreadcrumbList",
-                    "itemListElement": [{
-                        "@type": "ListItem",
-                        "position": 1,
-                        "name": "Home",
-                        "item": "https://radonverdict.com/"
-                    },{
-                        "@type": "ListItem",
-                        "position": 2,
-                        "name": "${county.getStateAbbr()} Radon Levels",
-                        "item": "https://radonverdict.com/radon-levels/${county.getStateSlug()}"
-                    },{
-                        "@type": "ListItem",
-                        "position": 3,
-                        "name": "${county.getCountyName()} County",
-                        "item": "https://radonverdict.com/radon-levels/${county.getStateSlug()}/${county.getCountySlug()}"
-                    }]
-                }
-            </script>
         </div>
     `
 )

@@ -2,8 +2,15 @@ package com.radonverdict.controller;
 
 import com.radonverdict.model.County;
 import com.radonverdict.model.StateRegulations;
+import com.radonverdict.model.dto.AeoAnswerBlock;
+import com.radonverdict.model.dto.PageQualityResult;
+import com.radonverdict.model.dto.TrustMetadata;
 import com.radonverdict.service.DataLoadService;
+import com.radonverdict.service.InternalLinkService;
+import com.radonverdict.service.PageQualityService;
+import com.radonverdict.service.TrustMetadataService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,6 +27,12 @@ import java.util.stream.Collectors;
 public class RadonLevelsController {
 
     private final DataLoadService dataLoadService;
+    private final PageQualityService pageQualityService;
+    private final TrustMetadataService trustMetadataService;
+    private final InternalLinkService internalLinkService;
+
+    @Value("${app.feature.monetization-hooks.enabled:false}")
+    private boolean monetizationHooksEnabled;
 
     @GetMapping("/radon-levels/{stateSlug}")
     public String stateLevelsHub(@PathVariable("stateSlug") String stateSlug, Model model) {
@@ -78,9 +91,61 @@ public class RadonLevelsController {
         model.addAttribute("county", county);
         model.addAttribute("stateRule", stateRule);
         model.addAttribute("nearbyCounties", nearbyCounties);
+        PageQualityResult quality = pageQualityService.scoreRadonLevelsCountyPage(county, nearbyCounties.size());
+        TrustMetadata trust = trustMetadataService.forCountyPage(county);
+        AeoAnswerBlock aeo = buildRadonLevelAeoBlock(county, trust);
+
+        model.addAttribute("noindex", !quality.isIndexable());
+        model.addAttribute("quality", quality);
+        model.addAttribute("trust", trust);
+        model.addAttribute("aeo", aeo);
+        model.addAttribute("relatedLinks", internalLinkService.buildRadonLevelsCountyLinks(county, nearbyCounties));
+        model.addAttribute("monetizationHooksEnabled", monetizationHooksEnabled);
         model.addAttribute("canonicalUrl",
                 "https://radonverdict.com/radon-levels/" + stateSlug + "/" + countySlug);
 
         return "radon_levels_county";
+    }
+
+    private AeoAnswerBlock buildRadonLevelAeoBlock(County county, TrustMetadata trust) {
+        if (county == null) {
+            return null;
+        }
+
+        String zoneText;
+        String actionText;
+        if (county.getEpaZone() == 1) {
+            zoneText = "EPA Zone 1 (High Risk)";
+            actionText = "Prioritize testing now and prepare for possible mitigation.";
+        } else if (county.getEpaZone() == 2) {
+            zoneText = "EPA Zone 2 (Moderate Risk)";
+            actionText = "Test all lived-in levels and confirm with follow-up testing if elevated.";
+        } else if (county.getEpaZone() == 3) {
+            zoneText = "EPA Zone 3 (Lower Predicted Average Risk)";
+            actionText = "Testing is still recommended because home-level variance can be high.";
+        } else {
+            zoneText = "Unclassified (Data Pending)";
+            actionText = "Treat this county as unknown risk and rely on direct home testing.";
+        }
+
+        return AeoAnswerBlock.builder()
+                .question("What radon risk level should homeowners assume in " + county.getCountyName() + " County?")
+                .directAnswer(county.getCountyName() + " County is currently categorized as " + zoneText + ". "
+                        + actionText)
+                .evidenceRows(List.of(
+                        AeoAnswerBlock.Row.builder()
+                                .label("County")
+                                .value(county.getCountyName() + " County, " + county.getStateAbbr())
+                                .build(),
+                        AeoAnswerBlock.Row.builder()
+                                .label("EPA Zone")
+                                .value(county.getEpaZone() > 0 ? "Zone " + county.getEpaZone() : "Unclassified")
+                                .build(),
+                        AeoAnswerBlock.Row.builder()
+                                .label("Primary Recommendation")
+                                .value("Perform direct radon testing in the lowest livable level")
+                                .build()))
+                .sources(trust != null ? trust.getSources() : List.of())
+                .build();
     }
 }

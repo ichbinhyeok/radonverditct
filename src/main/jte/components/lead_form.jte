@@ -77,13 +77,13 @@
                           x-data="{ 
                               hasStartedForm: false,
                               trackFormStart() {
-                                  if (!this.hasStartedForm && typeof gtag === 'function') {
+                                  if (!this.hasStartedForm && typeof rvTrack === 'function') {
                                       this.hasStartedForm = true;
-                                      gtag('event', 'lead_form_start', { event_category: 'engagement', event_label: '${county.getCountySlug()}' });
+                                      rvTrack('lead_form_start', { event_category: 'engagement', event_label: '${county.getCountySlug()}' });
                                   }
                               }
                           }"
-                          @submit="if(typeof gtag === 'function') gtag('event', 'lead_form_submit', { event_category: 'conversion', event_label: '${county.getCountySlug()}' });"
+                          @submit="if(typeof rvTrack === 'function') rvTrack('lead_form_submit', { event_category: 'conversion', event_label: '${county.getCountySlug()}' });"
                     >
                         
                         <!-- Hidden Tracking Fields -->
@@ -145,7 +145,7 @@
                                 </p>
                                 <a href="https://www.amazon.com/dp/B00002N839?tag=radonverdict-20" 
                                    target="_blank" rel="noopener nofollow" 
-                                   onclick="if(typeof gtag === 'function') gtag('event', 'affiliate_link_click', { event_category: 'monetization', event_label: 'amazon_test_kit' });"
+                                   onclick="if(typeof rvTrack === 'function') rvTrack('affiliate_link_click', { event_category: 'monetization', event_label: 'amazon_test_kit' });"
                                    class="inline-flex items-center justify-center w-full py-2 bg-indigo-600 text-white text-xs font-bold rounded-lg hover:bg-indigo-700 transition-colors">
                                     View Top Rated Test Kit on Amazon
                                     <svg class="w-3 h-3 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" /></svg>
@@ -156,7 +156,7 @@
                         
                         <div class="flex items-start mt-4">
                             <div class="flex h-5 items-center">
-                                <input id="consent" name="consent" type="checkbox" required class="h-4 w-4 rounded border-slate-300 text-indigo-600 focus:ring-indigo-500" @change="if($event.target.checked && typeof gtag === 'function') gtag('event', 'consent_checked', { event_category: 'engagement' });">
+                                <input id="consent" name="consent" type="checkbox" required class="h-4 w-4 rounded border-slate-300 text-indigo-600 focus:ring-indigo-500" @change="if($event.target.checked && typeof rvTrack === 'function') rvTrack('consent_checked', { event_category: 'engagement' });">
                             </div>
                             <div class="ml-3 text-xs leading-tight text-slate-500">
                                 <label for="consent">Prior to submitting, I consent to be contacted regarding my personalized radon action plan and local contractor availability.</label>

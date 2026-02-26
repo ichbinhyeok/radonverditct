@@ -1,17 +1,70 @@
 @import com.radonverdict.model.dto.CountyPageContent
 @import com.radonverdict.model.County
+@import com.radonverdict.model.dto.AeoAnswerBlock
+@import com.radonverdict.model.dto.InternalLinkItem
+@import com.radonverdict.model.dto.PageQualityResult
+@import com.radonverdict.model.dto.TrustMetadata
+@import java.util.List
 
 @param County county
 @param CountyPageContent page
 @param String canonicalUrl = null
 @param String leadSuccessMessage = null
 @param String leadErrorMessage = null
+@param AeoAnswerBlock aeo = null
+@param List<InternalLinkItem> relatedLinks = null
+@param PageQualityResult quality = null
+@param TrustMetadata trust = null
+@param boolean monetizationHooksEnabled = false
 
 @template.layout.main(
     title = page.getHeroTitle(),
     description = page.getHeroSummary(),
     canonicalUrl = canonicalUrl,
     noindex = !page.isIndexable(),
+    headContent = @`
+        <script type="application/ld+json">
+            {
+                "@context": "https://schema.org",
+                "@type": "FAQPage",
+                "mainEntity": [
+                    @for(int i = 0; i < page.getFaqs().size(); i++)
+                    {
+                        "@type": "Question",
+                        "name": "${page.getFaqs().get(i).getQuestion()}",
+                        "acceptedAnswer": {
+                            "@type": "Answer",
+                            "text": "${page.getFaqs().get(i).getAnswer()}"
+                        }
+                    }
+                    @if(i < page.getFaqs().size() - 1),@endif
+                    @endfor
+                ]
+            }
+        </script>
+        <script type="application/ld+json">
+            {
+                "@context": "https://schema.org",
+                "@type": "BreadcrumbList",
+                "itemListElement": [{
+                    "@type": "ListItem",
+                    "position": 1,
+                    "name": "Home",
+                    "item": "https://radonverdict.com/"
+                },{
+                    "@type": "ListItem",
+                    "position": 2,
+                    "name": "${county.getStateAbbr()}",
+                    "item": "https://radonverdict.com/radon-mitigation-cost/${county.getStateSlug()}"
+                },{
+                    "@type": "ListItem",
+                    "position": 3,
+                    "name": "${county.getCountyName()} County",
+                    "item": "https://radonverdict.com/radon-mitigation-cost/${county.getStateSlug()}/${county.getCountySlug()}"
+                }]
+            }
+        </script>
+    `,
     content = @`
         <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
             
@@ -28,6 +81,9 @@
 
             <!-- 1. Above the Fold: Hero Section -->
             @template.components.hero_section(page = page)
+            @if(aeo != null)
+                @template.components.aeo_answer_block(block = aeo)
+            @endif
 
             <!-- 2. Grid Layout for Simulator and Receipt -->
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 mt-16 mb-20">
@@ -84,6 +140,9 @@
 
             <!-- Lead Capture CTA (Injected) -->
             @template.components.lead_form(county = county, page = page, successMessage = leadSuccessMessage, errorMessage = leadErrorMessage)
+            @if(monetizationHooksEnabled)
+                @template.components.monetization_hooks(countyName = county.getCountyName(), stateAbbr = county.getStateAbbr())
+            @endif
 
             <!-- 2.5 Local Data Moat -->
             @if(county.getStats() != null && county.getStats().getMetrics() != null && county.getStats().getMetrics().getTotalHousingUnits() > 0)
@@ -138,6 +197,11 @@
             <div class="max-w-3xl border-t border-slate-200 mt-20 pt-16">
                 @template.components.faq_accordion(page = page)
             </div>
+
+            @template.components.related_links(
+                title = "Related Radon Resources for " + county.getCountyName() + " County",
+                links = relatedLinks
+            )
 
             <!-- Cross-Silo: Radon Level Data & Guides -->
             <div class="border-t border-slate-200 mt-20 pt-12 mb-10">
@@ -206,51 +270,10 @@
                 </div>
                 <p class="mt-8 text-xs text-slate-400 font-medium">Page Content Framework Last Reviewed: February 2026</p>
             </div>
+            @if(trust != null)
+                @template.components.trust_metadata(trust = trust, quality = quality)
+            @endif
             
-            <!-- Generate JSON-LD schema for FAQPage -->
-            <script type="application/ld+json">
-                {
-                    "@context": "https://schema.org",
-                    "@type": "FAQPage",
-                    "mainEntity": [
-                        @for(int i = 0; i < page.getFaqs().size(); i++)
-                        {
-                            "@type": "Question",
-                            "name": "${page.getFaqs().get(i).getQuestion()}",
-                            "acceptedAnswer": {
-                                "@type": "Answer",
-                                "text": "${page.getFaqs().get(i).getAnswer()}"
-                            }
-                        }
-                        @if(i < page.getFaqs().size() - 1),@endif
-                        @endfor
-                    ]
-                }
-            </script>
-            
-            <!-- Generate JSON-LD schema for BreadcrumbList -->
-            <script type="application/ld+json">
-                {
-                    "@context": "https://schema.org",
-                    "@type": "BreadcrumbList",
-                    "itemListElement": [{
-                        "@type": "ListItem",
-                        "position": 1,
-                        "name": "Home",
-                        "item": "https://radonverdict.com/"
-                    },{
-                        "@type": "ListItem",
-                        "position": 2,
-                        "name": "${county.getStateAbbr()}",
-                        "item": "https://radonverdict.com/radon-mitigation-cost/${county.getStateSlug()}"
-                    },{
-                        "@type": "ListItem",
-                        "position": 3,
-                        "name": "${county.getCountyName()} County",
-                        "item": "https://radonverdict.com/radon-mitigation-cost/${county.getStateSlug()}/${county.getCountySlug()}"
-                    }]
-                }
-            </script>
         </div>
     `
 )
