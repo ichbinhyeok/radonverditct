@@ -6,11 +6,14 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.view.RedirectView;
 
 @Slf4j
 @Controller
@@ -19,21 +22,24 @@ public class LeadController {
 
     private final LeadService leadService;
 
+    @Value("${app.site.base-url:https://radonverdict.com}")
+    private String baseUrl;
+
     @PostMapping("/submit-lead")
-    public String submitLead(@Valid @ModelAttribute LeadSubmissionRequest request, BindingResult bindingResult,
+    public RedirectView submitLead(@Valid @ModelAttribute LeadSubmissionRequest request, BindingResult bindingResult,
             HttpServletRequest httpRequest,
             RedirectAttributes redirectAttributes) {
 
         if (request.getAdditionalPhone() != null && !request.getAdditionalPhone().isEmpty()) {
             log.warn("Spam bot detected via honeypot. IP: {}", httpRequest.getRemoteAddr());
-            return "redirect:/radon-mitigation-cost/" + request.getStateAbbr() + "/" + request.getCountySlug();
+            return redirectToCounty(request);
         }
 
         if (bindingResult.hasErrors()) {
             log.warn("Lead validation failed: {}", bindingResult.getAllErrors());
             redirectAttributes.addFlashAttribute("leadErrorMessage",
                     "Please check your input fields make sure they are correct.");
-            return "redirect:/radon-mitigation-cost/" + request.getStateAbbr() + "/" + request.getCountySlug();
+            return redirectToCounty(request);
         }
 
         String ipAddress = httpRequest.getRemoteAddr();
@@ -58,6 +64,21 @@ public class LeadController {
                     "There was an error submitting your request. Please try again later.");
         }
 
-        return "redirect:/radon-mitigation-cost/" + request.getStateAbbr() + "/" + request.getCountySlug();
+        return redirectToCounty(request);
+    }
+
+    private RedirectView redirectToCounty(LeadSubmissionRequest request) {
+        String target = normalizedBaseUrl() + "/radon-mitigation-cost/" + request.getStateAbbr() + "/"
+                + request.getCountySlug();
+        RedirectView view = new RedirectView(target, false);
+        view.setStatusCode(HttpStatus.SEE_OTHER);
+        return view;
+    }
+
+    private String normalizedBaseUrl() {
+        if (baseUrl == null || baseUrl.isBlank()) {
+            return "https://radonverdict.com";
+        }
+        return baseUrl.endsWith("/") ? baseUrl.substring(0, baseUrl.length() - 1) : baseUrl;
     }
 }

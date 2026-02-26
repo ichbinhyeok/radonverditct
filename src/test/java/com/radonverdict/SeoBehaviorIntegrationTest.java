@@ -21,6 +21,13 @@ class SeoBehaviorIntegrationTest {
     private MockMvc mockMvc;
 
     @Test
+    void homeRedirectUsesCanonicalHttpsUrl() throws Exception {
+        mockMvc.perform(get("/"))
+                .andExpect(status().isMovedPermanently())
+                .andExpect(header().string("Location", "https://radonverdict.com/radon-cost-calculator"));
+    }
+
+    @Test
     void canonicalFilterRedirectsForwardedHttpTraffic() throws Exception {
         mockMvc.perform(get("/radon-cost-calculator")
                         .header("X-Forwarded-Proto", "http")

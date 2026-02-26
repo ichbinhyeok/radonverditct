@@ -48,8 +48,8 @@ public class PageController {
     private String baseUrl;
 
     @GetMapping("/")
-    public String home() {
-        return "redirect:/radon-cost-calculator";
+    public RedirectView home() {
+        return redirect("/radon-cost-calculator", HttpStatus.MOVED_PERMANENTLY);
     }
 
     @GetMapping("/radon-cost-calculator")
@@ -72,17 +72,18 @@ public class PageController {
 
     // New Endpoint: Redirect ZIP code to its county page
     @PostMapping("/search-zip")
-    public String searchZip(@RequestParam("zipCode") String zipCode) {
+    public RedirectView searchZip(@RequestParam("zipCode") String zipCode) {
         String fips = dataLoadService.getZipToFipsMap().get(zipCode.trim());
         if (fips == null) {
             // Handle invalid zip - redirect to global calculator with error
-            return "redirect:/radon-cost-calculator?error=notfound";
+            return redirect("/radon-cost-calculator?error=notfound", HttpStatus.SEE_OTHER);
         }
         County county = dataLoadService.getCountByFipsMap().get(fips);
         if (county == null) {
-            return "redirect:/radon-cost-calculator?error=notfound";
+            return redirect("/radon-cost-calculator?error=notfound", HttpStatus.SEE_OTHER);
         }
-        return "redirect:/radon-mitigation-cost/" + county.getStateSlug() + "/" + county.getCountySlug();
+        return redirect("/radon-mitigation-cost/" + county.getStateSlug() + "/" + county.getCountySlug(),
+                HttpStatus.SEE_OTHER);
     }
 
     @GetMapping("/radon-mitigation-cost/{stateSlug}")
@@ -212,8 +213,12 @@ public class PageController {
     }
 
     private RedirectView permanentRedirect(String path) {
+        return redirect(path, HttpStatus.MOVED_PERMANENTLY);
+    }
+
+    private RedirectView redirect(String path, HttpStatus status) {
         RedirectView view = new RedirectView(normalizedBaseUrl() + path, false);
-        view.setStatusCode(HttpStatus.MOVED_PERMANENTLY);
+        view.setStatusCode(status);
         return view;
     }
 }
