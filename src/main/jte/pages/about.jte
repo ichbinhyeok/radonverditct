@@ -3,6 +3,7 @@
 @template.layout.main(
     title = title,
     description = "Learn about RadonVerdict's mission, data sources, methodology, and editorial standards. Transparent pricing for radon mitigation.",
+    canonicalUrl = "https://radonverdict.com/about",
     content = @`
         <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24 prose prose-slate md:prose-lg max-w-none">
             <h1 class="font-display font-bold text-4xl text-slate-900 mb-8 tracking-tight">About RadonVerdict</h1>

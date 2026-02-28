@@ -3,6 +3,7 @@
 @template.layout.main(
     title = title,
     description = "Contact RadonVerdict for questions about our cost estimates, partnership opportunities, or media inquiries.",
+    canonicalUrl = "https://radonverdict.com/contact",
     content = @`
         <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
             <h1 class="font-display font-bold text-4xl text-slate-900 mb-6 tracking-tight">Contact Us</h1>

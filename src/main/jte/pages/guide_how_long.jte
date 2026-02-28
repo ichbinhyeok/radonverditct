@@ -2,6 +2,7 @@
 
 @template.layout.main(
     title = title,
+    canonicalUrl = "https://radonverdict.com/guides/radon-mitigation-timeline-how-long-does-it-take",
     description = "Understand the entire radon mitigation timeline, from the initial inspection to the final cleared test result.",
     content = @`
         <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24 prose prose-slate md:prose-lg max-w-none">
@@ -65,3 +66,4 @@
         </div>
     `
 )
+

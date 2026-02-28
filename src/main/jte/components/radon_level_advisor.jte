@@ -11,9 +11,6 @@
             if (this.level >= 2.0) return 'caution';
             return 'safe';
         },
-        get cigarettes() {
-            return Math.round(this.level * 2);
-        },
         get postMitigationLow() {
             return Math.max(0.3, this.level * 0.05).toFixed(1);
         },
@@ -53,7 +50,7 @@
                :class="status === 'danger' ? 'accent-red-500' : status === 'caution' ? 'accent-amber-500' : 'accent-emerald-500'">
         <div class="flex justify-between text-[10px] font-bold text-slate-300 mt-1 px-1 uppercase tracking-widest">
             <span>0</span>
-            <span class="text-amber-400">2.0 WHO</span>
+            <span class="text-amber-400">2.7 WHO</span>
             <span class="text-red-400">4.0 EPA</span>
             <span>10</span>
             <span>20+</span>
@@ -84,7 +81,9 @@
                     Your reading is within the safe range. Both the EPA (4.0) and WHO (2.7) thresholds are not exceeded.
                     <strong>Mitigation is not needed right now.</strong> We recommend periodic monitoring with a digital radon detector.
                 </p>
-                <a href="https://www.amazon.com/s?k=radon+test+kit" target="_blank" rel="noopener nofollow"
+                <a href="https://www.amazon.com/s?k=radon+test+kit&tag=radonverdict-20"
+                   target="_blank" rel="sponsored nofollow noopener"
+                   onclick="if(typeof rvTrack === 'function') rvTrack('affiliate_link_click', { event_category: 'monetization', event_label: 'advisor_test_kit_search' });"
                    class="inline-flex items-center gap-2 mt-4 px-4 py-2.5 rounded-xl bg-emerald-600 text-white text-sm font-bold hover:bg-emerald-700 transition-colors shadow-sm">
                     <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -107,14 +106,17 @@
             <div>
                 <h4 class="font-display font-bold text-amber-900 text-lg">Elevated - Consider Action</h4>
                 <p class="text-sm text-amber-800 leading-relaxed mt-1">
-                    Your reading passes the US EPA threshold (4.0 pCi/L) but exceeds the <strong>World Health Organization's recommended limit of 2.7 pCi/L</strong>.
-                    This is equivalent to smoking approximately <strong x-text="cigarettes"></strong> cigarettes per day.
+                    Your reading is below the US EPA action level (4.0 pCi/L), but this range still warrants follow-up testing.
+                    The World Health Organization uses <strong>2.7 pCi/L as a tighter reference point</strong>.
                 </p>
                 <p class="text-sm text-amber-800 leading-relaxed mt-2">
-                    If you have children, spend significant time in your basement, or are buying/selling the home, mitigation is strongly recommended.
+                    If this level persists on confirmatory testing, planning mitigation is reasonable,
+                    especially for homes with frequent basement use, children, or pending real-estate transactions.
                     <strong>Scroll down to see your estimated cost.</strong>
                 </p>
-                <a href="https://www.amazon.com/s?k=digital+radon+detector" target="_blank" rel="noopener nofollow"
+                <a href="https://www.amazon.com/s?k=digital+radon+detector&tag=radonverdict-20"
+                   target="_blank" rel="sponsored nofollow noopener"
+                   onclick="if(typeof rvTrack === 'function') rvTrack('affiliate_link_click', { event_category: 'monetization', event_label: 'advisor_digital_monitor_search' });"
                    class="inline-flex items-center gap-2 mt-4 px-4 py-2.5 rounded-xl bg-amber-600 text-white text-sm font-bold hover:bg-amber-700 transition-colors shadow-sm">
                     <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
@@ -137,9 +139,8 @@
             <div>
                 <h4 class="font-display font-bold text-red-900 text-lg">Warning: Action Required - EPA Threshold Exceeded</h4>
                 <p class="text-sm text-red-800 leading-relaxed mt-1">
-                    At <strong x-text="parseFloat(level).toFixed(1)"></strong> pCi/L, your exposure is equivalent to smoking
-                    <strong x-text="cigarettes"></strong> cigarettes every day.
-                    The US EPA strongly recommends immediate mitigation for any home above 4.0 pCi/L.
+                    At <strong x-text="parseFloat(level).toFixed(1)"></strong> pCi/L, this reading is above the
+                    EPA action level. Prompt mitigation planning is recommended after confirmatory testing.
                 </p>
 
                 <!-- Before / After Promise -->
@@ -161,7 +162,7 @@
 
                 <p class="text-xs text-red-600 mt-3 font-semibold">
                     Typical mitigation systems reduce radon by 80-99%.
-                    <strong>See your itemized cost estimate below down</strong>
+                    <strong>See your itemized cost estimate below.</strong>
                 </p>
             </div>
         </div>

@@ -2,6 +2,7 @@
 
 @template.layout.main(
     title = title,
+    canonicalUrl = "https://radonverdict.com/guides/sump-pump-radon-mitigation",
     description = "Sump pumps and radon systems interact directly. Learn why sealing your sump pump pit is mandatory for an active sub-slab depressurization system.",
     content = @`
         <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24 prose prose-slate md:prose-lg max-w-none">
@@ -54,3 +55,4 @@
         </div>
     `
 )
+

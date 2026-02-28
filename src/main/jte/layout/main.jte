@@ -109,6 +109,29 @@
     @if(noindex)
         <meta name="robots" content="noindex, follow">
     @endif
+    @if(canonicalUrl != null && canonicalUrl.startsWith("https://radonverdict.com/guides/"))
+        <script type="application/ld+json">
+            {
+                "@context": "https://schema.org",
+                "@type": "Article",
+                "headline": "${title}",
+                "description": "${description}",
+                "mainEntityOfPage": {
+                    "@type": "WebPage",
+                    "@id": "${canonicalUrl}"
+                },
+                "author": {
+                    "@type": "Organization",
+                    "name": "RadonVerdict Editorial Team"
+                },
+                "publisher": {
+                    "@type": "Organization",
+                    "name": "RadonVerdict"
+                },
+                "inLanguage": "en-US"
+            }
+        </script>
+    @endif
     @if(headContent != null)
         ${headContent}
     @endif

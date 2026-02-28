@@ -12,7 +12,7 @@
         <!-- Header -->
         <div class="flex items-start justify-between mb-10">
             <div>
-                <h3 class="font-display font-extrabold text-slate-900 text-2xl tracking-tight">Official Estimate</h3>
+                <h3 class="font-display font-extrabold text-slate-900 text-2xl tracking-tight">Estimated Local Range</h3>
                 <p class="text-slate-400 text-sm mt-1 font-medium tracking-wide uppercase">${receipt.getAreaDisplayName()}, ${receipt.getStateAbbr()}</p>
             </div>
             <!-- Trust Seal -->

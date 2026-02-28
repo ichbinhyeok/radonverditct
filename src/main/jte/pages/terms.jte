@@ -3,6 +3,7 @@
 @template.layout.main(
     title = title,
     description = "Terms of Service and Disclaimers for RadonVerdict. Please read carefully before using our estimation tools.",
+    canonicalUrl = "https://radonverdict.com/terms",
     content = @`
         <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24 prose prose-slate">
             <h1 class="font-display font-bold text-4xl text-slate-900 mb-8 tracking-tight">Terms of Service & Disclaimer</h1>

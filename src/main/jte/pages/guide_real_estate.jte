@@ -2,6 +2,7 @@
 
 @template.layout.main(
     title = title,
+    canonicalUrl = "https://radonverdict.com/guides/who-pays-radon-mitigation-buyer-or-seller",
     description = "A homebuyer and seller's guide to radon mitigation. Discover who typically pays for the radon system during a real estate transaction and how to negotiate.",
     content = @`
         <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24 prose prose-slate md:prose-lg max-w-none">
@@ -47,3 +48,4 @@
         </div>
     `
 )
+

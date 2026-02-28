@@ -2,6 +2,7 @@
 
 @template.layout.main(
     title = title,
+    canonicalUrl = "https://radonverdict.com/guides/active-vs-passive-radon-system",
     description = "What's the difference between an active and a passive radon mitigation system? Can a passive system be upgraded with a fan later? Learn the pros and cons.",
     content = @`
         <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24 prose prose-slate md:prose-lg max-w-none">
@@ -59,3 +60,4 @@
         </div>
     `
 )
+

@@ -2,6 +2,7 @@
 
 @template.layout.main(
     title = title,
+    canonicalUrl = "https://radonverdict.com/guides/radon-fan-noise-troubleshooting",
     description = "Why is my radon fan making a loud buzzing or humming noise? Learn how to troubleshoot radon fan vibration, diagnose bearing failure, and know when to replace it.",
     content = @`
         <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24 prose prose-slate md:prose-lg max-w-none">
@@ -55,3 +56,4 @@
         </div>
     `
 )
+

@@ -16,6 +16,7 @@
 @param PageQualityResult quality = null
 @param TrustMetadata trust = null
 @param boolean monetizationHooksEnabled = false
+@param boolean showSeoDebug = false
 
 @template.layout.main(
     title = "Radon Levels in " + county.getAreaDisplayName() + ", " + county.getStateAbbr() + " - " + java.time.LocalDate.now().getYear() + " EPA Data",
@@ -190,7 +191,7 @@
                                         Exceeds the World Health Organization's reference level of 2.7 pCi/L but falls below the US EPA action threshold.
                                         The EPA states that homeowners should <em>"consider fixing"</em> homes in this range, especially if the home has a basement
                                         used as living space, if children are present, or in connection with a real estate transaction.
-                                        Health equivalent: approximately 2-8 cigarettes per day in exposure.
+                                        Practical next step: run a confirmatory long-term test, then compare mitigation quotes if levels remain elevated.
                                     </p>
                                 </div>
                             </div>
@@ -204,8 +205,8 @@
                                     <h3 class="font-bold text-red-900 text-sm">4.0 - 8.0 pCi/L - Action Recommended</h3>
                                     <p class="text-xs text-red-800 leading-relaxed mt-1">
                                         Exceeds the EPA action level of 4.0 pCi/L. The EPA and Surgeon General strongly recommend mitigation within a few months.
-                                        At 4.0 pCi/L, a person spending significant time in the home has a lung cancer risk roughly equivalent to smoking
-                                        half a pack of cigarettes daily. Standard sub-slab depressurization systems typically reduce levels by 80-99%.
+                                        At this level, prioritize confirmatory testing and contractor planning. Standard sub-slab depressurization
+                                        systems typically reduce indoor levels by 80-99%.
                                     </p>
                                 </div>
                             </div>
@@ -220,7 +221,7 @@
                                     <p class="text-xs text-red-800 leading-relaxed mt-1">
                                         At these levels, the EPA recommends expedited mitigation - ideally within weeks, not months.
                                         Occupants should minimize time in lower-level rooms until the system is installed.
-                                        At 8.0 pCi/L, the lung cancer risk is roughly equivalent to smoking a pack a day.
+                                        Use a certified mitigator and request priority scheduling to shorten high-exposure time.
                                         Many mitigators offer priority scheduling for homes above 8.0 pCi/L.
                                     </p>
                                 </div>
@@ -365,7 +366,9 @@
                             </p>
 
                             <div class="space-y-3">
-                                <a href="https://www.amazon.com/s?k=radon+test+kit+charcoal" target="_blank" rel="noopener nofollow"
+                                <a href="https://www.amazon.com/s?k=radon+test+kit+charcoal&tag=radonverdict-20"
+                                   target="_blank" rel="sponsored nofollow noopener"
+                                   onclick="if(typeof rvTrack === 'function') rvTrack('affiliate_link_click', { event_category: 'monetization', event_label: 'levels_short_term_kit_search' });"
                                    class="flex items-center justify-between w-full px-4 py-3 rounded-xl bg-slate-900 text-white hover:bg-slate-800 transition-colors group">
                                     <div>
                                         <div class="text-sm font-bold">Short-Term Test Kit</div>
@@ -375,7 +378,9 @@
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3" />
                                     </svg>
                                 </a>
-                                <a href="https://www.amazon.com/s?k=digital+radon+detector+monitor" target="_blank" rel="noopener nofollow"
+                                <a href="https://www.amazon.com/s?k=digital+radon+detector+monitor&tag=radonverdict-20"
+                                   target="_blank" rel="sponsored nofollow noopener"
+                                   onclick="if(typeof rvTrack === 'function') rvTrack('affiliate_link_click', { event_category: 'monetization', event_label: 'levels_digital_monitor_search' });"
                                    class="flex items-center justify-between w-full px-4 py-3 rounded-xl bg-white border-2 border-slate-200 text-slate-900 hover:border-indigo-300 hover:shadow-md transition-all group">
                                     <div>
                                         <div class="text-sm font-bold">Digital Radon Monitor</div>
@@ -547,10 +552,13 @@
                     Testing is the only reliable method to determine your home's radon concentration. This content is for informational purposes
                     and is not medical advice.
                 </p>
-                <p class="mt-4 text-xs text-slate-400 font-medium">Page Content Last Reviewed: February 2026</p>
+                <p class="mt-4 text-xs text-slate-400 font-medium">
+                    Page Content Last Reviewed:
+                    ${trust != null && trust.getLastReviewed() != null && !trust.getLastReviewed().isBlank() ? trust.getLastReviewed() : "Source-level retrieval dates"}
+                </p>
             </div>
             @if(trust != null)
-                @template.components.trust_metadata(trust = trust, quality = quality)
+                @template.components.trust_metadata(trust = trust, quality = quality, showDebug = showSeoDebug)
             @endif
 
         </div>

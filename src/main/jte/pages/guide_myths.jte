@@ -2,6 +2,7 @@
 
 @template.layout.main(
     title = title,
+    canonicalUrl = "https://radonverdict.com/guides/radon-myths-granite-countertops",
     description = "Do granite countertops emit radon gas in the kitchen? Busting the myths about radioactive building materials and naturally occurring radon levels indoors.",
     content = @`
         <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24 prose prose-slate md:prose-lg max-w-none">
@@ -57,3 +58,4 @@
         </div>
     `
 )
+

@@ -2,6 +2,7 @@
 
 @template.layout.main(
     title = title,
+    canonicalUrl = "https://radonverdict.com/guides/radon-exposure-symptoms",
     description = "What are the physical symptoms of radon exposure? Learn the silent signs of long-term radon inhalation, lung cancer risk factors, and health statistics.",
     content = @`
         <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24 prose prose-slate md:prose-lg max-w-none">
@@ -75,3 +76,4 @@
         </div>
     `
 )
+

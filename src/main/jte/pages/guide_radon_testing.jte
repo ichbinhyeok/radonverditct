@@ -7,6 +7,7 @@
 
 @template.layout.main(
     title = title,
+    canonicalUrl = "https://radonverdict.com/guides/how-to-test-for-radon",
     description = "Complete guide to radon testing: how to test, which kit to buy, understanding results, and when to retest. Expert-level advice from RadonVerdict.",
     headContent = @`
         <script type="application/ld+json">
@@ -95,7 +96,9 @@
                             </div>
                         </div>
                         <div class="mt-3 text-sm font-bold text-slate-900">Cost: $15-$30</div>
-                        <a href="https://www.amazon.com/s?k=radon+test+kit+charcoal+short+term" target="_blank" rel="noopener nofollow"
+                        <a href="https://www.amazon.com/s?k=radon+test+kit+charcoal+short+term&tag=radonverdict-20"
+                           target="_blank" rel="sponsored nofollow noopener"
+                           onclick="if(typeof rvTrack === 'function') rvTrack('affiliate_link_click', { event_category: 'monetization', event_label: 'guide_testing_short_term_search' });"
                            class="inline-flex items-center gap-2 mt-3 px-4 py-2 rounded-lg bg-slate-900 text-white text-xs font-bold hover:bg-slate-800 transition-colors">
                             Shop Short-Term Kits ->
                         </a>
@@ -155,7 +158,9 @@
                             </div>
                         </div>
                         <div class="mt-3 text-sm font-bold text-slate-900">Cost: $150-$250 (consumer) - $1,500+ (professional)</div>
-                        <a href="https://www.amazon.com/s?k=digital+radon+detector+monitor" target="_blank" rel="noopener nofollow"
+                        <a href="https://www.amazon.com/s?k=digital+radon+detector+monitor&tag=radonverdict-20"
+                           target="_blank" rel="sponsored nofollow noopener"
+                           onclick="if(typeof rvTrack === 'function') rvTrack('affiliate_link_click', { event_category: 'monetization', event_label: 'guide_testing_digital_monitor_search' });"
                            class="inline-flex items-center gap-2 mt-3 px-4 py-2 rounded-lg bg-slate-900 text-white text-xs font-bold hover:bg-slate-800 transition-colors">
                             Shop Digital Monitors ->
                         </a>
@@ -270,3 +275,4 @@
         </div>
     `
 )
+
