@@ -2,6 +2,7 @@ package com.radonverdict.controller;
 
 import com.radonverdict.model.County;
 import com.radonverdict.service.DataLoadService;
+import com.radonverdict.service.SeoIndexingPolicyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
@@ -17,6 +18,7 @@ import java.time.LocalDate;
 public class SitemapController {
 
     private final DataLoadService dataLoadService;
+    private final SeoIndexingPolicyService seoIndexingPolicyService;
 
     @Value("${app.site.base-url:https://radonverdict.com}")
     private String baseUrl;
@@ -36,7 +38,9 @@ public class SitemapController {
 
         addSitemapUrl(xml, "/sitemap-core.xml");
         addSitemapUrl(xml, "/sitemap-zone-high.xml");
-        addSitemapUrl(xml, "/sitemap-zone-low.xml");
+        if (seoIndexingPolicyService.includeZoneLowSitemap()) {
+            addSitemapUrl(xml, "/sitemap-zone-low.xml");
+        }
         if (includeUnknownSitemap) {
             addSitemapUrl(xml, "/sitemap-zone-unknown.xml");
         }
@@ -60,7 +64,6 @@ public class SitemapController {
         xml.append("<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">");
 
         // 1. Static & Hub Pages
-        addUrl(xml, "/", "1.0");
         addUrl(xml, "/radon-cost-calculator", "0.9");
         addUrl(xml, "/about", "0.8");
         addUrl(xml, "/contact", "0.8");
@@ -83,9 +86,13 @@ public class SitemapController {
         addUrl(xml, "/guides/radon-system-electricity-cost", "0.7");
         addUrl(xml, "/guides/radon-myths-granite-countertops", "0.7");
 
-        // 3. State Hubs (50 states)
+        // 3. State Hubs (indexable candidates only)
         Collection<County> counties = dataLoadService.getCountyBySlugMap().values();
-        counties.stream().map(County::getStateSlug).distinct().forEach(stateSlug -> {
+        counties.stream()
+                .filter(seoIndexingPolicyService::isCountyIndexableCandidate)
+                .map(County::getStateSlug)
+                .distinct()
+                .forEach(stateSlug -> {
             addUrl(xml, "/radon-mitigation-cost/" + stateSlug, "0.6");
             addUrl(xml, "/radon-levels/" + stateSlug, "0.6");
         });
@@ -104,7 +111,7 @@ public class SitemapController {
         // Zone 1 & 2 pSEO Pages (High Priority)
         Collection<County> counties = dataLoadService.getCountyBySlugMap().values();
         for (County county : counties) {
-            if (!hasDataMoat(county))
+            if (!seoIndexingPolicyService.isCountyIndexableCandidate(county))
                 continue;
 
             if (county.getEpaZone() == 1 || county.getEpaZone() == 2) {
@@ -128,10 +135,15 @@ public class SitemapController {
         xml.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
         xml.append("<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">");
 
+        if (!seoIndexingPolicyService.includeZoneLowSitemap()) {
+            xml.append("</urlset>");
+            return xml.toString();
+        }
+
         // Zone 3 pSEO Pages (Low Priority)
         Collection<County> counties = dataLoadService.getCountyBySlugMap().values();
         for (County county : counties) {
-            if (!hasDataMoat(county))
+            if (!seoIndexingPolicyService.isCountyIndexableCandidate(county))
                 continue;
 
             if (county.getEpaZone() == 3) {
@@ -158,7 +170,7 @@ public class SitemapController {
         // Counties with missing zone assignments (data pending / unknown)
         Collection<County> counties = dataLoadService.getCountyBySlugMap().values();
         for (County county : counties) {
-            if (!hasDataMoat(county))
+            if (!seoIndexingPolicyService.hasDataMoat(county))
                 continue;
 
             if (county.getEpaZone() <= 0) {
@@ -171,12 +183,6 @@ public class SitemapController {
 
         xml.append("</urlset>");
         return xml.toString();
-    }
-
-    private boolean hasDataMoat(County county) {
-        return county.getStats() != null
-                && county.getStats().getMetrics() != null
-                && county.getStats().getMetrics().getTotalHousingUnits() > 0;
     }
 
     private void addUrl(StringBuilder xml, String path, String priority) {
@@ -228,3 +234,4 @@ public class SitemapController {
                 "Sitemap: " + normalizedBaseUrl() + "/sitemap.xml";
     }
 }
+

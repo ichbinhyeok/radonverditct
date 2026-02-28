@@ -28,6 +28,15 @@ jobs:
           
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
+
+      - name: Run SEO and persuasion quality gates
+        env:
+          JTE_DEV_MODE: "false"
+        run: |
+          ./gradlew --no-daemon --max-workers=1 test \
+            --tests "com.radonverdict.SeoBehaviorIntegrationTest" \
+            --tests "com.radonverdict.ContentDepthAuditTest" \
+            --tests "com.radonverdict.PersuasionQualityAuditTest"
         
       - name: Build with Gradle (Skipping Tests for Speed)
         run: ./gradlew clean build -x test

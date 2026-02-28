@@ -11,7 +11,9 @@ import com.radonverdict.service.DataLoadService;
 import com.radonverdict.service.InternalLinkService;
 import com.radonverdict.service.PageQualityService;
 import com.radonverdict.service.PricingCalculatorService;
+import com.radonverdict.service.SeoIndexingPolicyService;
 import com.radonverdict.service.TrustMetadataService;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -28,6 +30,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+import java.time.LocalDate;
 import java.util.stream.Collectors;
 
 @Controller
@@ -38,6 +41,7 @@ public class PageController {
     private final PricingCalculatorService calcService;
     private final ContentGenerationService contentService;
     private final PageQualityService pageQualityService;
+    private final SeoIndexingPolicyService seoIndexingPolicyService;
     private final TrustMetadataService trustMetadataService;
     private final InternalLinkService internalLinkService;
 
@@ -47,6 +51,9 @@ public class PageController {
     @Value("${app.site.base-url:https://radonverdict.com}")
     private String baseUrl;
 
+    @Value("${app.feature.seo-debug-visible:false}")
+    private boolean seoDebugVisible;
+
     @GetMapping("/")
     public RedirectView home() {
         return redirect("/radon-cost-calculator", HttpStatus.MOVED_PERMANENTLY);
@@ -54,7 +61,7 @@ public class PageController {
 
     @GetMapping("/radon-cost-calculator")
     public String globalCalculator(@RequestParam(name = "error", required = false) String error, Model model) {
-        model.addAttribute("title", "National Radon Mitigation Cost Calculator 2026");
+        model.addAttribute("title", "National Radon Mitigation Cost Calculator " + LocalDate.now().getYear());
         ItemizedReceipt defaultReceipt = calcService.calculate("US", "National Average", "other", "homeowner");
         model.addAttribute("defaultReceipt", defaultReceipt);
 
@@ -101,9 +108,14 @@ public class PageController {
             return permanentRedirect("/radon-mitigation-cost/" + canonicalStateSlug);
         }
 
+        List<County> visibleCounties = stateCounties.stream()
+                .filter(seoIndexingPolicyService::isCountyIndexableCandidate)
+                .toList();
+
         model.addAttribute("stateSlug", canonicalStateSlug);
         model.addAttribute("stateAbbr", stateCounties.get(0).getStateAbbr());
-        model.addAttribute("counties", stateCounties);
+        model.addAttribute("counties", visibleCounties);
+        model.addAttribute("noindex", visibleCounties.isEmpty());
         return "state_hub";
     }
 
@@ -125,7 +137,7 @@ public class PageController {
         // Receipt)
         CountyPageContent pageContent = contentService.buildPageContent(county, "basement", "buying");
         PageQualityResult quality = pageQualityService.scoreMitigationCountyPage(county, pageContent);
-        pageContent.setIndexable(quality.isIndexable());
+        pageContent.setIndexable(quality.isIndexable() && seoIndexingPolicyService.isCountyIndexableCandidate(county));
 
         TrustMetadata trust = trustMetadataService.forCountyPage(county);
         AeoAnswerBlock aeo = buildMitigationAeoBlock(county, pageContent, trust);
@@ -137,6 +149,7 @@ public class PageController {
         model.addAttribute("aeo", aeo);
         model.addAttribute("relatedLinks", internalLinkService.buildMitigationCountyLinks(county, pageContent));
         model.addAttribute("monetizationHooksEnabled", monetizationHooksEnabled);
+        model.addAttribute("showSeoDebug", seoDebugVisible);
         model.addAttribute("canonicalUrl",
                 normalizedBaseUrl() + "/radon-mitigation-cost/" + county.getStateSlug() + "/" + county.getCountySlug());
 
@@ -151,7 +164,9 @@ public class PageController {
             @RequestParam("foundation") String foundation,
             @RequestParam("intent") String intent,
             @RequestParam(value = "sqftCategory", defaultValue = "under_2000") String sqftCategory,
+            HttpServletResponse response,
             Model model) {
+        response.setHeader("X-Robots-Tag", "noindex");
 
         String key = stateSlug.toLowerCase() + "/" + countySlug.toLowerCase();
         County county = dataLoadService.getCountyBySlugMap().get(key);
@@ -222,3 +237,4 @@ public class PageController {
         return view;
     }
 }
+

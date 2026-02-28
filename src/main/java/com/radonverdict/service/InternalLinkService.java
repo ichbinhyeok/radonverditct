@@ -17,6 +17,7 @@ import java.util.Map;
 public class InternalLinkService {
 
     private final DataLoadService dataLoadService;
+    private final SeoIndexingPolicyService seoIndexingPolicyService;
 
     public List<InternalLinkItem> buildMitigationCountyLinks(County county, CountyPageContent page) {
         Map<String, InternalLinkItem> links = new LinkedHashMap<>();
@@ -51,7 +52,9 @@ public class InternalLinkService {
         List<County> sameZoneNearby = dataLoadService.getCountyBySlugMap().values().stream()
                 .filter(c -> c.getStateAbbr().equalsIgnoreCase(county.getStateAbbr()))
                 .filter(c -> !c.getCountySlug().equalsIgnoreCase(county.getCountySlug()))
+                .filter(seoIndexingPolicyService::isCountyIndexableCandidate)
                 .filter(c -> c.getEpaZone() == county.getEpaZone())
+                .sorted((left, right) -> left.getCountyName().compareToIgnoreCase(right.getCountyName()))
                 .limit(3)
                 .toList();
 
@@ -97,7 +100,10 @@ public class InternalLinkService {
         add(links, zoneGuideLink(county.getEpaZone()));
 
         if (nearbyCounties != null) {
-            nearbyCounties.stream().limit(3).forEach(nearby -> add(links, InternalLinkItem.builder()
+            nearbyCounties.stream()
+                    .filter(seoIndexingPolicyService::isCountyIndexableCandidate)
+                    .limit(3)
+                    .forEach(nearby -> add(links, InternalLinkItem.builder()
                     .title(nearby.getAreaDisplayName() + " Levels")
                     .description("Nearby county comparison in " + county.getStateAbbr() + ".")
                     .url("/radon-levels/" + nearby.getStateSlug() + "/" + nearby.getCountySlug())

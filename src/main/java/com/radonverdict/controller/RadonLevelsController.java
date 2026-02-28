@@ -8,6 +8,7 @@ import com.radonverdict.model.dto.TrustMetadata;
 import com.radonverdict.service.DataLoadService;
 import com.radonverdict.service.InternalLinkService;
 import com.radonverdict.service.PageQualityService;
+import com.radonverdict.service.SeoIndexingPolicyService;
 import com.radonverdict.service.TrustMetadataService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -29,6 +30,7 @@ public class RadonLevelsController {
 
     private final DataLoadService dataLoadService;
     private final PageQualityService pageQualityService;
+    private final SeoIndexingPolicyService seoIndexingPolicyService;
     private final TrustMetadataService trustMetadataService;
     private final InternalLinkService internalLinkService;
 
@@ -37,6 +39,9 @@ public class RadonLevelsController {
 
     @Value("${app.site.base-url:https://radonverdict.com}")
     private String baseUrl;
+
+    @Value("${app.feature.seo-debug-visible:false}")
+    private boolean seoDebugVisible;
 
     @GetMapping("/radon-levels/{stateSlug}")
     public Object stateLevelsHub(@PathVariable("stateSlug") String stateSlug, Model model) {
@@ -54,6 +59,9 @@ public class RadonLevelsController {
         }
 
         String stateAbbr = stateCounties.get(0).getStateAbbr();
+        List<County> visibleCounties = stateCounties.stream()
+                .filter(seoIndexingPolicyService::isCountyIndexableCandidate)
+                .toList();
 
         // Count zones for state-level insight
         long zone1Count = stateCounties.stream().filter(c -> c.getEpaZone() == 1).count();
@@ -62,10 +70,11 @@ public class RadonLevelsController {
 
         model.addAttribute("stateSlug", canonicalStateSlug);
         model.addAttribute("stateAbbr", stateAbbr);
-        model.addAttribute("counties", stateCounties);
+        model.addAttribute("counties", visibleCounties);
         model.addAttribute("zone1Count", zone1Count);
         model.addAttribute("zone2Count", zone2Count);
         model.addAttribute("zone3Count", zone3Count);
+        model.addAttribute("noindex", visibleCounties.isEmpty());
 
         return "radon_levels_state";
     }
@@ -108,12 +117,13 @@ public class RadonLevelsController {
         TrustMetadata trust = trustMetadataService.forCountyPage(county);
         AeoAnswerBlock aeo = buildRadonLevelAeoBlock(county, trust);
 
-        model.addAttribute("noindex", !quality.isIndexable());
+        model.addAttribute("noindex", !(quality.isIndexable() && seoIndexingPolicyService.isCountyIndexableCandidate(county)));
         model.addAttribute("quality", quality);
         model.addAttribute("trust", trust);
         model.addAttribute("aeo", aeo);
         model.addAttribute("relatedLinks", internalLinkService.buildRadonLevelsCountyLinks(county, nearbyCounties));
         model.addAttribute("monetizationHooksEnabled", monetizationHooksEnabled);
+        model.addAttribute("showSeoDebug", seoDebugVisible);
         model.addAttribute("canonicalUrl",
                 normalizedBaseUrl() + "/radon-levels/" + county.getStateSlug() + "/" + county.getCountySlug());
 
