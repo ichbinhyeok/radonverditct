@@ -30,11 +30,6 @@ public class CountyPageContent {
     // County-specific insight bullets (state comparison + affordability + stock profile)
     private List<String> localInsights;
 
-    // Similarity / uniqueness diagnostics for indexing decisions
-    private int similarityUniquenessScore;
-    private int similarityCohortSize;
-    private String similarityFingerprint;
-
     // Intent-specific Content
     private String intentSectionTitle;
     private String intentIntro;

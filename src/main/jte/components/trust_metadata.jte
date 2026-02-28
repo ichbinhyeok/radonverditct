@@ -3,6 +3,7 @@
 
 @param TrustMetadata trust
 @param PageQualityResult quality = null
+@param boolean showDebug = false
 
 <section class="mt-10 rounded-2xl border border-slate-200 bg-white p-5 sm:p-6">
     <h3 class="font-display font-bold text-lg text-slate-900 mb-4">Editorial and Data Transparency</h3>
@@ -10,16 +11,6 @@
         <div>
             <dt class="text-slate-500">Author</dt>
             <dd class="text-slate-900 font-medium">${trust.getAuthorName()} (${trust.getAuthorRole()})</dd>
-        </div>
-        <div>
-            <dt class="text-slate-500">Reviewer</dt>
-            <dd class="text-slate-900 font-medium">
-                @if(trust.getReviewerName() != null && !trust.getReviewerName().isBlank())
-                    ${trust.getReviewerName()} (${trust.getReviewerRole()})
-                @else
-                    Pending assignment
-                @endif
-            </dd>
         </div>
         <div>
             <dt class="text-slate-500">Last Reviewed</dt>
@@ -35,7 +26,7 @@
                 @endif
             </dd>
         </div>
-        @if(quality != null)
+        @if(showDebug && quality != null)
         <div>
             <dt class="text-slate-500">Page Quality Score</dt>
             <dd class="text-slate-900 font-medium">${quality.getScore()} / 100</dd>
@@ -73,7 +64,7 @@
     </div>
     @endif
 
-    @if(quality != null && quality.getReasons() != null && !quality.getReasons().isEmpty())
+    @if(showDebug && quality != null && quality.getReasons() != null && !quality.getReasons().isEmpty())
     <p class="mt-4 text-xs text-slate-500">
         Automated quality checks: ${String.join(", ", quality.getReasons())}
         @if(quality.getSimilarityFingerprint() != null && !quality.getSimilarityFingerprint().isBlank())

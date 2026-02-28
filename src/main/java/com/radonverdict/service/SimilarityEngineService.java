@@ -79,10 +79,6 @@ public class SimilarityEngineService {
                     county.getAreaDisplayName(), profile.homeValuePercentile(), profile.housingPercentile(), county.getStateAbbr()));
         }
 
-        lines.add(String.format(Locale.US,
-                "Similarity cohort size is %d pages (fingerprint: %s). Uniqueness score: %d/100. Larger cohorts are typically harder for search systems to prioritize.",
-                assessment.getCohortSize(), assessment.getFingerprint(), assessment.getUniquenessScore()));
-
         if (receipt != null && receipt.getTotalAvg() > 0 && metrics.getMedianHomeValue() > 0) {
             lines.add(String.format(Locale.US,
                     "Affordability context: estimated mitigation average ($%,d) is %.2f%% of local median home value. This ratio is used to differentiate guidance for financing vs immediate remediation.",

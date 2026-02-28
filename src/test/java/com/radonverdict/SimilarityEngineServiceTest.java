@@ -46,7 +46,7 @@ class SimilarityEngineServiceTest {
     }
 
     @Test
-    void differentiationNarrativesIncludeSimilarityContext() {
+    void differentiationNarrativesExcludeInternalSimilarityDiagnostics() {
         County county = dataLoadService.getCountyBySlugMap().values().stream()
                 .filter(c -> c.getStats() != null && c.getStats().getMetrics() != null)
                 .findFirst()
@@ -60,9 +60,12 @@ class SimilarityEngineServiceTest {
 
         SimilarityAssessment assessment = similarityEngineService.assessMitigationPage(county, receipt);
         List<String> lines = similarityEngineService.buildDifferentiationNarratives(county, receipt, assessment);
+        String narrative = String.join(" ", lines);
 
         assertThat(lines).isNotEmpty();
-        assertThat(String.join(" ", lines)).contains("Similarity cohort size");
-        assertThat(String.join(" ", lines)).contains("Uniqueness score");
+        assertThat(narrative).contains("percentile");
+        assertThat(narrative).doesNotContain("Similarity cohort size");
+        assertThat(narrative).doesNotContain("Uniqueness score");
+        assertThat(narrative).doesNotContain("fingerprint");
     }
 }

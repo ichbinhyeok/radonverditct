@@ -16,6 +16,7 @@
 @param PageQualityResult quality = null
 @param TrustMetadata trust = null
 @param boolean monetizationHooksEnabled = false
+@param boolean showSeoDebug = false
 
 @template.layout.main(
     title = page.getHeroTitle(),
@@ -45,26 +46,10 @@
         <script type="application/ld+json">
             {
                 "@context": "https://schema.org",
-                "@type": "HomeAndConstructionBusiness",
-                "name": "RadonVerdict ${county.getAreaDisplayName()}",
-                "url": "https://radonverdict.com${canonicalUrl != null ? canonicalUrl : ""}",
-                "description": "Radon mitigation cost estimates and services for ${county.getAreaDisplayName()}, ${county.getStateAbbr()}.",
-                "areaServed": {
-                    "@type": "AdministrativeArea",
-                    "name": "${county.getAreaDisplayName()}"
-                },
-                "makesOffer": {
-                    "@type": "Offer",
-                    "itemOffered": {
-                        "@type": "Service",
-                        "name": "Radon Mitigation System Installation Estimate"
-                    },
-                    "priceSpecification": {
-                        "@type": "PriceSpecification",
-                        "price": "${page.getReceipt().getTotalAvg()}",
-                        "priceCurrency": "USD"
-                    }
-                }
+                "@type": "WebPage",
+                "name": "Radon Mitigation Cost in ${county.getAreaDisplayName()}, ${county.getStateAbbr()}",
+                "url": "${canonicalUrl != null ? canonicalUrl : "https://radonverdict.com/radon-mitigation-cost/" + county.getStateSlug() + "/" + county.getCountySlug()}",
+                "description": "${page.getHeroSummary()}"
             }
         </script>
         <script type="application/ld+json">
@@ -292,12 +277,13 @@
                         </ul>
                     </div>
                 </div>
-                <p class="mt-8 text-xs text-slate-400 font-medium">Page Content Framework Last Reviewed: February 2026</p>
+                <p class="mt-8 text-xs text-slate-400 font-medium">Page Content Last Reviewed: ${trust != null && trust.getLastReviewed() != null && !trust.getLastReviewed().isBlank() ? trust.getLastReviewed() : "Source-level retrieval dates"}</p>
             </div>
             @if(trust != null)
-                @template.components.trust_metadata(trust = trust, quality = quality)
+                @template.components.trust_metadata(trust = trust, quality = quality, showDebug = showSeoDebug)
             @endif
             
         </div>
     `
 )
+
