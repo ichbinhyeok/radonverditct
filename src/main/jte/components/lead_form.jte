@@ -78,6 +78,7 @@
                         <div class="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-xs text-slate-600 font-medium">No obligation to hire anyone</div>
                         <div class="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-xs text-slate-600 font-medium">No call blasts or list selling</div>
                     </div>
+                    <p class="mb-4 text-xs text-slate-500 font-semibold">Required now: Email + ZIP. Phone is optional.</p>
                     <form action="/submit-lead" method="POST" class="space-y-4"
                           x-data="{ 
                               hasStartedForm: false,
@@ -93,6 +94,7 @@
                         
                         <!-- Hidden Tracking Fields -->
                         <input type="hidden" name="countySlug" value="${county.getCountySlug()}">
+                        <input type="hidden" name="stateSlug" value="${county.getStateSlug()}">
                         <input type="hidden" name="stateAbbr" value="${county.getStateAbbr()}">
                         <input type="hidden" name="consentVersion" value="v1.0">
                         
@@ -103,19 +105,24 @@
                         </div>
 
                         <div>
-                            <label for="customerName" class="block text-sm font-medium text-slate-700">Full Name</label>
-                            <input type="text" name="customerName" id="customerName" @focus="trackFormStart" required class="mt-1 block w-full rounded-lg border-slate-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm py-2 px-3 border">
+                            <label for="customerEmail" class="block text-sm font-medium text-slate-700">Email</label>
+                            <input type="email" name="customerEmail" id="customerEmail" @focus="trackFormStart" required placeholder="you@example.com" class="mt-1 block w-full rounded-lg border-slate-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm py-2 px-3 border">
                         </div>
 
                         <div class="grid grid-cols-2 gap-4">
                             <div>
-                                <label for="customerPhone" class="block text-sm font-medium text-slate-700">Phone</label>
-                                <input type="tel" name="customerPhone" id="customerPhone" @focus="trackFormStart" required placeholder="(555) 123-4567" class="mt-1 block w-full rounded-lg border-slate-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm py-2 px-3 border">
+                                <label for="zipCode" class="block text-sm font-medium text-slate-700">ZIP Code</label>
+                                <input type="text" name="zipCode" id="zipCode" @focus="trackFormStart" required pattern="[0-9]{5}" placeholder="e.g. 90210" class="mt-1 block w-full rounded-lg border-slate-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm py-2 px-3 border">
                             </div>
                             <div>
-                                <label for="zipCode" class="block text-sm font-medium text-slate-700">ZIP Code</label>
-                                <input type="text" name="zipCode" id="zipCode" @focus="trackFormStart" required placeholder="e.g. 90210" class="mt-1 block w-full rounded-lg border-slate-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm py-2 px-3 border">
+                                <label for="customerPhone" class="block text-sm font-medium text-slate-700">Phone (optional)</label>
+                                <input type="tel" name="customerPhone" id="customerPhone" @focus="trackFormStart" placeholder="(555) 123-4567" class="mt-1 block w-full rounded-lg border-slate-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm py-2 px-3 border">
                             </div>
+                        </div>
+
+                        <div>
+                            <label for="customerName" class="block text-sm font-medium text-slate-700">Full Name (optional)</label>
+                            <input type="text" name="customerName" id="customerName" @focus="trackFormStart" class="mt-1 block w-full rounded-lg border-slate-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm py-2 px-3 border">
                         </div>
 
                         <div>
@@ -149,7 +156,7 @@
                                     Mitigation pros will need your test results. We recommend this EPA-certified short-term test kit to get started.
                                 </p>
                                 <a href="https://www.amazon.com/dp/B00002N839?tag=radonverdict-20" 
-                                   target="_blank" rel="noopener nofollow" 
+                                   target="_blank" rel="sponsored nofollow noopener" 
                                    onclick="if(typeof rvTrack === 'function') rvTrack('affiliate_link_click', { event_category: 'monetization', event_label: 'amazon_test_kit' });"
                                    class="inline-flex items-center justify-center w-full py-2 bg-indigo-600 text-white text-xs font-bold rounded-lg hover:bg-indigo-700 transition-colors">
                                     View Top Rated Test Kit on Amazon
@@ -169,7 +176,7 @@
                         </div>
 
                         <button type="submit" class="w-full flex justify-center py-3 px-4 border border-transparent rounded-xl shadow-sm text-sm font-bold text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors mt-6">
-                            Start My Free 30-Second Plan
+                            Send My Local Action Plan
                         </button>
                         <p class="text-center text-[10px] text-slate-400 mt-3 flex items-center justify-center">
                             <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd"></path></svg>
@@ -184,3 +191,4 @@
         </div>
     </div>
 </div>
+

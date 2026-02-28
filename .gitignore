@@ -37,3 +37,15 @@ out/
 .vscode/
 
 jte-classes/
+
+### Node / npm ###
+node_modules/
+package-lock.json
+
+### Build logs ###
+*.log
+
+### OS generated ###
+Thumbs.db
+Desktop.ini
+.DS_Store

@@ -5,6 +5,7 @@ import com.radonverdict.model.entity.Lead;
 // import com.radonverdict.repository.LeadRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.FileWriter;
@@ -23,7 +24,10 @@ public class LeadService {
 
     // private final LeadRepository leadRepository;
 
-    private static final String CSV_FILE_PATH = "data/leads.csv";
+    @Value("${app.storage.leads-csv-path:data/leads.csv}")
+    private String leadsCsvPath;
+
+    private final Object writeLock = new Object();
 
     /**
      * Safely stores a new lead into a CSV file
@@ -58,26 +62,30 @@ public class LeadService {
 
     private void saveToCsv(Lead lead) {
         try {
-            Path path = Paths.get(CSV_FILE_PATH);
-            Files.createDirectories(path.getParent());
-            boolean isNewFile = !Files.exists(path);
-
-            try (PrintWriter pw = new PrintWriter(new FileWriter(path.toFile(), true))) {
-                if (isNewFile) {
-                    pw.println("Date,Name,Phone,Email,Zip,State,County,Foundation,Tested");
+            synchronized (writeLock) {
+                Path path = Paths.get(leadsCsvPath);
+                if (path.getParent() != null) {
+                    Files.createDirectories(path.getParent());
                 }
+                boolean isNewFile = !Files.exists(path);
 
-                String date = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-                pw.printf("\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\"%n",
-                        date,
-                        escapeCsv(lead.getCustomerName()),
-                        escapeCsv(lead.getCustomerPhone()),
-                        escapeCsv(lead.getCustomerEmail() != null ? lead.getCustomerEmail() : ""),
-                        escapeCsv(lead.getZipCode()),
-                        escapeCsv(lead.getStateAbbr()),
-                        escapeCsv(lead.getCountySlug()),
-                        escapeCsv(lead.getFoundationType() != null ? lead.getFoundationType() : ""),
-                        lead.getIsTested() != null ? lead.getIsTested().toString() : "");
+                try (PrintWriter pw = new PrintWriter(new FileWriter(path.toFile(), true))) {
+                    if (isNewFile) {
+                        pw.println("Date,Name,Phone,Email,Zip,State,County,Foundation,Tested");
+                    }
+
+                    String date = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+                    pw.printf("\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\"%n",
+                            date,
+                            escapeCsv(lead.getCustomerName()),
+                            escapeCsv(lead.getCustomerPhone()),
+                            escapeCsv(lead.getCustomerEmail() != null ? lead.getCustomerEmail() : ""),
+                            escapeCsv(lead.getZipCode()),
+                            escapeCsv(lead.getStateAbbr()),
+                            escapeCsv(lead.getCountySlug()),
+                            escapeCsv(lead.getFoundationType() != null ? lead.getFoundationType() : ""),
+                            lead.getIsTested() != null ? lead.getIsTested().toString() : "");
+                }
             }
         } catch (IOException e) {
             log.error("Failed to write lead to CSV", e);

@@ -2,6 +2,7 @@ package com.radonverdict.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,7 +19,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AdminController {
 
-    private static final String CSV_FILE_PATH = "data/leads.csv";
+    @Value("${app.storage.leads-csv-path:data/leads.csv}")
+    private String leadsCsvPath;
 
     @GetMapping("/admin/leads")
     public String viewLeads(Model model) {
@@ -26,7 +28,7 @@ public class AdminController {
 
         List<String[]> leadsList = new ArrayList<>();
         try {
-            Path path = Paths.get(CSV_FILE_PATH);
+            Path path = Paths.get(leadsCsvPath);
             if (Files.exists(path)) {
                 List<String> lines = Files.readAllLines(path);
                 // Skip header logic implicitly if reversing, or deal with it.

@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 
+import java.util.Locale;
+
 @Slf4j
 @Controller
 @RequiredArgsConstructor
@@ -68,8 +70,16 @@ public class LeadController {
     }
 
     private RedirectView redirectToCounty(LeadSubmissionRequest request) {
-        String target = normalizedBaseUrl() + "/radon-mitigation-cost/" + request.getStateAbbr() + "/"
-                + request.getCountySlug();
+        String stateSlug = normalizeUrlSegment(request.getStateSlug());
+        String countySlug = normalizeUrlSegment(request.getCountySlug());
+
+        if (stateSlug == null || countySlug == null) {
+            RedirectView fallback = new RedirectView(normalizedBaseUrl() + "/radon-cost-calculator", false);
+            fallback.setStatusCode(HttpStatus.SEE_OTHER);
+            return fallback;
+        }
+
+        String target = normalizedBaseUrl() + "/radon-mitigation-cost/" + stateSlug + "/" + countySlug;
         RedirectView view = new RedirectView(target, false);
         view.setStatusCode(HttpStatus.SEE_OTHER);
         return view;
@@ -80,5 +90,16 @@ public class LeadController {
             return "https://radonverdict.com";
         }
         return baseUrl.endsWith("/") ? baseUrl.substring(0, baseUrl.length() - 1) : baseUrl;
+    }
+
+    private String normalizeUrlSegment(String raw) {
+        if (raw == null || raw.isBlank()) {
+            return null;
+        }
+        String normalized = raw.trim().toLowerCase(Locale.US);
+        if (!normalized.matches("^[a-z0-9-]{2,80}$")) {
+            return null;
+        }
+        return normalized;
     }
 }

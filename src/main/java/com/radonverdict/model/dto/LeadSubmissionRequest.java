@@ -7,17 +7,17 @@ import lombok.Data;
 
 @Data
 public class LeadSubmissionRequest {
-    @NotBlank(message = "Name is required")
     private String customerName;
 
-    @NotBlank(message = "Phone number is required")
-    @Pattern(regexp = "^\\+?[0-9\\-\\s()]{7,20}$", message = "Invalid phone number format")
+    @Pattern(regexp = "^$|^\\+?[0-9\\-\\s()]{7,20}$", message = "Invalid phone number format")
     private String customerPhone;
 
+    @NotBlank(message = "Email is required")
     @Email(message = "Invalid email format")
     private String customerEmail;
 
     @NotBlank(message = "ZIP code is required")
+    @Pattern(regexp = "^\\d{5}$", message = "ZIP code must be 5 digits")
     private String zipCode;
 
     private String foundationType;
@@ -28,6 +28,7 @@ public class LeadSubmissionRequest {
 
     // Hidden fields from context
     private String countySlug;
+    private String stateSlug;
     private String stateAbbr;
     private String consentVersion;
     private Boolean hasTested;
