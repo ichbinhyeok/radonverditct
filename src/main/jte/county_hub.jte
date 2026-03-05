@@ -4,6 +4,7 @@
 @import com.radonverdict.model.dto.InternalLinkItem
 @import com.radonverdict.model.dto.PageQualityResult
 @import com.radonverdict.model.dto.TrustMetadata
+@import com.radonverdict.util.JsonLdUtils
 @import java.util.List
 
 @param County county
@@ -32,10 +33,10 @@
                     @for(int i = 0; i < page.getFaqs().size(); i++)
                     {
                         "@type": "Question",
-                        "name": "${page.getFaqs().get(i).getQuestion()}",
+                        "name": $unsafe{JsonLdUtils.json(page.getFaqs().get(i).getQuestion())},
                         "acceptedAnswer": {
                             "@type": "Answer",
-                            "text": "${page.getFaqs().get(i).getAnswer()}"
+                            "text": $unsafe{JsonLdUtils.json(page.getFaqs().get(i).getAnswer())}
                         }
                     }
                     @if(i < page.getFaqs().size() - 1),@endif
@@ -47,9 +48,9 @@
             {
                 "@context": "https://schema.org",
                 "@type": "WebPage",
-                "name": "Radon Mitigation Cost in ${county.getAreaDisplayName()}, ${county.getStateAbbr()}",
-                "url": "${canonicalUrl != null ? canonicalUrl : "https://radonverdict.com/radon-mitigation-cost/" + county.getStateSlug() + "/" + county.getCountySlug()}",
-                "description": "${page.getHeroSummary()}"
+                "name": $unsafe{JsonLdUtils.json("Radon Mitigation Cost in " + county.getAreaDisplayName() + ", " + county.getStateAbbr())},
+                "url": $unsafe{JsonLdUtils.json(canonicalUrl != null ? canonicalUrl : "https://radonverdict.com/radon-mitigation-cost/" + county.getStateSlug() + "/" + county.getCountySlug())},
+                "description": $unsafe{JsonLdUtils.json(page.getHeroSummary())}
             }
         </script>
         <script type="application/ld+json">
@@ -64,13 +65,13 @@
                 },{
                     "@type": "ListItem",
                     "position": 2,
-                    "name": "${county.getStateAbbr()}",
-                    "item": "https://radonverdict.com/radon-mitigation-cost/${county.getStateSlug()}"
+                    "name": $unsafe{JsonLdUtils.json(county.getStateAbbr())},
+                    "item": $unsafe{JsonLdUtils.json("https://radonverdict.com/radon-mitigation-cost/" + county.getStateSlug())}
                 },{
                     "@type": "ListItem",
                     "position": 3,
-                    "name": "${county.getAreaDisplayName()}",
-                    "item": "https://radonverdict.com/radon-mitigation-cost/${county.getStateSlug()}/${county.getCountySlug()}"
+                    "name": $unsafe{JsonLdUtils.json(county.getAreaDisplayName())},
+                    "item": $unsafe{JsonLdUtils.json("https://radonverdict.com/radon-mitigation-cost/" + county.getStateSlug() + "/" + county.getCountySlug())}
                 }]
             }
         </script>

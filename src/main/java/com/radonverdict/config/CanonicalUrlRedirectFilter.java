@@ -57,12 +57,6 @@ public class CanonicalUrlRedirectFilter extends OncePerRequestFilter {
         boolean needsSchemeRedirect = !canonicalScheme.equalsIgnoreCase(currentScheme);
         boolean needsHostRedirect = !canonicalHost.equalsIgnoreCase(normalizedCurrentHost);
 
-        if (isCloudflareProxiedRequest(request) && needsSchemeRedirect && !needsHostRedirect) {
-            // Cloudflare may fetch origin over HTTP even for HTTPS visitors depending on SSL mode.
-            // Enforcing scheme at origin in that case creates a self-redirect loop.
-            needsSchemeRedirect = false;
-        }
-
         if (!localHost && (needsSchemeRedirect || needsHostRedirect)) {
             StringBuilder target = new StringBuilder();
             target.append(canonicalScheme).append("://").append(canonicalHost);
@@ -135,16 +129,5 @@ public class CanonicalUrlRedirectFilter extends OncePerRequestFilter {
         return "localhost".equalsIgnoreCase(host)
                 || "127.0.0.1".equals(host)
                 || host.endsWith(".local");
-    }
-
-    private boolean isCloudflareProxiedRequest(HttpServletRequest request) {
-        return hasText(request.getHeader("CF-Visitor"))
-                || hasText(request.getHeader("CF-Connecting-IP"))
-                || hasText(request.getHeader("CF-Ray"))
-                || hasText(request.getHeader("CDN-Loop"));
-    }
-
-    private boolean hasText(String value) {
-        return value != null && !value.isBlank();
     }
 }

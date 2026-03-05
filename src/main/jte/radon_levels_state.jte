@@ -9,9 +9,32 @@
 @param long zone3Count = 0
 @param boolean noindex = false
 
+!{
+    String[] stateSlugParts = stateSlug.split("-");
+    StringBuilder stateNameBuilder = new StringBuilder();
+    for (int i = 0; i < stateSlugParts.length; i++) {
+        String part = stateSlugParts[i];
+        if (part == null || part.isBlank()) {
+            continue;
+        }
+        String normalized = part.toLowerCase(java.util.Locale.ROOT);
+        String displayPart;
+        if (i > 0 && ("of".equals(normalized) || "and".equals(normalized))) {
+            displayPart = normalized;
+        } else {
+            displayPart = normalized.substring(0, 1).toUpperCase(java.util.Locale.ROOT) + normalized.substring(1);
+        }
+        if (stateNameBuilder.length() > 0) {
+            stateNameBuilder.append(" ");
+        }
+        stateNameBuilder.append(displayPart);
+    }
+    final String stateName = stateNameBuilder.length() > 0 ? stateNameBuilder.toString() : stateAbbr;
+}
+
 @template.layout.main(
-    title = stateAbbr + " Radon Levels by County - " + java.time.LocalDate.now().getYear() + " EPA Zone Data",
-    description = "Interactive radon level map and EPA zone data for every county in " + stateAbbr + ". Find your county's risk classification and learn what to do next.",
+    title = stateName + " Radon Zone Map by County (" + java.time.LocalDate.now().getYear() + ") | EPA 4.0 pCi/L Guide",
+    description = "Interactive " + stateName + " radon zone map with county-level EPA data. Check risk tier, understand the 4.0 pCi/L action threshold, and see testing and mitigation next steps.",
     canonicalUrl = "https://radonverdict.com/radon-levels/" + stateSlug,
     noindex = noindex,
     content = @`
@@ -22,7 +45,7 @@
                 <ol class="inline-flex items-center space-x-2">
                     <li><a href="/" class="hover:text-slate-900 transition-colors">Home</a></li>
                     <li><span class="mx-1 text-slate-300">/</span></li>
-                    <li class="text-slate-900 font-semibold" aria-current="page">${stateAbbr} Radon Levels</li>
+                    <li class="text-slate-900 font-semibold" aria-current="page">${stateName} Radon Levels</li>
                 </ol>
             </nav>
 
@@ -33,9 +56,9 @@
                     EPA Zone Data ${java.time.LocalDate.now().getYear()}
                 </div>
 
-                <h1 class="font-display font-black text-4xl sm:text-5xl text-slate-900 mb-4">${stateAbbr} Radon Levels</h1>
+                <h1 class="font-display font-black text-4xl sm:text-5xl text-slate-900 mb-4">${stateName} Radon Levels</h1>
                 <p class="text-lg text-slate-600 max-w-2xl mx-auto">
-                    View EPA radon zone classifications for every county in ${stateAbbr}. Select your county to see detailed risk data, testing recommendations, and mitigation cost estimates.
+                    View EPA radon zone classifications for every county in ${stateName}. Select your county to see detailed risk data, testing recommendations, and mitigation cost estimates.
                 </p>
             </div>
 
@@ -87,7 +110,7 @@
                     <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
                     </svg>
-                    View ${stateAbbr} Mitigation Cost Estimates ->
+                    View ${stateName} Mitigation Cost Estimates ->
                 </a>
             </div>
         </div>

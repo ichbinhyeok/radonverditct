@@ -58,6 +58,16 @@
                             </div>
                         </div>
                     </div>
+                    <script>
+                      document.addEventListener('DOMContentLoaded', function () {
+                        if (typeof rvTrack === 'function') {
+                          rvTrack('close_convert_lead', {
+                            event_category: 'conversion',
+                            event_label: '${county.getCountySlug()}'
+                          });
+                        }
+                      });
+                    </script>
                 @elseif(errorMessage != null && !errorMessage.isEmpty())
                     <div class="bg-red-50 border border-red-200 rounded-xl p-4 mb-6">
                         <div class="flex">
@@ -89,7 +99,7 @@
                                   }
                               }
                           }"
-                          @submit="if(typeof rvTrack === 'function') rvTrack('lead_form_submit', { event_category: 'conversion', event_label: '${county.getCountySlug()}' });"
+                          @submit="if(typeof rvTrack === 'function'){ rvTrack('lead_form_submit', { event_category: 'conversion', event_label: '${county.getCountySlug()}' }); rvTrack('qualify_lead', { event_category: 'conversion', event_label: '${county.getCountySlug()}' }); }"
                     >
                         
                         <!-- Hidden Tracking Fields -->

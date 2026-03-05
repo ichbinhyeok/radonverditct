@@ -1,4 +1,4 @@
-# Radon Mitigation Cost Estimator — Agent-Ready Spec (v3.1 DB-less)
+# Radon Mitigation Cost Estimator ??Agent-Ready Spec (v3.1 DB-less)
 
 **Date:** 2026-02-21 (Asia/Seoul)  
 **Purpose:** This folder is a self-contained specification for building a US-focused **Radon Mitigation System Cost Estimator** website with **lead-generation (CPL/CPA)** monetization.  
@@ -9,22 +9,23 @@ A county-first, evidence-cited **radon mitigation cost estimator** that explains
 
 ## What makes this spec different
 This spec intentionally avoids common failure modes for this niche:
-- **Do NOT** use “EPA Zone → price surcharge” logic.
+- **Do NOT** use ?�EPA Zone ??price surcharge??logic.
 - **Do NOT** treat ZIP-level zone as authoritative; EPA zone is fundamentally county-level.
 - **Do NOT** distribute leads to multiple sellers without explicit, logged consent per seller selection (TCPA risk).
 - **Do** make pages deep enough for YMYL trust (sources, methodology, disclaimers).
 
 ## File map
-- `spec/00_strategy.md` — **READ FIRST** — market strategy, competitive rationale, keyword tiers, monetization roadmap
-- `spec/01_context_and_rules.md` — domain primer + hard rules + assumptions
-- `spec/02_data_sources_and_etl.md` — datasets, fields, ETL steps, update cadence
-- `spec/03_db_schema.md` — suggested DB-less (In-memory) data structures + static files
-- `spec/04_pricing_engine.md` — estimation model, inputs/outputs, explanation strings, tests
-- `spec/05_pages_seo_templates.md` — URL structure, templates, schema markup, internal linking
-- `spec/06_leads_consent_routing.md` — lead form spec, consent logging, routing, compliance guardrails
-- `spec/07_analytics_kpis.md` — events, funnels, reporting metrics
-- `spec/08_acceptance_criteria.md` — definition of done, QA checklist
-- `spec/09_task_breakdown.md` — implementation task list in execution order
+- `spec/00_strategy.md` ??**READ FIRST** ??market strategy, competitive rationale, keyword tiers, monetization roadmap
+- `spec/01_context_and_rules.md` ??domain primer + hard rules + assumptions
+- `spec/02_data_sources_and_etl.md` ??datasets, fields, ETL steps, update cadence
+- `spec/03_db_schema.md` ??suggested DB-less (In-memory) data structures + static files
+- `spec/04_pricing_engine.md` ??estimation model, inputs/outputs, explanation strings, tests
+- `spec/05_pages_seo_templates.md` ??URL structure, templates, schema markup, internal linking
+- `spec/06_leads_consent_routing.md` ??lead form spec, consent logging, routing, compliance guardrails
+- `spec/07_analytics_kpis.md` ??events, funnels, reporting metrics
+- `spec/08_acceptance_criteria.md` ??definition of done, QA checklist
+- `spec/09_task_breakdown.md` ??implementation task list in execution order
+- `ops/context_tracker.md` ??ongoing context log (daily snapshot, what changed, and verification)
 
 ## Recommended default stack (Java DB-less)
 - Frontend/SSR: **Java (Spring Boot) + JTE Templates**

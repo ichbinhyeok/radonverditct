@@ -1,11 +1,16 @@
 package com.radonverdict;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.not;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -17,6 +22,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 class SeoBehaviorIntegrationTest {
+
+    private static final Pattern JSON_LD_SCRIPT_PATTERN = Pattern.compile(
+            "<script[^>]*type=['\\\"]application/ld\\+json['\\\"][^>]*>(.*?)</script>",
+            Pattern.CASE_INSENSITIVE | Pattern.DOTALL);
+
+    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
     @Autowired
     private MockMvc mockMvc;
@@ -47,12 +58,13 @@ class SeoBehaviorIntegrationTest {
     }
 
     @Test
-    void canonicalFilterSkipsSchemeRedirectForCloudflareProxyWithoutCfVisitor() throws Exception {
+    void canonicalFilterRedirectsCloudflareProxyWithoutCfVisitor() throws Exception {
         mockMvc.perform(get("/radon-cost-calculator")
                         .header("X-Forwarded-Proto", "http")
                         .header("X-Forwarded-Host", "radonverdict.com")
                         .header("CF-Connecting-IP", "198.51.100.9"))
-                .andExpect(status().isOk());
+                .andExpect(status().isMovedPermanently())
+                .andExpect(header().string("Location", "https://radonverdict.com/radon-cost-calculator"));
     }
 
     @Test
@@ -67,7 +79,7 @@ class SeoBehaviorIntegrationTest {
         mockMvc.perform(get("/radon-levels/puerto-rico/ponce-municipio"))
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("<meta name=\"robots\" content=\"noindex, follow\">")))
-                .andExpect(content().string(containsString("Radon Levels in Ponce Municipio, PR")))
+                .andExpect(content().string(containsString("Ponce Municipio, PR Radon Levels")))
                 .andExpect(content().string(not(containsString("Ponce Municipio County"))));
     }
 
@@ -136,5 +148,49 @@ class SeoBehaviorIntegrationTest {
                         .param("sqftCategory", "under_2000"))
                 .andExpect(status().isOk())
                 .andExpect(header().string("X-Robots-Tag", "noindex"));
+    }
+
+    @Test
+    void countyHubJsonLdScriptsAreValidJson() throws Exception {
+        String html = mockMvc.perform(get("/radon-mitigation-cost/new-jersey/passaic-county"))
+                .andExpect(status().isOk())
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+
+        assertJsonLdBlocksAreValid(html);
+    }
+
+    @Test
+    void radonLevelsCountyJsonLdScriptsAreValidJson() throws Exception {
+        String html = mockMvc.perform(get("/radon-levels/missouri/st-louis-county"))
+                .andExpect(status().isOk())
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+
+        assertJsonLdBlocksAreValid(html);
+    }
+
+    @Test
+    void guidePageJsonLdScriptsAreValidJson() throws Exception {
+        String html = mockMvc.perform(get("/guides/radon-exposure-symptoms"))
+                .andExpect(status().isOk())
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+
+        assertJsonLdBlocksAreValid(html);
+    }
+
+    private void assertJsonLdBlocksAreValid(String html) throws Exception {
+        Matcher matcher = JSON_LD_SCRIPT_PATTERN.matcher(html);
+        int scriptCount = 0;
+        while (matcher.find()) {
+            scriptCount++;
+            String jsonLd = matcher.group(1).trim();
+            OBJECT_MAPPER.readTree(jsonLd);
+        }
+        assertTrue(scriptCount > 0, "Expected at least one JSON-LD script block.");
     }
 }

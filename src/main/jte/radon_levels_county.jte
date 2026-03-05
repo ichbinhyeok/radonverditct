@@ -4,6 +4,7 @@
 @import com.radonverdict.model.dto.InternalLinkItem
 @import com.radonverdict.model.dto.PageQualityResult
 @import com.radonverdict.model.dto.TrustMetadata
+@import com.radonverdict.util.JsonLdUtils
 @import java.util.List
 
 @param County county
@@ -17,10 +18,36 @@
 @param TrustMetadata trust = null
 @param boolean monetizationHooksEnabled = false
 @param boolean showSeoDebug = false
+!{
+    String averageLevelAnswerBase;
+    if (county.getEpaZone() == 1) {
+        averageLevelAnswerBase = county.getAreaDisplayName() + " is classified as EPA Zone 1 (High Risk). The predicted average indoor radon screening level exceeds 4.0 pCi/L, which is above the EPA action level.";
+    } else if (county.getEpaZone() == 2) {
+        averageLevelAnswerBase = county.getAreaDisplayName() + " is classified as EPA Zone 2 (Moderate Risk). The predicted average indoor screening level is between 2.0 and 4.0 pCi/L.";
+    } else if (county.getEpaZone() == 3) {
+        averageLevelAnswerBase = county.getAreaDisplayName() + " is classified as EPA Zone 3 (Low Risk). The predicted average indoor screening level is below 2.0 pCi/L.";
+    } else {
+        averageLevelAnswerBase = county.getAreaDisplayName() + " is classified as an unclassified EPA zone (Data Pending). The EPA zone for this county is currently unclassified in our source data. Please rely on direct home testing to determine risk.";
+    }
+    final String averageLevelAnswer = averageLevelAnswerBase + " The EPA recommends testing all homes regardless of zone.";
+
+    final String isProblemAnswer;
+    if (county.getEpaZone() == 1) {
+        isProblemAnswer = "Yes, " + county.getAreaDisplayName() + " is in EPA Zone 1 (High Risk). Most homes should be tested and many will need mitigation.";
+    } else if (county.getEpaZone() == 2) {
+        isProblemAnswer = county.getAreaDisplayName() + " is in EPA Zone 2 (Moderate Risk). Many individual homes can still have elevated levels above the EPA action threshold.";
+    } else if (county.getEpaZone() == 3) {
+        isProblemAnswer = county.getAreaDisplayName() + " is in EPA Zone 3 (Low Risk), but elevated radon has been found in homes in every zone. Testing is always recommended.";
+    } else {
+        isProblemAnswer = county.getAreaDisplayName() + " does not currently have a published EPA zone assignment in our dataset. Because radon risk can vary significantly by home, testing is strongly recommended.";
+    }
+
+    final String testAnswer = "Purchase a short-term radon test kit ($15-$30) from a hardware store or online. Place it in the lowest livable level of your home for 2-7 days with closed-house conditions, then mail it to the lab. For continuous monitoring, consider a digital radon detector ($150-$200).";
+}
 
 @template.layout.main(
-    title = "Radon Levels in " + county.getAreaDisplayName() + ", " + county.getStateAbbr() + " - " + java.time.LocalDate.now().getYear() + " EPA Data",
-    description = "Current radon levels and EPA zone data for " + county.getAreaDisplayName() + ", " + county.getStateAbbr() + ". Understand your risk, learn testing options, and see what action to take based on your reading.",
+    title = county.getAreaDisplayName() + ", " + county.getStateAbbr() + " Radon Levels & Zone Map | EPA 4.0 pCi/L Guide",
+    description = county.getAreaDisplayName() + ", " + county.getStateAbbr() + " radon guide with EPA zone data, what readings mean (2.0, 4.0, 8.0+ pCi/L), and practical testing and mitigation next steps.",
     canonicalUrl = canonicalUrl,
     noindex = noindex,
     headContent = @`
@@ -31,26 +58,26 @@
                 "mainEntity": [
                     {
                         "@type": "Question",
-                        "name": "What is the average radon level in ${county.getAreaDisplayName()}, ${county.getStateAbbr()}?",
+                        "name": $unsafe{JsonLdUtils.json("What is the average radon level in " + county.getAreaDisplayName() + ", " + county.getStateAbbr() + "?")},
                         "acceptedAnswer": {
                             "@type": "Answer",
-                            "text": "${county.getAreaDisplayName()} is classified as @if(county.getEpaZone() == 1)EPA Zone 1 (High Risk). The predicted average indoor radon screening level exceeds 4.0 pCi/L, which is above the EPA action level.@elseif(county.getEpaZone() == 2)EPA Zone 2 (Moderate Risk). The predicted average indoor screening level is between 2.0 and 4.0 pCi/L.@elseif(county.getEpaZone() == 3)EPA Zone 3 (Low Risk). The predicted average indoor screening level is below 2.0 pCi/L.@else an unclassified EPA zone (Data Pending). The EPA zone for this county is currently unclassified in our source data. Please rely on direct home testing to determine risk.@endif The EPA recommends testing all homes regardless of zone."
+                            "text": $unsafe{JsonLdUtils.json(averageLevelAnswer)}
                         }
                     },
                     {
                         "@type": "Question",
-                        "name": "Is radon a problem in ${county.getAreaDisplayName()}?",
+                        "name": $unsafe{JsonLdUtils.json("Is radon a problem in " + county.getAreaDisplayName() + "?")},
                         "acceptedAnswer": {
                             "@type": "Answer",
-                            "text": "@if(county.getEpaZone() == 1)Yes, ${county.getAreaDisplayName()} is in EPA Zone 1 (High Risk). Most homes should be tested and many will need mitigation.@elseif(county.getEpaZone() == 2)${county.getAreaDisplayName()} is in EPA Zone 2 (Moderate Risk). Many individual homes can still have elevated levels above the EPA action threshold.@elseif(county.getEpaZone() == 3)${county.getAreaDisplayName()} is in EPA Zone 3 (Low Risk), but elevated radon has been found in homes in every zone. Testing is always recommended.@else ${county.getAreaDisplayName()} does not currently have a published EPA zone assignment in our dataset. Because radon risk can vary significantly by home, testing is strongly recommended.@endif"
+                            "text": $unsafe{JsonLdUtils.json(isProblemAnswer)}
                         }
                     },
                     {
                         "@type": "Question",
-                        "name": "How do I test for radon in ${county.getAreaDisplayName()}?",
+                        "name": $unsafe{JsonLdUtils.json("How do I test for radon in " + county.getAreaDisplayName() + "?")},
                         "acceptedAnswer": {
                             "@type": "Answer",
-                            "text": "Purchase a short-term radon test kit ($15-$30) from a hardware store or online. Place it in the lowest livable level of your home for 2-7 days with closed-house conditions, then mail it to the lab. For continuous monitoring, consider a digital radon detector ($150-$200)."
+                            "text": $unsafe{JsonLdUtils.json(testAnswer)}
                         }
                     }
                 ]
@@ -68,13 +95,13 @@
                 },{
                     "@type": "ListItem",
                     "position": 2,
-                    "name": "${county.getStateAbbr()} Radon Levels",
-                    "item": "https://radonverdict.com/radon-levels/${county.getStateSlug()}"
+                    "name": $unsafe{JsonLdUtils.json(county.getStateAbbr() + " Radon Levels")},
+                    "item": $unsafe{JsonLdUtils.json("https://radonverdict.com/radon-levels/" + county.getStateSlug())}
                 },{
                     "@type": "ListItem",
                     "position": 3,
-                    "name": "${county.getAreaDisplayName()}",
-                    "item": "https://radonverdict.com/radon-levels/${county.getStateSlug()}/${county.getCountySlug()}"
+                    "name": $unsafe{JsonLdUtils.json(county.getAreaDisplayName())},
+                    "item": $unsafe{JsonLdUtils.json("https://radonverdict.com/radon-levels/" + county.getStateSlug() + "/" + county.getCountySlug())}
                 }]
             }
         </script>

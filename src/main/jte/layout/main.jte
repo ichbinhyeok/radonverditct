@@ -1,4 +1,5 @@
 @import gg.jte.Content
+@import com.radonverdict.util.JsonLdUtils
 
 @param String title
 @param String description = "National Radon Mitigation Cost Calculator"
@@ -114,11 +115,11 @@
             {
                 "@context": "https://schema.org",
                 "@type": "Article",
-                "headline": "${title}",
-                "description": "${description}",
+                "headline": $unsafe{JsonLdUtils.json(title)},
+                "description": $unsafe{JsonLdUtils.json(description)},
                 "mainEntityOfPage": {
                     "@type": "WebPage",
-                    "@id": "${canonicalUrl}"
+                    "@id": $unsafe{JsonLdUtils.json(canonicalUrl)}
                 },
                 "author": {
                     "@type": "Organization",
