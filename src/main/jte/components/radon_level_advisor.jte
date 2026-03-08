@@ -1,6 +1,7 @@
 @import com.radonverdict.model.County
 
 @param County county
+@param boolean costMode = false
 
 <!-- Radon Level Decision Advisor: Pure Alpine.js (no server calls) -->
 <div class="bg-white rounded-[2rem] p-6 sm:p-8 shadow-sm border border-slate-200 mb-6 max-w-2xl mx-auto"
@@ -28,8 +29,20 @@
      }">
 
     <div class="text-center mb-6">
-        <h3 class="font-display font-bold text-slate-900 text-xl tracking-tight">Your Radon Reading</h3>
-        <p class="text-slate-500 text-sm mt-1 font-medium">Enter your home's measured level or use the ${county.getAreaDisplayName()} average</p>
+        <h3 class="font-display font-bold text-slate-900 text-xl tracking-tight">
+            @if(costMode)
+                Use Your Confirmed Radon Reading
+            @else
+                Your Radon Reading
+            @endif
+        </h3>
+        <p class="text-slate-500 text-sm mt-1 font-medium">
+            @if(costMode)
+                Adjust the level to match your latest result and compare likely mitigation outcomes before pricing local quotes.
+            @else
+                Enter your home's measured level or use the ${county.getAreaDisplayName()} average
+            @endif
+        </p>
     </div>
 
     <!-- The Big Number Display -->
@@ -78,9 +91,19 @@
             <div>
                 <h4 class="font-display font-bold text-emerald-900 text-lg">Safe Range</h4>
                 <p class="text-sm text-emerald-800 leading-relaxed mt-1">
-                    Your reading is within the safe range. Both the EPA (4.0) and WHO (2.7) thresholds are not exceeded.
-                    <strong>Mitigation is not needed right now.</strong> We recommend periodic monitoring with a digital radon detector.
+                    @if(costMode)
+                        Your reading is within the safe range. Both the EPA (4.0) and WHO (2.7) thresholds are not exceeded.
+                        <strong>Most homeowners would monitor and retest rather than install a mitigation system right now.</strong>
+                    @else
+                        Your reading is within the safe range. Both the EPA (4.0) and WHO (2.7) thresholds are not exceeded.
+                        <strong>Mitigation is not needed right now.</strong> We recommend periodic monitoring with a digital radon detector.
+                    @endif
                 </p>
+                @if(costMode)
+                <p class="text-sm text-emerald-800 leading-relaxed mt-2">
+                    Use the estimate below only as future planning context. If a follow-up test stays low, you can usually defer mitigation spending.
+                </p>
+                @else
                 <a href="https://www.amazon.com/s?k=radon+test+kit&tag=radonverdict-20"
                    target="_blank" rel="sponsored nofollow noopener"
                    onclick="if(typeof rvTrack === 'function') rvTrack('affiliate_link_click', { event_category: 'monetization', event_label: 'advisor_test_kit_search' });"
@@ -90,6 +113,7 @@
                     </svg>
                     Get a Home Radon Monitor (~$30)
                 </a>
+                @endif
             </div>
         </div>
     </div>
@@ -106,14 +130,25 @@
             <div>
                 <h4 class="font-display font-bold text-amber-900 text-lg">Elevated - Consider Action</h4>
                 <p class="text-sm text-amber-800 leading-relaxed mt-1">
-                    Your reading is below the US EPA action level (4.0 pCi/L), but this range still warrants follow-up testing.
-                    The World Health Organization uses <strong>2.7 pCi/L as a tighter reference point</strong>.
+                    @if(costMode)
+                        Your reading is below the US EPA action level (4.0 pCi/L), but this range can still justify quote planning.
+                        The World Health Organization uses <strong>2.7 pCi/L as a tighter reference point</strong>.
+                    @else
+                        Your reading is below the US EPA action level (4.0 pCi/L), but this range still warrants follow-up testing.
+                        The World Health Organization uses <strong>2.7 pCi/L as a tighter reference point</strong>.
+                    @endif
                 </p>
                 <p class="text-sm text-amber-800 leading-relaxed mt-2">
-                    If this level persists on confirmatory testing, planning mitigation is reasonable,
-                    especially for homes with frequent basement use, children, or pending real-estate transactions.
-                    <strong>Scroll down to see your estimated cost.</strong>
+                    @if(costMode)
+                        Use the estimate below as planning context for homes with frequent basement use, repeated borderline readings,
+                        children, or an active real-estate transaction. <strong>Confirmatory or long-term testing should still drive the final spend decision.</strong>
+                    @else
+                        If this level persists on confirmatory testing, planning mitigation is reasonable,
+                        especially for homes with frequent basement use, children, or pending real-estate transactions.
+                        <strong>Scroll down to see your estimated cost.</strong>
+                    @endif
                 </p>
+                @if(!costMode)
                 <a href="https://www.amazon.com/s?k=digital+radon+detector&tag=radonverdict-20"
                    target="_blank" rel="sponsored nofollow noopener"
                    onclick="if(typeof rvTrack === 'function') rvTrack('affiliate_link_click', { event_category: 'monetization', event_label: 'advisor_digital_monitor_search' });"
@@ -123,6 +158,7 @@
                     </svg>
                     Verify with Long-term Monitor (~$150)
                 </a>
+                @endif
             </div>
         </div>
     </div>
@@ -140,7 +176,12 @@
                 <h4 class="font-display font-bold text-red-900 text-lg">Warning: Action Required - EPA Threshold Exceeded</h4>
                 <p class="text-sm text-red-800 leading-relaxed mt-1">
                     At <strong x-text="parseFloat(level).toFixed(1)"></strong> pCi/L, this reading is above the
-                    EPA action level. Prompt mitigation planning is recommended after confirmatory testing.
+                    EPA action level.
+                    @if(costMode)
+                        <strong>Use the local pricing below to budget your next step after confirming the result.</strong>
+                    @else
+                        Prompt mitigation planning is recommended after confirmatory testing.
+                    @endif
                 </p>
 
                 <!-- Before / After Promise -->
@@ -162,7 +203,13 @@
 
                 <p class="text-xs text-red-600 mt-3 font-semibold">
                     Typical mitigation systems reduce radon by 80-99%.
-                    <strong>See your itemized cost estimate below.</strong>
+                    <strong>
+                        @if(costMode)
+                            Compare the local line items below before requesting quotes.
+                        @else
+                            See your itemized cost estimate below.
+                        @endif
+                    </strong>
                 </p>
             </div>
         </div>
@@ -170,7 +217,13 @@
 
     <!-- Manual Input (small, under the slider) -->
     <div class="mt-5 flex items-center justify-center gap-3">
-        <label class="text-xs font-bold text-slate-400 uppercase tracking-wider">Enter exact reading:</label>
+        <label class="text-xs font-bold text-slate-400 uppercase tracking-wider">
+            @if(costMode)
+                Enter confirmed reading:
+            @else
+                Enter exact reading:
+            @endif
+        </label>
         <input type="number" min="0" max="99" step="0.1"
                x-model.debounce.300ms="level"
                class="w-24 text-center text-sm font-bold text-slate-900 border border-slate-200 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-slate-900 focus:border-transparent tabular-nums">

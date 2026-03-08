@@ -3,7 +3,7 @@
         "1": {
             "risk_level": "High",
             "badge_color": "red",
-            "hero_summary": "is classified as EPA Zone 1 (High Risk). Home inspections in this area frequently detect radon levels above the 4.0 pCi/L action threshold. Mitigation is strongly recommended before closing on any property.",
+            "hero_summary": "is classified as EPA Zone 1 (High Risk). Homes here often produce readings above the 4.0 pCi/L action threshold, so homeowners should expect mitigation quotes to be part of budgeting and closing negotiations after a confirmed test.",
             "risk_narrative": "Homes in {countyName} have a predicted average indoor radon screening level greater than 4 pCi/L. This places {countyName} in the highest-risk category defined by the EPA. Geological surveys indicate that the underlying rock and soil formations in this region naturally produce elevated levels of uranium decay, which releases radon gas into foundations.",
             "buyer_warning": "If you are purchasing a home in {countyName}, do not waive the radon inspection contingency. Given the Zone 1 classification, there is a statistically significant probability that the home will test above the EPA action level. Budget for mitigation as part of your closing costs.",
             "seller_advisory": "Sellers in {countyName} should proactively test and mitigate before listing. In Zone 1 areas, buyers and their agents are highly aware of radon risk, and a clean radon report can accelerate the sale and justify your asking price.",
@@ -12,7 +12,7 @@
         "2": {
             "risk_level": "Moderate",
             "badge_color": "yellow",
-            "hero_summary": "is classified as EPA Zone 2 (Moderate Risk). While average radon levels are below the federal action level, individual homes can still test high depending on foundation type and soil conditions. Testing is recommended.",
+            "hero_summary": "is classified as EPA Zone 2 (Moderate Risk). County averages sit below the federal action level, but individual homes still test high often enough that homeowners should compare price ranges after a confirmed result, especially for basement and slab homes.",
             "risk_narrative": "Homes in {countyName} have a predicted average indoor radon screening level between 2 and 4 pCi/L. While this is below the EPA's 4.0 pCi/L action level, it does not mean your home is safe. Radon concentrations vary dramatically from house to house, even within the same neighborhood, due to differences in foundation construction, soil permeability, and ventilation.",
             "buyer_warning": "Even though {countyName} is in Zone 2, you should still include a radon test in your home inspection. County averages cannot predict individual home readings, and some homes test above the action level despite moderate regional risk. A $150 test can save you thousands in unexpected post-closing costs.",
             "seller_advisory": "In Zone 2 areas like {countyName}, savvy buyers will request radon testing. Having a recent test result below 4.0 pCi/L ready removes a potential negotiation obstacle and speeds up closing.",
@@ -21,7 +21,7 @@
         "3": {
             "risk_level": "Low",
             "badge_color": "green",
-            "hero_summary": "is classified as EPA Zone 3 (Low Risk). Average indoor radon levels in this area are generally below 2 pCi/L. However, the EPA recommends testing all homes regardless of zone classification, as elevated levels can occur anywhere.",
+            "hero_summary": "is classified as EPA Zone 3 (Low Risk). Average indoor radon levels are usually below 2 pCi/L, so mitigation is less common, but some homes still need systems. Use local pricing only after an actual test result shows elevated radon.",
             "risk_narrative": "Homes in {countyName} have a predicted average indoor radon screening level below 2 pCi/L. This is the lowest-risk zone defined by the EPA. However, it is critical to understand that zone classifications represent county-wide averages — individual homes can and do test above the action level even in Zone 3 areas.",
             "buyer_warning": "While {countyName} is in Zone 3, a radon test during inspection is still a wise investment. Some homes in low-risk zones have tested as high as 20+ pCi/L due to localized geological features. The test is inexpensive relative to the health risk.",
             "seller_advisory": "In Zone 3 areas like {countyName}, radon testing is less commonly demanded by buyers. However, providing a clean radon test result proactively signals transparency and can be a differentiator in a competitive market.",
@@ -30,7 +30,7 @@
         "0": {
             "risk_level": "Unclassified",
             "badge_color": "gray",
-            "hero_summary": "does not have an EPA zone classification. This typically applies to newer counties, territories, or areas where sufficient geological data was unavailable at the time of the EPA's survey. Testing is always recommended.",
+            "hero_summary": "does not have an EPA zone classification. When zone data is missing, budgeting should follow your actual test result rather than county averages. Use the local cost range here after a confirmed reading shows whether mitigation is necessary.",
             "risk_narrative": "The EPA has not assigned a radon zone classification to {countyName}. This does not mean the area is safe or unsafe — it simply means the county was not included in the original EPA radon zone survey. The absence of data should be treated as a reason to test, not a reason to skip testing.",
             "buyer_warning": "Because {countyName} lacks an EPA zone classification, you cannot rely on regional averages to assess risk. A radon test during your home inspection is essential.",
             "seller_advisory": "Without zone data for {countyName}, buyers may be uncertain about radon risk. Providing a clean test result removes ambiguity and builds confidence in your listing.",

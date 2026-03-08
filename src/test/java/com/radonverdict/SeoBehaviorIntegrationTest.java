@@ -139,6 +139,41 @@ class SeoBehaviorIntegrationTest {
     }
 
     @Test
+    void countyHubUsesCostIntentSeoAndRemovesTestingCtasFromAdvisor() throws Exception {
+        mockMvc.perform(get("/radon-mitigation-cost/california/los-angeles-county"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("How Much Does Radon Mitigation Cost in Los Angeles County, CA?")))
+                .andExpect(content().string(containsString("Use Your Confirmed Radon Reading")))
+                .andExpect(content().string(containsString("Enter confirmed reading:")))
+                .andExpect(content().string(not(containsString("Get a Home Radon Monitor (~$30)"))))
+                .andExpect(content().string(not(containsString("Verify with Long-term Monitor (~$150)"))));
+    }
+
+    @Test
+    void radonLevelsCountyUsesTestingGuideSeoAndKeepsTestingAdvisorCtas() throws Exception {
+        mockMvc.perform(get("/radon-levels/missouri/st-louis-county"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("St. Louis County, MO Radon Levels, Zone Map")))
+                .andExpect(content().string(containsString("Home Testing Guide")))
+                .andExpect(content().string(containsString("Direct Answer for basement and lowest-level tests:")))
+                .andExpect(content().string(containsString("Get a Home Radon Monitor (~$30)")))
+                .andExpect(content().string(containsString("Verify with Long-term Monitor (~$150)")));
+    }
+
+    @Test
+    void stateHubsUseHumanReadableStateNamesForLevelsAndCost() throws Exception {
+        mockMvc.perform(get("/radon-mitigation-cost/california"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("California Radon Mitigation Cost by County")))
+                .andExpect(content().string(containsString("Why Does Cost Vary in California?")));
+
+        mockMvc.perform(get("/radon-levels/california"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("California Radon Map, Levels & Testing Guide")))
+                .andExpect(content().string(containsString("Check the California radon map by county")));
+    }
+
+    @Test
     void htmxReceiptEndpointSendsNoindexRobotsHeader() throws Exception {
         mockMvc.perform(post("/htmx/calculate-receipt")
                         .param("stateSlug", "california")

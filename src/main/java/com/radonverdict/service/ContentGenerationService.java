@@ -103,7 +103,7 @@ public class ContentGenerationService {
                 // 7. Assemble Final DTO
                 return CountyPageContent.builder()
                                 .indexable(isIndexable)
-                                .heroTitle("Radon Mitigation Cost in " + areaName + ", " + stateAbbr)
+                                .heroTitle("How Much Does Radon Mitigation Cost in " + areaName + ", " + stateAbbr + "?")
                                 .heroSummary(resolve(areaName + " " + zoneDesc.getHeroSummary(), ctx))
                                 .riskLevel(zoneDesc.getRiskLevel())
                                 .badgeColor(zoneDesc.getBadgeColor())

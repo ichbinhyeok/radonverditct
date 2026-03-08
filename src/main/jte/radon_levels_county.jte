@@ -46,8 +46,8 @@
 }
 
 @template.layout.main(
-    title = county.getAreaDisplayName() + ", " + county.getStateAbbr() + " Radon Levels & Zone Map | EPA 4.0 pCi/L Guide",
-    description = county.getAreaDisplayName() + ", " + county.getStateAbbr() + " radon guide with EPA zone data, what readings mean (2.0, 4.0, 8.0+ pCi/L), and practical testing and mitigation next steps.",
+    title = county.getAreaDisplayName() + ", " + county.getStateAbbr() + " Radon Levels, Zone Map & Home Testing Guide | EPA 4.0 pCi/L",
+    description = county.getAreaDisplayName() + ", " + county.getStateAbbr() + " radon guide for basement and lowest-level home tests. See EPA zone data, what 2.0, 4.0, and 8.0+ pCi/L mean, and when mitigation quotes are worth comparing.",
     canonicalUrl = canonicalUrl,
     noindex = noindex,
     headContent = @`
@@ -148,11 +148,11 @@
                     </div>
 
                     <h1 class="font-display font-black text-3xl sm:text-4xl md:text-5xl text-white leading-tight mb-6">
-                        Radon Levels in<br>${county.getAreaDisplayName()}, ${county.getStateAbbr()}
+                        Radon Levels & Zone Map in<br>${county.getAreaDisplayName()}, ${county.getStateAbbr()}
                     </h1>
 
                     <p class="text-lg text-slate-300 leading-relaxed max-w-3xl" itemscope itemtype="https://schema.org/Answer" itemprop="text">
-                        <strong class="text-white">Direct Answer:</strong> 
+                        <strong class="text-white">Direct Answer for basement and lowest-level tests:</strong> 
                         @if(county.getEpaZone() == 1)
                             ${county.getAreaDisplayName()} is classified as <strong class="text-white">EPA Zone 1 (High Risk)</strong>.
                             The predicted average indoor radon screening level exceeds 4.0 pCi/L - the EPA's recommended action threshold.

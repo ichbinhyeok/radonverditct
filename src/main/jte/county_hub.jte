@@ -19,9 +19,16 @@
 @param boolean monetizationHooksEnabled = false
 @param boolean showSeoDebug = false
 
+!{
+    final String countyDisplay = county.getAreaDisplayName() + ", " + county.getStateAbbr();
+    final int currentYear = java.time.LocalDate.now().getYear();
+    final String seoTitle = "How Much Does Radon Mitigation Cost in " + countyDisplay + "? | " + currentYear + " Price Range";
+    final String seoDescription = "See the typical radon mitigation price range in " + countyDisplay + " for basement, slab, and crawl space homes. Built for homeowners who already have a radon test result and need local quote context.";
+}
+
 @template.layout.main(
-    title = page.getHeroTitle(),
-    description = page.getHeroSummary(),
+    title = seoTitle,
+    description = seoDescription,
     canonicalUrl = canonicalUrl,
     noindex = !page.isIndexable(),
     headContent = @`
@@ -48,9 +55,9 @@
             {
                 "@context": "https://schema.org",
                 "@type": "WebPage",
-                "name": $unsafe{JsonLdUtils.json("Radon Mitigation Cost in " + county.getAreaDisplayName() + ", " + county.getStateAbbr())},
+                "name": $unsafe{JsonLdUtils.json(seoTitle)},
                 "url": $unsafe{JsonLdUtils.json(canonicalUrl != null ? canonicalUrl : "https://radonverdict.com/radon-mitigation-cost/" + county.getStateSlug() + "/" + county.getCountySlug())},
-                "description": $unsafe{JsonLdUtils.json(page.getHeroSummary())}
+                "description": $unsafe{JsonLdUtils.json(seoDescription)}
             }
         </script>
         <script type="application/ld+json">
@@ -104,7 +111,7 @@
                 
                 <!-- Left Column (Simulator + Details) -->
                 <div class="lg:col-span-5 order-1">
-                    @template.components.radon_level_advisor(county = county)
+                    @template.components.radon_level_advisor(county = county, costMode = true)
                     @template.components.simulator_form(county = county)
                     
                     <!-- Foundation Context (Updates dynamically if we made this HTMX too, but for now static default) -->

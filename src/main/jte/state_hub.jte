@@ -6,9 +6,32 @@
 @param List<County> counties
 @param boolean noindex = false
 
+!{
+    String[] stateSlugParts = stateSlug.split("-");
+    StringBuilder stateNameBuilder = new StringBuilder();
+    for (int i = 0; i < stateSlugParts.length; i++) {
+        String part = stateSlugParts[i];
+        if (part == null || part.isBlank()) {
+            continue;
+        }
+        String normalized = part.toLowerCase(java.util.Locale.ROOT);
+        String displayPart;
+        if (i > 0 && ("of".equals(normalized) || "and".equals(normalized))) {
+            displayPart = normalized;
+        } else {
+            displayPart = normalized.substring(0, 1).toUpperCase(java.util.Locale.ROOT) + normalized.substring(1);
+        }
+        if (stateNameBuilder.length() > 0) {
+            stateNameBuilder.append(" ");
+        }
+        stateNameBuilder.append(displayPart);
+    }
+    final String stateName = stateNameBuilder.length() > 0 ? stateNameBuilder.toString() : stateAbbr;
+}
+
 @template.layout.main(
-    title = stateAbbr + " Radon Mitigation Costs - " + java.time.LocalDate.now().getYear(),
-    description = "View estimated radon mitigation costs and local contractor pricing for " + stateAbbr + " counties.",
+    title = stateName + " Radon Mitigation Cost by County (" + java.time.LocalDate.now().getYear() + ") | Local Price Guide",
+    description = "Compare " + stateName + " radon mitigation cost ranges by county for basement, slab, and crawl space homes. Built for homeowners who already have a radon test result and need local quote context.",
     canonicalUrl = "https://radonverdict.com/radon-mitigation-cost/" + stateSlug,
     noindex = noindex,
     content = @`
@@ -18,20 +41,20 @@
                 <ol class="inline-flex items-center space-x-2">
                     <li><a href="/" class="hover:text-slate-900 transition-colors">Home</a></li>
                     <li><span class="mx-1 text-slate-300">/</span></li>
-                    <li class="text-slate-900 font-semibold" aria-current="page">${stateAbbr}</li>
+                    <li class="text-slate-900 font-semibold" aria-current="page">${stateName}</li>
                 </ol>
             </nav>
 
             <div class="text-center mb-16">
                 <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold tracking-wider uppercase bg-brand-50 text-brand-700 border border-brand-200 mb-6 shadow-sm">
                     <span class="w-2 h-2 rounded-full bg-brand-500"></span>
-                    State Overview
+                    ${stateName} Price Guide
                 </span>
-                <h1 class="font-display font-black text-4xl sm:text-5xl lg:text-6xl text-slate-900 tracking-tighter leading-tight mb-6 uppercase">
-                    ${stateAbbr}
+                <h1 class="font-display font-black text-4xl sm:text-5xl lg:text-6xl text-slate-900 tracking-tighter leading-tight mb-6">
+                    ${stateName} Radon Mitigation Cost by County
                 </h1>
                 <p class="text-slate-500 text-lg sm:text-xl leading-relaxed font-medium max-w-2xl mx-auto">
-                    Select your county below to view itemized mitigation estimates, regional labor rates, and EPA zone risk factors.
+                    Compare typical local price ranges for basement, slab, and crawl space systems. Start with your county if you already have a radon result and need realistic quote context.
                 </p>
             </div>
 
@@ -81,8 +104,8 @@
                         </svg>
                     </div>
                     <div>
-                        <h3 class="font-display font-extrabold text-2xl text-slate-900 tracking-tight mb-2">Why Does Cost Vary in ${stateAbbr}?</h3>
-                        <p class="text-slate-600 font-medium leading-relaxed">Cost estimates across ${stateAbbr} range due to local labor market conditions and specific EPA zone profiles. Foundation types (basement vs slab) also heavily impact material costs and permit requirements. Choose your specific county to narrow down your estimate bounds.</p>
+                        <h3 class="font-display font-extrabold text-2xl text-slate-900 tracking-tight mb-2">Why Does Cost Vary in ${stateName}?</h3>
+                        <p class="text-slate-600 font-medium leading-relaxed">Price ranges across ${stateName} move with local labor rates, permit friction, roofline routing, and foundation type. County pages narrow this down for homeowners comparing basement, slab, or crawl space mitigation after a confirmed radon reading.</p>
                     </div>
                 </div>
             </div>

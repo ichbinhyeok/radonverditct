@@ -33,8 +33,8 @@
 }
 
 @template.layout.main(
-    title = stateName + " Radon Zone Map by County (" + java.time.LocalDate.now().getYear() + ") | EPA 4.0 pCi/L Guide",
-    description = "Interactive " + stateName + " radon zone map with county-level EPA data. Check risk tier, understand the 4.0 pCi/L action threshold, and see testing and mitigation next steps.",
+    title = stateName + " Radon Map, Levels & Testing Guide by County (" + java.time.LocalDate.now().getYear() + ") | EPA 4.0 pCi/L",
+    description = "Check the " + stateName + " radon map by county, see what 2.0 to 8.0+ pCi/L readings mean, and decide when home testing or mitigation quotes make sense.",
     canonicalUrl = "https://radonverdict.com/radon-levels/" + stateSlug,
     noindex = noindex,
     content = @`
@@ -45,7 +45,7 @@
                 <ol class="inline-flex items-center space-x-2">
                     <li><a href="/" class="hover:text-slate-900 transition-colors">Home</a></li>
                     <li><span class="mx-1 text-slate-300">/</span></li>
-                    <li class="text-slate-900 font-semibold" aria-current="page">${stateName} Radon Levels</li>
+                    <li class="text-slate-900 font-semibold" aria-current="page">${stateName} Radon Map</li>
                 </ol>
             </nav>
 
@@ -56,9 +56,9 @@
                     EPA Zone Data ${java.time.LocalDate.now().getYear()}
                 </div>
 
-                <h1 class="font-display font-black text-4xl sm:text-5xl text-slate-900 mb-4">${stateName} Radon Levels</h1>
+                <h1 class="font-display font-black text-4xl sm:text-5xl text-slate-900 mb-4">${stateName} Radon Map, Levels & Testing Guide</h1>
                 <p class="text-lg text-slate-600 max-w-2xl mx-auto">
-                    View EPA radon zone classifications for every county in ${stateName}. Select your county to see detailed risk data, testing recommendations, and mitigation cost estimates.
+                    View EPA radon zone classifications for every county in ${stateName}. Open your county to compare basement test meaning, EPA action thresholds, and when mitigation pricing becomes worth checking.
                 </p>
             </div>
 
