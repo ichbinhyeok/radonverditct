@@ -24,7 +24,7 @@
                     ${java.time.LocalDate.now().getYear()} Data Updated
                 </span>
                 
-                <h1 class="font-display font-black text-4xl sm:text-5xl lg:text-6xl text-white tracking-tighter leading-tight mb-6">
+                <h1 class="font-display font-black text-3xl sm:text-5xl lg:text-6xl text-white tracking-tighter leading-tight mb-6">
                     Radon Mitigation Cost <br class="hidden sm:block"/><span class="text-slate-400">Calculator</span>
                 </h1>
                 
@@ -69,10 +69,10 @@
                     <p class="mt-2 text-slate-500 font-medium">Select your state to find customized mitigation costs for your county.</p>
                 </div>
                 
-                <div class="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-3">
+                <div class="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-4 px-1 sm:px-0">
                     @for(String stateAbbr : stateMap.keySet())
                         <a href="/radon-mitigation-cost/${stateMap.get(stateAbbr).get(0).getStateSlug()}" 
-                           class="flex flex-col items-center justify-center py-4 bg-white rounded-xl shadow-sm border border-slate-200 hover:border-brand-300 hover:shadow-md hover:bg-brand-50 transition-all group">
+                           class="flex min-h-[68px] flex-col items-center justify-center py-4 bg-white rounded-xl shadow-sm border border-slate-200 hover:border-brand-300 hover:shadow-md hover:bg-brand-50 transition-all group">
                             <span class="font-display font-bold text-slate-700 group-hover:text-brand-700 text-lg">${stateAbbr}</span>
                         </a>
                     @endfor

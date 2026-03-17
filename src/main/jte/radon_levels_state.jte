@@ -56,7 +56,7 @@
                     EPA Zone Data ${java.time.LocalDate.now().getYear()}
                 </div>
 
-                <h1 class="font-display font-black text-4xl sm:text-5xl text-slate-900 mb-4">${stateName} Radon Map, Levels & Testing Guide</h1>
+                <h1 class="font-display font-black text-3xl sm:text-5xl text-slate-900 mb-4">${stateName} Radon Map, Levels & Testing Guide</h1>
                 <p class="text-lg text-slate-600 max-w-2xl mx-auto">
                     View EPA radon zone classifications for every county in ${stateName}. Open your county to compare basement test meaning, EPA action thresholds, and when mitigation pricing becomes worth checking.
                 </p>
@@ -78,8 +78,29 @@
                 </div>
             </div>
 
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-10">
+                <a href="/radon-mitigation-cost/${stateSlug}"
+                   class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm hover:border-slate-900 hover:shadow-md transition-all">
+                    <p class="text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">Already Tested</p>
+                    <h2 class="font-display font-bold text-lg text-slate-900 mb-2">View ${stateName} Cost Estimates</h2>
+                    <p class="text-sm text-slate-600 leading-relaxed">If you already have a radon result, skip the directory and move straight to local price guidance.</p>
+                </a>
+                <a href="/guides/how-to-test-for-radon"
+                   class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm hover:border-emerald-300 hover:shadow-md transition-all">
+                    <p class="text-xs font-bold uppercase tracking-wider text-emerald-600 mb-2">Need a Number First</p>
+                    <h2 class="font-display font-bold text-lg text-slate-900 mb-2">Read the Testing Guide</h2>
+                    <p class="text-sm text-slate-600 leading-relaxed">Use the fastest valid radon test setup before you compare quotes or ask whether mitigation is worth it.</p>
+                </a>
+                <a href="#county-directory"
+                   class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm hover:border-indigo-300 hover:shadow-md transition-all">
+                    <p class="text-xs font-bold uppercase tracking-wider text-indigo-600 mb-2">Browse Counties</p>
+                    <h2 class="font-display font-bold text-lg text-slate-900 mb-2">Jump to the Directory</h2>
+                    <p class="text-sm text-slate-600 leading-relaxed">Open your county to see its EPA zone, testing meaning, and the point where mitigation becomes worth pricing.</p>
+                </a>
+            </div>
+
             <!-- County Directory -->
-            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+            <div id="county-directory" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
                 @for(var c : counties)
                     <a href="/radon-levels/${c.getStateSlug()}/${c.getCountySlug()}"
                        class="flex items-center justify-between p-4 rounded-xl bg-white border border-slate-200 hover:border-indigo-300 hover:shadow-md transition-all group">

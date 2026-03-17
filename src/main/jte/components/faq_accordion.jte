@@ -9,7 +9,7 @@
             <div class="py-5" x-data="{ id: ${i}, get isOpen() { return this.active === this.id } }">
                 <button 
                     @click="active = isOpen ? null : id"
-                    class="flex w-full items-center justify-between text-left focus:outline-none group">
+                    class="tap-target flex w-full items-center justify-between text-left focus:outline-none group py-1">
                     <span class="font-medium text-slate-900 group-hover:text-amber-600 transition-colors duration-200">
                         ${page.getFaqs().get(i).getQuestion()}
                     </span>
@@ -25,7 +25,7 @@
                     </span>
                 </button>
                 <div x-show="isOpen" 
-                    x-collapse 
+                    x-transition.opacity.duration.200ms
                     x-cloak
                     class="prose prose-slate prose-sm mt-4 text-slate-600 leading-relaxed font-medium">
                     <p>${page.getFaqs().get(i).getAnswer()}</p>

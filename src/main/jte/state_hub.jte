@@ -50,7 +50,7 @@
                     <span class="w-2 h-2 rounded-full bg-brand-500"></span>
                     ${stateName} Price Guide
                 </span>
-                <h1 class="font-display font-black text-4xl sm:text-5xl lg:text-6xl text-slate-900 tracking-tighter leading-tight mb-6">
+                <h1 class="font-display font-black text-3xl sm:text-5xl lg:text-6xl text-slate-900 tracking-tighter leading-tight mb-6">
                     ${stateName} Radon Mitigation Cost by County
                 </h1>
                 <p class="text-slate-500 text-lg sm:text-xl leading-relaxed font-medium max-w-2xl mx-auto">
@@ -58,8 +58,29 @@
                 </p>
             </div>
 
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-10">
+                <a href="/radon-cost-calculator"
+                   class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm hover:border-brand-300 hover:shadow-md transition-all">
+                    <p class="text-xs font-bold uppercase tracking-wider text-brand-700 mb-2">Fastest Start</p>
+                    <h2 class="font-display font-bold text-lg text-slate-900 mb-2">Use ZIP Instead of Scrolling</h2>
+                    <p class="text-sm text-slate-600 leading-relaxed">If you know the property ZIP, jump straight to the right county estimate instead of browsing the full state list.</p>
+                </a>
+                <a href="/radon-levels/${stateSlug}"
+                   class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm hover:border-indigo-300 hover:shadow-md transition-all">
+                    <p class="text-xs font-bold uppercase tracking-wider text-indigo-600 mb-2">Validate the Risk</p>
+                    <h2 class="font-display font-bold text-lg text-slate-900 mb-2">Check ${stateAbbr} Radon Levels</h2>
+                    <p class="text-sm text-slate-600 leading-relaxed">If you do not have a confirmed radon result yet, review EPA zone context before you compare mitigation pricing.</p>
+                </a>
+                <a href="#county-pricing"
+                   class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm hover:border-emerald-300 hover:shadow-md transition-all">
+                    <p class="text-xs font-bold uppercase tracking-wider text-emerald-600 mb-2">Browse Counties</p>
+                    <h2 class="font-display font-bold text-lg text-slate-900 mb-2">Jump to County Pricing</h2>
+                    <p class="text-sm text-slate-600 leading-relaxed">Open your county if you already know the area and just need a local basement, slab, or crawl-space price range.</p>
+                </a>
+            </div>
+
             <!-- County Grid -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mb-24">
+            <div id="county-pricing" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mb-24">
                 @for(County county : counties)
                     <a href="/radon-mitigation-cost/${stateSlug}/${county.getCountySlug()}" 
                        class="flex items-center justify-between p-4 bg-white rounded-xl shadow-sm border border-slate-200 hover:border-brand-400 hover:shadow-md hover:bg-brand-50 transition-all group">

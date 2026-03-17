@@ -22,7 +22,7 @@
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
 
-      gtag('config', 'G-7C2TPP3S8N');
+      gtag('config', 'G-7C2TPP3S8N', { send_page_view: false });
     </script>
     <script>
       (function () {
@@ -44,10 +44,44 @@
           }).catch(function () {});
         }
 
-        window.rvTrack = function (eventName, payload) {
+        function getPageContext() {
+          const path = window.location.pathname || '/';
+          const segments = path.split('/').filter(Boolean);
+          const context = {
+            title: document.title,
+            page_path: path
+          };
+
+          if (segments.length === 0) {
+            context.page_type = 'home';
+            return context;
+          }
+
+          if (segments[0] === 'radon-levels') {
+            context.page_type = segments.length >= 3 ? 'levels_county' : segments.length === 2 ? 'levels_state' : 'levels_index';
+          } else if (segments[0] === 'radon-mitigation-cost') {
+            context.page_type = segments.length >= 3 ? 'cost_county' : segments.length === 2 ? 'cost_state' : 'cost_index';
+          } else if (segments[0] === 'guides') {
+            context.page_type = segments.length >= 2 ? 'guide_article' : 'guides_index';
+          } else {
+            context.page_type = segments[0];
+          }
+
+          if ((segments[0] === 'radon-levels' || segments[0] === 'radon-mitigation-cost') && segments.length >= 2) {
+            context.state = segments[1];
+          }
+          if ((segments[0] === 'radon-levels' || segments[0] === 'radon-mitigation-cost') && segments.length >= 3) {
+            context.county = segments[2];
+          }
+
+          return context;
+        }
+
+        window.rvTrack = function (eventName, payload, options) {
           const safePayload = payload || {};
           if (typeof gtag === 'function') {
-            gtag('event', eventName, safePayload);
+            const gtagPayload = Object.assign({}, safePayload, options || {});
+            gtag('event', eventName, gtagPayload);
           }
           sendServerEvent({
             event: eventName,
@@ -70,7 +104,7 @@
         }
 
         document.addEventListener('DOMContentLoaded', function () {
-          window.rvTrack('page_view', { title: document.title });
+          window.rvTrack('page_view', getPageContext());
 
           window.addEventListener('scroll', trackScrollDepth, { passive: true });
 
@@ -159,6 +193,7 @@
     
     <!-- Pre-built locally hosted Tailwind CSS -->
     <link href="/css/style.css" rel="stylesheet">
+    <link href="/css/mobile-overrides.css" rel="stylesheet">
     
     <!-- HTMX & Alpine.js -->
     <script src="https://unpkg.com/htmx.org@1.9.10"></script>
@@ -167,18 +202,43 @@
 <body class="bg-slate-50 text-slate-800 font-sans antialiased selection:bg-brand-900 selection:text-white flex flex-col min-h-screen">
     
     <!-- Glassmorphism Navbar -->
-    <header class="sticky top-0 z-50 glass-header">
-        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-            <a href="/" class="flex items-center gap-2 group">
+    <header x-data="{ mobileNavOpen: false }" class="sticky top-0 z-50 glass-header">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 min-h-16 flex items-center justify-between gap-3">
+            <a href="/" class="tap-target-inline flex items-center gap-2 group rounded-xl">
                 <div class="w-8 h-8 rounded-lg bg-slate-900 text-white flex items-center justify-center font-display font-bold text-lg shadow-sm group-hover:bg-slate-700 transition-colors">
                     R
                 </div>
                 <span class="font-display font-bold text-xl tracking-tight text-slate-900">Radon<span class="text-slate-400">Verdict</span></span>
             </a>
             <nav class="hidden md:flex gap-6 text-sm font-medium text-slate-500">
-                <a href="/radon-cost-calculator" class="hover:text-slate-900 transition-colors">Cost Calculator</a>
-                <a href="/guides" class="hover:text-slate-900 transition-colors">Guides</a>
-                <a href="/about" class="hover:text-slate-900 transition-colors">About</a>
+                <a href="/radon-cost-calculator" class="tap-target-inline hover:text-slate-900 transition-colors">Cost Calculator</a>
+                <a href="/guides" class="tap-target-inline hover:text-slate-900 transition-colors">Guides</a>
+                <a href="/about" class="tap-target-inline hover:text-slate-900 transition-colors">About</a>
+            </nav>
+            <button type="button"
+                    @click="mobileNavOpen = !mobileNavOpen"
+                    :aria-expanded="mobileNavOpen.toString()"
+                    aria-controls="mobile-nav-panel"
+                    aria-label="Toggle navigation"
+                    class="tap-target md:hidden inline-flex items-center justify-center rounded-xl border border-slate-200 bg-white/80 text-slate-700 shadow-sm transition-colors hover:bg-white hover:text-slate-900">
+                <svg x-show="!mobileNavOpen" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M4 7h16M4 12h16M4 17h16" />
+                </svg>
+                <svg x-show="mobileNavOpen" x-cloak class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+        </div>
+        <div id="mobile-nav-panel"
+             x-show="mobileNavOpen"
+             x-transition.opacity.duration.150ms
+             x-cloak
+             class="md:hidden border-t border-slate-200/80 bg-white/95 backdrop-blur-sm">
+            <nav class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex flex-col">
+                <a href="/radon-cost-calculator" class="tap-target-inline rounded-xl px-3 text-slate-700 hover:bg-slate-100 hover:text-slate-900">Cost Calculator</a>
+                <a href="/guides" class="tap-target-inline rounded-xl px-3 text-slate-700 hover:bg-slate-100 hover:text-slate-900">Guides</a>
+                <a href="/about" class="tap-target-inline rounded-xl px-3 text-slate-700 hover:bg-slate-100 hover:text-slate-900">About</a>
+                <a href="/contact" class="tap-target-inline rounded-xl px-3 text-slate-700 hover:bg-slate-100 hover:text-slate-900">Contact</a>
             </nav>
         </div>
     </header>
@@ -201,24 +261,27 @@
                 <div>
                     <h4 class="font-bold text-slate-900 mb-4 text-sm uppercase tracking-wider">Company</h4>
                     <ul class="space-y-3 text-sm font-medium text-slate-500">
-                        <li><a href="/about" class="hover:text-indigo-600 transition-colors">About Us</a></li>
-                        <li><a href="/contact" class="hover:text-indigo-600 transition-colors">Contact</a></li>
-                        <li><a href="/radon-cost-calculator" class="hover:text-indigo-600 transition-colors">Cost Calculator</a></li>
-                        <li><a href="/guides" class="hover:text-indigo-600 transition-colors">Guides</a></li>
-                        <li><a href="/guides/how-to-test-for-radon" class="hover:text-indigo-600 transition-colors">How to Test for Radon</a></li>
+                        <li><a href="/about" class="tap-target-inline hover:text-indigo-600 transition-colors">About Us</a></li>
+                        <li><a href="/contact" class="tap-target-inline hover:text-indigo-600 transition-colors">Contact</a></li>
+                        <li><a href="/radon-cost-calculator" class="tap-target-inline hover:text-indigo-600 transition-colors">Cost Calculator</a></li>
+                        <li><a href="/guides" class="tap-target-inline hover:text-indigo-600 transition-colors">Guides</a></li>
+                        <li><a href="/guides/how-to-test-for-radon" class="tap-target-inline hover:text-indigo-600 transition-colors">How to Test for Radon</a></li>
                     </ul>
                 </div>
                 <div>
                     <h4 class="font-bold text-slate-900 mb-4 text-sm uppercase tracking-wider">Legal</h4>
                     <ul class="space-y-3 text-sm font-medium text-slate-500">
-                        <li><a href="/privacy" class="hover:text-indigo-600 transition-colors">Privacy Policy</a></li>
-                        <li><a href="/terms" class="hover:text-indigo-600 transition-colors">Terms of Service</a></li>
+                        <li><a href="/privacy" class="tap-target-inline hover:text-indigo-600 transition-colors">Privacy Policy</a></li>
+                        <li><a href="/terms" class="tap-target-inline hover:text-indigo-600 transition-colors">Terms of Service</a></li>
                     </ul>
                 </div>
             </div>
             <div class="border-t border-slate-100 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
                 <div class="text-xs text-slate-400 font-medium">
                     &copy; ${java.time.LocalDate.now().getYear()} RadonVerdict. Not affiliated with the US EPA or any government agency.
+                </div>
+                <div class="text-xs text-slate-400 font-medium text-center md:text-right">
+                    As an Amazon Associate, RadonVerdict earns from qualifying purchases.
                 </div>
             </div>
         </div>

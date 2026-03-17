@@ -19,6 +19,31 @@
 @param boolean monetizationHooksEnabled = false
 @param boolean showSeoDebug = false
 !{
+    final boolean priorityCtrCounty =
+            ("new-york".equals(county.getStateSlug()) && "schenectady-county".equals(county.getCountySlug()))
+                    || ("nevada".equals(county.getStateSlug()) && "clark-county".equals(county.getCountySlug()))
+                    || ("massachusetts".equals(county.getStateSlug()) && "franklin-county".equals(county.getCountySlug()))
+                    || ("virginia".equals(county.getStateSlug()) && "falls-church-city".equals(county.getCountySlug()))
+                    || ("maryland".equals(county.getStateSlug()) && "howard-county".equals(county.getCountySlug()))
+                    || ("florida".equals(county.getStateSlug()) && "miami-dade-county".equals(county.getCountySlug()));
+
+    final String seoTitle = priorityCtrCounty
+            ? county.getAreaDisplayName() + ", " + county.getStateAbbr() + " Radon Levels Map, EPA Zone & Basement Testing Guide"
+            : county.getAreaDisplayName() + ", " + county.getStateAbbr() + " Radon Levels, Zone Map & Home Testing Guide | EPA 4.0 pCi/L";
+
+    final String seoDescription = priorityCtrCounty
+            ? "Check the EPA radon zone for " + county.getAreaDisplayName() + ", " + county.getStateAbbr()
+            + ", what a 4.0+ pCi/L result means, how to test the basement or lowest lived-in level, and when to compare mitigation costs."
+            : county.getAreaDisplayName() + ", " + county.getStateAbbr() + " radon guide for basement and lowest-level home tests. See EPA zone data, what 2.0, 4.0, and 8.0+ pCi/L mean, and when mitigation quotes are worth comparing.";
+
+    final String heroTitle = priorityCtrCounty
+            ? "Radon Levels Map, EPA Zone & Basement Testing in " + county.getAreaDisplayName() + ", " + county.getStateAbbr()
+            : "Radon Levels & Zone Map in " + county.getAreaDisplayName() + ", " + county.getStateAbbr();
+
+    final String directAnswerLead = priorityCtrCounty
+            ? "Short answer for homeowners, buyers, and sellers: "
+            : "Direct Answer for basement and lowest-level tests: ";
+
     String averageLevelAnswerBase;
     if (county.getEpaZone() == 1) {
         averageLevelAnswerBase = county.getAreaDisplayName() + " is classified as EPA Zone 1 (High Risk). The predicted average indoor radon screening level exceeds 4.0 pCi/L, which is above the EPA action level.";
@@ -46,8 +71,8 @@
 }
 
 @template.layout.main(
-    title = county.getAreaDisplayName() + ", " + county.getStateAbbr() + " Radon Levels, Zone Map & Home Testing Guide | EPA 4.0 pCi/L",
-    description = county.getAreaDisplayName() + ", " + county.getStateAbbr() + " radon guide for basement and lowest-level home tests. See EPA zone data, what 2.0, 4.0, and 8.0+ pCi/L mean, and when mitigation quotes are worth comparing.",
+    title = seoTitle,
+    description = seoDescription,
     canonicalUrl = canonicalUrl,
     noindex = noindex,
     headContent = @`
@@ -147,12 +172,10 @@
                         @endif
                     </div>
 
-                    <h1 class="font-display font-black text-3xl sm:text-4xl md:text-5xl text-white leading-tight mb-6">
-                        Radon Levels & Zone Map in<br>${county.getAreaDisplayName()}, ${county.getStateAbbr()}
-                    </h1>
+                    <h1 class="font-display font-black text-3xl sm:text-4xl md:text-5xl text-white leading-tight mb-6">${heroTitle}</h1>
 
                     <p class="text-lg text-slate-300 leading-relaxed max-w-3xl" itemscope itemtype="https://schema.org/Answer" itemprop="text">
-                        <strong class="text-white">Direct Answer for basement and lowest-level tests:</strong> 
+                        <strong class="text-white">${directAnswerLead}</strong>
                         @if(county.getEpaZone() == 1)
                             ${county.getAreaDisplayName()} is classified as <strong class="text-white">EPA Zone 1 (High Risk)</strong>.
                             The predicted average indoor radon screening level exceeds 4.0 pCi/L - the EPA's recommended action threshold.
@@ -171,6 +194,48 @@
                             <strong class="text-slate-200">Use a short-term kit first, then follow up with mitigation planning if results are elevated.</strong>
                         @endif
                     </p>
+                </div>
+            </div>
+
+            <!-- Quick Next Steps -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-10">
+                <a href="/radon-mitigation-cost/${county.getStateSlug()}/${county.getCountySlug()}"
+                   class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm hover:border-brand-300 hover:shadow-md transition-all">
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-50 text-brand-700 text-xs font-bold tracking-wider uppercase mb-3">
+                        Next Step
+                    </div>
+                    <h2 class="font-display font-bold text-xl text-slate-900 mb-2">Already Have a Reading?</h2>
+                    <p class="text-sm text-slate-600 leading-relaxed mb-4">
+                        If your home tested near or above 4.0 pCi/L, jump straight to a ${county.getAreaDisplayName()} cost estimate before you contact contractors.
+                    </p>
+                    <span class="inline-flex items-center gap-2 text-sm font-bold text-brand-700">
+                        Get Local Mitigation Cost
+                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+                        </svg>
+                    </span>
+                </a>
+                <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-50 text-emerald-700 text-xs font-bold tracking-wider uppercase mb-3">
+                        Test First
+                    </div>
+                    <h2 class="font-display font-bold text-xl text-slate-900 mb-2">Need to Test Before You Price?</h2>
+                    <p class="text-sm text-slate-600 leading-relaxed mb-4">
+                        Start with the testing guide if you do not have a confirmed number yet, or use a short-term kit to screen the lowest lived-in level first.
+                    </p>
+                    <div class="flex flex-col sm:flex-row gap-3">
+                        <a href="/guides/how-to-test-for-radon"
+                           class="inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-slate-900 text-white text-sm font-bold hover:bg-slate-800 transition-colors">
+                            Read Testing Guide
+                        </a>
+                        <a href="https://www.amazon.com/s?k=radon+test+kit+charcoal&tag=radonverdict-20"
+                           onclick="window.rvTrack && window.rvTrack('affiliate_link_click', { label: 'levels_quick_short_term_kit', county: '${county.getCountySlug()}', state: '${county.getStateSlug()}' });"
+                           target="_blank"
+                           rel="noopener sponsored nofollow"
+                           class="inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl border border-slate-200 text-slate-700 text-sm font-bold hover:border-emerald-300 hover:text-emerald-700 transition-colors">
+                            Shop Short-Term Kit
+                        </a>
+                    </div>
                 </div>
             </div>
 

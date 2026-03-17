@@ -84,7 +84,7 @@
         </script>
     `,
     content = @`
-        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10 pb-36 lg:pb-10">
             
             <!-- Breadcrumbs -->
             <nav class="text-sm font-medium text-slate-500 mb-8" aria-label="Breadcrumb">

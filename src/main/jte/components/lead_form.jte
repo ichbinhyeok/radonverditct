@@ -92,14 +92,49 @@
                     <form action="/submit-lead" method="POST" class="space-y-4"
                           x-data="{ 
                               hasStartedForm: false,
+                              isSubmitting: false,
                               trackFormStart() {
                                   if (!this.hasStartedForm && typeof rvTrack === 'function') {
                                       this.hasStartedForm = true;
                                       rvTrack('lead_form_start', { event_category: 'engagement', event_label: '${county.getCountySlug()}' });
                                   }
+                              },
+                              submitAfterTracking(event) {
+                                  if (this.isSubmitting) {
+                                      return;
+                                  }
+
+                                  this.isSubmitting = true;
+                                  const form = event.target;
+                                  const submitForm = () => {
+                                      if (form.dataset.trackingSubmitted === 'true') {
+                                          return;
+                                      }
+                                      form.dataset.trackingSubmitted = 'true';
+                                      HTMLFormElement.prototype.submit.call(form);
+                                  };
+
+                                  if (typeof rvTrack !== 'function') {
+                                      submitForm();
+                                      return;
+                                  }
+
+                                  const trackingPayload = {
+                                      event_category: 'conversion',
+                                      event_label: '${county.getCountySlug()}'
+                                  };
+                                  const trackingOptions = {
+                                      transport_type: 'beacon',
+                                      event_timeout: 800,
+                                      event_callback: submitForm
+                                  };
+
+                                  rvTrack('lead_form_submit', trackingPayload, { transport_type: 'beacon' });
+                                  rvTrack('qualify_lead', trackingPayload, trackingOptions);
+                                  window.setTimeout(submitForm, 800);
                               }
                           }"
-                          @submit="if(typeof rvTrack === 'function'){ rvTrack('lead_form_submit', { event_category: 'conversion', event_label: '${county.getCountySlug()}' }); rvTrack('qualify_lead', { event_category: 'conversion', event_label: '${county.getCountySlug()}' }); }"
+                          @submit.prevent="submitAfterTracking($event)"
                     >
                         
                         <!-- Hidden Tracking Fields -->

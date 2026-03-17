@@ -151,6 +151,203 @@ Practical approach:
 
 ---
 
+## 2026-03-17 Tracking Checkpoint
+
+Date range note:
+- Search Console check window used today: 2026-03-07 to 2026-03-14.
+- GA4 check window used today: 2026-03-10 to 2026-03-16.
+
+### 1) What We Saw
+
+Search Console:
+- Total clicks: 64
+- Total impressions: 5,724
+- CTR: 1.12%
+- Average position: 9.90
+
+GA4 (property: 525547689):
+- Active users: 133
+- Sessions: 144
+- Engaged sessions: 95
+- Screen/page views: 294
+- Bounce rate: 34.0%
+- Average session duration: about 90.4s
+
+Channel split in GA4:
+- Organic Search: 79 sessions / 69 active users / 60 engaged sessions
+- Direct: 58 sessions / 58 active users / 33 engaged sessions
+- Unassigned: 15 sessions / 14 active users / 2 engaged sessions
+
+Observed event picture:
+- Confirmed in GA4 during the check window:
+  - `estimator_start`: 2
+  - `estimator_step_complete`: 2
+  - `estimator_result_viewed`: 2
+  - `affiliate_link_click`: 4
+- Lead custom events still looked under-reported in GA4 during the same window.
+- GA4 automatic form events were still appearing (`form_start`: 3, `form_submit`: 1), which suggested the custom conversion events needed a more reliable submit flow.
+
+Interpretation:
+- Search visibility is still moving in the right direction.
+- GA4 is live and usable for traffic reading.
+- The main operational issue today was tracking quality, not traffic collapse.
+
+### 2) What We Changed Today
+
+Goal:
+- Reduce tracking ambiguity before the next lead-quality review.
+
+Changes:
+- Updated:
+  - `src/main/jte/layout/main.jte`
+  - `src/main/jte/components/lead_form.jte`
+  - `src/main/jte/radon_levels_county.jte`
+
+Behavior change:
+- Disabled GA4 automatic page-view sending in `gtag('config', ...)` and kept `page_view` under the custom `rvTrack` layer only.
+- Added richer `page_view` payload context:
+  - `page_path`
+  - `page_type`
+  - `state`
+  - `county`
+- Changed lead form submit handling so conversion events fire before navigation:
+  - `lead_form_submit`
+  - `qualify_lead`
+- Used beacon-style delivery plus a guarded delayed submit fallback so the form still completes even if the callback does not fire.
+
+Why this matters:
+- `page_view` is a KPI denominator in the tracking spec; it should not be inflated by mixed auto + custom counting.
+- Lead conversion events were implemented in code already, but needed a safer pre-redirect submission pattern to improve capture reliability.
+
+CTR follow-up added the same day:
+- Chose to avoid a broad internal-link rewrite for now.
+- Instead, narrowed the content pass to 3 county `radon-levels` pages that already showed impressions and page-1 / near-page-1 visibility:
+  - `schenectady-county`
+  - `clark-county`
+  - `franklin-county`
+- Added a second same-day micro-batch of 3 county `radon-levels` pages for the same SERP-facing CTR test pattern:
+  - `falls-church-city`
+  - `howard-county`
+  - `miami-dade-county`
+- Tightened only the highest-leverage SERP-facing elements for those county pages:
+  - title
+  - meta description
+  - hero headline
+  - hero opening answer label
+
+CTR-specific intent:
+- Push these pages toward a clearer "EPA zone + basement testing + what 4.0+ means" answer framing.
+- Keep the pass small enough that future CTR movement can be attributed to this change rather than a broad site rewrite.
+
+Mobile CTA follow-up added the same day after iPhone SE review:
+- Reviewed these templates/pages in Playwright at `375x667`:
+  - county `radon-levels`
+  - state `radon-levels`
+  - county `radon-mitigation-cost`
+  - state `radon-mitigation-cost`
+  - `/radon-cost-calculator`
+  - `/guides/how-to-test-for-radon`
+- Main finding:
+  - mobile bottleneck was not visual breakage
+  - mobile bottleneck was CTA timing on `radon-levels` and directory-style state hubs
+- Observed live-state CTA depth before local patch:
+  - county `radon-levels` first strong cost CTA was roughly `9.6` viewports down
+  - state `radon-levels` first cost CTA was roughly `8.3` viewports down
+  - county `radon-mitigation-cost` first strong CTA was roughly `4.4` viewports down
+  - `/radon-cost-calculator` first CTA was roughly `0.7` viewports down
+- Applied structural mobile-first CTA changes to common templates:
+  - `src/main/jte/radon_levels_county.jte`
+  - `src/main/jte/radon_levels_state.jte`
+  - `src/main/jte/state_hub.jte`
+- What changed:
+  - county `radon-levels`
+    - added an above-the-fold "Already Have a Reading?" card linked to county cost
+    - added an early "Need to Test Before You Price?" card linked to the testing guide and short-term kit
+  - state `radon-levels`
+    - moved decision paths ahead of the county directory
+    - added early actions for county browsing, testing guide, and state cost hub
+  - state `radon-mitigation-cost`
+    - added early actions for ZIP calculator, radon-level validation, and jump-to-county directory
+- Why this matters:
+  - CTR work and CTA work are separate layers, so both can move in the same cycle without muddying interpretation.
+  - These changes target the "inside-page choice" problem, not the SERP problem.
+
+Mobile usability pass added the same day after local iPhone SE review:
+- Ran a local `http://localhost:8080` pass at `375x667` with focus on:
+  - homepage search + state grid
+  - county cost result page
+  - header and breadcrumb tap targets
+  - sticky mobile action bar
+- Confirmed and addressed these issues:
+  - sticky footer CTA was visually too heavy on county cost pages
+  - mobile header had no direct navigation path beyond the logo
+  - breadcrumb tap targets were too small for thumb use
+  - some mobile H1s were larger than necessary on compact screens
+  - state directory tiles on the calculator page needed a little more breathing room
+  - FAQ accordion was emitting Alpine `x-collapse` warnings
+- Applied fixes to:
+  - `src/main/jte/layout/main.jte`
+  - `src/main/jte/fragments/receipt.jte`
+  - `src/main/jte/components/faq_accordion.jte`
+  - `src/main/jte/calculator.jte`
+  - `src/main/jte/components/hero_section.jte`
+  - `src/main/jte/county_hub.jte`
+  - `src/main/jte/radon_levels_state.jte`
+  - `src/main/jte/state_hub.jte`
+  - `src/main/resources/static/css/style.css`
+- What changed:
+  - added a mobile hamburger menu with direct links to calculator, guides, about, and contact
+  - expanded touch targets for header links, footer links, FAQ toggles, and breadcrumb links
+  - softened the mobile sticky CTA presentation and added extra page bottom space on county cost pages
+  - reduced mobile H1 size on compact pages where the title density was too high
+  - widened mobile spacing around the homepage state grid tiles
+  - replaced `x-collapse` usage with plain Alpine transitions to remove warnings
+- Current interpretation:
+  - the biggest remaining mobile questions are now behavioral, not structural
+  - next review should check whether the easier navigation and calmer CTA bar improve real clicks, not just visual cleanliness
+
+### 3) Verification
+
+Executed:
+- `.\gradlew.bat test --tests com.radonverdict.SeoBehaviorIntegrationTest --tests com.radonverdict.DemoApplicationTests`
+
+Result:
+- BUILD SUCCESSFUL
+
+### 4) Next Check
+
+At next GA4 review:
+- Check whether `lead_form_submit` starts appearing consistently again.
+- Check whether `qualify_lead` starts appearing consistently again.
+- Check whether successful submissions produce `close_convert_lead`.
+- Confirm that `page_view` volume settles closer to session reality after removing the mixed auto/custom page-view setup.
+
+At next GSC review:
+- Compare CTR movement for:
+  - `https://radonverdict.com/radon-levels/new-york/schenectady-county`
+  - `https://radonverdict.com/radon-levels/nevada/clark-county`
+  - `https://radonverdict.com/radon-levels/massachusetts/franklin-county`
+- Also compare CTR movement for:
+  - `https://radonverdict.com/radon-levels/virginia/falls-church-city`
+  - `https://radonverdict.com/radon-levels/maryland/howard-county`
+  - `https://radonverdict.com/radon-levels/florida/miami-dade-county`
+- If one or more of the 3 pages improves meaningfully, repeat the same narrow CTR pass on the next 3 county pages with similar impression / position profiles.
+
+At next CTA / UX review:
+- Check whether `levels_quick_short_term_kit` appears in GA4 affiliate click data.
+- Compare `affiliate_link_click` label mix before and after the early CTA insertions on county `radon-levels`.
+- Check whether county `radon-levels` sends more traffic into county `radon-mitigation-cost`.
+- Check whether state hubs reduce directory-only dead scrolling by increasing clicks into:
+  - `/radon-mitigation-cost/{state}`
+  - `/radon-levels/{state}`
+  - `/radon-cost-calculator`
+
+Decision note:
+- No broad product or SEO rebuild was justified today.
+- Tracking quality was the correct maintenance target for this checkpoint.
+
+---
+
 ## 8) How To Append Future Entries
 
 For each new workday, add:
