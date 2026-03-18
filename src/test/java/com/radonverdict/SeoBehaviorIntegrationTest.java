@@ -7,6 +7,8 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.nio.charset.StandardCharsets;
+import java.util.Base64;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -218,6 +220,22 @@ class SeoBehaviorIntegrationTest {
         assertJsonLdBlocksAreValid(html);
     }
 
+    @Test
+    void adminRootRedirectsToLeadsWhenAuthenticated() throws Exception {
+        mockMvc.perform(get("/admin")
+                        .header("Authorization", basicAuth("admin", "tlsgur3108")))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(header().string("Location", "/admin/leads"));
+    }
+
+    @Test
+    void adminLeadsPageLoadsWhenAuthenticated() throws Exception {
+        mockMvc.perform(get("/admin/leads")
+                        .header("Authorization", basicAuth("admin", "tlsgur3108")))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("Leads Dashboard")));
+    }
+
     private void assertJsonLdBlocksAreValid(String html) throws Exception {
         Matcher matcher = JSON_LD_SCRIPT_PATTERN.matcher(html);
         int scriptCount = 0;
@@ -227,5 +245,10 @@ class SeoBehaviorIntegrationTest {
             OBJECT_MAPPER.readTree(jsonLd);
         }
         assertTrue(scriptCount > 0, "Expected at least one JSON-LD script block.");
+    }
+
+    private String basicAuth(String username, String password) {
+        String token = username + ":" + password;
+        return "Basic " + Base64.getEncoder().encodeToString(token.getBytes(StandardCharsets.UTF_8));
     }
 }
