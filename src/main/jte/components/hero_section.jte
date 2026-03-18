@@ -24,7 +24,7 @@
 
         <!-- Hero Narrative & AEO Hook -->
         <div class="text-slate-300 text-base sm:text-xl leading-relaxed font-medium mb-6 space-y-4">
-            <p><strong class="text-white">Quick Answer:</strong> The average cost for radon mitigation in <strong>${page.getReceipt().getAreaDisplayName()}</strong> is <strong>$${page.getReceipt().getTotalAvg()}</strong> (typically ranging from $${page.getReceipt().getTotalLow()} to $${page.getReceipt().getTotalHigh()}). This cost primarily depends on your home's foundation type and the complexity of pipe routing.</p>
+            <p><strong class="text-white">Quick Answer:</strong> The average cost for radon mitigation in <strong>${page.getReceipt().getAreaDisplayName()}</strong> is <strong>$${page.getReceipt().getTotalAvg()}</strong> (typically ranging from $${page.getReceipt().getTotalLow()} to $${page.getReceipt().getTotalHigh()}). ${page.getPricingRationale()}</p>
             <p>${page.getHeroSummary()}</p>
         </div>
 

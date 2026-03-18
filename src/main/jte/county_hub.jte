@@ -23,7 +23,9 @@
     final String countyDisplay = county.getAreaDisplayName() + ", " + county.getStateAbbr();
     final int currentYear = java.time.LocalDate.now().getYear();
     final String seoTitle = "How Much Does Radon Mitigation Cost in " + countyDisplay + "? | " + currentYear + " Price Range";
-    final String seoDescription = "See the typical radon mitigation price range in " + countyDisplay + " for basement, slab, and crawl space homes. Built for homeowners who already have a radon test result and need local quote context.";
+    final String seoDescription = page.getSeoDescription() != null && !page.getSeoDescription().isBlank()
+            ? page.getSeoDescription()
+            : "See the typical radon mitigation price range in " + countyDisplay + " for basement, slab, and crawl space homes. Built for homeowners who already have a radon test result and need local quote context.";
 }
 
 @template.layout.main(
@@ -112,7 +114,7 @@
                 <!-- Left Column (Simulator + Details) -->
                 <div class="lg:col-span-5 order-1">
                     @template.components.radon_level_advisor(county = county, costMode = true)
-                    @template.components.simulator_form(county = county)
+                    @template.components.simulator_form(county = county, page = page)
                     
                     <!-- Foundation Context (Updates dynamically if we made this HTMX too, but for now static default) -->
                     <div class="bg-white rounded-2xl p-6 border border-slate-200 mt-6 shadow-sm">

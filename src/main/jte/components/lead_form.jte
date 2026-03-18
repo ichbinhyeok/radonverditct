@@ -6,7 +6,7 @@
 @param String successMessage = null
 @param String errorMessage = null
 
-<div class="bg-slate-900 rounded-3xl p-8 shadow-2xl mt-12 mb-12 relative overflow-hidden" id="estimate-form">
+<div class="bg-slate-900 rounded-3xl p-8 shadow-2xl mt-12 mb-12 relative overflow-hidden" id="estimate-form" data-nosnippet>
     <!-- Decorative background elements -->
     <div class="absolute top-0 right-0 -mr-20 -mt-20 w-64 h-64 rounded-full bg-blue-500 opacity-10 blur-3xl"></div>
     <div class="absolute bottom-0 left-0 -ml-20 -mb-20 w-64 h-64 rounded-full bg-indigo-500 opacity-10 blur-3xl"></div>

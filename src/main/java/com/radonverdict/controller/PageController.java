@@ -135,7 +135,7 @@ public class PageController {
 
         // Build the FULL page content (Zone + State regulation + Intent + FAQ +
         // Receipt)
-        CountyPageContent pageContent = contentService.buildPageContent(county, "basement", "buying");
+        CountyPageContent pageContent = contentService.buildDefaultPageContent(county);
         PageQualityResult quality = pageQualityService.scoreMitigationCountyPage(county, pageContent);
         pageContent.setIndexable(quality.isIndexable() && seoIndexingPolicyService.isCountyIndexableCandidate(county));
 

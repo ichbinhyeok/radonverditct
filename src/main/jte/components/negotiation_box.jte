@@ -1,8 +1,8 @@
 @import com.radonverdict.model.dto.CountyPageContent
 @param CountyPageContent page
 
-<div class="bg-blue-50/50 rounded-2xl border border-blue-100 p-6 sm:p-8 relative mt-0 top-0 
-    transition-all duration-300 transform group-hover:-translate-y-1">
+<div class="bg-blue-50/50 rounded-2xl border border-blue-100 p-6 sm:p-8 relative mt-0 top-0 transition-all duration-300 transform group-hover:-translate-y-1"
+    data-nosnippet>
 
     <div class="flex items-start gap-4 mb-4">
         <!-- Action Icon -->

@@ -1,5 +1,7 @@
 @import com.radonverdict.model.County
+@import com.radonverdict.model.dto.CountyPageContent
 @param County county
+@param CountyPageContent page
 
 <!-- HTMX Simulator Form: Real-time calculation triggers -->
 <div class="bg-white rounded-[2rem] p-6 sm:p-8 shadow-sm border border-slate-200 mb-8 max-w-2xl mx-auto">
@@ -26,9 +28,9 @@
           "
           class="space-y-8 relative"
           x-data="{ 
-              foundation: 'basement', 
-              intent: 'buying', 
-              sqftCategory: 'under_2000', 
+              foundation: '${page.getSelectedFoundationType()}', 
+              intent: '${page.getSelectedIntent()}', 
+              sqftCategory: '${page.getSelectedSqftCategory()}', 
               showToast: false, 
               hideTimeout: null,
               countySlug: '${county.getCountySlug()}',

@@ -21,6 +21,8 @@ public class CountyPageContent {
     // Hero Section
     private String heroTitle;
     private String heroSummary; // Zone-aware summary
+    private String seoDescription;
+    private String pricingRationale;
     private String riskLevel; // "High", "Moderate", "Low", "Unclassified"
     private String badgeColor; // "red", "yellow", "green", "gray"
 

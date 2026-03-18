@@ -348,6 +348,137 @@ Decision note:
 
 ---
 
+## 2026-03-18 P0 Snippet / Template Risk Pass
+
+Date note:
+- This pass was executed as a narrow P0 cleanup after the 2026-03-17 checkpoint.
+- Goal was not a broad architecture rewrite.
+- Goal was to reduce snippet pollution, lower template sameness in the first visible copy, and remove the fixed `basement + buying` SSR posture on county cost pages.
+
+### 1) Why This Pass Was Justified
+
+Current operating context:
+- `radon-levels` remains the organic leader, so snippet clarity still matters disproportionately.
+- `radon-mitigation-cost` still needs cleaner cost-intent capture rather than more page volume.
+- Several risk items were now visible at the shared-template layer, which made them good candidates for a controlled template pass rather than a site rebuild.
+
+Decision rule:
+- This work fit the tracker playbook because it was:
+  - a common-template cleanup
+  - directly tied to CTR / snippet quality
+  - measurable without changing the whole information architecture
+
+### 2) What Changed Today
+
+P0-1: Removed empty interactive SSR states from indexed advisor markup.
+- Updated:
+  - `src/main/jte/components/radon_level_advisor.jte`
+- Behavior change:
+  - the advisor now ships SSR fallback numbers for the displayed pCi/L reading, the danger-state "At X pCi/L" line, the before/after reduction preview, and input defaults
+  - the small manual-entry row is now marked with `data-nosnippet`
+- Why this matters:
+  - avoids SERP snippets picking up blank-state fragments such as `At pCi/L`
+  - keeps the interactive widget useful after hydration without exposing empty variables to indexing
+
+P0-2: Reduced crawl visibility of lead / CTA / negotiation copy on county cost pages.
+- Updated:
+  - `src/main/jte/components/lead_form.jte`
+  - `src/main/jte/components/negotiation_box.jte`
+  - `src/main/jte/fragments/receipt.jte`
+- Behavior change:
+  - lead form container now uses `data-nosnippet`
+  - negotiation / closing-credit strategy box now uses `data-nosnippet`
+  - mobile sticky CTA now uses `data-nosnippet`
+- Why this matters:
+  - keeps county cost snippets biased toward price answers instead of `Start Free Plan`, `No obligation`, or seller-credit copy
+
+P0-3: Increased county-level differentiation in top-of-page cost copy.
+- Updated:
+  - `src/main/java/com/radonverdict/service/ContentGenerationService.java`
+  - `src/main/java/com/radonverdict/model/dto/CountyPageContent.java`
+  - `src/main/jte/components/hero_section.jte`
+  - `src/main/jte/county_hub.jte`
+- Behavior change:
+  - county cost pages now generate a county-specific pricing rationale for the hero opening paragraph
+  - county cost meta descriptions now use county-specific average/range plus a differentiating rationale
+  - a county-specific pricing FAQ is injected ahead of the template pools so FAQ order starts with local price reasoning rather than generic buyer/seller copy
+- Why this matters:
+  - pushes differentiation into the first 200 characters, meta description, and FAQ surface instead of leaving it buried in lower-page local insight sections
+
+P0-4: Removed the fixed `basement + buying + under_2000` SSR default from county cost pages.
+- Updated:
+  - `src/main/java/com/radonverdict/service/ContentGenerationService.java`
+  - `src/main/java/com/radonverdict/controller/PageController.java`
+  - `src/main/jte/components/simulator_form.jte`
+- Behavior change:
+  - county cost pages now choose a default scenario by county characteristics instead of hardcoding one foundation / intent combination everywhere
+  - the simulator form now initializes from the county page's selected scenario rather than from global literals
+- Why this matters:
+  - reduces the "same user, same house, same page" feel across county pages
+  - keeps the initial SSR state closer to regional housing patterns and less obviously templated
+
+### 3) Verification
+
+Executed:
+- `.\gradlew.bat test --tests com.radonverdict.SeoBehaviorIntegrationTest --tests com.radonverdict.PersuasionQualityAuditTest`
+
+Result:
+- BUILD SUCCESSFUL
+
+### 4) What To Watch Next
+
+At the next GSC review after recrawl:
+- Check whether county `radon-levels` snippets stop surfacing blank interactive phrasing.
+- Check whether county `radon-mitigation-cost` snippets shift back toward price/range language instead of lead/credit copy.
+- Compare whether cost-page CTR improves without increasing testing-intent bleed.
+
+At the next HTML / snippet spot check:
+- Confirm that shared advisor markup renders fallback values before hydration.
+- Confirm that `data-nosnippet` sections are the ones most likely to have polluted snippets previously.
+
+### 5) Deferred Structural Work And Triggers
+
+These items were intentionally deferred today because they are architecture changes, not narrow template fixes.
+
+Item 5: Move the evergreen `reading -> next action` cluster out of county pages into standalone guides.
+- Trigger:
+  - open this when P0 has had at least one recrawl window
+  - and county `radon-levels` pages still capture `2.0`, `4.0`, `8.0`, `retest`, or `what should I do next` intent in a way that feels overloaded
+- Scope when opened:
+  - publish standalone action guides
+  - add stronger internal links from county pages into those guides
+
+Item 6: Split state regulation content into state-law hubs.
+- Trigger:
+  - open this when county cost pages still surface disclosure / licensing language in snippets or FAQ prominence after the P0 cleanup
+- Scope when opened:
+  - create state-law hub(s) for disclosure, licensing/certification, and real-estate rule summaries
+  - downgrade county-level legal copy to short summaries + links
+
+Item 9: Implement a dedicated `Radon Inspection Closing Credit Calculator` landing page.
+- Trigger:
+  - open this after the cost-page snippet cleanup is stable
+  - and buyer/seller / closing-credit intent is still split awkwardly between county pages and the existing real-estate guide
+- Scope when opened:
+  - build a dedicated non-geo transactional page
+  - use it to absorb buyer-credit CTA load currently living on county pages
+
+Item 10: Expand state radon pages from directory-style pages into summary hubs.
+- Trigger:
+  - open this only after guide/state/county role separation is clearer from items 5 and 6
+  - or if state pages continue to look like shallow directories in behavior review
+- Scope when opened:
+  - add state testing guidance
+  - add regulation snapshot
+  - add high-risk county cluster summaries
+  - add stronger guide routing from the middle layer
+
+Decision note:
+- P0 was worth doing immediately because it was high-leverage template work.
+- Items 5 / 6 / 9 / 10 should be opened only after a fresh recrawl / review loop, not in the same cycle.
+
+---
+
 ## 8) How To Append Future Entries
 
 For each new workday, add:

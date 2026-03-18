@@ -3,10 +3,19 @@
 @param County county
 @param boolean costMode = false
 
+!{
+    final double initialLevelValue = county.getEpaZone() == 1 ? 5.5 : county.getEpaZone() == 2 ? 3.0 : 1.5;
+    final String initialLevel = String.format(java.util.Locale.US, "%.1f", initialLevelValue);
+    final String initialPostMitigationLow = String.format(java.util.Locale.US, "%.1f", Math.max(0.3, initialLevelValue * 0.05));
+    final String initialPostMitigationHigh = String.format(java.util.Locale.US, "%.1f", Math.max(0.8, initialLevelValue * 0.15));
+    final int initialBarWidth = (int) Math.min((initialLevelValue / 20.0) * 100.0, 100.0);
+    final String initialBarColor = initialLevelValue >= 4.0 ? "bg-red-500" : initialLevelValue >= 2.0 ? "bg-amber-400" : "bg-emerald-500";
+}
+
 <!-- Radon Level Decision Advisor: Pure Alpine.js (no server calls) -->
 <div class="bg-white rounded-[2rem] p-6 sm:p-8 shadow-sm border border-slate-200 mb-6 max-w-2xl mx-auto"
      x-data="{
-        level: ${county.getEpaZone() == 1 ? "5.5" : county.getEpaZone() == 2 ? "3.0" : "1.5"},
+        level: ${initialLevel},
         get status() {
             if (this.level >= 4.0) return 'danger';
             if (this.level >= 2.0) return 'caution';
@@ -50,7 +59,7 @@
         <div class="inline-flex items-baseline gap-1 tabular-nums">
             <span class="font-display font-black text-5xl sm:text-6xl tracking-tighter"
                   :class="status === 'danger' ? 'text-red-600' : status === 'caution' ? 'text-amber-600' : 'text-emerald-600'"
-                  x-text="parseFloat(level).toFixed(1)"></span>
+                  x-text="parseFloat(level).toFixed(1)">${initialLevel}</span>
             <span class="text-lg font-semibold text-slate-400">pCi/L</span>
         </div>
     </div>
@@ -59,6 +68,7 @@
     <div class="px-2 mb-6">
         <input type="range" min="0.0" max="20.0" step="0.1"
                x-model="level"
+               value="${initialLevel}"
                class="w-full h-2 rounded-full appearance-none cursor-pointer radon-slider"
                :class="status === 'danger' ? 'accent-red-500' : status === 'caution' ? 'accent-amber-500' : 'accent-emerald-500'">
         <div class="flex justify-between text-[10px] font-bold text-slate-300 mt-1 px-1 uppercase tracking-widest">
@@ -73,7 +83,9 @@
     <!-- Risk Gauge Bar -->
     <div class="w-full bg-slate-100 rounded-full h-3 mb-6 overflow-hidden">
         <div class="h-3 rounded-full transition-all duration-500 ease-out"
+             class="${initialBarColor}"
              :class="barColor"
+             style="width:${initialBarWidth}%"
              :style="'width: ' + barWidth + '%'"></div>
     </div>
 
@@ -175,7 +187,7 @@
             <div>
                 <h4 class="font-display font-bold text-red-900 text-lg">Warning: Action Required - EPA Threshold Exceeded</h4>
                 <p class="text-sm text-red-800 leading-relaxed mt-1">
-                    At <strong x-text="parseFloat(level).toFixed(1)"></strong> pCi/L, this reading is above the
+                    At <strong x-text="parseFloat(level).toFixed(1)">${initialLevel}</strong> pCi/L, this reading is above the
                     EPA action level.
                     @if(costMode)
                         <strong>Use the local pricing below to budget your next step after confirming the result.</strong>
@@ -188,7 +200,7 @@
                 <div class="mt-4 flex items-center justify-between gap-2 sm:gap-4 bg-white/70 rounded-xl p-3 sm:p-4 border border-red-100">
                     <div class="text-center">
                         <div class="text-[10px] sm:text-xs font-bold text-red-400 uppercase tracking-widest">Now</div>
-                        <div class="font-display font-black text-xl sm:text-2xl text-red-600 tabular-nums whitespace-nowrap" x-text="parseFloat(level).toFixed(1)"></div>
+                        <div class="font-display font-black text-xl sm:text-2xl text-red-600 tabular-nums whitespace-nowrap" x-text="parseFloat(level).toFixed(1)">${initialLevel}</div>
                     </div>
                     <div class="flex shrink-0 items-center justify-center">
                         <svg class="w-5 h-5 sm:w-8 sm:h-8 text-slate-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -197,7 +209,7 @@
                     </div>
                     <div class="text-center">
                         <div class="text-[10px] sm:text-xs font-bold text-emerald-500 uppercase tracking-widest">After</div>
-                        <div class="font-display font-black text-xl sm:text-2xl text-emerald-600 tabular-nums whitespace-nowrap" x-text="postMitigationLow + '-' + postMitigationHigh"></div>
+                        <div class="font-display font-black text-xl sm:text-2xl text-emerald-600 tabular-nums whitespace-nowrap" x-text="postMitigationLow + '-' + postMitigationHigh">${initialPostMitigationLow}-${initialPostMitigationHigh}</div>
                     </div>
                 </div>
 
@@ -216,7 +228,7 @@
     </div>
 
     <!-- Manual Input (small, under the slider) -->
-    <div class="mt-5 flex items-center justify-center gap-3">
+    <div class="mt-5 flex items-center justify-center gap-3" data-nosnippet>
         <label class="text-xs font-bold text-slate-400 uppercase tracking-wider">
             @if(costMode)
                 Enter confirmed reading:
@@ -226,6 +238,7 @@
         </label>
         <input type="number" min="0" max="99" step="0.1"
                x-model.debounce.300ms="level"
+               value="${initialLevel}"
                class="w-24 text-center text-sm font-bold text-slate-900 border border-slate-200 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-slate-900 focus:border-transparent tabular-nums">
         <span class="text-xs text-slate-400 font-semibold">pCi/L</span>
     </div>

@@ -11,7 +11,7 @@
     @template.components.negotiation_box(page = page)
 
     <!-- Component 3: Mobile Sticky Floating Action Bar (Updated via HTMX) -->
-    <div class="mobile-sticky-cta fixed bottom-3 left-3 right-3 z-50 lg:hidden">
+    <div class="mobile-sticky-cta fixed bottom-3 left-3 right-3 z-50 lg:hidden" data-nosnippet>
         <div class="flex items-center justify-between gap-4 px-1">
             <div class="flex flex-col">
                 <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest leading-none mb-1.5">Est. Total</p>

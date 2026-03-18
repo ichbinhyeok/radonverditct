@@ -147,8 +147,18 @@ class SeoBehaviorIntegrationTest {
                 .andExpect(content().string(containsString("How Much Does Radon Mitigation Cost in Los Angeles County, CA?")))
                 .andExpect(content().string(containsString("Use Your Confirmed Radon Reading")))
                 .andExpect(content().string(containsString("Enter confirmed reading:")))
+                .andExpect(content().string(containsString("data-nosnippet")))
+                .andExpect(content().string(not(containsString("At <strong x-text=\"parseFloat(level).toFixed(1)\"></strong> pCi/L"))))
                 .andExpect(content().string(not(containsString("Get a Home Radon Monitor (~$30)"))))
                 .andExpect(content().string(not(containsString("Verify with Long-term Monitor (~$150)"))));
+    }
+
+    @Test
+    void countyHubUsesCountySpecificDefaultScenarioInsteadOfFixedBasementBuying() throws Exception {
+        mockMvc.perform(get("/radon-mitigation-cost/california/los-angeles-county"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("foundation: 'slab'")))
+                .andExpect(content().string(not(containsString("foundation: 'basement'"))));
     }
 
     @Test
@@ -158,6 +168,7 @@ class SeoBehaviorIntegrationTest {
                 .andExpect(content().string(containsString("St. Louis County, MO Radon Levels, Zone Map")))
                 .andExpect(content().string(containsString("Home Testing Guide")))
                 .andExpect(content().string(containsString("Direct Answer for basement and lowest-level tests:")))
+                .andExpect(content().string(not(containsString("At <strong x-text=\"parseFloat(level).toFixed(1)\"></strong> pCi/L"))))
                 .andExpect(content().string(containsString("Get a Home Radon Monitor (~$30)")))
                 .andExpect(content().string(containsString("Verify with Long-term Monitor (~$150)")));
     }
