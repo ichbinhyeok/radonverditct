@@ -47,7 +47,7 @@ public class InternalLinkService {
                 .build());
 
         add(links, zoneGuideLink(county.getEpaZone()));
-        add(links, intentGuideLink(page));
+        add(links, intentGuideLink(county, page));
 
         List<County> sameZoneNearby = dataLoadService.getCountyBySlugMap().values().stream()
                 .filter(c -> c.getStateAbbr().equalsIgnoreCase(county.getStateAbbr()))
@@ -77,8 +77,8 @@ public class InternalLinkService {
         }
 
         add(links, InternalLinkItem.builder()
-                .title("Mitigation Cost in " + county.getAreaDisplayName())
-                .description("Itemized local estimate by foundation and home size.")
+                .title("Action Plan + Cost in " + county.getAreaDisplayName())
+                .description("Use your test result to compare local next steps and budget.")
                 .url("/radon-mitigation-cost/" + county.getStateSlug() + "/" + county.getCountySlug())
                 .bucket("cost")
                 .build());
@@ -98,6 +98,20 @@ public class InternalLinkService {
                 .build());
 
         add(links, zoneGuideLink(county.getEpaZone()));
+        add(links, InternalLinkItem.builder()
+                .title("Who Pays: Buyer or Seller?")
+                .description("Use radon cost context for credits, repairs, and closing negotiation.")
+                .url("/guides/who-pays-radon-mitigation-buyer-or-seller")
+                .bucket("intent")
+                .build());
+
+        add(links, InternalLinkItem.builder()
+                .title("Local Seller Credit Calculator")
+                .description("Turn this county's mitigation range into a repair or credit ask.")
+                .url("/radon-credit-calculator/" + county.getStateSlug() + "/" + county.getCountySlug()
+                        + "?intent=buying&radonResultBand=above_4")
+                .bucket("intent")
+                .build());
 
         if (nearbyCounties != null) {
             nearbyCounties.stream()
@@ -150,16 +164,18 @@ public class InternalLinkService {
                 .build();
     }
 
-    private InternalLinkItem intentGuideLink(CountyPageContent page) {
-        String intent = page != null && page.getIntentSectionTitle() != null
-                ? page.getIntentSectionTitle().toLowerCase(Locale.ROOT)
+    private InternalLinkItem intentGuideLink(County county, CountyPageContent page) {
+        String intent = page != null && page.getSelectedIntent() != null
+                ? page.getSelectedIntent().toLowerCase(Locale.ROOT)
                 : "";
 
         if (intent.contains("buy") || intent.contains("seller")) {
             return InternalLinkItem.builder()
-                    .title("Who Pays: Buyer or Seller?")
-                    .description("Real-estate negotiation patterns for radon mitigation.")
-                    .url("/guides/who-pays-radon-mitigation-buyer-or-seller")
+                    .title("Local Seller Credit Calculator")
+                    .description("Turn a local quote range into a cleaner repair or credit ask.")
+                    .url("/radon-credit-calculator/" + county.getStateSlug() + "/" + county.getCountySlug()
+                            + "?intent=" + page.getSelectedIntent()
+                            + "&radonResultBand=" + page.getSelectedRadonResultBand())
                     .bucket("intent")
                     .build();
         }

@@ -61,16 +61,18 @@
             context.page_type = segments.length >= 3 ? 'levels_county' : segments.length === 2 ? 'levels_state' : 'levels_index';
           } else if (segments[0] === 'radon-mitigation-cost') {
             context.page_type = segments.length >= 3 ? 'cost_county' : segments.length === 2 ? 'cost_state' : 'cost_index';
+          } else if (segments[0] === 'radon-credit-calculator') {
+            context.page_type = segments.length >= 3 ? 'credit_county' : 'credit_index';
           } else if (segments[0] === 'guides') {
             context.page_type = segments.length >= 2 ? 'guide_article' : 'guides_index';
           } else {
             context.page_type = segments[0];
           }
 
-          if ((segments[0] === 'radon-levels' || segments[0] === 'radon-mitigation-cost') && segments.length >= 2) {
+          if ((segments[0] === 'radon-levels' || segments[0] === 'radon-mitigation-cost' || segments[0] === 'radon-credit-calculator') && segments.length >= 2) {
             context.state = segments[1];
           }
-          if ((segments[0] === 'radon-levels' || segments[0] === 'radon-mitigation-cost') && segments.length >= 3) {
+          if ((segments[0] === 'radon-levels' || segments[0] === 'radon-mitigation-cost' || segments[0] === 'radon-credit-calculator') && segments.length >= 3) {
             context.county = segments[2];
           }
 
@@ -212,6 +214,7 @@
             </a>
             <nav class="hidden md:flex gap-6 text-sm font-medium text-slate-500">
                 <a href="/radon-cost-calculator" class="tap-target-inline hover:text-slate-900 transition-colors">Cost Calculator</a>
+                <a href="/radon-credit-calculator" class="tap-target-inline hover:text-slate-900 transition-colors">Credit Calculator</a>
                 <a href="/guides" class="tap-target-inline hover:text-slate-900 transition-colors">Guides</a>
                 <a href="/about" class="tap-target-inline hover:text-slate-900 transition-colors">About</a>
             </nav>
@@ -236,6 +239,7 @@
              class="md:hidden border-t border-slate-200/80 bg-white/95 backdrop-blur-sm">
             <nav class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex flex-col">
                 <a href="/radon-cost-calculator" class="tap-target-inline rounded-xl px-3 text-slate-700 hover:bg-slate-100 hover:text-slate-900">Cost Calculator</a>
+                <a href="/radon-credit-calculator" class="tap-target-inline rounded-xl px-3 text-slate-700 hover:bg-slate-100 hover:text-slate-900">Credit Calculator</a>
                 <a href="/guides" class="tap-target-inline rounded-xl px-3 text-slate-700 hover:bg-slate-100 hover:text-slate-900">Guides</a>
                 <a href="/about" class="tap-target-inline rounded-xl px-3 text-slate-700 hover:bg-slate-100 hover:text-slate-900">About</a>
                 <a href="/contact" class="tap-target-inline rounded-xl px-3 text-slate-700 hover:bg-slate-100 hover:text-slate-900">Contact</a>

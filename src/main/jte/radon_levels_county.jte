@@ -19,26 +19,27 @@
 @param boolean monetizationHooksEnabled = false
 @param boolean showSeoDebug = false
 !{
+    final String seoCountyDisplay = county.getSeoDisplayName();
+    final String seoPlaceLabel = seoCountyDisplay + ", " + county.getStateAbbr();
     final boolean priorityCtrCounty =
             ("new-york".equals(county.getStateSlug()) && "schenectady-county".equals(county.getCountySlug()))
-                    || ("nevada".equals(county.getStateSlug()) && "clark-county".equals(county.getCountySlug()))
                     || ("massachusetts".equals(county.getStateSlug()) && "franklin-county".equals(county.getCountySlug()))
                     || ("virginia".equals(county.getStateSlug()) && "falls-church-city".equals(county.getCountySlug()))
                     || ("maryland".equals(county.getStateSlug()) && "howard-county".equals(county.getCountySlug()))
                     || ("florida".equals(county.getStateSlug()) && "miami-dade-county".equals(county.getCountySlug()));
 
     final String seoTitle = priorityCtrCounty
-            ? county.getAreaDisplayName() + ", " + county.getStateAbbr() + " Radon Levels Map, EPA Zone & Basement Testing Guide"
-            : county.getAreaDisplayName() + ", " + county.getStateAbbr() + " Radon Levels, Zone Map & Home Testing Guide | EPA 4.0 pCi/L";
+            ? seoPlaceLabel + " Radon Levels: EPA Zone & Basement Test Guide"
+            : seoPlaceLabel + " Radon Levels, Zone Map & Home Testing Guide | EPA 4.0 pCi/L";
 
     final String seoDescription = priorityCtrCounty
-            ? "Check the EPA radon zone for " + county.getAreaDisplayName() + ", " + county.getStateAbbr()
-            + ", what a 4.0+ pCi/L result means, how to test the basement or lowest lived-in level, and when to compare mitigation costs."
-            : county.getAreaDisplayName() + ", " + county.getStateAbbr() + " radon guide for basement and lowest-level home tests. See EPA zone data, what 2.0, 4.0, and 8.0+ pCi/L mean, and when mitigation quotes are worth comparing.";
+            ? "Check the EPA radon zone for " + seoPlaceLabel
+            + ", what a basement test means at 2.0 vs 4.0+ pCi/L, and when to retest or compare mitigation quotes."
+            : seoPlaceLabel + " radon guide for basement and lowest-level home tests. See EPA zone data, what 2.0, 4.0, and 8.0+ pCi/L mean, and when mitigation quotes are worth comparing.";
 
     final String heroTitle = priorityCtrCounty
-            ? "Radon Levels Map, EPA Zone & Basement Testing in " + county.getAreaDisplayName() + ", " + county.getStateAbbr()
-            : "Radon Levels & Zone Map in " + county.getAreaDisplayName() + ", " + county.getStateAbbr();
+            ? "Radon Levels, EPA Zone & Basement Testing in " + seoPlaceLabel
+            : "Radon Levels & Zone Map in " + seoPlaceLabel;
 
     final String directAnswerLead = priorityCtrCounty
             ? "Short answer for homeowners, buyers, and sellers: "
@@ -83,7 +84,7 @@
                 "mainEntity": [
                     {
                         "@type": "Question",
-                        "name": $unsafe{JsonLdUtils.json("What is the average radon level in " + county.getAreaDisplayName() + ", " + county.getStateAbbr() + "?")},
+                        "name": $unsafe{JsonLdUtils.json("What is the average radon level in " + seoPlaceLabel + "?")},
                         "acceptedAnswer": {
                             "@type": "Answer",
                             "text": $unsafe{JsonLdUtils.json(averageLevelAnswer)}
@@ -91,7 +92,7 @@
                     },
                     {
                         "@type": "Question",
-                        "name": $unsafe{JsonLdUtils.json("Is radon a problem in " + county.getAreaDisplayName() + "?")},
+                        "name": $unsafe{JsonLdUtils.json("Is radon a problem in " + seoPlaceLabel + "?")},
                         "acceptedAnswer": {
                             "@type": "Answer",
                             "text": $unsafe{JsonLdUtils.json(isProblemAnswer)}
@@ -99,7 +100,7 @@
                     },
                     {
                         "@type": "Question",
-                        "name": $unsafe{JsonLdUtils.json("How do I test for radon in " + county.getAreaDisplayName() + "?")},
+                        "name": $unsafe{JsonLdUtils.json("How do I test for radon in " + seoPlaceLabel + "?")},
                         "acceptedAnswer": {
                             "@type": "Answer",
                             "text": $unsafe{JsonLdUtils.json(testAnswer)}
@@ -125,7 +126,7 @@
                 },{
                     "@type": "ListItem",
                     "position": 3,
-                    "name": $unsafe{JsonLdUtils.json(county.getAreaDisplayName())},
+                    "name": $unsafe{JsonLdUtils.json(seoCountyDisplay)},
                     "item": $unsafe{JsonLdUtils.json("https://radonverdict.com/radon-levels/" + county.getStateSlug() + "/" + county.getCountySlug())}
                 }]
             }
@@ -199,22 +200,59 @@
 
             <!-- Quick Next Steps -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-10">
-                <a href="/radon-mitigation-cost/${county.getStateSlug()}/${county.getCountySlug()}"
-                   class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm hover:border-brand-300 hover:shadow-md transition-all">
+                <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
                     <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-50 text-brand-700 text-xs font-bold tracking-wider uppercase mb-3">
-                        Next Step
+                        Decision Flow
                     </div>
                     <h2 class="font-display font-bold text-xl text-slate-900 mb-2">Already Have a Reading?</h2>
                     <p class="text-sm text-slate-600 leading-relaxed mb-4">
-                        If your home tested near or above 4.0 pCi/L, jump straight to a ${county.getAreaDisplayName()} cost estimate before you contact contractors.
+                        Jump into a prefilled ${county.getAreaDisplayName()} action plan based on the result you already have, instead of starting from a generic cost page.
                     </p>
-                    <span class="inline-flex items-center gap-2 text-sm font-bold text-brand-700">
-                        Get Local Mitigation Cost
-                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
-                        </svg>
-                    </span>
-                </a>
+                    <div class="grid grid-cols-1 gap-3">
+                        <a href="/radon-mitigation-cost/${county.getStateSlug()}/${county.getCountySlug()}?radonResultBand=between_2_and_4&intent=homeowner#estimate-form"
+                           data-track-event="levels_result_path_click"
+                           data-track-label="borderline_result"
+                           class="rounded-xl border border-amber-200 bg-amber-50 p-4 hover:border-amber-300 hover:bg-amber-100 transition-colors">
+                            <div class="flex items-center justify-between gap-3">
+                                <div>
+                                    <div class="text-xs font-bold uppercase tracking-wider text-amber-700">2.0-3.9 pCi/L</div>
+                                    <div class="mt-1 text-sm font-semibold text-slate-900">Should I retest or get quotes?</div>
+                                </div>
+                                <svg class="w-4 h-4 text-amber-700 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+                                </svg>
+                            </div>
+                        </a>
+                        <a href="/radon-mitigation-cost/${county.getStateSlug()}/${county.getCountySlug()}?radonResultBand=above_4&intent=homeowner#estimate-form"
+                           data-track-event="levels_result_path_click"
+                           data-track-label="high_result"
+                           class="rounded-xl border border-red-200 bg-red-50 p-4 hover:border-red-300 hover:bg-red-100 transition-colors">
+                            <div class="flex items-center justify-between gap-3">
+                                <div>
+                                    <div class="text-xs font-bold uppercase tracking-wider text-red-700">4.0+ pCi/L</div>
+                                    <div class="mt-1 text-sm font-semibold text-slate-900">Budget mitigation before you call contractors</div>
+                                </div>
+                                <svg class="w-4 h-4 text-red-700 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+                                </svg>
+                            </div>
+                        </a>
+                        <a href="/radon-credit-calculator/${county.getStateSlug()}/${county.getCountySlug()}?radonResultBand=above_4&intent=buying"
+                           data-track-event="levels_result_path_click"
+                           data-track-label="buyer_seller_path"
+                           class="rounded-xl border border-blue-200 bg-blue-50 p-4 hover:border-blue-300 hover:bg-blue-100 transition-colors">
+                            <div class="flex items-center justify-between gap-3">
+                                <div>
+                                    <div class="text-xs font-bold uppercase tracking-wider text-blue-700">Buying or selling</div>
+                                    <div class="mt-1 text-sm font-semibold text-slate-900">Turn the result into a seller-credit plan</div>
+                                </div>
+                                <svg class="w-4 h-4 text-blue-700 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+                                </svg>
+                            </div>
+                        </a>
+                    </div>
+                </div>
                 <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
                     <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-50 text-emerald-700 text-xs font-bold tracking-wider uppercase mb-3">
                         Test First
@@ -236,6 +274,7 @@
                             Shop Short-Term Kit
                         </a>
                     </div>
+                    <p class="mt-3 text-[11px] text-slate-400">Affiliate disclosure: we may earn a commission if you buy through the kit link.</p>
                 </div>
             </div>
 

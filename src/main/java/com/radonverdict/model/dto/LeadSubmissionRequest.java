@@ -32,4 +32,6 @@ public class LeadSubmissionRequest {
     private String stateAbbr;
     private String consentVersion;
     private Boolean hasTested;
+    private String selectedIntent;
+    private String selectedRadonResultBand;
 }

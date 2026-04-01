@@ -6,6 +6,30 @@
 @param String successMessage = null
 @param String errorMessage = null
 
+!{
+    final String resultBand = page.getSelectedRadonResultBand();
+    final String intent = page.getSelectedIntent();
+    final boolean transactionIntent = "buying".equals(intent) || "selling".equals(intent);
+    final boolean highReading = "above_4".equals(resultBand);
+    final String actionBadge = "not_tested".equals(resultBand) ? "Free Test + Action Plan" : "Free Local Action Plan";
+    final String actionHeadline = "not_tested".equals(resultBand)
+            ? "What should I do first in " + county.getAreaDisplayName() + "?"
+            : "What should I do with a " + page.getSelectedRadonResultBandLabel() + " result in " + county.getAreaDisplayName() + "?";
+    final String actionIntro = "not_tested".equals(resultBand)
+            ? "Tell us a few details and get the smartest first step for testing, budgeting, and deciding whether mitigation is even necessary."
+            : "Tell us a few details and get a personalized next-step plan based on your reading, local risk, foundation type, and cost range.";
+    final String submitLabel = transactionIntent
+            ? "Send My Credit Strategy"
+            : highReading
+                    ? "Send My 4.0+ Action Plan"
+                    : "not_tested".equals(resultBand)
+                            ? "Send My Test + Action Plan"
+                            : "Send My Local Action Plan";
+    final String footerCopy = transactionIntent
+            ? "We contact only for your local radon plan, credit strategy, and contractor availability updates."
+            : "We contact only for your local radon plan and availability updates.";
+}
+
 <div class="bg-slate-900 rounded-3xl p-8 shadow-2xl mt-12 mb-12 relative overflow-hidden" id="estimate-form" data-nosnippet>
     <!-- Decorative background elements -->
     <div class="absolute top-0 right-0 -mr-20 -mt-20 w-64 h-64 rounded-full bg-blue-500 opacity-10 blur-3xl"></div>
@@ -17,18 +41,18 @@
             <!-- Left side: Value Prop -->
             <div class="flex-1 text-white">
                 <span class="inline-block py-1 px-3 rounded-full bg-indigo-500/20 text-indigo-300 text-xs font-bold tracking-wider uppercase mb-4">
-                    Free 30-Second Action Plan
+                    ${actionBadge}
                 </span>
                 <h3 class="text-3xl font-display font-bold mb-4 tracking-tight leading-tight">
-                    Should I mitigate now<br>in ${county.getAreaDisplayName()}?
+                    ${actionHeadline}
                 </h3>
                 <p class="text-slate-300 text-lg mb-6 leading-relaxed">
-                    Tell us a few details and get a personalized plan based on local risk, foundation type, and cost range. No obligation and no auto-enrollment.
+                    ${actionIntro} No obligation and no auto-enrollment.
                 </p>
                 <ul class="space-y-3">
                     <li class="flex items-center text-slate-300">
                         <svg class="h-5 w-5 text-indigo-400 mr-3 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path></svg>
-                        Local risk and budget fit summary
+                        Reading-aware next step, not a generic contractor push
                     </li>
                     <li class="flex items-center text-slate-300">
                         <svg class="h-5 w-5 text-indigo-400 mr-3 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path></svg>
@@ -36,7 +60,7 @@
                     </li>
                     <li class="flex items-center text-slate-300">
                         <svg class="h-5 w-5 text-indigo-400 mr-3 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path></svg>
-                        Follow-up capped to relevant updates only
+                        Budget range and negotiation angle when it actually matters
                     </li>
                 </ul>
             </div>
@@ -93,10 +117,12 @@
                           x-data="{ 
                               hasStartedForm: false,
                               isSubmitting: false,
+                              pageIntent: '${page.getSelectedIntent()}',
+                              pageResultBand: '${page.getSelectedRadonResultBand()}',
                               trackFormStart() {
                                   if (!this.hasStartedForm && typeof rvTrack === 'function') {
                                       this.hasStartedForm = true;
-                                      rvTrack('lead_form_start', { event_category: 'engagement', event_label: '${county.getCountySlug()}' });
+                                      rvTrack('lead_form_start', { event_category: 'engagement', event_label: '${county.getCountySlug()}' + ' - ' + this.pageIntent + ' - ' + this.pageResultBand });
                                   }
                               },
                               submitAfterTracking(event) {
@@ -121,7 +147,7 @@
 
                                   const trackingPayload = {
                                       event_category: 'conversion',
-                                      event_label: '${county.getCountySlug()}'
+                                      event_label: '${county.getCountySlug()}' + ' - ' + this.pageIntent + ' - ' + this.pageResultBand
                                   };
                                   const trackingOptions = {
                                       transport_type: 'beacon',
@@ -142,6 +168,8 @@
                         <input type="hidden" name="stateSlug" value="${county.getStateSlug()}">
                         <input type="hidden" name="stateAbbr" value="${county.getStateAbbr()}">
                         <input type="hidden" name="consentVersion" value="v1.0">
+                        <input type="hidden" name="selectedIntent" value="${page.getSelectedIntent()}">
+                        <input type="hidden" name="selectedRadonResultBand" value="${page.getSelectedRadonResultBand()}">
                         
                         <!-- Honeypot Field -->
                         <div style="display:none;" aria-hidden="true">
@@ -221,14 +249,14 @@
                         </div>
 
                         <button type="submit" class="w-full flex justify-center py-3 px-4 border border-transparent rounded-xl shadow-sm text-sm font-bold text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors mt-6">
-                            Send My Local Action Plan
+                            ${submitLabel}
                         </button>
                         <p class="text-center text-[10px] text-slate-400 mt-3 flex items-center justify-center">
                             <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd"></path></svg>
                             Your information is secure.
                         </p>
                         <p class="text-center text-[10px] text-slate-400">
-                            We contact only for your local radon plan and availability updates.
+                            ${footerCopy}
                         </p>
                     </form>
                 @endif

@@ -479,6 +479,547 @@ Decision note:
 
 ---
 
+## 2026-04-01 Search Console + Snippet Reality Check
+
+Date note:
+- This pass focused on two questions:
+  - whether the structured-data error is still live
+  - whether the recent CTR snippet edits were already recrawled by Google
+
+### 1) What We Verified
+
+Structured data:
+- Live validator result on:
+  - `https://radonverdict.com/radon-levels/new-york/schenectady-county`
+  - `https://radonverdict.com/radon-mitigation-cost/virginia/fairfax-city`
+- Result:
+  - both pages validated successfully in the live schema check
+  - current live JSON-LD is valid
+
+Search Console inspection:
+- Google inspection still reported:
+  - `Bad escape sequence in string`
+  - rich-result `FAIL` on several county `radon-levels` pages
+- Interpretation:
+  - this currently looks like stale Google crawl state, not a confirmed live rendering bug
+
+CTR-target recrawl status:
+- Priority county `radon-levels` pages checked:
+  - `schenectady-county`
+  - `franklin-county`
+  - `falls-church-city`
+  - `howard-county`
+  - `miami-dade-county`
+- Search Console inspection showed last crawl dates between:
+  - `2026-02-28`
+  - `2026-03-04`
+- Interpretation:
+  - the 2026-03-17 / 2026-03-18 snippet changes were not yet reflected in Google's latest inspected crawl for these pages
+  - current zero-click behavior should not yet be treated as proof that the recent snippet pass failed
+
+Special case:
+- `clark-county` was not a valid CTR read because Google currently showed:
+  - `Excluded by 'noindex' tag`
+- Operational meaning:
+  - remove `clark-county` from the live CTR follow-up set until indexing policy changes
+
+### 2) What We Changed Today
+
+Goal:
+- make the next recrawl more likely to produce a cleaner, more clickable snippet
+- remove awkward location labeling that could suppress click confidence
+
+Changes:
+- Updated:
+  - `src/main/java/com/radonverdict/model/County.java`
+  - `src/main/jte/radon_levels_county.jte`
+  - `src/main/jte/county_hub.jte`
+  - `src/test/java/com/radonverdict/SeoBehaviorIntegrationTest.java`
+
+Behavior change:
+- Added `seoDisplayName` handling so independent city pages do not surface as fake counties in SEO surfaces.
+- `falls-church-city` style pages now render SEO labels like:
+  - `Falls Church, VA`
+  - not `Falls Church County, VA`
+- Tightened priority county `radon-levels` title and meta wording toward:
+  - EPA zone
+  - basement test meaning
+  - `2.0 vs 4.0+ pCi/L`
+  - retest / compare mitigation quote decision framing
+- Removed `clark-county` from the hardcoded priority CTR county set because it is currently blocked by noindex state and was polluting interpretation.
+
+### 3) Verification
+
+Executed:
+- `.\gradlew.bat test --tests com.radonverdict.SeoBehaviorIntegrationTest`
+
+Result:
+- BUILD SUCCESSFUL
+
+### 4) Current Interpretation
+
+Current verdict:
+- Structured-data cleanup is not the highest immediate live-risk item now.
+- The bigger reality is recrawl lag.
+- For the current priority county pages, the recent snippet edits have not yet earned a fair read from Google.
+- We should avoid overreacting to zero-click pages until Google recrawls the March snippet changes.
+
+### 5) Next Check
+
+At the next GSC review:
+- Re-check inspection crawl dates for:
+  - `schenectady-county`
+  - `franklin-county`
+  - `falls-church-city`
+  - `howard-county`
+  - `miami-dade-county`
+- Only judge the March snippet pass after those pages show post-2026-03-17 crawl dates.
+
+If rich-result errors remain after fresh recrawl:
+- reopen structured-data debugging immediately
+- treat the issue as live rather than stale
+
+If post-recrawl CTR is still weak:
+- move from generic `map + guide` framing toward tighter query-match framing by county cluster
+- especially for pages where the real query mix is `basement radon testing`, `EPA zone`, or `4.0+ meaning`
+
+## 2026-04-01 Cost Flow Repositioning: `Action Plan` First
+
+### What changed
+
+Shifted the cost flow away from a pure `price calculator` posture and toward a `decision + cost` posture.
+
+Files changed:
+- `src/main/java/com/radonverdict/model/dto/CountyPageContent.java`
+- `src/main/java/com/radonverdict/service/ContentGenerationService.java`
+- `src/main/java/com/radonverdict/controller/PageController.java`
+- `src/main/jte/components/simulator_form.jte`
+- `src/main/jte/components/hero_section.jte`
+- `src/main/jte/fragments/receipt.jte`
+- `src/main/jte/components/lead_form.jte`
+- `src/test/java/com/radonverdict/SeoBehaviorIntegrationTest.java`
+
+Behavior changes:
+- Added `radonResultBand` as a first-class calculator input:
+  - `not_tested`
+  - `under_2`
+  - `between_2_and_4`
+  - `above_4`
+- Reframed the county cost hero from `How much does it cost?` to `What should you do with this result?`
+- Made the calculator form read like an `Action Plan` builder instead of a generic estimate refiner.
+- Adjusted the decision copy, next-step box, and lead form messaging to respond to the selected result band.
+- Enabled deep-link scenario paths from `radon-levels` pages into prefilled cost/action-plan pages for:
+  - borderline `2.0-3.9`
+  - confirmed `4.0+`
+  - buyer/seller negotiation use cases
+- Shifted the global calculator landing from pure `cost calculator` language to `action plan + cost` language.
+
+### Why
+
+Observed product mismatch:
+- `radon-levels` pages are already proving that users respond to decision-oriented testing intent.
+- The cost flow previously asked for foundation and intent, but not the most important variable: the user's actual result state.
+- The page promise was split across `calculator`, `estimate`, and `action plan` language, which likely diluted intent and reduced conversion clarity.
+
+New product hypothesis:
+- The user wants `what should I do now?` first.
+- Cost is the supporting proof, not the top-level promise.
+
+### Verification
+
+Executed:
+- `.\gradlew.bat test --tests com.radonverdict.SeoBehaviorIntegrationTest`
+
+Result:
+- BUILD SUCCESSFUL
+
+### Next check
+
+At the next review, inspect whether these changes improve:
+- `estimator_start / page_view`
+- `estimator_result_viewed / estimator_start`
+- `lead_form_start / estimator_result_viewed`
+
+If not:
+- the next likely step is not more calculator complexity
+- it is a sharper split between:
+  - `not tested yet`
+  - `confirmed 4.0+`
+  - `buyer / seller negotiation`
+
+## 2026-04-01 GA4 Connection + Scenario Prefill Gate
+
+### What we verified
+
+GA4 status:
+- The project already had GA4 instrumentation live via `G-7C2TPP3S8N`.
+- Service-account access to the GA4 property is working.
+- Verified property:
+  - `properties/525547689`
+  - display name: `radon`
+- Local MCP account config was updated to include the GA4 property.
+- `get_started` now reports both:
+  - `google`
+  - `ga4`
+
+Current caveat:
+- The currently running MCP tool session still returns `No GA4 accounts found` for GA4 read tools.
+- This looks like a connector reload/cache issue, not an auth failure.
+- Direct GA4 API reads work, so the tracking layer is live even though the current tool session has not fully reloaded the new GA4 account.
+
+### What the GA4 data says
+
+Recent 28-day read from GA4:
+- Top event counts included:
+  - `page_view: 271`
+  - `internal_link_click: 12`
+  - `click: 9`
+  - `estimator_result_viewed: 8`
+- Top landing page by sessions in the action flow:
+  - `/radon-cost-calculator`: `59 sessions`, `30 engagedSessions`
+- Estimator result events were concentrated on county cost pages, not the global calculator landing.
+- Only one `lead_form_start` showed up in the inspected event sample.
+
+Interpretation:
+- Tracking is not dead.
+- The problem is not `can we measure it?`
+- The problem is `can we move people from entry page -> scenario -> estimate -> lead?`
+- The global calculator landing had become too much of a directory/search page and not enough of a decision gate.
+
+### What we changed
+
+Files changed:
+- `src/main/java/com/radonverdict/controller/PageController.java`
+- `src/main/jte/calculator.jte`
+- `src/main/jte/pages/guide_seller_credit_worksheet.jte`
+- `src/test/java/com/radonverdict/SeoBehaviorIntegrationTest.java`
+
+Behavior changes:
+- `POST /search-zip` now accepts optional:
+  - `intent`
+  - `radonResultBand`
+- The global calculator landing now has an `Optional Scenario Prefill` module before ZIP submit.
+- Users can choose:
+  - result band: `not tested`, `2.0-3.9`, `4.0+`
+  - goal: `living here`, `buying`, `selling`
+- ZIP submit now carries those selections into the county action-plan URL so the destination page opens prefilled for that scenario.
+- The new `Radon Seller Credit Worksheet` guide was cleaned up and kept as the real-estate conversion assist page.
+
+### Why
+
+Product reason:
+- We now have evidence that `/radon-cost-calculator` gets attention.
+- But the meaningful downstream events are happening deeper in the county pages.
+- So the global landing should not act like a passive directory.
+- It should act like an intake gate that pushes the user into the right county scenario immediately.
+
+Monetization reason:
+- This increases the odds that a visitor reaches a page with:
+  - stronger local cost context
+  - stronger action framing
+  - negotiation worksheet support
+  - lead capture fields that preserve intent + result-band context
+
+### Verification
+
+Executed:
+- `.\gradlew.bat test --tests com.radonverdict.SeoBehaviorIntegrationTest`
+
+Result:
+- BUILD SUCCESSFUL
+
+Added regression coverage for:
+- global calculator scenario-prefill module visibility
+- ZIP redirect carrying `intent` and `radonResultBand`
+- seller-credit worksheet guide load
+
+### Next check
+
+Once the GA4 connector session is reloaded, inspect:
+- `estimator_start / page_view` on `/radon-cost-calculator`
+- prefill pick events
+- whether county pages opened from global ZIP search now show more `estimator_result_viewed`
+- whether `lead_form_start` increases on buy/sell and `4.0+` paths
+
+If the next bottleneck remains lead starts:
+- raise the prominence of the worksheet CTA on transaction paths
+- add a `4.0+ next move` CTA block above the fold on county cost pages
+- consider a dedicated `buyer credit calculator` variation rather than a generic lead form
+
+### Follow-up implementation
+
+Implemented immediately after this review:
+- added an above-the-fold `Negotiation Snapshot` block on county cost pages
+- this now appears for:
+  - `buying`
+  - `selling`
+  - `above_4`
+  - `between_2_and_4`
+- the block surfaces:
+  - starting ask / reserve anchor
+  - ceiling anchor
+  - direct worksheet CTA
+  - direct jump back into the full action-plan flow
+- lead-form CTA copy now changes by scenario:
+  - `Send My Credit Strategy`
+  - `Send My 4.0+ Action Plan`
+  - `Send My Test + Action Plan`
+
+Resulting product shift:
+- the first screen on high-intent pages is no longer just `local estimate context`
+- it now behaves more like a lightweight buyer/seller credit calculator without needing a separate heavy tool yet
+
+### Dedicated local credit calculator
+
+Implemented next:
+- added a dedicated county-level route:
+  - `/radon-credit-calculator/{stateSlug}/{countySlug}`
+- this route is intentionally `noindex`
+- purpose:
+  - convert existing county traffic into a cleaner transaction-intent result screen
+  - avoid creating a new SEO doorway cluster
+
+Behavior:
+- defaults to transaction intent (`buying` unless `selling` is passed)
+- reuses county pricing + scenario inputs from the main action-plan engine
+- outputs a focused result screen with:
+  - opening ask
+  - defensible ceiling
+  - quick-close target
+  - split-cost fallback
+- transaction-intent CTAs on county pages now point to this calculator first
+- `radon-levels` buyer/seller path now deep-links to the local credit calculator instead of the generic cost flow
+
+Why this matters:
+- it turns transaction-intent visitors into a shorter path:
+  - search result -> county page -> credit calculator -> worksheet / action plan
+- that is better aligned with the actual job-to-be-done than pushing these visitors straight into a generic lead form
+
+### Global credit-calculator landing
+
+Implemented after the county route:
+- added a global entry page:
+  - `/radon-credit-calculator`
+- added ZIP submit path:
+  - `POST /search-zip-credit`
+
+Behavior:
+- users can choose:
+  - buyer asking for credit
+  - seller budgeting response
+  - result band
+- ZIP then redirects directly into the local county credit calculator
+- transaction-focused guides now point to the credit calculator before the generic action-plan flow
+- top navigation now exposes `Credit Calculator`
+
+Why this matters:
+- we no longer require transaction-intent users to discover the county tool indirectly
+- the project now has a direct top-level path for:
+  - `seller credit`
+  - `repair request`
+  - `closing credit`
+  - `who pays`
+
+This should improve:
+- transaction-path session depth
+- county credit calculator opens
+- worksheet usage
+- lead-start quality on buy/sell traffic
+
+## 2026-04-01 Immediate Step Review: `Levels -> Money Path` Check
+
+### What we analyzed
+
+Used today:
+- Google Search Console top pages (last 28 days)
+- Google Search Console striking-distance queries
+- Google Search Console low-CTR opportunities
+- direct GA4 Data API reads on property `525547689`
+
+Reason for this pass:
+- decide the current step precisely
+- separate `what feels urgent` from `what the numbers actually support`
+- confirm whether the next move is:
+  - more SEO content
+  - local contractor outreach
+  - or conversion-path tightening
+
+### What we saw
+
+Search Console top-page reality:
+- most visible traction is still concentrated in `radon-levels`
+- top recent pages included:
+  - `prince-georges-county`: `5 clicks / 42 impressions / 11.9% CTR / 7.33 avg pos`
+  - `broomfield-county`: `4 / 35 / 11.4% / 8.26`
+  - `story-county`: `4 / 26 / 15.38% / 4.08`
+  - `monmouth-county`: `3 / 78 / 3.85% / 7.72`
+  - `fairfax-city`: `3 / 81 / 3.70% / 7.65`
+  - `marion-county`: `2 / 50 / 4.0% / 5.46`
+
+Low-CTR check:
+- the low-CTR opportunities tool returned no meaningful immediate target set
+- interpretation:
+  - broad snippet rewriting is not the highest-leverage move right now
+  - current problem is not primarily `many impressions but terrible CTR`
+
+Striking-distance check:
+- `cost` and transaction-intent pages are starting to appear, but still at very low volume
+- examples:
+  - `gooding-county` testing query: `22 impressions / pos 10.41 / 0 clicks`
+  - `jefferson-county` cost query: `15 impressions / pos 13.4 / 0 clicks`
+  - `iowa-county` cost query: `14 impressions / pos 11.36 / 0 clicks`
+  - `passaic-county` cost query: `9 impressions / pos 9.22 / 0 clicks`
+  - `fairfax-city` cost query: `6 impressions / pos 8.83 / 0 clicks`
+  - guide `who pays for radon mitigation`: `5 impressions / pos 14 / 0 clicks`
+
+GA4 funnel reality, last 28 days:
+- `page_view`: `1142`
+- `affiliate_link_click`: `15`
+- `estimator_start`: `15`
+- `estimator_step_complete`: `27`
+- `estimator_result_viewed`: `27`
+- `lead_form_start`: `1`
+- `lead_form_submit`: `1`
+
+GA4 interpretation:
+- affiliate clicks are the only monetization path showing repeated signal
+- lead generation is not yet strong enough to justify local outreach as the current step
+- the main bottleneck is still:
+  - `page view -> action path entry`
+  - not `partner supply`
+
+Page-level behavior check:
+- `/radon-cost-calculator` already gets meaningful attention
+- `radon-levels` pages remain the dominant search-entry surface
+- transaction / credit intent exists, but is still early
+
+### Current call
+
+This is the important decision from today's review:
+- the current step is **not** local contractor outreach
+- the current step is **not** broad content expansion
+- the current step is:
+  - deploy the new conversion stack
+  - let existing `radon-levels` traffic hit:
+    - action-plan calculator
+    - credit calculator
+    - worksheet
+    - test-kit CTA
+  - then measure whether those paths get real repeated usage
+
+Why:
+- Search Console says attention is coming in through `levels`
+- GA4 says money-path entry is still too weak
+- that means the project does not need a new top-of-funnel project right now
+- it needs stronger throughput from the traffic that already exists
+
+### Immediate priority stack
+
+1. Deploy the current unshipped conversion work.
+- do not evaluate the funnel before the new action-plan / credit flow is live
+
+2. Freeze broad SEO expansion for one short cycle.
+- no large county-page push
+- no broad FAQ/meta rewrite pass
+- use the next 7 days to observe actual path usage
+
+3. Watch only four metrics daily.
+- `affiliate_link_click`
+- `levels_result_path_click` or equivalent calculator-entry events
+- `lead_form_start`
+- `lead_form_submit`
+
+4. Keep local outreach for the next step, not this one.
+- revisit only if buy/sell and `4.0+` paths begin producing repeated starts
+
+### What this means operationally
+
+If this next observation window works:
+- the site becomes less of a pure SEO site
+- and more of a radon decision engine with:
+  - a test path
+  - a cost path
+  - a transaction path
+
+If it does not work:
+- the next fix is still inside conversion:
+  - stronger above-the-fold CTAs
+  - clearer action routing
+  - less friction before contact
+- not more SEO surface area yet
+
+### Next check
+
+Next review window:
+- after deployment + 7 days of live data
+
+Questions to answer next:
+1. Did `levels -> action plan / credit calculator` clicks materially increase?
+2. Did `affiliate_link_click` rise on the pages already getting impressions?
+3. Did `lead_form_start` stay near zero, or finally start repeating?
+4. Are buy/sell visitors using the credit calculator at all?
+
+Decision rule for the next step:
+- if calculator-entry and lead-start numbers rise:
+  - begin planning selective local partner outreach on only the best counties
+- if not:
+  - continue working the conversion layer before adding any B2B overhead
+
+### Playwright QA + codebase viability check
+
+Added and ran a dedicated Playwright conversion smoke suite:
+- `src/test/java/com/radonverdict/PlaywrightConversionFlowsE2ETest.java`
+
+Command:
+- `./gradlew.bat test --tests com.radonverdict.PlaywrightConversionFlowsE2ETest`
+
+Result:
+- passed
+
+What the browser smoke covered:
+- global action-plan calculator -> county action-plan flow
+- global credit calculator -> county credit calculator flow
+- `radon-levels` buyer/seller CTA -> county credit calculator
+- `radon-levels` `4.0+` CTA -> county action-plan page
+
+Artifacts saved:
+- `build/reports/playwright-conversion/`
+
+Important interpretation:
+- today's conversion work is alive in a real browser
+- the new money paths are not just template changes; they are navigable end-to-end
+
+Codebase viability call:
+- this project can already do the core `SEO -> decision -> monetization` loop
+- reasons:
+  - `PageController` now owns both global entry points and county redirect logic
+  - `RadonLevelsController` still serves as the main search-acquisition surface
+  - `InternalLinkService` can steer users between levels, cost, guides, and local credit tools
+  - `ContentGenerationService` already supports result-band and intent-aware action-plan copy
+  - `TelemetryController` + `TelemetryEventService` capture behavioral events with local persistence
+  - `LeadService` stores leads with scenario fields like intent and result band
+
+What this means:
+- the site is no longer blocked on core architecture
+- it is good enough to iterate on:
+  - CTA prominence
+  - scenario routing
+  - lead quality
+  - affiliate click yield
+- the next bottleneck is conversion efficiency, not missing platform capability
+
+What is still not mature enough:
+- direct partner ops as the primary loop
+- robust lead CRM / pipeline management
+- automated revenue reporting
+- polished analytics access inside the current MCP session
+
+So the operating conclusion stays the same:
+- current step = improve throughput on the flows that now exist
+- next step = only after repeated conversion signals, begin selective local partner outreach
+
+---
+
 ## 8) How To Append Future Entries
 
 For each new workday, add:

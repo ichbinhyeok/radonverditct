@@ -61,7 +61,7 @@ public class PageController {
 
     @GetMapping("/radon-cost-calculator")
     public String globalCalculator(@RequestParam(name = "error", required = false) String error, Model model) {
-        model.addAttribute("title", "National Radon Mitigation Cost Calculator " + LocalDate.now().getYear());
+        model.addAttribute("title", "National Radon Action Plan + Mitigation Cost Calculator " + LocalDate.now().getYear());
         ItemizedReceipt defaultReceipt = calcService.calculate("US", "National Average", "other", "homeowner");
         model.addAttribute("defaultReceipt", defaultReceipt);
 
@@ -77,9 +77,28 @@ public class PageController {
         return "calculator";
     }
 
+    @GetMapping("/radon-credit-calculator")
+    public String globalCreditCalculator(@RequestParam(name = "error", required = false) String error, Model model) {
+        model.addAttribute("title", "Radon Seller Credit Calculator " + LocalDate.now().getYear());
+        ItemizedReceipt defaultReceipt = calcService.calculate("US", "National Average", "other", "buying");
+        model.addAttribute("defaultReceipt", defaultReceipt);
+
+        if (error != null) {
+            model.addAttribute("noindex", true);
+        }
+
+        Map<String, List<County>> stateMap = dataLoadService.getCountyBySlugMap().values().stream()
+                .collect(Collectors.groupingBy(County::getStateAbbr, TreeMap::new, Collectors.toList()));
+        model.addAttribute("stateMap", stateMap);
+
+        return "credit_calculator_landing";
+    }
+
     // New Endpoint: Redirect ZIP code to its county page
     @PostMapping("/search-zip")
-    public RedirectView searchZip(@RequestParam("zipCode") String zipCode) {
+    public RedirectView searchZip(@RequestParam("zipCode") String zipCode,
+                                  @RequestParam(name = "intent", required = false) String intent,
+                                  @RequestParam(name = "radonResultBand", required = false) String radonResultBand) {
         String fips = dataLoadService.getZipToFipsMap().get(zipCode.trim());
         if (fips == null) {
             // Handle invalid zip - redirect to global calculator with error
@@ -89,7 +108,43 @@ public class PageController {
         if (county == null) {
             return redirect("/radon-cost-calculator?error=notfound", HttpStatus.SEE_OTHER);
         }
-        return redirect("/radon-mitigation-cost/" + county.getStateSlug() + "/" + county.getCountySlug(),
+        StringBuilder target = new StringBuilder("/radon-mitigation-cost/")
+                .append(county.getStateSlug())
+                .append("/")
+                .append(county.getCountySlug());
+
+        boolean hasQuery = false;
+        if (intent != null && !intent.isBlank()) {
+            target.append(hasQuery ? "&" : "?").append("intent=").append(intent);
+            hasQuery = true;
+        }
+        if (radonResultBand != null && !radonResultBand.isBlank()) {
+            target.append(hasQuery ? "&" : "?").append("radonResultBand=").append(radonResultBand);
+        }
+
+        return redirect(target.toString(),
+                HttpStatus.SEE_OTHER);
+    }
+
+    @PostMapping("/search-zip-credit")
+    public RedirectView searchZipCredit(@RequestParam("zipCode") String zipCode,
+                                        @RequestParam(name = "intent", required = false) String intent,
+                                        @RequestParam(name = "radonResultBand", required = false) String radonResultBand) {
+        String fips = dataLoadService.getZipToFipsMap().get(zipCode.trim());
+        if (fips == null) {
+            return redirect("/radon-credit-calculator?error=notfound", HttpStatus.SEE_OTHER);
+        }
+
+        County county = dataLoadService.getCountByFipsMap().get(fips);
+        if (county == null) {
+            return redirect("/radon-credit-calculator?error=notfound", HttpStatus.SEE_OTHER);
+        }
+
+        String transactionIntent = "selling".equalsIgnoreCase(intent) ? "selling" : "buying";
+        String resultBand = radonResultBand != null && !radonResultBand.isBlank() ? radonResultBand : "above_4";
+
+        return redirect("/radon-credit-calculator/" + county.getStateSlug() + "/" + county.getCountySlug()
+                        + "?intent=" + transactionIntent + "&radonResultBand=" + resultBand,
                 HttpStatus.SEE_OTHER);
     }
 
@@ -121,6 +176,10 @@ public class PageController {
 
     @GetMapping("/radon-mitigation-cost/{stateSlug}/{countySlug}")
     public Object countyPage(@PathVariable("stateSlug") String stateSlug, @PathVariable("countySlug") String countySlug,
+            @RequestParam(name = "foundation", required = false) String foundation,
+            @RequestParam(name = "intent", required = false) String intent,
+            @RequestParam(name = "sqftCategory", required = false) String sqftCategory,
+            @RequestParam(name = "radonResultBand", required = false) String radonResultBand,
             Model model) {
         String key = stateSlug.toLowerCase() + "/" + countySlug.toLowerCase();
         County county = dataLoadService.getCountyBySlugMap().get(key);
@@ -135,7 +194,14 @@ public class PageController {
 
         // Build the FULL page content (Zone + State regulation + Intent + FAQ +
         // Receipt)
-        CountyPageContent pageContent = contentService.buildDefaultPageContent(county);
+        CountyPageContent pageContent = hasCostScenarioOverrides(foundation, intent, sqftCategory, radonResultBand)
+                ? contentService.buildPageContent(
+                        county,
+                        foundation != null ? foundation : "other",
+                        intent != null ? intent : "homeowner",
+                        sqftCategory != null ? sqftCategory : "under_2000",
+                        radonResultBand != null ? radonResultBand : "not_tested")
+                : contentService.buildDefaultPageContent(county);
         PageQualityResult quality = pageQualityService.scoreMitigationCountyPage(county, pageContent);
         pageContent.setIndexable(quality.isIndexable() && seoIndexingPolicyService.isCountyIndexableCandidate(county));
 
@@ -156,6 +222,49 @@ public class PageController {
         return "county_hub";
     }
 
+    @GetMapping("/radon-credit-calculator/{stateSlug}/{countySlug}")
+    public Object countyCreditCalculator(
+            @PathVariable("stateSlug") String stateSlug,
+            @PathVariable("countySlug") String countySlug,
+            @RequestParam(name = "foundation", required = false) String foundation,
+            @RequestParam(name = "intent", required = false) String intent,
+            @RequestParam(name = "sqftCategory", required = false) String sqftCategory,
+            @RequestParam(name = "radonResultBand", required = false) String radonResultBand,
+            Model model) {
+        String key = stateSlug.toLowerCase() + "/" + countySlug.toLowerCase();
+        County county = dataLoadService.getCountyBySlugMap().get(key);
+
+        if (county == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "County not found");
+        }
+
+        if (!county.getStateSlug().equals(stateSlug) || !county.getCountySlug().equals(countySlug)) {
+            return permanentRedirect("/radon-credit-calculator/" + county.getStateSlug() + "/" + county.getCountySlug());
+        }
+
+        CountyPageContent defaultScenario = contentService.buildDefaultPageContent(county);
+        String transactionIntent = "selling".equalsIgnoreCase(intent) ? "selling" : "buying";
+        String resolvedFoundation = foundation != null ? foundation : defaultScenario.getSelectedFoundationType();
+        String resolvedSqftCategory = sqftCategory != null ? sqftCategory : defaultScenario.getSelectedSqftCategory();
+        String resolvedResultBand = radonResultBand != null ? radonResultBand : "above_4";
+
+        CountyPageContent pageContent = contentService.buildPageContent(
+                county,
+                resolvedFoundation,
+                transactionIntent,
+                resolvedSqftCategory,
+                resolvedResultBand);
+
+        model.addAttribute("county", county);
+        model.addAttribute("page", pageContent);
+        model.addAttribute("canonicalActionPlanUrl",
+                normalizedBaseUrl() + "/radon-mitigation-cost/" + county.getStateSlug() + "/" + county.getCountySlug()
+                        + "?intent=" + transactionIntent
+                        + "&radonResultBand=" + resolvedResultBand);
+
+        return "credit_calculator";
+    }
+
     // HTMX Endpoint: recalculates receipt + content fragment based on user input
     @PostMapping("/htmx/calculate-receipt")
     public String calculateReceiptFragment(
@@ -164,6 +273,7 @@ public class PageController {
             @RequestParam("foundation") String foundation,
             @RequestParam("intent") String intent,
             @RequestParam(value = "sqftCategory", defaultValue = "under_2000") String sqftCategory,
+            @RequestParam(value = "radonResultBand", defaultValue = "not_tested") String radonResultBand,
             HttpServletResponse response,
             Model model) {
         response.setHeader("X-Robots-Tag", "noindex");
@@ -174,10 +284,19 @@ public class PageController {
         if (county == null) {
             // Fallback: just return empty receipt
             model.addAttribute("page", contentService.buildPageContent(
-                    dataLoadService.getCountByFipsMap().values().iterator().next(), foundation, intent, sqftCategory));
+                    dataLoadService.getCountByFipsMap().values().iterator().next(),
+                    foundation,
+                    intent,
+                    sqftCategory,
+                    radonResultBand));
         } else {
             // Build full content based on the new user selection
-            CountyPageContent pageContent = contentService.buildPageContent(county, foundation, intent, sqftCategory);
+            CountyPageContent pageContent = contentService.buildPageContent(
+                    county,
+                    foundation,
+                    intent,
+                    sqftCategory,
+                    radonResultBand);
             model.addAttribute("page", pageContent);
         }
 
@@ -229,6 +348,10 @@ public class PageController {
 
     private RedirectView permanentRedirect(String path) {
         return redirect(path, HttpStatus.MOVED_PERMANENTLY);
+    }
+
+    private boolean hasCostScenarioOverrides(String foundation, String intent, String sqftCategory, String radonResultBand) {
+        return foundation != null || intent != null || sqftCategory != null || radonResultBand != null;
     }
 
     private RedirectView redirect(String path, HttpStatus status) {

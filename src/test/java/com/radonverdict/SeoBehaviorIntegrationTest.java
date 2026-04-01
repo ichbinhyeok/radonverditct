@@ -70,6 +70,72 @@ class SeoBehaviorIntegrationTest {
     }
 
     @Test
+    void globalCalculatorShowsScenarioPrefillModule() throws Exception {
+        mockMvc.perform(get("/radon-cost-calculator"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("Optional Scenario Prefill")))
+                .andExpect(content().string(containsString("Not tested yet")))
+                .andExpect(content().string(containsString("Buying")))
+                .andExpect(content().string(containsString("Pick a scenario to open a county page already tuned for your next step.")));
+    }
+
+    @Test
+    void globalCreditCalculatorLandingLoads() throws Exception {
+        mockMvc.perform(get("/radon-credit-calculator"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("Radon Seller Credit Calculator")))
+                .andExpect(content().string(containsString("Get My Local Credit Number")))
+                .andExpect(content().string(containsString("Buyer asking for credit")))
+                .andExpect(content().string(containsString("Seller budgeting response")));
+    }
+
+    @Test
+    void searchZipCarriesScenarioPrefillIntoCountyRedirect() throws Exception {
+        mockMvc.perform(post("/search-zip")
+                        .param("zipCode", "90210")
+                        .param("intent", "buying")
+                        .param("radonResultBand", "above_4"))
+                .andExpect(status().isSeeOther())
+                .andExpect(header().string("Location",
+                        "https://radonverdict.com/radon-mitigation-cost/california/los-angeles-county?intent=buying&radonResultBand=above_4"));
+    }
+
+    @Test
+    void searchZipCreditRedirectsIntoCountyCreditCalculator() throws Exception {
+        mockMvc.perform(post("/search-zip-credit")
+                        .param("zipCode", "90210")
+                        .param("intent", "selling")
+                        .param("radonResultBand", "above_4"))
+                .andExpect(status().isSeeOther())
+                .andExpect(header().string("Location",
+                        "https://radonverdict.com/radon-credit-calculator/california/los-angeles-county?intent=selling&radonResultBand=above_4"));
+    }
+
+    @Test
+    void countyCreditCalculatorLoadsForBuyerFlow() throws Exception {
+        mockMvc.perform(get("/radon-credit-calculator/california/los-angeles-county")
+                        .param("intent", "buying")
+                        .param("radonResultBand", "above_4"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("<meta name=\"robots\" content=\"noindex, follow\">")))
+                .andExpect(content().string(containsString("Buyer Radon Credit Calculator for Los Angeles County, CA")))
+                .andExpect(content().string(containsString("Opening ask")))
+                .andExpect(content().string(containsString("Defensible ceiling")))
+                .andExpect(content().string(containsString("Split-cost fallback")));
+    }
+
+    @Test
+    void countyCreditCalculatorLoadsForSellerFlow() throws Exception {
+        mockMvc.perform(get("/radon-credit-calculator/california/los-angeles-county")
+                        .param("intent", "selling")
+                        .param("radonResultBand", "above_4"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("Seller Radon Credit Calculator for Los Angeles County, CA")))
+                .andExpect(content().string(containsString("Reserve target")))
+                .andExpect(content().string(containsString("Fast-close credit")));
+    }
+
+    @Test
     void mixedCaseCountySlugRedirectsToCanonicalPath() throws Exception {
         mockMvc.perform(get("/radon-levels/PuErTo-RiCo/PONCE-MUNICIPIO"))
                 .andExpect(status().isMovedPermanently())
@@ -162,15 +228,72 @@ class SeoBehaviorIntegrationTest {
     }
 
     @Test
+    void countyHubUsesActionPlanInputsInsteadOfCostOnlyFraming() throws Exception {
+        mockMvc.perform(get("/radon-mitigation-cost/california/los-angeles-county"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("Build Your Local Action Plan")))
+                .andExpect(content().string(containsString("Current Result")))
+                .andExpect(content().string(containsString("Not tested")))
+                .andExpect(content().string(containsString("4.0+")))
+                .andExpect(content().string(containsString("action plan")))
+                .andExpect(content().string(containsString("Get Next Step")));
+    }
+
+    @Test
+    void countyHubAcceptsResultBandAndIntentDeepLinks() throws Exception {
+        mockMvc.perform(get("/radon-mitigation-cost/california/los-angeles-county")
+                        .param("radonResultBand", "above_4")
+                        .param("intent", "buying"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("4.0+ Action Plan for Buyers")))
+                .andExpect(content().string(containsString("Scenario")))
+                .andExpect(content().string(containsString("4.0+ pCi/L")));
+    }
+
+    @Test
+    void countyHubShowsNegotiationSnapshotForBuyingFlow() throws Exception {
+        mockMvc.perform(get("/radon-mitigation-cost/california/los-angeles-county")
+                        .param("radonResultBand", "above_4")
+                        .param("intent", "buying"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("Seller Credit Starting Point")))
+                .andExpect(content().string(containsString("Open Credit Calculator")))
+                .andExpect(content().string(containsString("/radon-credit-calculator/california/los-angeles-county?intent=buying&amp;radonResultBand=above_4")))
+                .andExpect(content().string(containsString("Send My Credit Strategy")));
+    }
+
+    @Test
+    void countyHubShowsHighReadingFastPathForHomeownerFlow() throws Exception {
+        mockMvc.perform(get("/radon-mitigation-cost/california/los-angeles-county")
+                        .param("radonResultBand", "above_4")
+                        .param("intent", "homeowner"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("High Reading Budget Snapshot")))
+                .andExpect(content().string(containsString("Open 4.0+ Worksheet")))
+                .andExpect(content().string(containsString("Send My 4.0+ Action Plan")));
+    }
+
+    @Test
     void radonLevelsCountyUsesTestingGuideSeoAndKeepsTestingAdvisorCtas() throws Exception {
         mockMvc.perform(get("/radon-levels/missouri/st-louis-county"))
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("St. Louis County, MO Radon Levels, Zone Map")))
                 .andExpect(content().string(containsString("Home Testing Guide")))
                 .andExpect(content().string(containsString("Direct Answer for basement and lowest-level tests:")))
+                .andExpect(content().string(containsString("/radon-credit-calculator/missouri/st-louis-county?radonResultBand=above_4&intent=buying")))
                 .andExpect(content().string(not(containsString("At <strong x-text=\"parseFloat(level).toFixed(1)\"></strong> pCi/L"))))
                 .andExpect(content().string(containsString("Get a Home Radon Monitor (~$30)")))
                 .andExpect(content().string(containsString("Verify with Long-term Monitor (~$150)")));
+    }
+
+    @Test
+    void independentCitySeoAvoidsCountyLabelInTitleAndBreadcrumbJsonLd() throws Exception {
+        mockMvc.perform(get("/radon-levels/virginia/falls-church-city"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("Falls Church, VA Radon Levels")))
+                .andExpect(content().string(not(containsString("Falls Church County, VA Radon Levels"))))
+                .andExpect(content().string(containsString("\"name\": \"Falls Church\"")))
+                .andExpect(content().string(not(containsString("\"name\": \"Falls Church County\""))));
     }
 
     @Test
@@ -229,6 +352,14 @@ class SeoBehaviorIntegrationTest {
                 .getContentAsString();
 
         assertJsonLdBlocksAreValid(html);
+    }
+
+    @Test
+    void sellerCreditWorksheetGuideLoads() throws Exception {
+        mockMvc.perform(get("/guides/radon-seller-credit-worksheet"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("Radon Seller Credit Worksheet")))
+                .andExpect(content().string(containsString("repair or credit ask")));
     }
 
     @Test

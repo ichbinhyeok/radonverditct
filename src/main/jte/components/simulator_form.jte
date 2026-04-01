@@ -7,8 +7,8 @@
 <div class="bg-white rounded-[2rem] p-6 sm:p-8 shadow-sm border border-slate-200 mb-8 max-w-2xl mx-auto">
     
     <div class="mb-6 text-center">
-        <h3 class="font-display font-bold text-slate-900 text-xl tracking-tight">Refine Your Estimate</h3>
-        <p class="text-slate-500 text-sm mt-1 font-medium">Adjust parameters to simulate local costs</p>
+        <h3 class="font-display font-bold text-slate-900 text-xl tracking-tight">Build Your Local Action Plan</h3>
+        <p class="text-slate-500 text-sm mt-1 font-medium">Set your result band, home profile, and goal to see the right next move</p>
     </div>
 
     <!-- The HTMX Form -->
@@ -23,7 +23,7 @@
             clearTimeout(hideTimeout); 
             hideTimeout = setTimeout(() => showToast = false, 3000);
             if (typeof rvTrack === 'function') {
-                rvTrack('estimator_result_viewed', { event_category: 'engagement', event_label: countySlug + ' - ' + foundation + ' - ' + intent });
+                rvTrack('estimator_result_viewed', { event_category: 'engagement', event_label: countySlug + ' - ' + foundation + ' - ' + intent + ' - ' + radonResultBand });
             }
           "
           class="space-y-8 relative"
@@ -31,6 +31,7 @@
               foundation: '${page.getSelectedFoundationType()}', 
               intent: '${page.getSelectedIntent()}', 
               sqftCategory: '${page.getSelectedSqftCategory()}', 
+              radonResultBand: '${page.getSelectedRadonResultBand()}',
               showToast: false, 
               hideTimeout: null,
               countySlug: '${county.getCountySlug()}',
@@ -56,6 +57,41 @@
         <!-- Hidden required fields -->
         <input type="hidden" name="stateSlug" value="${county.getStateSlug()}">
         <input type="hidden" name="countySlug" value="${county.getCountySlug()}">
+
+        <!-- Axis 0: Current Radon Result -->
+        <div>
+            <label class="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-3 text-center">Current Result</label>
+            <div class="grid grid-cols-2 gap-3 sm:grid-cols-4">
+                <label class="cursor-pointer">
+                    <input type="radio" name="radonResultBand" value="not_tested" x-model="radonResultBand" class="peer sr-only">
+                    <div class="text-center rounded-xl p-3 border-2 transition-all duration-200"
+                         :class="radonResultBand === 'not_tested' ? 'border-slate-900 bg-slate-50 text-slate-900 shadow-sm' : 'border-slate-100 bg-white text-slate-500 hover:border-slate-300 hover:bg-slate-50'">
+                        <div class="font-semibold text-sm">Not tested</div>
+                    </div>
+                </label>
+                <label class="cursor-pointer">
+                    <input type="radio" name="radonResultBand" value="under_2" x-model="radonResultBand" class="peer sr-only">
+                    <div class="text-center rounded-xl p-3 border-2 transition-all duration-200"
+                         :class="radonResultBand === 'under_2' ? 'border-emerald-600 bg-emerald-50 text-emerald-900 shadow-sm' : 'border-slate-100 bg-white text-slate-500 hover:border-slate-300 hover:bg-slate-50'">
+                        <div class="font-semibold text-sm">Under 2.0</div>
+                    </div>
+                </label>
+                <label class="cursor-pointer">
+                    <input type="radio" name="radonResultBand" value="between_2_and_4" x-model="radonResultBand" class="peer sr-only">
+                    <div class="text-center rounded-xl p-3 border-2 transition-all duration-200"
+                         :class="radonResultBand === 'between_2_and_4' ? 'border-amber-500 bg-amber-50 text-amber-900 shadow-sm' : 'border-slate-100 bg-white text-slate-500 hover:border-slate-300 hover:bg-slate-50'">
+                        <div class="font-semibold text-sm">2.0-3.9</div>
+                    </div>
+                </label>
+                <label class="cursor-pointer">
+                    <input type="radio" name="radonResultBand" value="above_4" x-model="radonResultBand" class="peer sr-only">
+                    <div class="text-center rounded-xl p-3 border-2 transition-all duration-200"
+                         :class="radonResultBand === 'above_4' ? 'border-red-500 bg-red-50 text-red-900 shadow-sm' : 'border-slate-100 bg-white text-slate-500 hover:border-slate-300 hover:bg-slate-50'">
+                        <div class="font-semibold text-sm">4.0+</div>
+                    </div>
+                </label>
+            </div>
+        </div>
 
         <!-- Axis 1: Foundation Type (Radio Cards) -->
         <div>

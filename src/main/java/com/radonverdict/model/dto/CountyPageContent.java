@@ -64,6 +64,7 @@ public class CountyPageContent {
     private String selectedFoundationType;
     private String selectedIntent;
     private String selectedSqftCategory;
+    private String selectedRadonResultBand;
 
     // SEO Silo: Neighboring Counties in the same state
     private List<com.radonverdict.model.County> nearbyCounties;
@@ -115,6 +116,18 @@ public class CountyPageContent {
             return "Over 2,000 sq ft";
         }
         return "Under 2,000 sq ft";
+    }
+
+    public String getSelectedRadonResultBandLabel() {
+        if (selectedRadonResultBand == null) {
+            return "Confirmed reading pending";
+        }
+        return switch (selectedRadonResultBand.toLowerCase()) {
+            case "under_2" -> "Under 2.0 pCi/L";
+            case "between_2_and_4" -> "2.0 to 3.9 pCi/L";
+            case "above_4" -> "4.0+ pCi/L";
+            default -> "Not tested yet";
+        };
     }
 
     @Data

@@ -16,6 +16,12 @@
             "></span>
             EPA Zone ${page.getRiskLevel()} Risk
         </span>
+        <div class="mb-4">
+            <span class="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-[11px] font-bold uppercase tracking-wider text-slate-200 border border-white/10">
+                Scenario
+                <span class="text-white">${page.getSelectedRadonResultBandLabel()}</span>
+            </span>
+        </div>
 
         <!-- Hero Title -->
         <h1 class="font-display font-black text-3xl sm:text-5xl lg:text-6xl text-white tracking-tighter leading-tight mb-6">
@@ -24,8 +30,8 @@
 
         <!-- Hero Narrative & AEO Hook -->
         <div class="text-slate-300 text-base sm:text-xl leading-relaxed font-medium mb-6 space-y-4">
-            <p><strong class="text-white">Quick Answer:</strong> The average cost for radon mitigation in <strong>${page.getReceipt().getAreaDisplayName()}</strong> is <strong>$${page.getReceipt().getTotalAvg()}</strong> (typically ranging from $${page.getReceipt().getTotalLow()} to $${page.getReceipt().getTotalHigh()}). ${page.getPricingRationale()}</p>
-            <p>${page.getHeroSummary()}</p>
+            <p><strong class="text-white">Quick Answer:</strong> ${page.getHeroSummary()}</p>
+            <p><strong class="text-white">Budget Context:</strong> Typical local pricing centers around <strong>$${page.getReceipt().getTotalAvg()}</strong> and the common range is <strong>$${page.getReceipt().getTotalLow()} to $${page.getReceipt().getTotalHigh()}</strong>. ${page.getPricingRationale()}</p>
         </div>
 
         <!-- Deep Dive Narrative (Glassmorphism inset) -->

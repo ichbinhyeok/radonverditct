@@ -40,10 +40,15 @@
             <!-- CTA Section -->
             <div class="not-prose bg-gradient-to-br from-slate-900 to-slate-800 rounded-2xl p-8 mt-12 text-white">
                 <h3 class="font-display font-bold text-xl text-white mb-3">Get a Quote for Your Negotiation</h3>
-                <p class="text-slate-300 mb-6 text-sm leading-relaxed">If you need to ask for a seller credit, you need to know exactly how much the system will cost in your specific county.</p>
-                <a href="/radon-cost-calculator" class="inline-flex items-center justify-center px-6 py-3 border border-transparent text-sm font-bold rounded-xl text-slate-900 bg-white hover:bg-slate-100 transition">
-                    Calculate Mitigation Cost ->
-                </a>
+                <p class="text-slate-300 mb-6 text-sm leading-relaxed">If you need to ask for a seller credit, open the local credit calculator first, then use the worksheet to tighten the language.</p>
+                <div class="flex flex-col sm:flex-row gap-3">
+                    <a href="/radon-credit-calculator" class="inline-flex items-center justify-center px-6 py-3 border border-transparent text-sm font-bold rounded-xl text-slate-900 bg-white hover:bg-slate-100 transition">
+                        Open Credit Calculator
+                    </a>
+                    <a href="/guides/radon-seller-credit-worksheet" class="inline-flex items-center justify-center px-6 py-3 border border-white/15 text-sm font-bold rounded-xl text-white hover:bg-white/10 transition">
+                        Open Seller Credit Worksheet
+                    </a>
+                </div>
             </div>
         </div>
     `

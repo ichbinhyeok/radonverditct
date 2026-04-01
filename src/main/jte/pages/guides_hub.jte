@@ -69,6 +69,17 @@
                     <p class="text-slate-600 leading-relaxed font-medium">Standard negotiation tactics, seller concessions, and dealing with a failed home inspection.</p>
                 </a>
 
+                <a href="/guides/radon-seller-credit-worksheet" class="group block">
+                    <div class="aspect-w-16 aspect-h-9 w-full bg-slate-100 rounded-2xl mb-6 overflow-hidden">
+                        <div class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300 bg-blue-50 flex items-center justify-center">
+                            <svg class="h-20 w-20 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6M7 4h10a2 2 0 012 2v12a2 2 0 01-2 2H7a2 2 0 01-2-2V6a2 2 0 012-2z"/></svg>
+                        </div>
+                    </div>
+                    <span class="inline-block py-1 px-3 rounded-full bg-blue-50 text-blue-700 text-xs font-bold tracking-wider uppercase mb-4">Worksheet</span>
+                    <h3 class="font-display font-bold text-2xl text-slate-900 mb-3 group-hover:text-indigo-600 transition-colors">Radon Seller Credit Worksheet</h3>
+                    <p class="text-slate-600 leading-relaxed font-medium">Use your local budget range to decide whether to ask for repairs, a closing credit, or a post-close fix.</p>
+                </a>
+
                 <!-- Guide 5: Symptoms -->
                 <a href="/guides/radon-exposure-symptoms" class="group block">
                     <div class="aspect-w-16 aspect-h-9 w-full bg-slate-100 rounded-2xl mb-6 overflow-hidden">

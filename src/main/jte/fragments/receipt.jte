@@ -22,7 +22,7 @@
                data-track-event="mobile_cta_click"
                onclick="event.preventDefault(); document.getElementById('estimate-form').scrollIntoView({behavior: 'smooth'})"
                class="tap-target inline-flex items-center gap-2 rounded-xl bg-indigo-600 px-5 text-sm font-bold text-white shadow-md whitespace-nowrap transition-transform active:scale-95 hover:bg-indigo-500">
-                Start Free Plan
+                Get Next Step
                 <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
             </a>
         </div>

@@ -57,4 +57,18 @@ public class County {
         }
         return countyName + " " + getAreaTypeLabel();
     }
+
+    public String getSeoDisplayName() {
+        if (countyName == null || countyName.isBlank()) {
+            return "";
+        }
+
+        if (countySlug != null
+                && countySlug.endsWith("-city")
+                && !countyName.toLowerCase(Locale.ROOT).endsWith(" city")) {
+            return countyName;
+        }
+
+        return getAreaDisplayName();
+    }
 }

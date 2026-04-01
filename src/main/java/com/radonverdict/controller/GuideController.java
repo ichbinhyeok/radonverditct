@@ -58,6 +58,12 @@ public class GuideController {
         return "pages/guide_real_estate";
     }
 
+    @GetMapping("/guides/radon-seller-credit-worksheet")
+    public String guideSellerCreditWorksheet(Model model) {
+        model.addAttribute("title", "Radon Seller Credit Worksheet | RadonVerdict");
+        return "pages/guide_seller_credit_worksheet";
+    }
+
     @GetMapping("/guides/radon-exposure-symptoms")
     public String guideHealthSymptoms(Model model) {
         model.addAttribute("title", "Symptoms of Radon Exposure: The Silent Killer Explained | RadonVerdict");

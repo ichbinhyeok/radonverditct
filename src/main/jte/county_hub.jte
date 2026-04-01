@@ -20,7 +20,7 @@
 @param boolean showSeoDebug = false
 
 !{
-    final String countyDisplay = county.getAreaDisplayName() + ", " + county.getStateAbbr();
+    final String countyDisplay = county.getSeoDisplayName() + ", " + county.getStateAbbr();
     final int currentYear = java.time.LocalDate.now().getYear();
     final String seoTitle = "How Much Does Radon Mitigation Cost in " + countyDisplay + "? | " + currentYear + " Price Range";
     final String seoDescription = page.getSeoDescription() != null && !page.getSeoDescription().isBlank()
@@ -79,7 +79,7 @@
                 },{
                     "@type": "ListItem",
                     "position": 3,
-                    "name": $unsafe{JsonLdUtils.json(county.getAreaDisplayName())},
+                    "name": $unsafe{JsonLdUtils.json(county.getSeoDisplayName())},
                     "item": $unsafe{JsonLdUtils.json("https://radonverdict.com/radon-mitigation-cost/" + county.getStateSlug() + "/" + county.getCountySlug())}
                 }]
             }
@@ -101,12 +101,14 @@
 
             <!-- 1. Above the Fold: Hero Section -->
             @template.components.hero_section(page = page)
+            @template.components.negotiation_snapshot(county = county, page = page)
             @if(aeo != null)
                 @template.components.aeo_answer_block(block = aeo)
             @endif
             @template.components.quick_trust_summary(county = county, page = page, trust = trust)
             @template.components.why_price_breakdown(page = page)
             @template.components.cost_benchmark_compare(county = county, page = page)
+            @template.components.decision_worksheet_cta(county = county, page = page)
 
             <!-- 2. Grid Layout for Simulator and Receipt -->
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 mt-16 mb-20">

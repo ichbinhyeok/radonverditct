@@ -54,13 +54,13 @@ public class LeadService {
                 .build();
 
         // leadRepository.save(lead);
-        saveToCsv(lead);
+        saveToCsv(lead, request);
 
         log.info("New lead captured and saved into CSV for county: {}, State: {}", request.getCountySlug(),
                 request.getStateAbbr());
     }
 
-    private void saveToCsv(Lead lead) {
+    private void saveToCsv(Lead lead, LeadSubmissionRequest request) {
         try {
             synchronized (writeLock) {
                 Path path = Paths.get(leadsCsvPath);
@@ -71,11 +71,11 @@ public class LeadService {
 
                 try (PrintWriter pw = new PrintWriter(new FileWriter(path.toFile(), true))) {
                     if (isNewFile) {
-                        pw.println("Date,Name,Phone,Email,Zip,State,County,Foundation,Tested");
+                        pw.println("Date,Name,Phone,Email,Zip,State,County,Foundation,Tested,Intent,ResultBand");
                     }
 
                     String date = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-                    pw.printf("\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\"%n",
+                    pw.printf("\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\"%n",
                             date,
                             escapeCsv(lead.getCustomerName()),
                             escapeCsv(lead.getCustomerPhone()),
@@ -84,7 +84,9 @@ public class LeadService {
                             escapeCsv(lead.getStateAbbr()),
                             escapeCsv(lead.getCountySlug()),
                             escapeCsv(lead.getFoundationType() != null ? lead.getFoundationType() : ""),
-                            lead.getIsTested() != null ? lead.getIsTested().toString() : "");
+                            lead.getIsTested() != null ? lead.getIsTested().toString() : "",
+                            escapeCsv(request.getSelectedIntent() != null ? request.getSelectedIntent() : ""),
+                            escapeCsv(request.getSelectedRadonResultBand() != null ? request.getSelectedRadonResultBand() : ""));
                 }
             }
         } catch (IOException e) {
