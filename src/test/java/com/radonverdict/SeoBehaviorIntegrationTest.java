@@ -344,6 +344,30 @@ class SeoBehaviorIntegrationTest {
     }
 
     @Test
+    void fairfaxLevelsJsonLdDoesNotContainLegacyEscapeSequences() throws Exception {
+        String html = mockMvc.perform(get("/radon-levels/virginia/fairfax-city"))
+                .andExpect(status().isOk())
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+
+        assertJsonLdBlocksAreValid(html);
+        assertTrue(!html.contains("fairfax\\-city"), "Breadcrumb JSON-LD should not escape the slug hyphen.");
+    }
+
+    @Test
+    void fairfaxCostJsonLdDoesNotEscapeApostrophes() throws Exception {
+        String html = mockMvc.perform(get("/radon-mitigation-cost/virginia/fairfax-city"))
+                .andExpect(status().isOk())
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+
+        assertJsonLdBlocksAreValid(html);
+        assertTrue(!html.contains("EPA\\'s"), "FAQ JSON-LD should not escape apostrophes with backslashes.");
+    }
+
+    @Test
     void guidePageJsonLdScriptsAreValidJson() throws Exception {
         String html = mockMvc.perform(get("/guides/radon-exposure-symptoms"))
                 .andExpect(status().isOk())

@@ -1060,3 +1060,42 @@ For each new workday, add:
 7. Decision rule for stress moments.
 - If data is noisy, do less, not more.
 - Small controlled iteration beats broad rewrites.
+
+## 10) 2026-04-01 Structured Data Reality Check (Fairfax)
+
+What triggered this check:
+- Search Console still showed `Bad escape sequence in string` for:
+  - `https://radonverdict.com/radon-levels/virginia/fairfax-city`
+  - `https://radonverdict.com/radon-mitigation-cost/virginia/fairfax-city`
+- The reported bad snippets included:
+  - `fairfax\-city`
+  - `EPA\'s 4.0 pCi\/L`
+
+What we verified:
+- Pulled the live production HTML directly and inspected every `application/ld+json` block.
+- Current live JSON-LD is valid on both pages.
+- `fairfax-city` is now emitted without `\-`.
+- `EPA's` is now emitted without `\'`.
+- External schema validation also passed on both URLs.
+
+Google-side status as of 2026-04-01:
+- `radon-levels/virginia/fairfax-city`
+  - last crawl: `2026-04-01T13:01:11Z`
+  - rich results verdict: `PASS`
+- `radon-mitigation-cost/virginia/fairfax-city`
+  - last crawl: `2026-02-28T23:59:21Z`
+  - rich results verdict: `FAIL`
+  - interpretation: Search Console is still holding an old crawl snapshot for the cost page
+
+Operating conclusion:
+- This is no longer a live production JSON-LD bug on the levels page.
+- The cost page error is most likely stale Search Console data, not a current rendering failure.
+- No emergency template fix was needed after inspecting the live response.
+
+Hardening added:
+- Added targeted integration regressions for the Fairfax levels/cost pages so invalid legacy escapes like `\\-` and `\\'` do not silently return.
+
+What to do next:
+1. Re-check the cost page inspection after Google recrawls it.
+2. Do not treat the old Search Console snippet as proof of a current production bug unless live HTML reproduces it.
+3. Keep validating real response HTML first, then compare with Search Console crawl dates.
