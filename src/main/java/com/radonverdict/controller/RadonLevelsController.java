@@ -180,7 +180,7 @@ public class RadonLevelsController {
     }
 
     private RedirectView permanentRedirect(String path) {
-        RedirectView view = new RedirectView(normalizedBaseUrl() + path, false);
+        RedirectView view = new RedirectView(path, true);
         view.setStatusCode(HttpStatus.MOVED_PERMANENTLY);
         return view;
     }

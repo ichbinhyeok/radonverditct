@@ -22,6 +22,7 @@ public class ItemizedReceipt {
     private int totalAvg;
 
     private String countyName;
+    private String areaDisplayName;
     private String stateAbbr;
 
     public int getMaterialsAvg() {
@@ -64,6 +65,10 @@ public class ItemizedReceipt {
     }
 
     public String getAreaDisplayName() {
+        if (areaDisplayName != null && !areaDisplayName.isBlank()) {
+            return areaDisplayName;
+        }
+
         if (countyName == null || countyName.isBlank()) {
             return "";
         }

@@ -18,6 +18,7 @@
 @param TrustMetadata trust = null
 @param boolean monetizationHooksEnabled = false
 @param boolean showSeoDebug = false
+@param String prefilledZip = null
 
 !{
     final String countyDisplay = county.getSeoDisplayName() + ", " + county.getStateAbbr();
@@ -115,7 +116,7 @@
                 
                 <!-- Left Column (Simulator + Details) -->
                 <div class="lg:col-span-5 order-1">
-                    @template.components.radon_level_advisor(county = county, costMode = true)
+                    @template.components.radon_level_advisor(county = county, costMode = true, selectedResultBand = page.getSelectedRadonResultBand())
                     @template.components.simulator_form(county = county, page = page)
                     
                     <!-- Foundation Context (Updates dynamically if we made this HTMX too, but for now static default) -->
@@ -164,7 +165,7 @@
             </div>
 
             <!-- Lead Capture CTA (Injected) -->
-            @template.components.lead_form(county = county, page = page, successMessage = leadSuccessMessage, errorMessage = leadErrorMessage)
+            @template.components.lead_form(county = county, page = page, successMessage = leadSuccessMessage, errorMessage = leadErrorMessage, prefilledZip = prefilledZip)
             @if(monetizationHooksEnabled)
                 @template.components.monetization_hooks(countyName = county.getCountyName(), stateAbbr = county.getStateAbbr())
             @endif

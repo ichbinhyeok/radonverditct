@@ -21,6 +21,8 @@
 !{
     final String seoCountyDisplay = county.getSeoDisplayName();
     final String seoPlaceLabel = seoCountyDisplay + ", " + county.getStateAbbr();
+    final String shortTermKitUrl = "https://www.amazon.com/dp/B00002N83E?tag=radonverdict-20";
+    final String digitalMonitorUrl = "https://www.amazon.com/dp/B00H2VOSP8?tag=radonverdict-20";
     final boolean priorityCtrCounty =
             ("new-york".equals(county.getStateSlug()) && "schenectady-county".equals(county.getCountySlug()))
                     || ("massachusetts".equals(county.getStateSlug()) && "franklin-county".equals(county.getCountySlug()))
@@ -68,7 +70,7 @@
         isProblemAnswer = county.getAreaDisplayName() + " does not currently have a published EPA zone assignment in our dataset. Because radon risk can vary significantly by home, testing is strongly recommended.";
     }
 
-    final String testAnswer = "Purchase a short-term radon test kit ($15-$30) from a hardware store or online. Place it in the lowest livable level of your home for 2-7 days with closed-house conditions, then mail it to the lab. For continuous monitoring, consider a digital radon detector ($150-$200).";
+    final String testAnswer = "Purchase a short-term radon test kit ($15-$30) from a hardware store or online as your first step. Place it in the lowest livable level of your home for 2-7 days with closed-house conditions, then mail it to the lab. If you have already tested once and want ongoing tracking, consider a digital radon monitor ($150-$200).";
 }
 
 @template.layout.main(
@@ -259,22 +261,34 @@
                     </div>
                     <h2 class="font-display font-bold text-xl text-slate-900 mb-2">Need to Test Before You Price?</h2>
                     <p class="text-sm text-slate-600 leading-relaxed mb-4">
-                        Start with the testing guide if you do not have a confirmed number yet, or use a short-term kit to screen the lowest lived-in level first.
+                        Start with the testing guide if you do not have a confirmed number yet. For most homeowners, the first purchase should be a short-term kit. Digital monitors make more sense after your first test or for ongoing tracking.
                     </p>
                     <div class="flex flex-col sm:flex-row gap-3">
                         <a href="/guides/how-to-test-for-radon"
                            class="inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-slate-900 text-white text-sm font-bold hover:bg-slate-800 transition-colors">
                             Read Testing Guide
                         </a>
-                        <a href="https://www.amazon.com/s?k=radon+test+kit+charcoal&tag=radonverdict-20"
-                           onclick="window.rvTrack && window.rvTrack('affiliate_link_click', { label: 'levels_quick_short_term_kit', county: '${county.getCountySlug()}', state: '${county.getStateSlug()}' });"
+                        <a href="${shortTermKitUrl}"
+                           data-rv-affiliate-link="true"
+                           onclick="if(window.rvTrackAffiliateClick) window.rvTrackAffiliateClick(this, { cta_id: 'levels_intro_test_kit', offer_type: 'test_kit', offer_brand: 'first_alert', offer_model: 'rd1', placement_group: 'levels', placement_id: 'intro_card', journey_stage: 'first_test' });"
                            target="_blank"
                            rel="noopener sponsored nofollow"
                            class="inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl border border-slate-200 text-slate-700 text-sm font-bold hover:border-emerald-300 hover:text-emerald-700 transition-colors">
-                            Shop Short-Term Kit
+                            View Recommended Short-Term Kit
                         </a>
                     </div>
-                    <p class="mt-3 text-[11px] text-slate-400">Affiliate disclosure: we may earn a commission if you buy through the kit link.</p>
+                    <a href="${digitalMonitorUrl}"
+                       data-rv-affiliate-link="true"
+                       onclick="if(window.rvTrackAffiliateClick) window.rvTrackAffiliateClick(this, { cta_id: 'levels_intro_monitor_followup', offer_type: 'monitor', offer_brand: 'airthings', offer_model: 'corentium_home', placement_group: 'levels', placement_id: 'intro_followup_link', journey_stage: 'followup_monitor' });"
+                       target="_blank"
+                       rel="noopener sponsored nofollow"
+                       class="mt-3 inline-flex items-center gap-2 text-xs font-bold text-indigo-600 hover:text-indigo-800 transition-colors">
+                        Already tested once? View Airthings Corentium Home
+                        <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3" />
+                        </svg>
+                    </a>
+                    <p class="mt-3 text-[11px] text-slate-400">Affiliate disclosure: we may earn a commission if you buy through these links.</p>
                 </div>
             </div>
 
@@ -493,34 +507,40 @@
 
                             <p class="text-sm text-slate-600 leading-relaxed mb-5">
                                 Testing is the <strong>only</strong> way to know your home's radon level. Zone data tells you the regional risk,
-                                but your home could be significantly higher or lower than the county average.
+                                but your home could be significantly higher or lower than the county average. For most homeowners, the right first purchase is a low-cost short-term test kit.
                             </p>
 
-                            <div class="space-y-3">
-                                <a href="https://www.amazon.com/s?k=radon+test+kit+charcoal&tag=radonverdict-20"
+                            <div class="space-y-4">
+                                <a href="${shortTermKitUrl}"
+                                   data-rv-affiliate-link="true"
                                    target="_blank" rel="sponsored nofollow noopener"
-                                   onclick="if(typeof rvTrack === 'function') rvTrack('affiliate_link_click', { event_category: 'monetization', event_label: 'levels_short_term_kit_search' });"
+                                   onclick="if(window.rvTrackAffiliateClick) window.rvTrackAffiliateClick(this, { cta_id: 'levels_sticky_test_kit', offer_type: 'test_kit', offer_brand: 'first_alert', offer_model: 'rd1', placement_group: 'levels', placement_id: 'sticky_primary_card', journey_stage: 'first_test' });"
                                    class="flex items-center justify-between w-full px-4 py-3 rounded-xl bg-slate-900 text-white hover:bg-slate-800 transition-colors group">
                                     <div>
-                                        <div class="text-sm font-bold">Short-Term Test Kit</div>
+                                        <div class="text-xs font-bold uppercase tracking-wider text-slate-400">Recommended first step</div>
+                                        <div class="mt-1 text-sm font-bold">Recommended Short-Term Test Kit</div>
                                         <div class="text-xs text-slate-400">Results in 2-7 days - $15-$30</div>
                                     </div>
                                     <svg class="w-4 h-4 text-slate-400 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3" />
                                     </svg>
                                 </a>
-                                <a href="https://www.amazon.com/s?k=digital+radon+detector+monitor&tag=radonverdict-20"
-                                   target="_blank" rel="sponsored nofollow noopener"
-                                   onclick="if(typeof rvTrack === 'function') rvTrack('affiliate_link_click', { event_category: 'monetization', event_label: 'levels_digital_monitor_search' });"
-                                   class="flex items-center justify-between w-full px-4 py-3 rounded-xl bg-white border-2 border-slate-200 text-slate-900 hover:border-indigo-300 hover:shadow-md transition-all group">
-                                    <div>
-                                        <div class="text-sm font-bold">Digital Radon Monitor</div>
-                                        <div class="text-xs text-slate-500">Continuous real-time monitoring - $150-$200</div>
-                                    </div>
-                                    <svg class="w-4 h-4 text-slate-400 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3" />
-                                    </svg>
-                                </a>
+                                <div class="rounded-xl border border-slate-200 bg-slate-50 p-4">
+                                    <div class="text-xs font-bold uppercase tracking-wider text-slate-500">Already tested once?</div>
+                                    <p class="mt-1 text-sm text-slate-600 leading-relaxed">
+                                        A digital monitor is a better fit after your first result, for seasonal re-checks, or to keep tracking levels after mitigation.
+                                    </p>
+                                    <a href="${digitalMonitorUrl}"
+                                       data-rv-affiliate-link="true"
+                                       target="_blank" rel="sponsored nofollow noopener"
+                                       onclick="if(window.rvTrackAffiliateClick) window.rvTrackAffiliateClick(this, { cta_id: 'levels_sticky_monitor_followup', offer_type: 'monitor', offer_brand: 'airthings', offer_model: 'corentium_home', placement_group: 'levels', placement_id: 'sticky_followup_card', journey_stage: 'followup_monitor' });"
+                                       class="inline-flex items-center gap-2 mt-3 text-sm font-bold text-indigo-700 hover:text-indigo-900 transition-colors">
+                                        View Airthings Corentium Home
+                                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3" />
+                                        </svg>
+                                    </a>
+                                </div>
                             </div>
 
                             <p class="text-[10px] text-slate-400 mt-3 text-center">
@@ -623,7 +643,7 @@
                         </div>
                         <h3 class="font-bold text-slate-900 mb-2">Read Your Results</h3>
                         <p class="text-sm text-slate-600 leading-relaxed">
-                            If results are <strong>below 4.0 pCi/L</strong>, re-test every 2 years.
+                            If results are <strong>below 4.0 pCi/L</strong>, re-test every 2 years or use a monitor for ongoing tracking.
                             If <strong>above 4.0</strong>, use our
                             <a href="/radon-mitigation-cost/${county.getStateSlug()}/${county.getCountySlug()}"
                                class="text-indigo-600 font-semibold hover:underline">cost calculator</a>

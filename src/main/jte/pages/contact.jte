@@ -1,4 +1,9 @@
+@import com.radonverdict.model.dto.ContactSubmissionRequest
+
 @param String title
+@param ContactSubmissionRequest contactForm = new ContactSubmissionRequest()
+@param String contactSuccessMessage = null
+@param String contactErrorMessage = null
 
 @template.layout.main(
     title = title,
@@ -10,6 +15,18 @@
             <p class="text-xl text-slate-600 mb-12 max-w-2xl leading-relaxed">
                 Whether you're a homeowner with questions about a confusing local quote, a certified mitigation contractor wanting to join our network, or media looking for data, we're here to help.
             </p>
+
+            @if(contactSuccessMessage != null)
+                <div class="mb-8 rounded-2xl border border-emerald-200 bg-emerald-50 px-5 py-4 text-sm font-semibold text-emerald-800">
+                    ${contactSuccessMessage}
+                </div>
+            @endif
+
+            @if(contactErrorMessage != null)
+                <div class="mb-8 rounded-2xl border border-rose-200 bg-rose-50 px-5 py-4 text-sm font-semibold text-rose-800">
+                    ${contactErrorMessage}
+                </div>
+            @endif
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
                 <!-- Contact Options -->
@@ -23,7 +40,7 @@
                         <div>
                             <h3 class="font-display font-bold text-lg text-slate-900 mb-1">Email Us</h3>
                             <p class="text-slate-600 mb-2 font-medium">For general inquiries, data corrections, and technical support.</p>
-                            <a href="mailto:support@radonverdict.com" class="text-indigo-600 font-semibold hover:text-indigo-800">support@radonverdict.com</a>
+                            <a href="mailto:shinhyeok22@gmail.com" class="text-indigo-600 font-semibold hover:text-indigo-800">shinhyeok22@gmail.com</a>
                         </div>
                     </div>
 
@@ -36,7 +53,7 @@
                         <div>
                             <h3 class="font-display font-bold text-lg text-slate-900 mb-1">Partnerships & Contractors</h3>
                             <p class="text-slate-600 mb-2 font-medium">If you are a state-certified radon mitigator and want to receive leads in your service area.</p>
-                            <a href="mailto:partners@radonverdict.com" class="text-indigo-600 font-semibold hover:text-indigo-800">partners@radonverdict.com</a>
+                            <a href="mailto:shinhyeok22@gmail.com" class="text-indigo-600 font-semibold hover:text-indigo-800">shinhyeok22@gmail.com</a>
                         </div>
                     </div>
                     
@@ -61,22 +78,22 @@
                 <!-- Simple Form -->
                 <div class="bg-slate-900 rounded-3xl p-8 shadow-xl text-white">
                     <h3 class="font-display font-bold text-2xl mb-4">Send us a message</h3>
-                    <p class="text-slate-400 mb-6 font-medium">We usually respond within 24-48 business hours.</p>
+                    <p class="text-slate-400 mb-6 font-medium">We save every message to our review queue and usually respond within 24-48 business hours.</p>
                     
-                    <form action="#" method="POST" class="space-y-4">
+                    <form action="/contact" method="POST" class="space-y-4">
                         <div>
                             <label for="name" class="block text-sm font-medium text-slate-300">Name</label>
-                            <input type="text" id="name" name="name" class="mt-1 block w-full rounded-lg bg-slate-800 border-slate-700 text-white shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm py-2 px-3 border" placeholder="Jane Doe" required>
+                            <input type="text" id="name" name="name" value="${contactForm.getName() != null ? contactForm.getName() : ""}" class="mt-1 block w-full rounded-lg bg-slate-800 border-slate-700 text-white shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm py-2 px-3 border" placeholder="Jane Doe" required>
                         </div>
                         <div>
                             <label for="email" class="block text-sm font-medium text-slate-300">Email</label>
-                            <input type="email" id="email" name="email" class="mt-1 block w-full rounded-lg bg-slate-800 border-slate-700 text-white shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm py-2 px-3 border" placeholder="jane@example.com" required>
+                            <input type="email" id="email" name="email" value="${contactForm.getEmail() != null ? contactForm.getEmail() : ""}" class="mt-1 block w-full rounded-lg bg-slate-800 border-slate-700 text-white shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm py-2 px-3 border" placeholder="jane@example.com" required>
                         </div>
                         <div>
                             <label for="message" class="block text-sm font-medium text-slate-300">Message</label>
-                            <textarea id="message" name="message" rows="4" class="mt-1 block w-full rounded-lg bg-slate-800 border-slate-700 text-white shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm py-2 px-3 border" placeholder="How can we help?" required></textarea>
+                            <textarea id="message" name="message" rows="4" class="mt-1 block w-full rounded-lg bg-slate-800 border-slate-700 text-white shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm py-2 px-3 border" placeholder="How can we help?" required>${contactForm.getMessage() != null ? contactForm.getMessage() : ""}</textarea>
                         </div>
-                        <button type="button" onclick="alert('Message sent! This is a demo form.')" class="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-bold text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors mt-2">
+                        <button type="submit" class="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-bold text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors mt-2">
                             Send Message
                         </button>
                     </form>

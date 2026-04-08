@@ -2,14 +2,29 @@
 
 @param County county
 @param boolean costMode = false
+@param String selectedResultBand = null
 
 !{
-    final double initialLevelValue = county.getEpaZone() == 1 ? 5.5 : county.getEpaZone() == 2 ? 3.0 : 1.5;
+    final double initialLevelValue;
+    final boolean unconfirmedCostMode = costMode && (selectedResultBand == null || selectedResultBand.isBlank() || "not_tested".equals(selectedResultBand));
+    if ("under_2".equals(selectedResultBand)) {
+        initialLevelValue = 1.5;
+    } else if ("between_2_and_4".equals(selectedResultBand)) {
+        initialLevelValue = 3.0;
+    } else if ("above_4".equals(selectedResultBand)) {
+        initialLevelValue = 5.5;
+    } else if (unconfirmedCostMode) {
+        initialLevelValue = 3.0;
+    } else {
+        initialLevelValue = county.getEpaZone() == 1 ? 5.5 : county.getEpaZone() == 2 ? 3.0 : 1.5;
+    }
     final String initialLevel = String.format(java.util.Locale.US, "%.1f", initialLevelValue);
     final String initialPostMitigationLow = String.format(java.util.Locale.US, "%.1f", Math.max(0.3, initialLevelValue * 0.05));
     final String initialPostMitigationHigh = String.format(java.util.Locale.US, "%.1f", Math.max(0.8, initialLevelValue * 0.15));
     final int initialBarWidth = (int) Math.min((initialLevelValue / 20.0) * 100.0, 100.0);
     final String initialBarColor = initialLevelValue >= 4.0 ? "bg-red-500" : initialLevelValue >= 2.0 ? "bg-amber-400" : "bg-emerald-500";
+    final String shortTermKitUrl = "https://www.amazon.com/dp/B00002N83E?tag=radonverdict-20";
+    final String digitalMonitorUrl = "https://www.amazon.com/dp/B00H2VOSP8?tag=radonverdict-20";
 }
 
 <!-- Radon Level Decision Advisor: Pure Alpine.js (no server calls) -->
@@ -40,14 +55,22 @@
     <div class="text-center mb-6">
         <h3 class="font-display font-bold text-slate-900 text-xl tracking-tight">
             @if(costMode)
+                @if(unconfirmedCostMode)
+                Try a Sample Radon Reading
+                @else
                 Use Your Confirmed Radon Reading
+                @endif
             @else
                 Your Radon Reading
             @endif
         </h3>
         <p class="text-slate-500 text-sm mt-1 font-medium">
             @if(costMode)
+                @if(unconfirmedCostMode)
+                You have not tested yet. Use a sample reading here to see how the action plan changes, then replace it with your real number later.
+                @else
                 Adjust the level to match your latest result and compare likely mitigation outcomes before pricing local quotes.
+                @endif
             @else
                 Enter your home's measured level or use the ${county.getAreaDisplayName()} average
             @endif
@@ -104,11 +127,16 @@
                 <h4 class="font-display font-bold text-emerald-900 text-lg">Safe Range</h4>
                 <p class="text-sm text-emerald-800 leading-relaxed mt-1">
                     @if(costMode)
+                        @if(unconfirmedCostMode)
+                        This sample reading is within the safe range. Both the EPA (4.0) and WHO (2.7) thresholds are not exceeded.
+                        <strong>If your real result lands here, most homeowners monitor and retest instead of pricing mitigation right away.</strong>
+                        @else
                         Your reading is within the safe range. Both the EPA (4.0) and WHO (2.7) thresholds are not exceeded.
                         <strong>Most homeowners would monitor and retest rather than install a mitigation system right now.</strong>
+                        @endif
                     @else
                         Your reading is within the safe range. Both the EPA (4.0) and WHO (2.7) thresholds are not exceeded.
-                        <strong>Mitigation is not needed right now.</strong> We recommend periodic monitoring with a digital radon detector.
+                        <strong>Mitigation is not needed right now.</strong> If you have never tested your home, start with a short-term kit first. If this is already a confirmed low reading, a digital monitor can help you keep an eye on seasonal changes.
                     @endif
                 </p>
                 @if(costMode)
@@ -116,15 +144,25 @@
                     Use the estimate below only as future planning context. If a follow-up test stays low, you can usually defer mitigation spending.
                 </p>
                 @else
-                <a href="https://www.amazon.com/s?k=radon+test+kit&tag=radonverdict-20"
-                   target="_blank" rel="sponsored nofollow noopener"
-                   onclick="if(typeof rvTrack === 'function') rvTrack('affiliate_link_click', { event_category: 'monetization', event_label: 'advisor_test_kit_search' });"
-                   class="inline-flex items-center gap-2 mt-4 px-4 py-2.5 rounded-xl bg-emerald-600 text-white text-sm font-bold hover:bg-emerald-700 transition-colors shadow-sm">
-                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                    Get a Home Radon Monitor (~$30)
-                </a>
+                <div class="mt-4 flex flex-col sm:flex-row sm:flex-wrap gap-3">
+                    <a href="${shortTermKitUrl}"
+                       data-rv-affiliate-link="true"
+                       target="_blank" rel="sponsored nofollow noopener"
+                       onclick="if(window.rvTrackAffiliateClick) window.rvTrackAffiliateClick(this, { cta_id: 'advisor_safe_test_kit', offer_type: 'test_kit', offer_brand: 'first_alert', offer_model: 'rd1', placement_group: 'advisor', placement_id: 'safe_primary', journey_stage: 'first_test' });"
+                       class="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-emerald-600 text-white text-sm font-bold hover:bg-emerald-700 transition-colors shadow-sm">
+                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        Start with a Short-Term Test Kit
+                    </a>
+                    <a href="${digitalMonitorUrl}"
+                       data-rv-affiliate-link="true"
+                       target="_blank" rel="sponsored nofollow noopener"
+                       onclick="if(window.rvTrackAffiliateClick) window.rvTrackAffiliateClick(this, { cta_id: 'advisor_safe_monitor_followup', offer_type: 'monitor', offer_brand: 'airthings', offer_model: 'corentium_home', placement_group: 'advisor', placement_id: 'safe_followup', journey_stage: 'followup_monitor' });"
+                       class="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl border border-emerald-300 text-emerald-800 text-sm font-bold hover:bg-emerald-100 transition-colors">
+                        Already tested once? View Airthings Corentium Home
+                    </a>
+                </div>
                 @endif
             </div>
         </div>
@@ -140,11 +178,22 @@
                 </svg>
             </div>
             <div>
-                <h4 class="font-display font-bold text-amber-900 text-lg">Elevated - Consider Action</h4>
+                <h4 class="font-display font-bold text-amber-900 text-lg">
+                    @if(unconfirmedCostMode)
+                        Sample Borderline Reading
+                    @else
+                        Elevated - Consider Action
+                    @endif
+                </h4>
                 <p class="text-sm text-amber-800 leading-relaxed mt-1">
                     @if(costMode)
+                        @if(unconfirmedCostMode)
+                        This sample sits below the US EPA action level (4.0 pCi/L), but inside the range where many homeowners start planning what a next step could cost.
+                        The World Health Organization uses <strong>2.7 pCi/L as a tighter reference point</strong>.
+                        @else
                         Your reading is below the US EPA action level (4.0 pCi/L), but this range can still justify quote planning.
                         The World Health Organization uses <strong>2.7 pCi/L as a tighter reference point</strong>.
+                        @endif
                     @else
                         Your reading is below the US EPA action level (4.0 pCi/L), but this range still warrants follow-up testing.
                         The World Health Organization uses <strong>2.7 pCi/L as a tighter reference point</strong>.
@@ -152,24 +201,39 @@
                 </p>
                 <p class="text-sm text-amber-800 leading-relaxed mt-2">
                     @if(costMode)
+                        @if(unconfirmedCostMode)
+                        Use the estimate below as planning context only. The smart move is still to get a real first result, then return here if the reading stays borderline.
+                        <strong>This is a budgeting preview, not a mitigation recommendation.</strong>
+                        @else
                         Use the estimate below as planning context for homes with frequent basement use, repeated borderline readings,
                         children, or an active real-estate transaction. <strong>Confirmatory or long-term testing should still drive the final spend decision.</strong>
+                        @endif
                     @else
-                        If this level persists on confirmatory testing, planning mitigation is reasonable,
+                        If this was just a one-time snapshot, confirm it with another test or with longer tracking. If this level persists, planning mitigation is reasonable,
                         especially for homes with frequent basement use, children, or pending real-estate transactions.
                         <strong>Scroll down to see your estimated cost.</strong>
                     @endif
                 </p>
                 @if(!costMode)
-                <a href="https://www.amazon.com/s?k=digital+radon+detector&tag=radonverdict-20"
-                   target="_blank" rel="sponsored nofollow noopener"
-                   onclick="if(typeof rvTrack === 'function') rvTrack('affiliate_link_click', { event_category: 'monetization', event_label: 'advisor_digital_monitor_search' });"
-                   class="inline-flex items-center gap-2 mt-4 px-4 py-2.5 rounded-xl bg-amber-600 text-white text-sm font-bold hover:bg-amber-700 transition-colors shadow-sm">
-                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-                    </svg>
-                    Verify with Long-term Monitor (~$150)
-                </a>
+                <div class="mt-4 flex flex-col sm:flex-row sm:flex-wrap gap-3">
+                    <a href="${digitalMonitorUrl}"
+                       data-rv-affiliate-link="true"
+                       target="_blank" rel="sponsored nofollow noopener"
+                       onclick="if(window.rvTrackAffiliateClick) window.rvTrackAffiliateClick(this, { cta_id: 'advisor_caution_monitor_primary', offer_type: 'monitor', offer_brand: 'airthings', offer_model: 'corentium_home', placement_group: 'advisor', placement_id: 'caution_primary', journey_stage: 'followup_monitor' });"
+                       class="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-amber-600 text-white text-sm font-bold hover:bg-amber-700 transition-colors shadow-sm">
+                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                        </svg>
+                        Track it with Airthings Corentium Home
+                    </a>
+                    <a href="${shortTermKitUrl}"
+                       data-rv-affiliate-link="true"
+                       target="_blank" rel="sponsored nofollow noopener"
+                       onclick="if(window.rvTrackAffiliateClick) window.rvTrackAffiliateClick(this, { cta_id: 'advisor_caution_test_kit_secondary', offer_type: 'test_kit', offer_brand: 'first_alert', offer_model: 'rd1', placement_group: 'advisor', placement_id: 'caution_secondary', journey_stage: 'first_test' });"
+                       class="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl border border-amber-300 text-amber-800 text-sm font-bold hover:bg-amber-100 transition-colors">
+                        Need a first test instead?
+                    </a>
+                </div>
                 @endif
             </div>
         </div>
@@ -187,8 +251,12 @@
             <div>
                 <h4 class="font-display font-bold text-red-900 text-lg">Warning: Action Required - EPA Threshold Exceeded</h4>
                 <p class="text-sm text-red-800 leading-relaxed mt-1">
-                    At <strong x-text="parseFloat(level).toFixed(1)">${initialLevel}</strong> pCi/L, this reading is above the
-                    EPA action level.
+                    @if(unconfirmedCostMode)
+                        This sample shows what an EPA-threshold result would mean. At <strong x-text="parseFloat(level).toFixed(1)">${initialLevel}</strong> pCi/L, the reading would be above the EPA action level.
+                    @else
+                        At <strong x-text="parseFloat(level).toFixed(1)">${initialLevel}</strong> pCi/L, this reading is above the
+                        EPA action level.
+                    @endif
                     @if(costMode)
                         <strong>Use the local pricing below to budget your next step after confirming the result.</strong>
                     @else
@@ -231,7 +299,11 @@
     <div class="mt-5 flex items-center justify-center gap-3" data-nosnippet>
         <label class="text-xs font-bold text-slate-400 uppercase tracking-wider">
             @if(costMode)
+                @if(unconfirmedCostMode)
+                Try a sample reading:
+                @else
                 Enter confirmed reading:
+                @endif
             @else
                 Enter exact reading:
             @endif

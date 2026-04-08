@@ -4,6 +4,10 @@
 @param String title
 @param AeoAnswerBlock aeo = null
 @param TrustMetadata trust = null
+!{
+    final String shortTermKitUrl = "https://www.amazon.com/dp/B00002N83E?tag=radonverdict-20";
+    final String digitalMonitorUrl = "https://www.amazon.com/dp/B00H2VOSP8?tag=radonverdict-20";
+}
 
 @template.layout.main(
     title = title,
@@ -58,6 +62,12 @@
             <p class="lead text-xl text-slate-600 mb-10 leading-relaxed font-medium pb-10 border-b border-slate-200">
                 Radon testing is the only way to know if your home has dangerous radon levels. This guide covers every testing method, how to interpret your results, and the critical mistakes that invalidate tests.
             </p>
+            <div class="not-prose rounded-2xl border border-emerald-200 bg-emerald-50 p-5 mb-10">
+                <div class="text-xs font-bold uppercase tracking-wider text-emerald-700 mb-2">Best first purchase for most homes</div>
+                <p class="text-sm text-emerald-900 leading-relaxed m-0">
+                    If you are deciding what to buy today, start with a short-term test kit. Digital monitors make more sense after your first reading, for seasonal follow-up, or after mitigation.
+                </p>
+            </div>
             @if(aeo != null)
                 @template.components.aeo_answer_block(block = aeo)
             @endif
@@ -96,11 +106,12 @@
                             </div>
                         </div>
                         <div class="mt-3 text-sm font-bold text-slate-900">Cost: $15-$30</div>
-                        <a href="https://www.amazon.com/s?k=radon+test+kit+charcoal+short+term&tag=radonverdict-20"
+                        <a href="${shortTermKitUrl}"
+                           data-rv-affiliate-link="true"
                            target="_blank" rel="sponsored nofollow noopener"
-                           onclick="if(typeof rvTrack === 'function') rvTrack('affiliate_link_click', { event_category: 'monetization', event_label: 'guide_testing_short_term_search' });"
+                           onclick="if(window.rvTrackAffiliateClick) window.rvTrackAffiliateClick(this, { cta_id: 'guide_primary_test_kit', offer_type: 'test_kit', offer_brand: 'first_alert', offer_model: 'rd1', placement_group: 'guide', placement_id: 'primary_test_card', journey_stage: 'first_test' });"
                            class="inline-flex items-center gap-2 mt-3 px-4 py-2 rounded-lg bg-slate-900 text-white text-xs font-bold hover:bg-slate-800 transition-colors">
-                            Shop Short-Term Kits ->
+                            View Recommended Short-Term Kit ->
                         </a>
                     </div>
                 </div>
@@ -147,6 +158,9 @@
                         <p class="text-sm text-slate-600 leading-relaxed mb-3">
                             Electronic devices that continuously sample air and display real-time radon readings. Consumer-grade models like the Airthings Wave or Corentium Home provide hourly measurements. Professional monitors used during real estate transactions (like the Sun Nuclear 1027) log data for 48+ hours.
                         </p>
+                        <p class="text-sm text-slate-600 leading-relaxed mb-3">
+                            These are usually a better second purchase than a first purchase. They are most useful after your first test, for tracking seasonal swings, or for checking levels after mitigation work.
+                        </p>
                         <div class="grid grid-cols-2 gap-3 text-xs">
                             <div class="bg-emerald-50 rounded-lg p-3">
                                 <span class="font-bold text-emerald-700 block mb-1">Pros</span>
@@ -158,11 +172,12 @@
                             </div>
                         </div>
                         <div class="mt-3 text-sm font-bold text-slate-900">Cost: $150-$250 (consumer) - $1,500+ (professional)</div>
-                        <a href="https://www.amazon.com/s?k=digital+radon+detector+monitor&tag=radonverdict-20"
+                        <a href="${digitalMonitorUrl}"
+                           data-rv-affiliate-link="true"
                            target="_blank" rel="sponsored nofollow noopener"
-                           onclick="if(typeof rvTrack === 'function') rvTrack('affiliate_link_click', { event_category: 'monetization', event_label: 'guide_testing_digital_monitor_search' });"
+                           onclick="if(window.rvTrackAffiliateClick) window.rvTrackAffiliateClick(this, { cta_id: 'guide_monitor_followup', offer_type: 'monitor', offer_brand: 'airthings', offer_model: 'corentium_home', placement_group: 'guide', placement_id: 'monitor_card', journey_stage: 'followup_monitor' });"
                            class="inline-flex items-center gap-2 mt-3 px-4 py-2 rounded-lg bg-slate-900 text-white text-xs font-bold hover:bg-slate-800 transition-colors">
-                            Shop Digital Monitors ->
+                            View Airthings Corentium Home ->
                         </a>
                     </div>
                 </div>

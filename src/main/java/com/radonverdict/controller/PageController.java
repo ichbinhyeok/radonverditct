@@ -99,7 +99,8 @@ public class PageController {
     public RedirectView searchZip(@RequestParam("zipCode") String zipCode,
                                   @RequestParam(name = "intent", required = false) String intent,
                                   @RequestParam(name = "radonResultBand", required = false) String radonResultBand) {
-        String fips = dataLoadService.getZipToFipsMap().get(zipCode.trim());
+        String normalizedZip = zipCode == null ? null : zipCode.trim();
+        String fips = dataLoadService.getZipToFipsMap().get(normalizedZip);
         if (fips == null) {
             // Handle invalid zip - redirect to global calculator with error
             return redirect("/radon-cost-calculator?error=notfound", HttpStatus.SEE_OTHER);
@@ -120,6 +121,10 @@ public class PageController {
         }
         if (radonResultBand != null && !radonResultBand.isBlank()) {
             target.append(hasQuery ? "&" : "?").append("radonResultBand=").append(radonResultBand);
+            hasQuery = true;
+        }
+        if (normalizedZip != null && normalizedZip.matches("\\d{5}")) {
+            target.append(hasQuery ? "&" : "?").append("zipCode=").append(normalizedZip);
         }
 
         return redirect(target.toString(),
@@ -180,6 +185,7 @@ public class PageController {
             @RequestParam(name = "intent", required = false) String intent,
             @RequestParam(name = "sqftCategory", required = false) String sqftCategory,
             @RequestParam(name = "radonResultBand", required = false) String radonResultBand,
+            @RequestParam(name = "zipCode", required = false) String zipCode,
             Model model) {
         String key = stateSlug.toLowerCase() + "/" + countySlug.toLowerCase();
         County county = dataLoadService.getCountyBySlugMap().get(key);
@@ -218,6 +224,7 @@ public class PageController {
         model.addAttribute("showSeoDebug", seoDebugVisible);
         model.addAttribute("canonicalUrl",
                 normalizedBaseUrl() + "/radon-mitigation-cost/" + county.getStateSlug() + "/" + county.getCountySlug());
+        model.addAttribute("prefilledZip", zipCode != null && zipCode.matches("\\d{5}") ? zipCode : null);
 
         return "county_hub";
     }
@@ -355,7 +362,7 @@ public class PageController {
     }
 
     private RedirectView redirect(String path, HttpStatus status) {
-        RedirectView view = new RedirectView(normalizedBaseUrl() + path, false);
+        RedirectView view = new RedirectView(path, true);
         view.setStatusCode(status);
         return view;
     }

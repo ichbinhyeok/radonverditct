@@ -63,20 +63,24 @@ public class SimilarityEngineService {
         List<String> lines = new ArrayList<>();
         if (templateSelector == 0) {
             lines.add(String.format(Locale.US,
-                    "Relative position in %s: home values are around the %dth percentile, while pre-1980 housing share sits near the %dth percentile. This shifts remediation scope and budget planning.",
-                    county.getStateAbbr(), profile.homeValuePercentile(), profile.agePercentile()));
+                    "Relative position in %s: home values are around the %s percentile, while pre-1980 housing share sits near the %s percentile. This shifts remediation scope and budget planning.",
+                    county.getStateAbbr(), formatPercentile(profile.homeValuePercentile()),
+                    formatPercentile(profile.agePercentile())));
         } else if (templateSelector == 1) {
             lines.add(String.format(Locale.US,
-                    "County profile dispersion: %s ranks near the %dth percentile for housing stock size and the %dth percentile for older-home concentration within %s.",
-                    county.getAreaDisplayName(), profile.housingPercentile(), profile.agePercentile(), county.getStateAbbr()));
+                    "County profile dispersion: %s ranks near the %s percentile for housing stock size and the %s percentile for older-home concentration within %s.",
+                    county.getAreaDisplayName(), formatPercentile(profile.housingPercentile()),
+                    formatPercentile(profile.agePercentile()), county.getStateAbbr()));
         } else if (templateSelector == 2) {
             lines.add(String.format(Locale.US,
-                    "In-state contrast: %s is not a median-case area. Its valuation percentile (%dth) and housing-age percentile (%dth) create a distinct mitigation decision context.",
-                    county.getAreaDisplayName(), profile.homeValuePercentile(), profile.agePercentile()));
+                    "In-state contrast: %s is not a median-case area. Its valuation percentile (%s) and housing-age percentile (%s) create a distinct mitigation decision context.",
+                    county.getAreaDisplayName(), formatPercentile(profile.homeValuePercentile()),
+                    formatPercentile(profile.agePercentile())));
         } else {
             lines.add(String.format(Locale.US,
-                    "Peer comparison signal: %s shows a %dth percentile home-value profile and a %dth percentile housing-volume profile in %s, influencing quote spread and negotiation leverage.",
-                    county.getAreaDisplayName(), profile.homeValuePercentile(), profile.housingPercentile(), county.getStateAbbr()));
+                    "Peer comparison signal: %s shows a %s percentile home-value profile and a %s percentile housing-volume profile in %s, influencing quote spread and negotiation leverage.",
+                    county.getAreaDisplayName(), formatPercentile(profile.homeValuePercentile()),
+                    formatPercentile(profile.housingPercentile()), county.getStateAbbr()));
         }
 
         if (receipt != null && receipt.getTotalAvg() > 0 && metrics.getMedianHomeValue() > 0) {
@@ -269,6 +273,24 @@ public class SimilarityEngineService {
             return 24;
         }
         return 32;
+    }
+
+    private String formatPercentile(int value) {
+        return value + ordinalSuffix(value);
+    }
+
+    private String ordinalSuffix(int value) {
+        int mod100 = Math.abs(value) % 100;
+        if (mod100 >= 11 && mod100 <= 13) {
+            return "th";
+        }
+
+        return switch (Math.abs(value) % 10) {
+            case 1 -> "st";
+            case 2 -> "nd";
+            case 3 -> "rd";
+            default -> "th";
+        };
     }
 
     private record Profile(String baseFingerprint, int homeValuePercentile, int housingPercentile, int agePercentile) {

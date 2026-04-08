@@ -96,7 +96,7 @@
         <!-- Axis 1: Foundation Type (Radio Cards) -->
         <div>
             <label class="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-3 text-center">Foundation Type</label>
-            <div class="grid grid-cols-3 gap-3">
+            <div class="grid grid-cols-2 gap-3 sm:grid-cols-4">
                 <label class="cursor-pointer">
                     <input type="radio" name="foundation" value="basement" x-model="foundation" class="peer sr-only">
                     <div class="text-center rounded-xl p-3 border-2 transition-all duration-200"
@@ -116,6 +116,13 @@
                     <div class="text-center rounded-xl p-3 border-2 transition-all duration-200"
                          :class="foundation === 'crawlspace' ? 'border-brand-900 bg-brand-50 text-brand-900 shadow-sm' : 'border-slate-100 bg-white text-slate-500 hover:border-slate-300 hover:bg-slate-50'">
                         <div class="font-semibold text-sm">Crawl</div>
+                    </div>
+                </label>
+                <label class="cursor-pointer">
+                    <input type="radio" name="foundation" value="other" x-model="foundation" class="peer sr-only">
+                    <div class="text-center rounded-xl p-3 border-2 transition-all duration-200"
+                         :class="foundation === 'other' ? 'border-brand-900 bg-brand-50 text-brand-900 shadow-sm' : 'border-slate-100 bg-white text-slate-500 hover:border-slate-300 hover:bg-slate-50'">
+                        <div class="font-semibold text-sm">Other / Not Sure</div>
                     </div>
                 </label>
             </div>

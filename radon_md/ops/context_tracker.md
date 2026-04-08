@@ -1099,3 +1099,324 @@ What to do next:
 1. Re-check the cost page inspection after Google recrawls it.
 2. Do not treat the old Search Console snippet as proof of a current production bug unless live HTML reproduces it.
 3. Keep validating real response HTML first, then compare with Search Console crawl dates.
+
+## 2026-04-07 Affiliate Tracking Taxonomy + GA4 Explore Blueprint
+
+What triggered this checkpoint:
+- The affiliate CTA layer was upgraded from vague labels to product-aware CTA IDs.
+- We needed GA4 to answer "which CTA, on which page, for which product?" instead of just "affiliate click happened."
+- We also needed the ops log to reflect the shift from simple click counting to a proper monetization taxonomy.
+
+### What changed in code today
+
+Frontend tracking layer:
+- `src/main/jte/layout/main.jte`
+
+CTA templates updated to the new helper:
+- `src/main/jte/pages/guide_radon_testing.jte`
+- `src/main/jte/radon_levels_county.jte`
+- `src/main/jte/components/radon_level_advisor.jte`
+- `src/main/jte/components/lead_form.jte`
+
+What changed:
+- Added page-context auto-injection to `rvTrack(...)`:
+  - `page_type`
+  - `page_path`
+  - `title`
+  - `state`
+  - `county`
+  - `result_band`
+  - `intent`
+  - `article_slug`
+- Added `rvTrackAffiliateClick(...)` helper to normalize affiliate CTA payloads before sending.
+- Standardized affiliate payload fields:
+  - `cta_id`
+  - `monetization_channel`
+  - `offer_type`
+  - `offer_brand`
+  - `offer_model`
+  - `placement_group`
+  - `placement_id`
+  - `journey_stage`
+  - `merchant`
+  - `destination`
+  - `destination_host`
+  - `href`
+  - `cta_text`
+- Marked affiliate anchors with `data-rv-affiliate-link="true"` so they do not also fire as generic `outbound_click`.
+
+Why this matters:
+- before today, GA4/local telemetry could tell us an affiliate click happened
+- after today, we can distinguish:
+  - test kit vs monitor
+  - first-test CTA vs follow-up CTA
+  - guide vs levels vs advisor vs lead-form placement
+
+### GA4 metadata check run today
+
+Property checked:
+- `525547689`
+
+Confirmed available standard dimensions:
+- `eventName`
+- `pagePath`
+- `landingPage`
+- `pageTitle`
+
+Confirmed available standard metrics:
+- `sessions`
+- `engagedSessions`
+- `engagementRate`
+
+Confirmed key-event session metrics exist:
+- `sessionKeyEventRate:qualify_lead`
+- `sessionKeyEventRate:close_convert_lead`
+
+Important finding:
+- searches for custom dimensions like `cta`, `offer`, and `county` returned nothing
+- interpretation:
+  - the richer payload is being sent by the site now
+  - but GA4 custom definitions still need to be registered before Explore can break down by those fields
+
+### GA4 event reality check run today
+
+Window checked:
+- `2026-03-24` to `2026-04-07`
+
+Top business-relevant events seen in GA4:
+- `page_view`: `517`
+- `affiliate_link_click`: `7`
+- `levels_result_path_click`: `6`
+- `lead_form_start`: `2`
+- `close_convert_lead`: `2`
+
+Supporting event context:
+- `form_start`: `21`
+- `form_submit`: `9`
+- `estimator_result_viewed`: `18`
+- `estimator_start`: `11`
+
+Interpretation:
+- money-path behavior is visible in GA4 now
+- but the volume is still low enough that CTA quality and routing still matter more than scaling dashboards
+
+### Landing-page reality check from GA4
+
+Landing-page report run today (`2026-03-24` to `2026-04-07`):
+- `(not set)`: `66 sessions`
+- `/guides/radon-myths-granite-countertops`: `33 sessions`
+- `/radon-cost-calculator`: `18 sessions`
+- `/radon-levels/washington/okanogan-county`: `12 sessions`
+
+Interpretation:
+- traffic is still fragmented across informational and calculator surfaces
+- the future CTA readout must focus on landing page + monetization event, not page-level totals alone
+- `(not set)` volume is still non-trivial and should be watched in future GA4 hygiene checks
+
+### Local telemetry QA completed today
+
+Local CSV checked:
+- `data/telemetry_events.csv`
+
+Verified example payloads were recorded locally after Playwright clicks:
+- test-kit click example:
+  - `cta_id = levels_intro_test_kit`
+  - `offer_type = test_kit`
+  - `offer_brand = first_alert`
+  - `journey_stage = first_test`
+- monitor click example:
+  - `cta_id = levels_intro_monitor_followup`
+  - `offer_type = monitor`
+  - `offer_brand = airthings`
+  - `journey_stage = followup_monitor`
+
+Important QA result:
+- affiliate links now record `affiliate_link_click` cleanly
+- they do not double-count as `outbound_click`
+
+### Explore blueprint locked today
+
+The recommended GA4 Explore set is now:
+1. Affiliate CTA scorecard
+- rows:
+  - `cta_id`
+  - `offer_type`
+  - `placement_group`
+- filter:
+  - `eventName = affiliate_link_click`
+
+2. Landing page to monetization map
+- rows:
+  - `landingPage`
+  - `eventName`
+- focus events:
+  - `affiliate_link_click`
+  - `levels_result_path_click`
+  - `lead_form_start`
+  - `lead_form_submit`
+  - `qualify_lead`
+
+3. County + intent split
+- rows:
+  - `county`
+  - `intent`
+  - `result_band`
+- compare:
+  - `affiliate_link_click`
+  - `qualify_lead`
+
+4. Lead quality funnel
+- steps:
+  - `page_view`
+  - `lead_form_start`
+  - `lead_form_submit`
+  - `qualify_lead`
+  - `close_convert_lead`
+
+### Operational conclusion
+
+Today's tracking work moved the project from:
+- "we know clicks happened"
+
+to:
+- "we can identify which monetization CTA generated the click and at what decision stage"
+
+This is the correct level of instrumentation for the current phase because:
+- the site is still proving its first monetization loop
+- traffic is not yet high enough to justify looser, aggregate-only reporting
+- CTA-level learning is currently more valuable than top-line dashboard polish
+
+### What to do next
+
+1. Register the new GA4 custom dimensions.
+- especially:
+  - `cta_id`
+  - `offer_type`
+  - `offer_brand`
+  - `placement_group`
+  - `placement_id`
+  - `journey_stage`
+  - `page_type`
+  - `county`
+  - `result_band`
+  - `intent`
+
+2. Keep using local CSV telemetry for payload QA until GA4 custom definitions are visible.
+
+3. On the next 7-day check, answer:
+- which CTA ID gets the most clicks?
+- are kit clicks still dominating monitor clicks?
+- which landing pages generate the most `affiliate_link_click` per session?
+- does `lead_form_start` move at all on pages where affiliate clicks rise?
+
+## 2026-04-07 Full Beta Test: Desktop + Mobile
+
+- Ran end-to-end beta testing as a real user on desktop and mobile with Playwright CLI against the local app.
+- Tested core flows:
+  - `/radon-cost-calculator`
+  - ZIP search into county action plans
+  - `/radon-mitigation-cost/virginia/falls-church-city`
+  - `/radon-levels/virginia/falls-church-city`
+  - `/guides` and `/guides/how-to-test-for-radon`
+  - `/contact`
+- High-impact issues found:
+  - ZIP search and lead-submit redirects were hardcoded to the canonical production host, which broke local and preview validation by sending the browser to `radonverdict.com`.
+  - Contact page form was fake and only triggered a browser alert instead of storing or routing the message.
+  - `not_tested` cost flows opened with a `5.5 pCi/L` red warning state, which felt inconsistent before the user had any measured reading.
+- Fixes shipped:
+  - Converted controller redirects to host-relative redirects so the current environment stays intact during search, lead-submit, and canonical-path normalization.
+  - Added a real contact message submission flow backed by CSV persistence at `data/contact_messages.csv`.
+  - Reworked the contact page to show real success and error messaging and preserve entered values on validation failure.
+  - Changed `not_tested` cost-mode radon advisor to a sample-reading mode with a neutral `3.0 pCi/L` starting point and clearer copy.
+- Verification after fixes:
+  - Re-ran desktop and mobile Playwright checks.
+  - Confirmed local ZIP search and lead submit stay on `127.0.0.1:8081`.
+  - Confirmed contact form submission writes a row to `data/contact_messages.csv`.
+  - Confirmed `not_tested` cost pages no longer start in a red `5.5` warning state.
+  - Found and fixed a post-submit UX regression where lead success redirects dropped `intent` and `radonResultBand`, causing the user to land back on a mismatched scenario.
+  - Updated lead-submit redirects to preserve scenario query params and return to `#estimate-form` so the success state stays anchored to the exact flow the user just completed.
+  - Found a low-severity copy-generation bug during mobile QA (`22th percentile`) and fixed percentile suffix formatting in the narrative generator with test coverage.
+  - Updated contact-page visible email routes to `shinhyeok22@gmail.com` so general and partnership inquiries both point to the live owner inbox.
+  - Cleaned the local beta-test artifacts after verification:
+    - reset `data/contact_messages.csv`
+    - reset `data/leads.csv`
+    - reset `data/telemetry_events.csv`
+    - removed `.playwright-cli/`
+    - removed `output/playwright/`
+
+## 2026-04-08 Tracking Effect Check
+
+- Looked back at the most relevant recent tracking/conversion change set:
+  - `3372944` on `2026-04-01` (`Add radon action plan and credit conversion flows`)
+  - this is the change that added richer lead-flow context and the cost/credit conversion paths
+
+- Measured the short before/after windows:
+  - GA4 `2026-03-28` to `2026-04-01` vs `2026-04-02` to `2026-04-07`
+  - GSC `2026-03-28` to `2026-04-01` vs `2026-04-02` to `2026-04-06`
+
+- GA4 before/after summary:
+  - `page_view`: `152` -> `260`
+  - `affiliate_link_click`: `4` -> `3`
+  - `levels_result_path_click`: `2` -> `8`
+  - `lead_form_start`: `0` -> `4`
+  - `lead_form_submit`: `0` -> `5`
+  - `qualify_lead`: `0` -> `5`
+  - `close_convert_lead`: `0` -> `4`
+
+- Practical read:
+  - the April 1 work did show an effect on conversion-path usage and visibility
+  - the clearest signal is stronger movement into result-path and lead-submit events
+  - affiliate performance did not improve in the same short window
+  - this should be treated as a `better funnel + better measurement` win, not as proof of better monetization yet
+
+- SEO / demand read:
+  - GSC clicks fell `51` -> `42`
+  - impressions fell `4,109` -> `2,571`
+  - CTR improved `1.24%` -> `1.63%`
+  - average position stayed basically flat (`7.48` -> `7.46`)
+  - interpretation: no clear search-lift yet; too soon and too small to claim traffic benefit
+
+- Calculator adoption read:
+  - `/radon-cost-calculator` page views moved `9` -> `15`
+  - `/radon-credit-calculator` picked up `3` GA4 page views after launch and `2` GSC impressions in the measured window
+  - interpretation: the new path exists in the wild, but it is still early-stage and low-volume
+
+- One instrumentation caveat remains:
+  - `lead_form_submit` exceeded `lead_form_start` in the short post-change window
+  - use `submit`, `qualify`, and `close_convert_lead` as the more trustworthy funnel signals until `lead_form_start` is tightened
+
+## 2026-04-08 User-Journey UX Pass for Monetization Flow
+
+- Re-ran the site as a real user on desktop and mobile after the monetization changes, with a specific focus on:
+  - where low-intent users would bounce
+  - where the flow felt too mitigation-heavy before a real test
+  - where context was being re-entered or contradicted
+
+- Main UX problems found:
+  - `/radon-cost-calculator` pushed ZIP entry immediately, without an equally clear "I have not tested yet" path.
+  - `not_tested` county cost pages still felt too contractor/mitigation-forward for users who only wanted a first step.
+  - users who already arrived via ZIP lookup had to enter ZIP again in the lead form.
+  - foundation context was inconsistent between page summary, simulator, and lead form.
+
+- Fixes shipped:
+  - added a clear test-first split on `/radon-cost-calculator` so first-time users can go straight to `/guides/how-to-test-for-radon`.
+  - changed `not_tested` county hero copy from "action plan + mitigation cost" framing to "test plan + cost context" framing.
+  - added a `Best First Step` callout above the fold on `not_tested` county pages to slow users down before quote-shopping.
+  - changed the cost-mode radon advisor to treat `not_tested` as a sample-reading workflow instead of a confirmed reading workflow.
+  - preserved ZIP across search and post-submit redirects, then locked the ZIP inside the lead form when it came from county lookup.
+  - aligned defaults so `not_tested` flows start with:
+    - `No, not yet` selected
+    - `Other / Not Sure` foundation available in the simulator and selected in the form when no better context exists
+
+- Verification:
+  - `.\gradlew.bat compileJava`
+  - re-tested `http://127.0.0.1:8081/radon-cost-calculator`
+  - re-tested `http://127.0.0.1:8081/radon-mitigation-cost/virginia/falls-church-city?intent=homeowner&radonResultBand=not_tested&zipCode=22046#estimate-form`
+  - confirmed the updated flow now reads as:
+    - test first
+    - use cost page as planning context
+    - do not re-enter ZIP
+    - do not default to a basement/high-urgency mental model
+
+- Residual note:
+  - visible journey copy is now much better aligned for `not_tested`, but some SEO/browser-title surfaces still remain cost-forward because they intentionally serve search positioning.

@@ -30,16 +30,21 @@ public class PricingCalculatorService {
             return fallbackGlobalEstimate();
         }
 
-        return calculate(county.getStateAbbr(), county.getCountyName(), request.getFoundationType(),
+        return calculate(county.getStateAbbr(), county.getCountyName(), county.getAreaDisplayName(), request.getFoundationType(),
                 request.getUserIntent(), request.getSqftCategory());
     }
 
     public ItemizedReceipt calculate(String stateAbbr, String countyName, String foundationType, String userIntent) {
-        return calculate(stateAbbr, countyName, foundationType, userIntent, "under_2000");
+        return calculate(stateAbbr, countyName, countyName, foundationType, userIntent, "under_2000");
     }
 
     public ItemizedReceipt calculate(String stateAbbr, String countyName, String foundationType, String userIntent,
             String sqftCategory) {
+        return calculate(stateAbbr, countyName, countyName, foundationType, userIntent, sqftCategory);
+    }
+
+    public ItemizedReceipt calculate(String stateAbbr, String countyName, String areaDisplayName, String foundationType,
+            String userIntent, String sqftCategory) {
 
         PricingConfig config = dataLoadService.getPricingConfig();
         StateRegulations regulations = dataLoadService.getStateRegulations();
@@ -109,6 +114,7 @@ public class PricingCalculatorService {
                 .totalHigh(totalHigh)
                 .totalAvg(totalAvg)
                 .countyName(countyName)
+                .areaDisplayName(areaDisplayName)
                 .stateAbbr(stateAbbr)
                 .build();
     }

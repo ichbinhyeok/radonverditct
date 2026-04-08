@@ -371,7 +371,7 @@ public class ContentGenerationService {
                         case "above_4" ->
                                 "For readings at 4.0+ pCi/L, use this page to budget your next step and compare quotes.";
                         default ->
-                                "If you have not tested yet, use this page to understand likely cost before you call a pro.";
+                                "If you have not tested yet, test first and treat this page as future cost context only.";
                 };
 
                 return resultLead + " Radon mitigation in " + areaName + ", " + stateAbbr + " averages $"
@@ -399,7 +399,7 @@ public class ContentGenerationService {
                         case "above_4" ->
                                 "What Should You Do With a 4.0+ Radon Result in " + areaName + ", " + stateAbbr + "?";
                         default ->
-                                "Radon Action Plan + Mitigation Cost in " + areaName + ", " + stateAbbr;
+                                "Radon Test Plan + Cost Context in " + areaName + ", " + stateAbbr;
                 };
         }
 
@@ -423,9 +423,9 @@ public class ContentGenerationService {
                                                 + " is above the EPA action level. Use the local range below to budget mitigation and compare next steps."
                                                 + priceRange;
                         default ->
-                                "If you have not tested yet, start with a confirmed reading. This page shows what mitigation would likely cost in "
+                                "If you have not tested yet, start with a confirmed reading before you worry about contractors. This page gives you future cost context for "
                                                 + areaName
-                                                + " if your result comes back elevated, so you can plan before you contact contractors."
+                                                + " so you know what elevated results could mean before you spend money too early."
                                                 + priceRange;
                 };
         }

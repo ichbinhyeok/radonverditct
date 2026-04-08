@@ -47,6 +47,7 @@
         function getPageContext() {
           const path = window.location.pathname || '/';
           const segments = path.split('/').filter(Boolean);
+          const query = new URLSearchParams(window.location.search || '');
           const context = {
             title: document.title,
             page_path: path
@@ -65,6 +66,9 @@
             context.page_type = segments.length >= 3 ? 'credit_county' : 'credit_index';
           } else if (segments[0] === 'guides') {
             context.page_type = segments.length >= 2 ? 'guide_article' : 'guides_index';
+            if (segments.length >= 2) {
+              context.article_slug = segments[1];
+            }
           } else {
             context.page_type = segments[0];
           }
@@ -75,12 +79,62 @@
           if ((segments[0] === 'radon-levels' || segments[0] === 'radon-mitigation-cost' || segments[0] === 'radon-credit-calculator') && segments.length >= 3) {
             context.county = segments[2];
           }
+          if (query.get('radonResultBand')) {
+            context.result_band = query.get('radonResultBand');
+          }
+          if (query.get('intent')) {
+            context.intent = query.get('intent');
+          }
 
           return context;
         }
 
+        function getHrefHost(href) {
+          if (!href) {
+            return '';
+          }
+          try {
+            return new URL(href, window.location.origin).hostname || '';
+          } catch (error) {
+            return '';
+          }
+        }
+
+        function getElementText(element) {
+          if (!element || !element.textContent) {
+            return '';
+          }
+          return element.textContent.replace(/\s+/g, ' ').trim();
+        }
+
+        function normalizeAffiliatePayload(payload) {
+          const raw = payload || {};
+          const ctaId = raw.cta_id || raw.event_label || raw.label || '';
+          const placementId = raw.placement_id || raw.placement || '';
+          const offerType = raw.offer_type || raw.product || '';
+          const offerBrand = raw.offer_brand || (offerType === 'test_kit' ? 'first_alert' : offerType === 'monitor' ? 'airthings' : '');
+          const offerModel = raw.offer_model || (offerType === 'test_kit' ? 'rd1' : offerType === 'monitor' ? 'corentium_home' : '');
+          const journeyStage = raw.journey_stage || (offerType === 'test_kit' ? 'first_test' : offerType === 'monitor' ? 'followup_monitor' : '');
+
+          return {
+            cta_id: ctaId,
+            monetization_channel: raw.monetization_channel || 'affiliate',
+            offer_type: offerType,
+            offer_brand: offerBrand,
+            offer_model: offerModel,
+            placement_group: raw.placement_group || '',
+            placement_id: placementId,
+            journey_stage: journeyStage,
+            merchant: raw.merchant || 'amazon',
+            destination: raw.destination || 'amazon_product',
+            href: raw.href || '',
+            destination_host: raw.destination_host || getHrefHost(raw.href || ''),
+            cta_text: raw.cta_text || ''
+          };
+        }
+
         window.rvTrack = function (eventName, payload, options) {
-          const safePayload = payload || {};
+          const safePayload = Object.assign({}, getPageContext(), payload || {});
           if (typeof gtag === 'function') {
             const gtagPayload = Object.assign({}, safePayload, options || {});
             gtag('event', eventName, gtagPayload);
@@ -91,6 +145,17 @@
             path: window.location.pathname,
             ts: new Date().toISOString()
           });
+        };
+
+        window.rvTrackAffiliateClick = function (element, payload) {
+          const href = element && typeof element.getAttribute === 'function' ? (element.getAttribute('href') || '') : '';
+          const ctaText = getElementText(element);
+          const normalizedPayload = normalizeAffiliatePayload(Object.assign({}, payload || {}, {
+            href: href,
+            destination_host: getHrefHost(href),
+            cta_text: ctaText
+          }));
+          window.rvTrack('affiliate_link_click', normalizedPayload);
         };
 
         function trackScrollDepth() {
@@ -129,10 +194,17 @@
             if (!href || href.startsWith('/') || href.startsWith('#')) {
               return;
             }
+            if (link.dataset.rvAffiliateLink === 'true') {
+              return;
+            }
 
             const sameHost = href.indexOf(window.location.host) !== -1;
             if (!sameHost) {
-              window.rvTrack('outbound_click', { href: href, text: (link.textContent || '').trim() });
+              window.rvTrack('outbound_click', {
+                href: href,
+                destination_host: getHrefHost(href),
+                cta_text: getElementText(link)
+              });
             }
           }, true);
         });

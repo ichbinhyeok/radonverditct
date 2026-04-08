@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.lang.reflect.Method;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -67,5 +68,21 @@ class SimilarityEngineServiceTest {
         assertThat(narrative).doesNotContain("Similarity cohort size");
         assertThat(narrative).doesNotContain("Uniqueness score");
         assertThat(narrative).doesNotContain("fingerprint");
+    }
+
+    @Test
+    void ordinalPercentilesUseCorrectEnglishSuffixes() throws Exception {
+        Method method = SimilarityEngineService.class.getDeclaredMethod("formatPercentile", int.class);
+        method.setAccessible(true);
+
+        assertThat(method.invoke(similarityEngineService, 1)).isEqualTo("1st");
+        assertThat(method.invoke(similarityEngineService, 2)).isEqualTo("2nd");
+        assertThat(method.invoke(similarityEngineService, 3)).isEqualTo("3rd");
+        assertThat(method.invoke(similarityEngineService, 4)).isEqualTo("4th");
+        assertThat(method.invoke(similarityEngineService, 11)).isEqualTo("11th");
+        assertThat(method.invoke(similarityEngineService, 12)).isEqualTo("12th");
+        assertThat(method.invoke(similarityEngineService, 13)).isEqualTo("13th");
+        assertThat(method.invoke(similarityEngineService, 22)).isEqualTo("22nd");
+        assertThat(method.invoke(similarityEngineService, 23)).isEqualTo("23rd");
     }
 }

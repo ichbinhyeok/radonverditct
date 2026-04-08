@@ -32,6 +32,20 @@
                     See what to do next with your radon result, then compare a realistic local mitigation range before you contact contractors.
                 </p>
 
+                <div class="mb-10 grid gap-3 sm:grid-cols-2 max-w-3xl mx-auto">
+                    <a href="/guides/how-to-test-for-radon"
+                       class="rounded-2xl border border-emerald-400/20 bg-emerald-500/10 px-5 py-4 text-left transition-colors hover:bg-emerald-500/15">
+                        <p class="text-xs font-bold uppercase tracking-[0.25em] text-emerald-200">Need a first test?</p>
+                        <p class="mt-2 text-base font-bold text-white">Start with the homeowner testing guide.</p>
+                        <p class="mt-1 text-sm leading-relaxed text-slate-300">Best if you have not measured radon yet and need the right first step before pricing anything.</p>
+                    </a>
+                    <div class="rounded-2xl border border-white/10 bg-white/5 px-5 py-4 text-left">
+                        <p class="text-xs font-bold uppercase tracking-[0.25em] text-slate-400">Already have a result?</p>
+                        <p class="mt-2 text-base font-bold text-white">Use your ZIP to open the local action plan.</p>
+                        <p class="mt-1 text-sm leading-relaxed text-slate-300">Best if you want county-level guidance, cost context, and what to do next with a real reading.</p>
+                    </div>
+                </div>
+
                 <!-- Zip Search Bar -->
                 <form action="/search-zip" method="POST" class="max-w-2xl mx-auto">
                     <div class="relative group">
@@ -105,7 +119,7 @@
                             </div>
                         </div>
                         <p class="mt-4 text-center text-sm text-slate-400">
-                            Pick a scenario to open a county page already tuned for your next step.
+                            Pick a scenario only if you already know your situation. If you have not tested yet, use "Not tested yet" or start with the testing guide above.
                         </p>
                     </div>
                 </form>

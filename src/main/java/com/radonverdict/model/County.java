@@ -50,6 +50,13 @@ public class County {
         if (countyName == null || countyName.isBlank()) {
             return "";
         }
+
+        if (countySlug != null
+                && countySlug.endsWith("-city")
+                && !countyName.toLowerCase(Locale.ROOT).endsWith(" city")) {
+            return countyName;
+        }
+
         String areaType = getAreaTypeLabel().toLowerCase(Locale.ROOT);
         String normalized = countyName.toLowerCase(Locale.ROOT);
         if (normalized.endsWith(areaType)) {

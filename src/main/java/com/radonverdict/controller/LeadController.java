@@ -6,10 +6,10 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.util.UriComponentsBuilder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -23,9 +23,6 @@ import java.util.Locale;
 public class LeadController {
 
     private final LeadService leadService;
-
-    @Value("${app.site.base-url:https://radonverdict.com}")
-    private String baseUrl;
 
     @PostMapping("/submit-lead")
     public RedirectView submitLead(@Valid @ModelAttribute LeadSubmissionRequest request, BindingResult bindingResult,
@@ -72,24 +69,36 @@ public class LeadController {
     private RedirectView redirectToCounty(LeadSubmissionRequest request) {
         String stateSlug = normalizeUrlSegment(request.getStateSlug());
         String countySlug = normalizeUrlSegment(request.getCountySlug());
+        String intent = normalizeQueryValue(request.getSelectedIntent());
+        String resultBand = normalizeQueryValue(request.getSelectedRadonResultBand());
 
         if (stateSlug == null || countySlug == null) {
-            RedirectView fallback = new RedirectView(normalizedBaseUrl() + "/radon-cost-calculator", false);
+            RedirectView fallback = new RedirectView("/radon-cost-calculator", true);
             fallback.setStatusCode(HttpStatus.SEE_OTHER);
             return fallback;
         }
 
-        String target = normalizedBaseUrl() + "/radon-mitigation-cost/" + stateSlug + "/" + countySlug;
-        RedirectView view = new RedirectView(target, false);
+        UriComponentsBuilder targetBuilder = UriComponentsBuilder
+                .fromPath("/radon-mitigation-cost/" + stateSlug + "/" + countySlug);
+
+        if (intent != null) {
+            targetBuilder.queryParam("intent", intent);
+        }
+        if (resultBand != null) {
+            targetBuilder.queryParam("radonResultBand", resultBand);
+        }
+        String zipCode = normalizeZip(request.getZipCode());
+        if (zipCode != null) {
+            targetBuilder.queryParam("zipCode", zipCode);
+        }
+
+        String target = targetBuilder
+                .fragment("estimate-form")
+                .build()
+                .toUriString();
+        RedirectView view = new RedirectView(target, true);
         view.setStatusCode(HttpStatus.SEE_OTHER);
         return view;
-    }
-
-    private String normalizedBaseUrl() {
-        if (baseUrl == null || baseUrl.isBlank()) {
-            return "https://radonverdict.com";
-        }
-        return baseUrl.endsWith("/") ? baseUrl.substring(0, baseUrl.length() - 1) : baseUrl;
     }
 
     private String normalizeUrlSegment(String raw) {
@@ -101,5 +110,24 @@ public class LeadController {
             return null;
         }
         return normalized;
+    }
+
+    private String normalizeQueryValue(String raw) {
+        if (raw == null || raw.isBlank()) {
+            return null;
+        }
+        String normalized = raw.trim().toLowerCase(Locale.US);
+        if (!normalized.matches("^[a-z0-9_-]{2,40}$")) {
+            return null;
+        }
+        return normalized;
+    }
+
+    private String normalizeZip(String raw) {
+        if (raw == null || raw.isBlank()) {
+            return null;
+        }
+        String normalized = raw.trim();
+        return normalized.matches("^\\d{5}$") ? normalized : null;
     }
 }

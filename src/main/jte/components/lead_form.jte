@@ -5,12 +5,18 @@
 @param CountyPageContent page
 @param String successMessage = null
 @param String errorMessage = null
+@param String prefilledZip = null
 
 !{
     final String resultBand = page.getSelectedRadonResultBand();
     final String intent = page.getSelectedIntent();
     final boolean transactionIntent = "buying".equals(intent) || "selling".equals(intent);
     final boolean highReading = "above_4".equals(resultBand);
+    final boolean hasPrefilledZip = prefilledZip != null && prefilledZip.matches("\\d{5}");
+    final boolean defaultHasTested = !"not_tested".equals(resultBand);
+    final String selectedFoundationType = page.getSelectedFoundationType() != null
+            ? page.getSelectedFoundationType()
+            : "other";
     final String actionBadge = "not_tested".equals(resultBand) ? "Free Test + Action Plan" : "Free Local Action Plan";
     final String actionHeadline = "not_tested".equals(resultBand)
             ? "What should I do first in " + county.getAreaDisplayName() + "?"
@@ -112,7 +118,13 @@
                         <div class="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-xs text-slate-600 font-medium">No obligation to hire anyone</div>
                         <div class="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-xs text-slate-600 font-medium">No call blasts or list selling</div>
                     </div>
-                    <p class="mb-4 text-xs text-slate-500 font-semibold">Required now: Email + ZIP. Phone is optional.</p>
+                    <p class="mb-4 text-xs text-slate-500 font-semibold">
+                        @if(hasPrefilledZip)
+                            Required now: Email. ZIP is already locked from your county lookup. Phone is optional.
+                        @else
+                            Required now: Email + ZIP. Phone is optional.
+                        @endif
+                    </p>
                     <form action="/submit-lead" method="POST" class="space-y-4"
                           x-data="{ 
                               hasStartedForm: false,
@@ -183,10 +195,21 @@
                         </div>
 
                         <div class="grid grid-cols-2 gap-4">
-                            <div>
-                                <label for="zipCode" class="block text-sm font-medium text-slate-700">ZIP Code</label>
-                                <input type="text" name="zipCode" id="zipCode" @focus="trackFormStart" required pattern="[0-9]{5}" placeholder="e.g. 90210" class="mt-1 block w-full rounded-lg border-slate-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm py-2 px-3 border">
-                            </div>
+                            @if(hasPrefilledZip)
+                                <div>
+                                    <label class="block text-sm font-medium text-slate-700">ZIP Code</label>
+                                    <input type="hidden" name="zipCode" value="${prefilledZip}">
+                                    <div class="mt-1 flex min-h-[42px] items-center rounded-lg border border-slate-200 bg-slate-50 px-3 text-sm font-semibold text-slate-700">
+                                        ${prefilledZip}
+                                        <span class="ml-2 text-xs font-medium text-slate-500">from your county lookup</span>
+                                    </div>
+                                </div>
+                            @else
+                                <div>
+                                    <label for="zipCode" class="block text-sm font-medium text-slate-700">ZIP Code</label>
+                                    <input type="text" name="zipCode" id="zipCode" @focus="trackFormStart" required pattern="[0-9]{5}" placeholder="e.g. 90210" class="mt-1 block w-full rounded-lg border-slate-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm py-2 px-3 border">
+                                </div>
+                            @endif
                             <div>
                                 <label for="customerPhone" class="block text-sm font-medium text-slate-700">Phone (optional)</label>
                                 <input type="tel" name="customerPhone" id="customerPhone" @focus="trackFormStart" placeholder="(555) 123-4567" class="mt-1 block w-full rounded-lg border-slate-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm py-2 px-3 border">
@@ -201,23 +224,23 @@
                         <div>
                             <label for="foundationType" class="block text-sm font-medium text-slate-700">Foundation Type</label>
                             <select id="foundationType" name="foundationType" @change="trackFormStart" class="mt-1 block w-full rounded-lg border-slate-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm py-2 px-3 border bg-white">
-                                <option value="basement">Basement</option>
-                                <option value="crawlspace">Crawl Space</option>
-                                <option value="slab">Slab-on-Grade</option>
-                                <option value="other">Other / Not Sure</option>
+                                <option value="basement" selected="${"basement".equals(selectedFoundationType)}">Basement</option>
+                                <option value="crawlspace" selected="${"crawlspace".equals(selectedFoundationType)}">Crawl Space</option>
+                                <option value="slab" selected="${"slab".equals(selectedFoundationType)}">Slab-on-Grade</option>
+                                <option value="other" selected="${"other".equals(selectedFoundationType)}">Other / Not Sure</option>
                             </select>
                         </div>
 
                         <!-- Affiliate Fallback: Has Tested? -->
-                        <div x-data="{ tested: 'yes' }">
+                        <div x-data="{ tested: '${defaultHasTested ? "true" : "false"}' }">
                             <label class="block text-sm font-medium text-slate-700 mb-2 mt-4">Have you tested your home for radon yet?</label>
                             <div class="flex gap-4 mb-4">
                                 <label class="flex items-center">
-                                    <input type="radio" name="hasTested" value="true" x-model="tested" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-slate-300">
+                                    <input type="radio" name="hasTested" value="true" x-model="tested" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-slate-300" checked="${defaultHasTested}">
                                     <span class="ml-2 text-sm text-slate-600">Yes, I have results</span>
                                 </label>
                                 <label class="flex items-center">
-                                    <input type="radio" name="hasTested" value="false" x-model="tested" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-slate-300">
+                                    <input type="radio" name="hasTested" value="false" x-model="tested" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-slate-300" checked="${!defaultHasTested}">
                                     <span class="ml-2 text-sm text-slate-600">No, not yet</span>
                                 </label>
                             </div>
@@ -228,11 +251,12 @@
                                 <p class="text-[13px] text-indigo-900 leading-relaxed mb-3">
                                     Mitigation pros will need your test results. We recommend this EPA-certified short-term test kit to get started.
                                 </p>
-                                <a href="https://www.amazon.com/dp/B00002N839?tag=radonverdict-20" 
+                                <a href="https://www.amazon.com/dp/B00002N83E?tag=radonverdict-20"
+                                   data-rv-affiliate-link="true"
                                    target="_blank" rel="sponsored nofollow noopener" 
-                                   onclick="if(typeof rvTrack === 'function') rvTrack('affiliate_link_click', { event_category: 'monetization', event_label: 'amazon_test_kit' });"
+                                   onclick="if(window.rvTrackAffiliateClick) window.rvTrackAffiliateClick(this, { cta_id: 'lead_form_not_tested_test_kit', offer_type: 'test_kit', offer_brand: 'first_alert', offer_model: 'rd1', placement_group: 'lead_form', placement_id: 'not_tested', journey_stage: 'first_test' });"
                                    class="inline-flex items-center justify-center w-full py-2 bg-indigo-600 text-white text-xs font-bold rounded-lg hover:bg-indigo-700 transition-colors">
-                                    View Top Rated Test Kit on Amazon
+                                    View Recommended Short-Term Kit on Amazon
                                     <svg class="w-3 h-3 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" /></svg>
                                 </a>
                                 <p class="text-[10px] text-indigo-400 mt-2 text-center italic">*As an Amazon Associate we earn from qualifying purchases.</p>
