@@ -26,6 +26,7 @@
     final boolean priorityCtrCounty =
             ("new-york".equals(county.getStateSlug()) && "schenectady-county".equals(county.getCountySlug()))
                     || ("massachusetts".equals(county.getStateSlug()) && "franklin-county".equals(county.getCountySlug()))
+                    || ("virginia".equals(county.getStateSlug()) && "fairfax-city".equals(county.getCountySlug()))
                     || ("virginia".equals(county.getStateSlug()) && "falls-church-city".equals(county.getCountySlug()))
                     || ("maryland".equals(county.getStateSlug()) && "howard-county".equals(county.getCountySlug()))
                     || ("florida".equals(county.getStateSlug()) && "miami-dade-county".equals(county.getCountySlug()));

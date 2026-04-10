@@ -30,11 +30,24 @@
         stateNameBuilder.append(displayPart);
     }
     final String stateName = stateNameBuilder.length() > 0 ? stateNameBuilder.toString() : stateAbbr;
+    final boolean priorityCtrState = "montana".equals(stateSlug);
+    final String seoTitle = priorityCtrState
+            ? stateName + " Radon Map by County | EPA Zones, Levels & Basement Testing"
+            : stateName + " Radon Map, Levels & Testing Guide by County (" + java.time.LocalDate.now().getYear() + ") | EPA 4.0 pCi/L";
+    final String seoDescription = priorityCtrState
+            ? "Use the " + stateName + " radon map by county to check EPA zones, see what 2.0 vs 4.0+ pCi/L basement test results mean, and decide when mitigation pricing is worth checking."
+            : "Check the " + stateName + " radon map by county, see what 2.0 to 8.0+ pCi/L readings mean, and decide when home testing or mitigation quotes make sense.";
+    final String heroTitle = priorityCtrState
+            ? stateName + " Radon Map by County, EPA Zones & Basement Testing"
+            : stateName + " Radon Map, Levels & Testing Guide";
+    final String heroIntro = priorityCtrState
+            ? "Check county-by-county EPA radon zones across " + stateName + ". Start with your county if you want to know what a basement result means at 2.0 vs 4.0+ pCi/L before you price mitigation."
+            : "View EPA radon zone classifications for every county in " + stateName + ". Open your county to compare basement test meaning, EPA action thresholds, and when mitigation pricing becomes worth checking.";
 }
 
 @template.layout.main(
-    title = stateName + " Radon Map, Levels & Testing Guide by County (" + java.time.LocalDate.now().getYear() + ") | EPA 4.0 pCi/L",
-    description = "Check the " + stateName + " radon map by county, see what 2.0 to 8.0+ pCi/L readings mean, and decide when home testing or mitigation quotes make sense.",
+    title = seoTitle,
+    description = seoDescription,
     canonicalUrl = "https://radonverdict.com/radon-levels/" + stateSlug,
     noindex = noindex,
     content = @`
@@ -56,9 +69,9 @@
                     EPA Zone Data ${java.time.LocalDate.now().getYear()}
                 </div>
 
-                <h1 class="font-display font-black text-3xl sm:text-5xl text-slate-900 mb-4">${stateName} Radon Map, Levels & Testing Guide</h1>
+                <h1 class="font-display font-black text-3xl sm:text-5xl text-slate-900 mb-4">${heroTitle}</h1>
                 <p class="text-lg text-slate-600 max-w-2xl mx-auto">
-                    View EPA radon zone classifications for every county in ${stateName}. Open your county to compare basement test meaning, EPA action thresholds, and when mitigation pricing becomes worth checking.
+                    ${heroIntro}
                 </p>
             </div>
 

@@ -356,6 +356,22 @@ class SeoBehaviorIntegrationTest {
     }
 
     @Test
+    void fairfaxLevelsPageUsesCtrTunedCopy() throws Exception {
+        mockMvc.perform(get("/radon-levels/virginia/fairfax-city"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("Basement Test Guide")))
+                .andExpect(content().string(containsString("what a basement test means at 2.0 vs 4.0+ pCi/L")));
+    }
+
+    @Test
+    void montanaLevelsStatePageUsesMapFocusedCopy() throws Exception {
+        mockMvc.perform(get("/radon-levels/montana"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("Montana Radon Map by County")))
+                .andExpect(content().string(containsString("Check county-by-county EPA radon zones across Montana")));
+    }
+
+    @Test
     void fairfaxCostJsonLdDoesNotEscapeApostrophes() throws Exception {
         String html = mockMvc.perform(get("/radon-mitigation-cost/virginia/fairfax-city"))
                 .andExpect(status().isOk())
