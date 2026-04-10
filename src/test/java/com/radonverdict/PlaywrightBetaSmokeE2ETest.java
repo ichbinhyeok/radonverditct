@@ -48,14 +48,19 @@ class PlaywrightBetaSmokeE2ETest {
     private Browser browser;
     private Path artifactDir;
     private Path leadsCsvPath;
+    private Path telemetryCsvPath;
 
     @BeforeAll
     void beforeAll() throws IOException {
         artifactDir = Paths.get("build", "reports", "playwright-beta-smoke");
         leadsCsvPath = Paths.get("build", "tmp", "playwright", "leads.csv");
+        telemetryCsvPath = Paths.get("build", "tmp", "playwright", "telemetry_events.csv");
         Files.createDirectories(artifactDir);
         if (Files.exists(leadsCsvPath)) {
             Files.delete(leadsCsvPath);
+        }
+        if (Files.exists(telemetryCsvPath)) {
+            Files.delete(telemetryCsvPath);
         }
 
         playwright = Playwright.create();
@@ -163,7 +168,7 @@ class PlaywrightBetaSmokeE2ETest {
 
             Response submitResponse = persona.page.waitForResponse(
                     r -> r.url().contains("/submit-lead") && (r.status() == 303 || r.status() == 302 || r.status() == 200),
-                    () -> persona.page.locator("button:has-text('Send My Local Action Plan')").click());
+                    () -> persona.page.locator("form[action='/submit-lead'] button[type='submit']").click());
             assertTrue(submitResponse.status() == 303 || submitResponse.status() == 302 || submitResponse.status() == 200);
             String redirectLocation = submitResponse.headerValue("location");
             assertTrue(redirectLocation != null
@@ -173,6 +178,14 @@ class PlaywrightBetaSmokeE2ETest {
 
             waitUntil(() -> Files.exists(leadsCsvPath) && Files.readString(leadsCsvPath).contains(email),
                     Duration.ofSeconds(8));
+            waitUntil(() -> Files.exists(telemetryCsvPath) && Files.readString(telemetryCsvPath).contains("generate_lead"),
+                    Duration.ofSeconds(8));
+
+            String telemetryCsv = Files.readString(telemetryCsvPath);
+            assertTrue(telemetryCsv.contains("lead_form_submit"));
+            assertTrue(telemetryCsv.contains("generate_lead"));
+            assertFalse(telemetryCsv.contains("qualify_lead"));
+            assertFalse(telemetryCsv.contains("close_convert_lead"));
 
             persona.screenshot("lead_submission_success");
             persona.assertNoFirstPartyFailures();

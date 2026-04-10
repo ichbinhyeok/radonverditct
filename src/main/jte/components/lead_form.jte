@@ -91,9 +91,10 @@
                     <script>
                       document.addEventListener('DOMContentLoaded', function () {
                         if (typeof rvTrack === 'function') {
-                          rvTrack('close_convert_lead', {
+                          rvTrack('generate_lead', {
                             event_category: 'conversion',
-                            event_label: '${county.getCountySlug()}'
+                            event_label: '${county.getCountySlug()}' + ' - ${page.getSelectedIntent()}' + ' - ${page.getSelectedRadonResultBand()}',
+                            lead_source: 'county_action_plan_form'
                           });
                         }
                       });
@@ -167,8 +168,7 @@
                                       event_callback: submitForm
                                   };
 
-                                  rvTrack('lead_form_submit', trackingPayload, { transport_type: 'beacon' });
-                                  rvTrack('qualify_lead', trackingPayload, trackingOptions);
+                                  rvTrack('lead_form_submit', trackingPayload, trackingOptions);
                                   window.setTimeout(submitForm, 800);
                               }
                           }"
