@@ -1,43 +1,34 @@
 # RadonVerdict Context Tracker
 
-Last updated: 2026-03-08 (Asia/Seoul)
+Last updated: 2026-04-13 (Asia/Seoul)
 
-## 1) Today's Snapshot
+## 1) Current Snapshot
 
 Date range note:
-- Latest confirmed Search Console data available through 2026-03-06.
-- Main working window for current interpretation: 2026-02-23 to 2026-03-06.
-- Prior tracker window (2026-02-23 to 2026-03-02) is retained below as baseline comparison.
+- Latest confirmed Search Console data available through 2026-04-12.
+- Current comparison window: 2026-03-16 to 2026-04-12.
+- Prior comparison baseline: 2026-02-17 to 2026-03-15.
 
 GSC (Google Search Console):
-- Total clicks: 99
-- Total impressions: 9,207
-- CTR: 1.08%
-- Average position: 11.58
+- Total clicks: 308
+- Total impressions: 24,607
+- CTR: 1.25%
+- Average position: 7.54
 
-Recent movement:
-- 2026-02-23 to 2026-02-27: 3 clicks / 1,576 impressions / CTR 0.19%
-- 2026-02-28 to 2026-03-02: 45 clicks / 3,728 impressions / CTR 1.21%
-- 2026-03-03 to 2026-03-06: 51 clicks / 3,903 impressions / CTR 1.31% / average position 10.65
-- Interpretation: discovery is no longer the only story; CTR and ranking are both improving.
+Change vs prior 28-day window:
+- Clicks: `176 -> 308` (`+132`, `+75.0%`)
+- Impressions: `15,882 -> 24,607` (`+8,725`, `+54.9%`)
+- CTR: `1.11% -> 1.25%` (`+0.14pp`, `+12.9%`)
+- Average position: `11.02 -> 7.54`
 
-Baseline correction vs the 2026-03-05 note:
-- The earlier 7-day snapshot ("about 49 clicks / 5,547 impressions / 0.88% CTR") finalized closer to:
-- 2026-02-23 to 2026-03-02: 48 clicks / 5,304 impressions / CTR 0.90% / average position 12.27
+Current interpretation:
+- visibility is meaningfully better than the March baseline
+- rankings improved enough that snippet CTR now matters more than raw indexing/debug work
+- CTR is improving overall, but several county `radon-levels` pages still underperform relative to their page-1 / near-page-1 positions
 
-GA4 (property: 525547689, last refreshed 2026-03-05; not re-pulled during the 2026-03-08 GSC pass):
-- Users: 151
-- Sessions: 165
-- Engaged sessions: 86
-- Engagement rate: 52.1%
-- Avg session duration: about 97.9s
-- Page views: 424
-
-Lead/event status last seen in GA4 before event-mapping fixes:
-- `lead_form_submit`: 2
-- `form_submit`: 5
-- `qualify_lead`: 0
-- `close_convert_lead`: 0
+Analytics note:
+- GA4 was not fully re-pulled during this 2026-04-13 CTR pass.
+- For conversion-path readouts, use the detailed 2026-04-07 and 2026-04-08 sections below.
 
 ## 2) What We Identified Today
 
@@ -1420,3 +1411,136 @@ This is the correct level of instrumentation for the current phase because:
 
 - Residual note:
   - visible journey copy is now much better aligned for `not_tested`, but some SEO/browser-title surfaces still remain cost-forward because they intentionally serve search positioning.
+
+## 2026-04-13 Product Packaging + Conversion Hierarchy Pass
+
+What triggered this pass:
+- a product review found the experience still read like multiple disconnected calculators instead of one decision flow with a clear next step
+
+What changed:
+- relabeled top navigation around the main product:
+  - `Action Plan` replaces the old top-level cost-calculator framing
+  - `Testing Guide` is now a first-class navigation route
+  - the top-level `Credit Calculator` nav item was removed so transaction math reads as a branch, not the whole product
+- split the homepage into two explicit entry paths:
+  - result-first for users who already have a radon reading
+  - test-first for users who still need to confirm a result
+- added new tracking on the homepage path split:
+  - event: `home_path_pick`
+  - affiliate CTA id: `home_test_first_short_term_kit`
+- reordered county cost pages so the scenario tool and live receipt come before proof/support blocks
+- simplified the county lead form:
+  - removed duplicate visible foundation/test-status inputs
+  - preserved scenario state with hidden fields
+  - tightened the promise into local plan / local credit-range language based on the active scenario
+- added a bridge back from the credit-calculator landing page to the full action-plan flow
+
+Why this matters:
+- the product now reads closer to `one product, one next step`
+- that should lower decision fatigue on entry pages
+- it also creates a clearer handoff from information intent into the right conversion path
+
+Verification:
+- executed:
+  - `npm run build:css`
+  - `.\gradlew.bat compileJava`
+  - `.\gradlew.bat test --tests com.radonverdict.SeoBehaviorIntegrationTest.globalCalculatorShowsScenarioPrefillModule --tests com.radonverdict.SeoBehaviorIntegrationTest.globalCreditCalculatorLandingLoads --tests com.radonverdict.SeoBehaviorIntegrationTest.globalCreditCalculatorLandingLinksBackToActionPlanFlow --tests com.radonverdict.SeoBehaviorIntegrationTest.countyPageShowsTrustSummaryAndCostBenchmarks --tests com.radonverdict.SeoBehaviorIntegrationTest.countyHubUsesActionPlanInputsInsteadOfCostOnlyFraming --tests com.radonverdict.SeoBehaviorIntegrationTest.countyHubLeadFormUsesScenarioContextInsteadOfDuplicateInputs --tests com.radonverdict.SeoBehaviorIntegrationTest.countyHubKeepsLeadFormAheadOfTrustSummaryBlocks --tests com.radonverdict.SeoBehaviorIntegrationTest.countyHubShowsNegotiationSnapshotForBuyingFlow --tests com.radonverdict.SeoBehaviorIntegrationTest.countyHubShowsHighReadingFastPathForHomeownerFlow --tests com.radonverdict.PlaywrightBetaSmokeE2ETest.persona04NoTestedUserSeesAffiliateFallbackSignals`
+- result:
+  - BUILD SUCCESSFUL
+- screenshots captured:
+  - `output/product-review-after/home-desktop.png`
+  - `output/product-review-after/county-desktop.png`
+  - `output/product-review-after/county-mobile-top.png`
+  - `output/product-review-after/credit-landing-desktop.png`
+
+Next check:
+- review GA4 and local telemetry for:
+  - `home_path_pick`
+  - `home_test_first_short_term_kit`
+  - `lead_form_start`
+  - `lead_form_submit`
+- compare county-page scroll depth and CTA click behavior after the hierarchy reorder
+
+## 2026-04-13 Search Console CTR Target Refresh
+
+What triggered this pass:
+- Search Console overall performance is up, but the remaining bottleneck has shifted toward snippet click capture on a narrow set of county `radon-levels` pages.
+- The earlier Montana review also exposed a protection gap: the regression test covered on-page copy but not the `<title>` and meta description that actually changed.
+
+Search Console comparison used today:
+- current window: `2026-03-16` to `2026-04-12`
+- baseline window: `2026-02-17` to `2026-03-15`
+- result:
+  - clicks: `308`
+  - impressions: `24,607`
+  - CTR: `1.25%`
+  - average position: `7.54`
+- baseline:
+  - clicks: `176`
+  - impressions: `15,882`
+  - CTR: `1.11%`
+  - average position: `11.02`
+- interpretation:
+  - discovery and ranking are both healthier now
+  - snippet work should stay selective and page-specific, not broad and template-wide
+
+Automated low-CTR signal:
+- `seo_low_ctr_opportunities` only surfaced one clearly urgent query/page pair:
+  - query: `radon levels in basement falls church va`
+  - page: `https://radonverdict.com/radon-levels/virginia/falls-church-city`
+  - impressions: `85`
+  - clicks: `0`
+  - CTR: `0%`
+  - average position: `4.72`
+
+Manual page-level review used to extend the batch:
+- `falls-church-city`
+  - `162 impressions / 2 clicks / 1.23% CTR / 10.72 avg pos`
+- `alcorn-county`
+  - `235 impressions / 1 click / 0.43% CTR / 4.74 avg pos`
+- `westchester-county`
+  - `95 impressions / 1 click / 1.05% CTR / 5.22 avg pos`
+- `licking-county`
+  - `88 impressions / 1 click / 1.14% CTR / 4.28 avg pos`
+- `polk-county`
+  - `57 impressions / 1 click / 1.75% CTR / 3.95 avg pos`
+
+Why these 5 pages were selected:
+- each page already has real impressions
+- each page is close enough to page 1 that snippet phrasing can plausibly move CTR
+- this is a narrow enough batch to attribute any lift after recrawl
+
+What changed:
+- added a `topCtrPriorityCounty` branch in `src/main/jte/radon_levels_county.jte` for:
+  - `falls-church-city`
+  - `alcorn-county`
+  - `westchester-county`
+  - `licking-county`
+  - `polk-county`
+- tightened these pages toward a clearer basement-first SERP frame:
+  - title: `Basement Radon Levels | EPA Zone & 4.0 Guide`
+  - meta description: basement level + EPA zone + `2.0 vs 4.0+` meaning + retest / quote comparison
+  - H1 / direct-answer lead aligned to the same basement-testing intent
+
+Test protection updated the same day:
+- Montana state `radon-levels` regression now asserts both:
+  - `<title>`
+  - meta description
+- added a helper-backed test for all 5 top CTR county pages so title/meta/H1/direct-answer copy stay locked
+- updated the independent-city test so Falls Church continues to render:
+  - `Falls Church, VA`
+  - not `Falls Church County, VA`
+- refreshed the St. Louis county product test to protect the current testing-first CTA set instead of obsolete monitor copy
+
+Verification:
+- executed:
+  - `.\gradlew.bat test --tests com.radonverdict.SeoBehaviorIntegrationTest.topCtrCountyPagesUseBasementFirstSerpCopy --tests com.radonverdict.SeoBehaviorIntegrationTest.montanaLevelsStatePageUsesMapFocusedCopy --tests com.radonverdict.SeoBehaviorIntegrationTest.independentCitySeoAvoidsCountyLabelInTitleAndBreadcrumbJsonLd --tests com.radonverdict.SeoBehaviorIntegrationTest.radonLevelsCountyUsesTestingGuideSeoAndKeepsCurrentTestingFirstCtas`
+
+Next GSC read after recrawl:
+- compare CTR movement for:
+  - `https://radonverdict.com/radon-levels/virginia/falls-church-city`
+  - `https://radonverdict.com/radon-levels/mississippi/alcorn-county`
+  - `https://radonverdict.com/radon-levels/new-york/westchester-county`
+  - `https://radonverdict.com/radon-levels/ohio/licking-county`
+  - `https://radonverdict.com/radon-levels/iowa/polk-county`
+- hold Montana as a regression-protection target, not an urgent CTR rewrite target, unless impressions rise materially above the current ~`64-71` range

@@ -55,7 +55,7 @@ public class LeadController {
 
             // Add flash attribute to show a thank you message on redirect
             redirectAttributes.addFlashAttribute("leadSuccessMessage",
-                    "Thank you! We've received your information. A local expert will contact you when coverage is available in your area.");
+                    "Thank you! We've saved your scenario and will follow up with the local plan when coverage is available in your area.");
 
         } catch (Exception e) {
             log.error("Failed to save lead: ", e);

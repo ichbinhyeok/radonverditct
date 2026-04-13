@@ -30,21 +30,36 @@
                     || ("virginia".equals(county.getStateSlug()) && "falls-church-city".equals(county.getCountySlug()))
                     || ("maryland".equals(county.getStateSlug()) && "howard-county".equals(county.getCountySlug()))
                     || ("florida".equals(county.getStateSlug()) && "miami-dade-county".equals(county.getCountySlug()));
+    final boolean topCtrPriorityCounty =
+            ("virginia".equals(county.getStateSlug()) && "falls-church-city".equals(county.getCountySlug()))
+                    || ("mississippi".equals(county.getStateSlug()) && "alcorn-county".equals(county.getCountySlug()))
+                    || ("new-york".equals(county.getStateSlug()) && "westchester-county".equals(county.getCountySlug()))
+                    || ("ohio".equals(county.getStateSlug()) && "licking-county".equals(county.getCountySlug()))
+                    || ("iowa".equals(county.getStateSlug()) && "polk-county".equals(county.getCountySlug()));
 
-    final String seoTitle = priorityCtrCounty
+    final String seoTitle = topCtrPriorityCounty
+            ? seoPlaceLabel + " Basement Radon Levels | EPA Zone & 4.0 Guide"
+            : priorityCtrCounty
             ? seoPlaceLabel + " Radon Levels: EPA Zone & Basement Test Guide"
             : seoPlaceLabel + " Radon Levels, Zone Map & Home Testing Guide | EPA 4.0 pCi/L";
 
-    final String seoDescription = priorityCtrCounty
+    final String seoDescription = topCtrPriorityCounty
+            ? "Check basement radon levels in " + seoPlaceLabel
+            + ", see the EPA zone, and understand what 2.0 vs 4.0+ pCi/L means before you retest or compare mitigation quotes."
+            : priorityCtrCounty
             ? "Check the EPA radon zone for " + seoPlaceLabel
             + ", what a basement test means at 2.0 vs 4.0+ pCi/L, and when to retest or compare mitigation quotes."
             : seoPlaceLabel + " radon guide for basement and lowest-level home tests. See EPA zone data, what 2.0, 4.0, and 8.0+ pCi/L mean, and when mitigation quotes are worth comparing.";
 
-    final String heroTitle = priorityCtrCounty
+    final String heroTitle = topCtrPriorityCounty
+            ? "Basement Radon Levels, EPA Zone & Test Meaning in " + seoPlaceLabel
+            : priorityCtrCounty
             ? "Radon Levels, EPA Zone & Basement Testing in " + seoPlaceLabel
             : "Radon Levels & Zone Map in " + seoPlaceLabel;
 
-    final String directAnswerLead = priorityCtrCounty
+    final String directAnswerLead = topCtrPriorityCounty
+            ? "Basement test answer: "
+            : priorityCtrCounty
             ? "Short answer for homeowners, buyers, and sellers: "
             : "Direct Answer for basement and lowest-level tests: ";
 

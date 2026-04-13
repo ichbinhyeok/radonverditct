@@ -103,21 +103,14 @@
             <!-- 1. Above the Fold: Hero Section -->
             @template.components.hero_section(page = page)
             @template.components.negotiation_snapshot(county = county, page = page)
-            @if(aeo != null)
-                @template.components.aeo_answer_block(block = aeo)
-            @endif
-            @template.components.quick_trust_summary(county = county, page = page, trust = trust)
-            @template.components.why_price_breakdown(page = page)
-            @template.components.cost_benchmark_compare(county = county, page = page)
-            @template.components.decision_worksheet_cta(county = county, page = page)
 
             <!-- 2. Grid Layout for Simulator and Receipt -->
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 mt-16 mb-20">
                 
                 <!-- Left Column (Simulator + Details) -->
                 <div class="lg:col-span-5 order-1">
-                    @template.components.radon_level_advisor(county = county, costMode = true, selectedResultBand = page.getSelectedRadonResultBand())
                     @template.components.simulator_form(county = county, page = page)
+                    @template.components.radon_level_advisor(county = county, costMode = true, selectedResultBand = page.getSelectedRadonResultBand())
                     
                     <!-- Foundation Context (Updates dynamically if we made this HTMX too, but for now static default) -->
                     <div class="bg-white rounded-2xl p-6 border border-slate-200 mt-6 shadow-sm">
@@ -169,6 +162,13 @@
             @if(monetizationHooksEnabled)
                 @template.components.monetization_hooks(countyName = county.getCountyName(), stateAbbr = county.getStateAbbr())
             @endif
+            @if(aeo != null)
+                @template.components.aeo_answer_block(block = aeo)
+            @endif
+            @template.components.quick_trust_summary(county = county, page = page, trust = trust)
+            @template.components.why_price_breakdown(page = page)
+            @template.components.cost_benchmark_compare(county = county, page = page)
+            @template.components.decision_worksheet_cta(county = county, page = page)
 
             <!-- 2.5 Local Data Moat -->
             @if(county.getStats() != null && county.getStats().getMetrics() != null && county.getStats().getMetrics().getTotalHousingUnits() > 0)

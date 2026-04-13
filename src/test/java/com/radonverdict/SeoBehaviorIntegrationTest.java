@@ -90,6 +90,15 @@ class SeoBehaviorIntegrationTest {
     }
 
     @Test
+    void globalCreditCalculatorLandingLinksBackToActionPlanFlow() throws Exception {
+        mockMvc.perform(get("/radon-credit-calculator"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("credit_landing_bridge_click")))
+                .andExpect(content().string(containsString("Need the broader next step first? Open the full action-plan flow")))
+                .andExpect(content().string(containsString("href=\"/radon-cost-calculator\"")));
+    }
+
+    @Test
     void searchZipCarriesScenarioPrefillIntoCountyRedirect() throws Exception {
         mockMvc.perform(post("/search-zip")
                         .param("zipCode", "90210")
@@ -240,6 +249,31 @@ class SeoBehaviorIntegrationTest {
     }
 
     @Test
+    void countyHubLeadFormUsesScenarioContextInsteadOfDuplicateInputs() throws Exception {
+        mockMvc.perform(get("/radon-mitigation-cost/california/los-angeles-county")
+                        .param("radonResultBand", "not_tested")
+                        .param("intent", "homeowner"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("Current scenario")))
+                .andExpect(content().string(containsString("type=\"hidden\" name=\"foundationType\"")))
+                .andExpect(content().string(containsString("type=\"hidden\" name=\"hasTested\" value=\"false\"")))
+                .andExpect(content().string(containsString("lead_form_not_tested_test_kit")))
+                .andExpect(content().string(not(containsString("label for=\"foundationType\""))))
+                .andExpect(content().string(not(containsString("Have you tested your home for radon yet?"))));
+    }
+
+    @Test
+    void countyHubKeepsLeadFormAheadOfTrustSummaryBlocks() throws Exception {
+        String html = mockMvc.perform(get("/radon-mitigation-cost/california/los-angeles-county"))
+                .andExpect(status().isOk())
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+
+        assertTrue(html.indexOf("id=\"estimate-form\"") < html.indexOf("Your 30-second local estimate snapshot"));
+    }
+
+    @Test
     void countyHubAcceptsResultBandAndIntentDeepLinks() throws Exception {
         mockMvc.perform(get("/radon-mitigation-cost/california/los-angeles-county")
                         .param("radonResultBand", "above_4")
@@ -274,7 +308,7 @@ class SeoBehaviorIntegrationTest {
     }
 
     @Test
-    void radonLevelsCountyUsesTestingGuideSeoAndKeepsTestingAdvisorCtas() throws Exception {
+    void radonLevelsCountyUsesTestingGuideSeoAndKeepsCurrentTestingFirstCtas() throws Exception {
         mockMvc.perform(get("/radon-levels/missouri/st-louis-county"))
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("St. Louis County, MO Radon Levels, Zone Map")))
@@ -282,16 +316,17 @@ class SeoBehaviorIntegrationTest {
                 .andExpect(content().string(containsString("Direct Answer for basement and lowest-level tests:")))
                 .andExpect(content().string(containsString("/radon-credit-calculator/missouri/st-louis-county?radonResultBand=above_4&intent=buying")))
                 .andExpect(content().string(not(containsString("At <strong x-text=\"parseFloat(level).toFixed(1)\"></strong> pCi/L"))))
-                .andExpect(content().string(containsString("Get a Home Radon Monitor (~$30)")))
-                .andExpect(content().string(containsString("Verify with Long-term Monitor (~$150)")));
+                .andExpect(content().string(containsString("Need to Test Before You Price?")))
+                .andExpect(content().string(containsString("View Recommended Short-Term Kit")))
+                .andExpect(content().string(containsString("View Airthings Corentium Home")));
     }
 
     @Test
     void independentCitySeoAvoidsCountyLabelInTitleAndBreadcrumbJsonLd() throws Exception {
         mockMvc.perform(get("/radon-levels/virginia/falls-church-city"))
                 .andExpect(status().isOk())
-                .andExpect(content().string(containsString("Falls Church, VA Radon Levels")))
-                .andExpect(content().string(not(containsString("Falls Church County, VA Radon Levels"))))
+                .andExpect(content().string(containsString("Falls Church, VA Basement Radon Levels")))
+                .andExpect(content().string(not(containsString("Falls Church County, VA Basement Radon Levels"))))
                 .andExpect(content().string(containsString("\"name\": \"Falls Church\"")))
                 .andExpect(content().string(not(containsString("\"name\": \"Falls Church County\""))));
     }
@@ -364,9 +399,20 @@ class SeoBehaviorIntegrationTest {
     }
 
     @Test
+    void topCtrCountyPagesUseBasementFirstSerpCopy() throws Exception {
+        assertLevelsCountyCtrCopy("/radon-levels/virginia/falls-church-city", "Falls Church, VA");
+        assertLevelsCountyCtrCopy("/radon-levels/mississippi/alcorn-county", "Alcorn County, MS");
+        assertLevelsCountyCtrCopy("/radon-levels/new-york/westchester-county", "Westchester County, NY");
+        assertLevelsCountyCtrCopy("/radon-levels/ohio/licking-county", "Licking County, OH");
+        assertLevelsCountyCtrCopy("/radon-levels/iowa/polk-county", "Polk County, IA");
+    }
+
+    @Test
     void montanaLevelsStatePageUsesMapFocusedCopy() throws Exception {
         mockMvc.perform(get("/radon-levels/montana"))
                 .andExpect(status().isOk())
+                .andExpect(content().string(containsString("<title>Montana Radon Map by County | EPA Zones, Levels &amp; Basement Testing</title>")))
+                .andExpect(content().string(containsString("<meta name=\"description\" content=\"Use the Montana radon map by county to check EPA zones, see what 2.0 vs 4.0+ pCi/L basement test results mean, and decide when mitigation pricing is worth checking.\">")))
                 .andExpect(content().string(containsString("Montana Radon Map by County")))
                 .andExpect(content().string(containsString("Check county-by-county EPA radon zones across Montana")));
     }
@@ -427,6 +473,15 @@ class SeoBehaviorIntegrationTest {
             OBJECT_MAPPER.readTree(jsonLd);
         }
         assertTrue(scriptCount > 0, "Expected at least one JSON-LD script block.");
+    }
+
+    private void assertLevelsCountyCtrCopy(String path, String placeLabel) throws Exception {
+        mockMvc.perform(get(path))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("<title>" + placeLabel + " Basement Radon Levels | EPA Zone &amp; 4.0 Guide</title>")))
+                .andExpect(content().string(containsString("<meta name=\"description\" content=\"Check basement radon levels in " + placeLabel + ", see the EPA zone, and understand what 2.0 vs 4.0+ pCi/L means before you retest or compare mitigation quotes.\">")))
+                .andExpect(content().string(containsString("Basement Radon Levels, EPA Zone &amp; Test Meaning in " + placeLabel)))
+                .andExpect(content().string(containsString("Basement test answer:")));
     }
 
     private String basicAuth(String username, String password) {

@@ -27,6 +27,13 @@
                     <p class="mt-6 max-w-3xl text-lg leading-relaxed text-slate-300 sm:text-xl">
                         If a radon result is holding up a deal, stop negotiating from a generic national average. Use your ZIP code to open a county-specific credit calculator with a local opening ask, a ceiling, and a quick-close target.
                     </p>
+                    <a href="/radon-cost-calculator"
+                       data-track-event="credit_landing_bridge_click"
+                       data-track-label="credit_to_action_plan"
+                       class="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-sky-300 transition-colors hover:text-sky-200">
+                        Need the broader next step first? Open the full action-plan flow
+                        <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" /></svg>
+                    </a>
                 </div>
 
                 <div class="mt-10 grid gap-8 lg:grid-cols-[1.25fr_0.75fr]">

@@ -195,13 +195,11 @@ class PlaywrightBetaSmokeE2ETest {
     @Test
     void persona04NoTestedUserSeesAffiliateFallbackSignals() {
         try (PersonaSession persona = openPersona("persona04_no_test_affiliate", 1280, 800)) {
-            persona.visit("/radon-mitigation-cost/california/los-angeles-county");
+            persona.visit("/radon-mitigation-cost/california/los-angeles-county?radonResultBand=not_tested&intent=homeowner#estimate-form");
 
-            persona.page.locator("input[name='hasTested'][value='false']")
-                    .check(new Locator.CheckOptions().setForce(true));
-
-            Locator affiliateLink = persona.page.locator("a[href*='amazon.com/dp/B00002N839']").first();
+            Locator affiliateLink = persona.page.locator("a[href*='amazon.com/dp/B00002N83E']").first();
             assertTrue(affiliateLink.count() > 0);
+            assertEquals("false", persona.page.locator("input[name='hasTested']").first().inputValue());
 
             String href = affiliateLink.getAttribute("href");
             String rel = affiliateLink.getAttribute("rel");
