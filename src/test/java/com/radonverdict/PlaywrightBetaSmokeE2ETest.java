@@ -199,7 +199,8 @@ class PlaywrightBetaSmokeE2ETest {
 
             Locator affiliateLink = persona.page.locator("a[href*='amazon.com/dp/B00002N83E']").first();
             assertTrue(affiliateLink.count() > 0);
-            assertEquals("false", persona.page.locator("input[name='hasTested']").first().inputValue());
+            assertTrue(persona.page.locator("text=Start with a confirmed radon test").first().isVisible());
+            assertEquals(0, persona.page.locator("input[name='customerEmail']").count());
 
             String href = affiliateLink.getAttribute("href");
             String rel = affiliateLink.getAttribute("rel");

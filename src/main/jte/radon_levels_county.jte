@@ -23,6 +23,35 @@
     final String seoPlaceLabel = seoCountyDisplay + ", " + county.getStateAbbr();
     final String shortTermKitUrl = "https://www.amazon.com/dp/B00002N83E?tag=radonverdict-20";
     final String digitalMonitorUrl = "https://www.amazon.com/dp/B00H2VOSP8?tag=radonverdict-20";
+    final boolean highRiskCounty = county.getEpaZone() == 1;
+    final boolean moderateRiskCounty = county.getEpaZone() == 2;
+    final String stickyPrimaryHref = highRiskCounty
+            ? "/radon-mitigation-cost/" + county.getStateSlug() + "/" + county.getCountySlug()
+                    + "?radonResultBand=above_4&intent=homeowner#estimate-form"
+            : moderateRiskCounty
+                    ? "/radon-mitigation-cost/" + county.getStateSlug() + "/" + county.getCountySlug()
+                            + "?radonResultBand=between_2_and_4&intent=homeowner#estimate-form"
+                    : "/guides/how-to-test-for-radon";
+    final String stickyPrimaryLabel = highRiskCounty
+            ? "Open 4.0+ Action Plan"
+            : moderateRiskCounty
+                    ? "Open 2.0-3.9 Action Plan"
+                    : "Open Testing Guide";
+    final String stickyPrimaryTitle = highRiskCounty
+            ? "Already Have a 4.0+ Result?"
+            : moderateRiskCounty
+                    ? "Already Have a 2.0-3.9 Result?"
+                    : "Start With a Real Reading";
+    final String stickyPrimaryDescription = highRiskCounty
+            ? "If your test is clearly elevated, jump straight into the county action plan instead of starting from a generic cost page."
+            : moderateRiskCounty
+                    ? "If your result is borderline, open the county action plan that helps you decide whether to retest first or start local quote planning."
+                    : "In lower-risk counties, testing is a stronger first move than quote shopping. Confirm the number before you chase mitigation pricing.";
+    final String stickyPrimaryTrackLabel = highRiskCounty
+            ? "zone_1_primary_action_plan"
+            : moderateRiskCounty
+                    ? "zone_2_primary_action_plan"
+                    : "zone_3_testing_guide";
     final boolean priorityCtrCounty =
             ("new-york".equals(county.getStateSlug()) && "schenectady-county".equals(county.getCountySlug()))
                     || ("massachusetts".equals(county.getStateSlug()) && "franklin-county".equals(county.getCountySlug()))
@@ -566,17 +595,18 @@
 
                         <!-- CTA Card 2: Already Have Results? Go to Cost Calculator -->
                         <div class="bg-gradient-to-br from-indigo-600 to-indigo-700 rounded-[2rem] p-6 sm:p-8 shadow-lg text-white">
-                            <h3 class="font-display font-bold text-lg mb-3">Already Know Your Level?</h3>
+                            <h3 class="font-display font-bold text-lg mb-3">${stickyPrimaryTitle}</h3>
                             <p class="text-sm text-indigo-100 leading-relaxed mb-5">
-                                If your test shows 4.0 pCi/L or higher, get an itemized cost estimate specific to
-                                ${county.getAreaDisplayName()} - including regional labor rates and permit requirements.
+                                ${stickyPrimaryDescription}
                             </p>
-                            <a href="/radon-mitigation-cost/${county.getStateSlug()}/${county.getCountySlug()}"
+                            <a href="${stickyPrimaryHref}"
+                               data-track-event="levels_zone_primary_click"
+                               data-track-label="${stickyPrimaryTrackLabel}"
                                class="flex items-center justify-center gap-2 w-full py-3.5 rounded-xl bg-white text-indigo-700 font-bold text-sm hover:bg-indigo-50 transition-colors shadow-sm">
                                 <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
                                 </svg>
-                                Get Mitigation Cost Estimate ->
+                                ${stickyPrimaryLabel}
                             </a>
                         </div>
 

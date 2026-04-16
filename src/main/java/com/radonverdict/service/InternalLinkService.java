@@ -76,12 +76,7 @@ public class InternalLinkService {
             return List.of();
         }
 
-        add(links, InternalLinkItem.builder()
-                .title("Action Plan + Cost in " + county.getAreaDisplayName())
-                .description("Use your test result to compare local next steps and budget.")
-                .url("/radon-mitigation-cost/" + county.getStateSlug() + "/" + county.getCountySlug())
-                .bucket("cost")
-                .build());
+        add(links, primaryLevelsActionLink(county));
 
         add(links, InternalLinkItem.builder()
                 .title(county.getStateAbbr() + " Radon Levels Hub")
@@ -126,6 +121,39 @@ public class InternalLinkService {
         }
 
         return new ArrayList<>(links.values());
+    }
+
+    private InternalLinkItem primaryLevelsActionLink(County county) {
+        if (county == null) {
+            return null;
+        }
+
+        if (county.getEpaZone() == 1) {
+            return InternalLinkItem.builder()
+                    .title("4.0+ Action Plan in " + county.getAreaDisplayName())
+                    .description("Use a confirmed elevated reading to budget your next step locally.")
+                    .url("/radon-mitigation-cost/" + county.getStateSlug() + "/" + county.getCountySlug()
+                            + "?radonResultBand=above_4&intent=homeowner#estimate-form")
+                    .bucket("cost")
+                    .build();
+        }
+
+        if (county.getEpaZone() == 2) {
+            return InternalLinkItem.builder()
+                    .title("2.0-3.9 Action Plan in " + county.getAreaDisplayName())
+                    .description("Decide whether to retest first or start quote planning with a local price anchor.")
+                    .url("/radon-mitigation-cost/" + county.getStateSlug() + "/" + county.getCountySlug()
+                            + "?radonResultBand=between_2_and_4&intent=homeowner#estimate-form")
+                    .bucket("cost")
+                    .build();
+        }
+
+        return InternalLinkItem.builder()
+                .title("Start With the Testing Guide")
+                .description("Use a confirmed reading before you jump into local mitigation pricing.")
+                .url("/guides/how-to-test-for-radon")
+                .bucket("topic")
+                .build();
     }
 
     private InternalLinkItem zoneGuideLink(int zone) {

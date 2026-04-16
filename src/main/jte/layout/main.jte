@@ -58,7 +58,9 @@
             return context;
           }
 
-          if (segments[0] === 'radon-levels') {
+          if (segments[0] === 'radon-cost-calculator') {
+            context.page_type = 'action_plan_index';
+          } else if (segments[0] === 'radon-levels') {
             context.page_type = segments.length >= 3 ? 'levels_county' : segments.length === 2 ? 'levels_state' : 'levels_index';
           } else if (segments[0] === 'radon-mitigation-cost') {
             context.page_type = segments.length >= 3 ? 'cost_county' : segments.length === 2 ? 'cost_state' : 'cost_index';
@@ -285,7 +287,7 @@
                 <span class="font-display font-bold text-xl tracking-tight text-slate-900">Radon<span class="text-slate-400">Verdict</span></span>
             </a>
             <nav class="hidden md:flex gap-6 text-sm font-medium text-slate-500">
-                <a href="/radon-cost-calculator" class="tap-target-inline hover:text-slate-900 transition-colors">Action Plan</a>
+                <a href="/radon-cost-calculator" class="tap-target-inline hover:text-slate-900 transition-colors">Have a Result?</a>
                 <a href="/guides/how-to-test-for-radon" class="tap-target-inline hover:text-slate-900 transition-colors">Testing Guide</a>
                 <a href="/guides" class="tap-target-inline hover:text-slate-900 transition-colors">Guides</a>
                 <a href="/about" class="tap-target-inline hover:text-slate-900 transition-colors">About</a>
@@ -310,7 +312,7 @@
              x-cloak
              class="md:hidden border-t border-slate-200/80 bg-white/95 backdrop-blur-sm">
             <nav class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex flex-col">
-                <a href="/radon-cost-calculator" class="tap-target-inline rounded-xl px-3 text-slate-700 hover:bg-slate-100 hover:text-slate-900">Action Plan</a>
+                <a href="/radon-cost-calculator" class="tap-target-inline rounded-xl px-3 text-slate-700 hover:bg-slate-100 hover:text-slate-900">Have a Result?</a>
                 <a href="/guides/how-to-test-for-radon" class="tap-target-inline rounded-xl px-3 text-slate-700 hover:bg-slate-100 hover:text-slate-900">Testing Guide</a>
                 <a href="/guides" class="tap-target-inline rounded-xl px-3 text-slate-700 hover:bg-slate-100 hover:text-slate-900">Guides</a>
                 <a href="/about" class="tap-target-inline rounded-xl px-3 text-slate-700 hover:bg-slate-100 hover:text-slate-900">About</a>
@@ -339,7 +341,7 @@
                     <ul class="space-y-3 text-sm font-medium text-slate-500">
                         <li><a href="/about" class="tap-target-inline hover:text-indigo-600 transition-colors">About Us</a></li>
                         <li><a href="/contact" class="tap-target-inline hover:text-indigo-600 transition-colors">Contact</a></li>
-                        <li><a href="/radon-cost-calculator" class="tap-target-inline hover:text-indigo-600 transition-colors">Action Plan</a></li>
+                        <li><a href="/radon-cost-calculator" class="tap-target-inline hover:text-indigo-600 transition-colors">Have a Result?</a></li>
                         <li><a href="/guides/how-to-test-for-radon" class="tap-target-inline hover:text-indigo-600 transition-colors">Testing Guide</a></li>
                         <li><a href="/guides" class="tap-target-inline hover:text-indigo-600 transition-colors">Guides</a></li>
                     </ul>

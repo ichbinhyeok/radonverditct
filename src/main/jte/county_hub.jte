@@ -27,6 +27,8 @@
     final String seoDescription = page.getSeoDescription() != null && !page.getSeoDescription().isBlank()
             ? page.getSeoDescription()
             : "See the typical radon mitigation price range in " + countyDisplay + " for basement, slab, and crawl space homes. Built for homeowners who already have a radon test result and need local quote context.";
+    final boolean actionableScenario = !"not_tested".equals(page.getSelectedRadonResultBand())
+            && !"under_2".equals(page.getSelectedRadonResultBand());
 }
 
 @template.layout.main(
@@ -157,8 +159,12 @@
                 </div>
             </div>
 
-            <!-- Lead Capture CTA (Injected) -->
-            @template.components.lead_form(county = county, page = page, successMessage = leadSuccessMessage, errorMessage = leadErrorMessage, prefilledZip = prefilledZip)
+            <!-- Primary Next Step -->
+            @if(actionableScenario)
+                @template.components.lead_form(county = county, page = page, successMessage = leadSuccessMessage, errorMessage = leadErrorMessage, prefilledZip = prefilledZip)
+            @else
+                @template.components.next_step_panel(county = county, page = page)
+            @endif
             @if(monetizationHooksEnabled)
                 @template.components.monetization_hooks(countyName = county.getCountyName(), stateAbbr = county.getStateAbbr())
             @endif
@@ -168,7 +174,9 @@
             @template.components.quick_trust_summary(county = county, page = page, trust = trust)
             @template.components.why_price_breakdown(page = page)
             @template.components.cost_benchmark_compare(county = county, page = page)
-            @template.components.decision_worksheet_cta(county = county, page = page)
+            @if(actionableScenario)
+                @template.components.decision_worksheet_cta(county = county, page = page)
+            @endif
 
             <!-- 2.5 Local Data Moat -->
             @if(county.getStats() != null && county.getStats().getMetrics() != null && county.getStats().getMetrics().getTotalHousingUnits() > 0)

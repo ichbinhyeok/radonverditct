@@ -249,17 +249,16 @@ class SeoBehaviorIntegrationTest {
     }
 
     @Test
-    void countyHubLeadFormUsesScenarioContextInsteadOfDuplicateInputs() throws Exception {
+    void countyHubNotTestedFlowUsesTestFirstPanelInsteadOfLeadForm() throws Exception {
         mockMvc.perform(get("/radon-mitigation-cost/california/los-angeles-county")
                         .param("radonResultBand", "not_tested")
                         .param("intent", "homeowner"))
                 .andExpect(status().isOk())
-                .andExpect(content().string(containsString("Current scenario")))
-                .andExpect(content().string(containsString("type=\"hidden\" name=\"foundationType\"")))
-                .andExpect(content().string(containsString("type=\"hidden\" name=\"hasTested\" value=\"false\"")))
-                .andExpect(content().string(containsString("lead_form_not_tested_test_kit")))
-                .andExpect(content().string(not(containsString("label for=\"foundationType\""))))
-                .andExpect(content().string(not(containsString("Have you tested your home for radon yet?"))));
+                .andExpect(content().string(containsString("Start with a confirmed radon test in Los Angeles County")))
+                .andExpect(content().string(containsString("Open Testing Guide")))
+                .andExpect(content().string(containsString("next_step_not_tested_kit")))
+                .andExpect(content().string(not(containsString("name=\"customerEmail\""))))
+                .andExpect(content().string(not(containsString("type=\"hidden\" name=\"hasTested\" value=\"false\""))));
     }
 
     @Test
@@ -318,7 +317,8 @@ class SeoBehaviorIntegrationTest {
                 .andExpect(content().string(not(containsString("At <strong x-text=\"parseFloat(level).toFixed(1)\"></strong> pCi/L"))))
                 .andExpect(content().string(containsString("Need to Test Before You Price?")))
                 .andExpect(content().string(containsString("View Recommended Short-Term Kit")))
-                .andExpect(content().string(containsString("View Airthings Corentium Home")));
+                .andExpect(content().string(containsString("View Airthings Corentium Home")))
+                .andExpect(content().string(containsString("levels_zone_primary_click")));
     }
 
     @Test
@@ -387,7 +387,7 @@ class SeoBehaviorIntegrationTest {
                 .getContentAsString();
 
         assertJsonLdBlocksAreValid(html);
-        assertTrue(!html.contains("fairfax\\-city"), "Breadcrumb JSON-LD should not escape the slug hyphen.");
+        assertJsonLdBlocksDoNotContain(html, "\\-", "JSON-LD should not escape hyphens with backslashes.");
     }
 
     @Test
@@ -426,7 +426,33 @@ class SeoBehaviorIntegrationTest {
                 .getContentAsString();
 
         assertJsonLdBlocksAreValid(html);
-        assertTrue(!html.contains("EPA\\'s"), "FAQ JSON-LD should not escape apostrophes with backslashes.");
+        assertJsonLdBlocksDoNotContain(html, "\\'", "JSON-LD should not escape apostrophes with backslashes.");
+    }
+
+    @Test
+    void fallsChurchLevelsJsonLdDoesNotContainLegacyEscapeSequences() throws Exception {
+        String html = mockMvc.perform(get("/radon-levels/virginia/falls-church-city"))
+                .andExpect(status().isOk())
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+
+        assertJsonLdBlocksAreValid(html);
+        assertJsonLdBlocksDoNotContain(html, "\\-", "Falls Church JSON-LD should not escape hyphens with backslashes.");
+        assertJsonLdBlocksDoNotContain(html, "\\'", "Falls Church JSON-LD should not escape apostrophes with backslashes.");
+    }
+
+    @Test
+    void westchesterLevelsJsonLdDoesNotContainLegacyEscapeSequences() throws Exception {
+        String html = mockMvc.perform(get("/radon-levels/new-york/westchester-county"))
+                .andExpect(status().isOk())
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+
+        assertJsonLdBlocksAreValid(html);
+        assertJsonLdBlocksDoNotContain(html, "\\-", "Westchester JSON-LD should not escape hyphens with backslashes.");
+        assertJsonLdBlocksDoNotContain(html, "\\'", "Westchester JSON-LD should not escape apostrophes with backslashes.");
     }
 
     @Test
@@ -471,6 +497,16 @@ class SeoBehaviorIntegrationTest {
             scriptCount++;
             String jsonLd = matcher.group(1).trim();
             OBJECT_MAPPER.readTree(jsonLd);
+        }
+        assertTrue(scriptCount > 0, "Expected at least one JSON-LD script block.");
+    }
+
+    private void assertJsonLdBlocksDoNotContain(String html, String fragment, String message) {
+        Matcher matcher = JSON_LD_SCRIPT_PATTERN.matcher(html);
+        int scriptCount = 0;
+        while (matcher.find()) {
+            scriptCount++;
+            assertTrue(!matcher.group(1).contains(fragment), message);
         }
         assertTrue(scriptCount > 0, "Expected at least one JSON-LD script block.");
     }

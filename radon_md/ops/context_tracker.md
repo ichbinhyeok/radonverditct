@@ -1,34 +1,34 @@
 # RadonVerdict Context Tracker
 
-Last updated: 2026-04-13 (Asia/Seoul)
+Last updated: 2026-04-16 (Asia/Seoul)
 
 ## 1) Current Snapshot
 
 Date range note:
-- Latest confirmed Search Console data available through 2026-04-12.
-- Current comparison window: 2026-03-16 to 2026-04-12.
-- Prior comparison baseline: 2026-02-17 to 2026-03-15.
+- Latest confirmed Search Console data available through 2026-04-13.
+- Current comparison window: 2026-03-16 to 2026-04-13.
+- This snapshot was refreshed during the 2026-04-16 surface handoff alignment pass.
 
 GSC (Google Search Console):
-- Total clicks: 308
-- Total impressions: 24,607
-- CTR: 1.25%
-- Average position: 7.54
+- Total clicks: 330
+- Total impressions: 26,798
+- CTR: 1.23%
+- Average position: 7.55
 
-Change vs prior 28-day window:
-- Clicks: `176 -> 308` (`+132`, `+75.0%`)
-- Impressions: `15,882 -> 24,607` (`+8,725`, `+54.9%`)
-- CTR: `1.11% -> 1.25%` (`+0.14pp`, `+12.9%`)
-- Average position: `11.02 -> 7.54`
+Change vs previous tracker snapshot (2026-04-13):
+- Clicks: `308 -> 330` (`+22`, `+7.1%`)
+- Impressions: `24,607 -> 26,798` (`+2,191`, `+8.9%`)
+- CTR: `1.25% -> 1.23%` (`-0.02pp`)
+- Average position: `7.54 -> 7.55` (flat)
 
 Current interpretation:
-- visibility is meaningfully better than the March baseline
-- rankings improved enough that snippet CTR now matters more than raw indexing/debug work
-- CTR is improving overall, but several county `radon-levels` pages still underperform relative to their page-1 / near-page-1 positions
+- `radon-levels` remains the organic front door by a wide margin
+- `radon-mitigation-cost` is the decision surface, but it still captures a much smaller share of clicks
+- the immediate bottleneck is better described as front-surface handoff leakage than pure discovery failure
 
 Analytics note:
-- GA4 was not fully re-pulled during this 2026-04-13 CTR pass.
-- For conversion-path readouts, use the detailed 2026-04-07 and 2026-04-08 sections below.
+- GA4 was not fully re-pulled during this 2026-04-16 surface handoff pass.
+- For conversion-path readouts, combine this snapshot with the detailed 2026-04-07 and 2026-04-08 sections below.
 
 ## 2) What We Identified Today
 
@@ -1544,3 +1544,195 @@ Next GSC read after recrawl:
   - `https://radonverdict.com/radon-levels/ohio/licking-county`
   - `https://radonverdict.com/radon-levels/iowa/polk-county`
 - hold Montana as a regression-protection target, not an urgent CTR rewrite target, unless impressions rise materially above the current ~`64-71` range
+
+## 2026-04-16 Surface Handoff Alignment Pass
+
+What triggered this pass:
+- Owner strategy docs (`표면정렬`, `검색원천 점유`, `업무흐름 삽입`) were re-read against the live codebase and current GSC data.
+- The working hypothesis was that the project already captures some organic demand, so the next leverage point is not broad channel expansion but stronger handoff from the captured front surface into the decision surface.
+
+Search Console evidence used in this pass:
+- window: `2026-03-16` to `2026-04-13`
+- site total:
+  - clicks: `330`
+  - impressions: `26,798`
+  - CTR: `1.23%`
+  - average position: `7.55`
+- `radon-levels` surface aggregate:
+  - clicks: `289`
+  - impressions: `21,823`
+  - CTR: `1.32%`
+  - average position: `6.89`
+- `radon-mitigation-cost` surface aggregate:
+  - clicks: `41`
+  - impressions: `8,010`
+  - CTR: `0.51%`
+  - average position: `9.05`
+- `/radon-cost-calculator`:
+  - clicks: `1`
+  - impressions: `138`
+  - CTR: `0.72%`
+  - average position: `10.57`
+
+Current read:
+- actual organic front surface is still `radon-levels`
+- the money / decision surfaces are `radon-mitigation-cost` and the credit calculator path
+- the present bottleneck is closer to `표면누수` than to raw search absence
+
+What changed in code:
+- `src/main/java/com/radonverdict/service/InternalLinkService.java`
+  - county `radon-levels` pages now choose a zone-aware primary next step instead of a generic action-plan link
+- `src/main/jte/radon_levels_county.jte`
+  - sticky bridge CTA now changes by county risk band:
+    - EPA zone 1 -> direct `4.0+` action-plan entry
+    - EPA zone 2 -> direct `2.0-3.9` action-plan entry
+    - lower-risk counties -> testing guide first
+  - added `levels_zone_primary_click` tracking on that bridge
+- `src/main/jte/county_hub.jte`
+  - `not_tested` and `under_2` flows no longer open with a lead form
+  - those states now stay in test / monitor mode until the visitor has a real result or an actionable reading
+- `src/main/jte/components/next_step_panel.jte`
+  - added a decision-safe fallback panel for `not_tested` and `under_2`
+  - preserves local context while routing users toward the correct next action instead of premature quote capture
+- `src/main/jte/layout/main.jte`
+  - site nav label changed from `Action Plan` to `Have a Result?`
+  - `/radon-cost-calculator` now reports `action_plan_index` in page context tracking
+
+Why this matters:
+- it keeps the high-performing search capture surface intact
+- it shortens the jump from information intent into the right decision state
+- it stops asking for lead data from users who are still upstream of the actual decision moment
+
+Verification:
+- executed:
+  - `.\gradlew.bat test --tests com.radonverdict.SeoBehaviorIntegrationTest.countyHubNotTestedFlowUsesTestFirstPanelInsteadOfLeadForm --tests com.radonverdict.SeoBehaviorIntegrationTest.radonLevelsCountyUsesTestingGuideSeoAndKeepsCurrentTestingFirstCtas --tests com.radonverdict.PlaywrightBetaSmokeE2ETest.persona04NoTestedUserSeesAffiliateFallbackSignals --tests com.radonverdict.PlaywrightConversionFlowsE2ETest.levelsHighResultPathOpensScenarioSpecificActionPlan --tests com.radonverdict.PlaywrightConversionFlowsE2ETest.levelsBuyerSellerPathOpensLocalCreditCalculator`
+- result:
+  - BUILD SUCCESSFUL
+- expected readout to keep watching after deploy:
+  - `levels_zone_primary_click`
+  - `levels_result_path_click`
+  - `next_step_not_tested_kit`
+  - `next_step_under_2_monitor`
+
+Immediate follow-up checks:
+- watch whether `radon-levels -> radon-mitigation-cost` entry improves on counties with real traffic
+- confirm `not_tested` traffic now prefers testing-guide / affiliate behavior over dead-end lead friction
+- review whether the new zone-aware bridge surfaces create enough lift before broadening the pattern sitewide
+
+## 2026-04-16 Follow-up Check: The Two Prior Passes
+
+What was checked:
+- `2026-04-13 Product Packaging + Conversion Hierarchy Pass`
+- `2026-04-13 Search Console CTR Target Refresh`
+
+Windows used:
+- GA4 property `525547689`
+  - pre window: `2026-04-10` to `2026-04-12`
+  - post window: `2026-04-13` to `2026-04-15`
+- GSC
+  - pre window: `2026-04-06` to `2026-04-12` (`final`)
+  - post window: `2026-04-13` to `2026-04-15` (`all` / fresh data)
+
+### A. `2026-04-13 Product Packaging + Conversion Hierarchy Pass`
+
+GA4 site traffic context:
+- sessions: `55 -> 80`
+- page views: `85 -> 106`
+
+Direct page-path reads tied to the packaging change:
+- `/guides/how-to-test-for-radon`: `2 -> 5` page views
+- `/radon-cost-calculator`: `1 -> 2` page views
+- `/radon-credit-calculator/*`: `2 -> 0` page views
+
+Tracked event read:
+- `home_path_pick`: `0`
+- `home_test_first_short_term_kit`: `0`
+- `lead_form_start`: `1 -> 0`
+- `lead_form_submit`: `1 -> 0`
+- `levels_result_path_click`: `4 -> 2`
+- `internal_link_click`: `3 -> 3`
+
+Interpretation:
+- there is weak but real evidence that the product is sending more people into the `test-first` guide and slightly more people into the action-plan index
+- there is no proof yet that the new homepage split is doing the work, because homepage-path traffic is effectively absent in this short read
+- there is also no short-window evidence yet that the packaging pass improved downstream lead activity
+- treat this pass as `directionally positive upstream`, but still unproven on money-path depth
+
+### B. `2026-04-13 Search Console CTR Target Refresh`
+
+Batch read for the 5 priority county pages:
+- pre (`2026-04-06` to `2026-04-12`, final):
+  - clicks: `2`
+  - impressions: `191`
+  - CTR: `1.05%`
+- post (`2026-04-13` to `2026-04-15`, fresh):
+  - clicks: `1`
+  - impressions: `216`
+  - CTR: `0.46%`
+
+Per-page early read:
+- `falls-church-city`: `2/42` -> `0/15`
+- `alcorn-county`: `0/124` -> `0/192`
+- `westchester-county`: `0/10` -> `1/5`
+- `licking-county`: `0/7` -> `0/1`
+- `polk-county`: `0/8` -> `0/3`
+
+Indexing reality check:
+- none of the 5 target pages show a crawl after the `2026-04-13` snippet rewrite
+- latest crawl timestamps seen during the follow-up:
+  - `falls-church-city`: `2026-03-04`
+  - `alcorn-county`: `2026-04-09`
+  - `westchester-county`: `2026-02-28`
+  - `licking-county`: `2026-04-07`
+  - `polk-county`: `2026-04-10`
+
+Blocker found while checking:
+- `falls-church-city` and `westchester-county` both still show a rich-results failure:
+  - `Unparsable structured data`
+  - issue: `Bad escape sequence in string`
+
+Interpretation:
+- do not call the CTR refresh a failure yet
+- Google has not recrawled the target pages after the rewrite, so the current post window is not a clean measurement of the new snippet copy
+- the stronger immediate concern is the structured-data parsing error on 2 of the 5 target pages, because it can suppress snippet quality while CTR work is being evaluated
+
+Current verdict across the two prior passes:
+- `Product Packaging + Conversion Hierarchy` shows mild early lift toward `test-first` and `action-plan` entry, but not yet toward leads or credit-depth behavior
+- `Search Console CTR Target Refresh` is still effectively `not measurable yet` until recrawl lands
+- the next highest-value tracking step is:
+  - wait for a post-recrawl GSC read on the 5 target pages
+  - fix the structured-data escape error before declaring the snippet batch ready for judgment
+
+## 2026-04-16 Structured Data Re-check: Falls Church + Westchester
+
+What triggered this check:
+- Search Console inspection still reported `Bad escape sequence in string` on:
+  - `https://radonverdict.com/radon-levels/virginia/falls-church-city`
+  - `https://radonverdict.com/radon-levels/new-york/westchester-county`
+
+What we verified:
+- pulled the current live HTML for both URLs
+- extracted the live `application/ld+json` blocks
+- ran external schema validation on both URLs
+
+Result:
+- current live JSON-LD is valid on both pages
+- the live validator passed both URLs without errors
+- this matches the earlier Fairfax pattern: Search Console is holding an older crawl snapshot, not a currently reproducible rendering bug
+
+Hardening added today:
+- extended `SeoBehaviorIntegrationTest` so:
+  - `falls-church-city` JSON-LD must parse cleanly
+  - `westchester-county` JSON-LD must parse cleanly
+  - neither page may emit legacy invalid escapes such as `\\-` or `\\'` inside JSON-LD blocks
+
+Verification:
+- execute:
+  - `.\gradlew.bat test --tests com.radonverdict.SeoBehaviorIntegrationTest.fairfaxLevelsJsonLdDoesNotContainLegacyEscapeSequences --tests com.radonverdict.SeoBehaviorIntegrationTest.fairfaxCostJsonLdDoesNotEscapeApostrophes --tests com.radonverdict.SeoBehaviorIntegrationTest.fallsChurchLevelsJsonLdDoesNotContainLegacyEscapeSequences --tests com.radonverdict.SeoBehaviorIntegrationTest.westchesterLevelsJsonLdDoesNotContainLegacyEscapeSequences`
+- result:
+  - BUILD SUCCESSFUL
+
+Operating conclusion:
+- no runtime template hotfix was justified from the current evidence
+- the real issue is recrawl lag, not a live broken response
+- keep the new regression coverage in place and re-check Search Console after Google recrawls these URLs
