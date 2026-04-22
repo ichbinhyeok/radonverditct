@@ -1,34 +1,32 @@
 # RadonVerdict Context Tracker
 
-Last updated: 2026-04-13 (Asia/Seoul)
+Last updated: 2026-04-23 (Asia/Seoul)
 
 ## 1) Current Snapshot
 
 Date range note:
-- Latest confirmed Search Console data available through 2026-04-12.
-- Current comparison window: 2026-03-16 to 2026-04-12.
-- Prior comparison baseline: 2026-02-17 to 2026-03-15.
+- Latest confirmed Search Console data available through 2026-04-19.
+- Current snapshot window: 2026-03-22 to 2026-04-19.
+- For the last full before/after comparison snapshot, use the 2026-04-13 checkpoint below.
 
 GSC (Google Search Console):
-- Total clicks: 308
-- Total impressions: 24,607
-- CTR: 1.25%
+- Total clicks: 300
+- Total impressions: 26,264
+- CTR: 1.14%
 - Average position: 7.54
 
-Change vs prior 28-day window:
-- Clicks: `176 -> 308` (`+132`, `+75.0%`)
-- Impressions: `15,882 -> 24,607` (`+8,725`, `+54.9%`)
-- CTR: `1.11% -> 1.25%` (`+0.14pp`, `+12.9%`)
-- Average position: `11.02 -> 7.54`
-
 Current interpretation:
-- visibility is meaningfully better than the March baseline
-- rankings improved enough that snippet CTR now matters more than raw indexing/debug work
-- CTR is improving overall, but several county `radon-levels` pages still underperform relative to their page-1 / near-page-1 positions
+- visibility is still materially better than the March baseline, but the growth curve has flattened into slower long-tail accumulation
+- rankings improved enough that snippet CTR and first-screen intent fit now matter more than broad indexing/debug work
+- several county `radon-levels` pages now sit in page-1 / near-page-1 territory but still underperform on CTR relative to their rank band
+- practical CTR targets by rank band are now:
+  - avg position `7-10`: roughly `2.5%` to `3.5%`
+  - avg position `5-7`: roughly `4%` to `6%`
+  - avg position `3-5`: roughly `6%` to `10%`
 
 Analytics note:
-- GA4 was not fully re-pulled during this 2026-04-13 CTR pass.
-- For conversion-path readouts, use the detailed 2026-04-07 and 2026-04-08 sections below.
+- GA4 custom definitions are still blocked on the manual admin step; use the local CSV and the detailed 2026-04-07 / 2026-04-08 sections below for current event-shape interpretation.
+- Deploy-time CSV persistence has now been wired in the workflow, but the updated workflow still needs a live deploy run before production writes move onto the mounted host path.
 
 ## 2) What We Identified Today
 
@@ -1544,3 +1542,128 @@ Next GSC read after recrawl:
   - `https://radonverdict.com/radon-levels/ohio/licking-county`
   - `https://radonverdict.com/radon-levels/iowa/polk-county`
 - hold Montana as a regression-protection target, not an urgent CTR rewrite target, unless impressions rise materially above the current ~`64-71` range
+
+## 2026-04-22 to 2026-04-23 Tracking Persistence + `radon-levels` CTR Expansion
+
+What triggered this pass:
+- The site had already shown that `radon-levels` could attract search demand quickly, but the visible growth curve was flattening and several county pages were not converting rank into clicks.
+- We also needed to make local CSV tracking durable across deploys so lead / telemetry checks would stop depending on ephemeral container storage.
+
+Latest Search Console page reality used in this pass:
+- window: `2026-03-22` to `2026-04-19`
+- site total:
+  - `300 clicks`
+  - `26,264 impressions`
+  - `1.14% CTR`
+  - `7.54` average position
+- high-impression county pages still under target CTR:
+  - `falls-church-city`: `179 impressions / 2 clicks / 1.12% CTR / 9.71 avg pos`
+  - `santa-clara-county`: `81 impressions / 1 click / 1.23% CTR / 7.60 avg pos`
+  - `westchester-county`: `67 impressions / 2 clicks / 2.99% CTR / 5.99 avg pos`
+  - `hillsborough-county`: `63 impressions / 2 clicks / 3.17% CTR / 8.30 avg pos`
+  - `williamson-county`: `63 impressions / 2 clicks / 3.17% CTR / 3.70 avg pos`
+  - `spokane-county`: `58 impressions / 2 clicks / 3.45% CTR / 7.72 avg pos`
+  - `chester-county`: `57 impressions / 2 clicks / 3.51% CTR / 6.47 avg pos`
+  - `loudoun-county`: `54 impressions / 3 clicks / 5.56% CTR / 6.24 avg pos`
+
+Interpretation:
+- This is no longer an indexing-emergency stage.
+- The current bottleneck is narrower:
+  - some county pages are already close enough to page 1 that snippet framing should matter
+  - some pages already rank very well but still need better click capture
+  - product-side first-screen clarity still matters because weak first impressions reduce downstream path engagement even when the snippet wins the click
+
+CTR target model used in this pass:
+- position `7-10`: aim for roughly `2.5%` to `3.5%`
+- position `5-7`: aim for roughly `4%` to `6%`
+- position `3-5`: aim for roughly `6%` to `10%`
+- current weighted read for county `radon-levels` pages with `40+` impressions:
+  - `844 impressions / 24 clicks / 2.84% CTR / 7.02 weighted avg pos`
+- interpretation:
+  - not broken
+  - but still below a healthy page-1 click-capture level for the best current pages
+
+What changed in product / template logic:
+- Added a new `nextStepCtrLiftCounty` branch in `src/main/jte/radon_levels_county.jte`.
+- Expanded county-specific CTR cohorts into:
+  - phase 1:
+    - `falls-church-city`
+    - `williamson-county`
+    - `santa-clara-county`
+    - `cherokee-county`
+  - phase 2:
+    - `westchester-county`
+    - `polk-county` (Florida)
+    - `ada-county`
+  - phase 3:
+    - `chester-county`
+    - `kane-county`
+    - `madison-county` (Alabama)
+- These pages now use a `next-step first` SERP and hero frame instead of the older `basement-first` copy:
+  - title pattern: `Radon Levels | EPA Zone, 4.0+, and Next Step`
+  - meta pattern: test / retest / budget-mitigation framing
+  - direct-answer lead: `Fast local answer:`
+  - top summary now emphasizes:
+    - `no reading yet`
+    - `2.0-3.9`
+    - `4.0+`
+    - optional buyer / seller path
+
+What changed in first-screen UX:
+- Rebuilt the county `radon-levels` top section around:
+  - quick local verdict
+  - rank-band-aware decision framing
+  - explicit situation picker
+- The first 3 mobile scrolls are now intended to complete:
+  - risk recognition
+  - self-selection into the right lane
+  - next action handoff
+
+Responsive QA and bug fixes found during this pass:
+- real rendering review was done, not just template inspection
+- issues caught and fixed:
+  - the original mobile sticky CTA was too large and occluded content
+  - `320px` narrow-width mobile broke the hero title line wrap
+- fixes shipped:
+  - reduced the sticky CTA to a smaller floating button
+  - added fluid hero font sizing and width-safe wrapping
+- added dedicated responsive regression protection:
+  - `src/test/java/com/radonverdict/PlaywrightResponsiveLayoutE2ETest.java`
+
+Tracking / persistence changes made in this pass:
+- `deploy.yml` now:
+  - creates `~/deploy/radonverdict/data`
+  - seeds host-side data from `/app/data` if needed
+  - mounts `./data:/app/data`
+  - exports:
+    - `LEADS_CSV_PATH=/app/data/leads.csv`
+    - `TELEMETRY_CSV_PATH=/app/data/telemetry_events.csv`
+    - `CONTACT_CSV_PATH=/app/data/contact_messages.csv`
+- meaning:
+  - local CSV-based lead and telemetry history should survive deploys once this workflow version is live
+
+Tracking docs added / kept in repo:
+- `radon_md/ops/ga4_custom_dimensions.csv`
+- `radon_md/ops/ga4_custom_dimensions_manual.md`
+- purpose:
+  - keep the GA4 custom-definition plan explicit until manual admin creation is completed
+
+Verification run:
+- `.\gradlew.bat test --tests com.radonverdict.SeoBehaviorIntegrationTest`
+- `.\gradlew.bat test --tests com.radonverdict.PlaywrightResponsiveLayoutE2ETest --tests com.radonverdict.PlaywrightBetaSmokeE2ETest --tests com.radonverdict.PlaywrightConversionFlowsE2ETest`
+- result:
+  - BUILD SUCCESSFUL
+
+Next checks after deploy + recrawl:
+- Search Console:
+  - re-check the 10-page CTR batch above
+  - compare each page against its rank-band target, not against a single sitewide CTR number
+- telemetry / local CSV:
+  - `levels_result_path_click`
+  - `levels_primary_jump_click`
+  - `levels_mobile_jump_click`
+  - `affiliate_link_click`
+  - `lead_form_start`
+  - `lead_form_submit`
+- interpretation rule:
+  - if CTR rises but downstream lead / affiliate events do not, the remaining problem is monetization fit, not discoverability

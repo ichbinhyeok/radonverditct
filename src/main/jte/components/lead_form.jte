@@ -97,11 +97,16 @@
                 <script>
                   document.addEventListener('DOMContentLoaded', function () {
                     if (typeof rvTrack === 'function') {
-                      rvTrack('generate_lead', {
+                      const successPayload = {
                         event_category: 'conversion',
                         event_label: '${county.getCountySlug()}' + ' - ${page.getSelectedIntent()}' + ' - ${page.getSelectedRadonResultBand()}',
-                        lead_source: 'county_action_plan_form'
-                      });
+                        lead_source: 'county_action_plan_form',
+                        lead_status: 'saved'
+                      };
+                      rvTrack('qualify_lead', successPayload);
+                      rvTrack('close_convert_lead', Object.assign({}, successPayload, {
+                        lead_status: 'confirmed'
+                      }));
                     }
                   });
                 </script>
@@ -141,7 +146,11 @@
                           trackFormStart() {
                               if (!this.hasStartedForm && typeof rvTrack === 'function') {
                                   this.hasStartedForm = true;
-                                  rvTrack('lead_form_start', { event_category: 'engagement', event_label: '${county.getCountySlug()}' + ' - ' + this.pageIntent + ' - ' + this.pageResultBand });
+                                  rvTrack('lead_form_start', {
+                                      event_category: 'engagement',
+                                      event_label: '${county.getCountySlug()}' + ' - ' + this.pageIntent + ' - ' + this.pageResultBand,
+                                      lead_source: 'county_action_plan_form'
+                                  });
                               }
                           },
                           submitAfterTracking(event) {
@@ -166,7 +175,8 @@
 
                               const trackingPayload = {
                                   event_category: 'conversion',
-                                  event_label: '${county.getCountySlug()}' + ' - ' + this.pageIntent + ' - ' + this.pageResultBand
+                                  event_label: '${county.getCountySlug()}' + ' - ' + this.pageIntent + ' - ' + this.pageResultBand,
+                                  lead_source: 'county_action_plan_form'
                               };
                               const trackingOptions = {
                                   transport_type: 'beacon',
@@ -258,7 +268,7 @@
 
                     <div class="flex items-start mt-4">
                         <div class="flex h-5 items-center">
-                            <input id="consent" name="consent" type="checkbox" required class="h-4 w-4 rounded border-slate-300 text-indigo-600 focus:ring-indigo-500" @change="if($event.target.checked && typeof rvTrack === 'function') rvTrack('consent_checked', { event_category: 'engagement' });">
+                            <input id="consent" name="consent" type="checkbox" required class="h-4 w-4 rounded border-slate-300 text-indigo-600 focus:ring-indigo-500" @change="if($event.target.checked && typeof rvTrack === 'function') rvTrack('consent_checked', { event_category: 'engagement', lead_source: 'county_action_plan_form' });">
                         </div>
                         <div class="ml-3 text-xs leading-tight text-slate-500">
                             <label for="consent">Prior to submitting, I consent to be contacted regarding my personalized radon action plan and local contractor availability.</label>

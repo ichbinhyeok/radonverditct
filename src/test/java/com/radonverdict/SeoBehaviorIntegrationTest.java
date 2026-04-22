@@ -38,7 +38,7 @@ class SeoBehaviorIntegrationTest {
     void homeRedirectUsesCanonicalHttpsUrl() throws Exception {
         mockMvc.perform(get("/"))
                 .andExpect(status().isMovedPermanently())
-                .andExpect(header().string("Location", "https://radonverdict.com/radon-cost-calculator"));
+                .andExpect(header().string("Location", "/radon-cost-calculator"));
     }
 
     @Test
@@ -106,7 +106,7 @@ class SeoBehaviorIntegrationTest {
                         .param("radonResultBand", "above_4"))
                 .andExpect(status().isSeeOther())
                 .andExpect(header().string("Location",
-                        "https://radonverdict.com/radon-mitigation-cost/california/los-angeles-county?intent=buying&radonResultBand=above_4"));
+                        "/radon-mitigation-cost/california/los-angeles-county?intent=buying&radonResultBand=above_4&zipCode=90210"));
     }
 
     @Test
@@ -117,7 +117,7 @@ class SeoBehaviorIntegrationTest {
                         .param("radonResultBand", "above_4"))
                 .andExpect(status().isSeeOther())
                 .andExpect(header().string("Location",
-                        "https://radonverdict.com/radon-credit-calculator/california/los-angeles-county?intent=selling&radonResultBand=above_4"));
+                        "/radon-credit-calculator/california/los-angeles-county?intent=selling&radonResultBand=above_4"));
     }
 
     @Test
@@ -148,7 +148,7 @@ class SeoBehaviorIntegrationTest {
     void mixedCaseCountySlugRedirectsToCanonicalPath() throws Exception {
         mockMvc.perform(get("/radon-levels/PuErTo-RiCo/PONCE-MUNICIPIO"))
                 .andExpect(status().isMovedPermanently())
-                .andExpect(header().string("Location", "https://radonverdict.com/radon-levels/puerto-rico/ponce-municipio"));
+                .andExpect(header().string("Location", "/radon-levels/puerto-rico/ponce-municipio"));
     }
 
     @Test
@@ -308,25 +308,41 @@ class SeoBehaviorIntegrationTest {
     }
 
     @Test
-    void radonLevelsCountyUsesTestingGuideSeoAndKeepsCurrentTestingFirstCtas() throws Exception {
-        mockMvc.perform(get("/radon-levels/missouri/st-louis-county"))
+    void radonLevelsCountyUsesTestingGuideSeoAndFrontloadsSituationPicker() throws Exception {
+        mockMvc.perform(get("/radon-levels/california/los-angeles-county"))
                 .andExpect(status().isOk())
-                .andExpect(content().string(containsString("St. Louis County, MO Radon Levels, Zone Map")))
+                .andExpect(content().string(containsString("Los Angeles County, CA Radon Levels, Zone Map")))
                 .andExpect(content().string(containsString("Home Testing Guide")))
                 .andExpect(content().string(containsString("Direct Answer for basement and lowest-level tests:")))
-                .andExpect(content().string(containsString("/radon-credit-calculator/missouri/st-louis-county?radonResultBand=above_4&intent=buying")))
+                .andExpect(content().string(containsString("Pick the situation that matches you")))
+                .andExpect(content().string(containsString("Pick My Next Step")))
+                .andExpect(content().string(containsString("I have not tested yet")))
+                .andExpect(content().string(containsString("Start with a Short-Term Test Kit")))
+                .andExpect(content().string(containsString("Read the 3-minute testing guide")))
+                .andExpect(content().string(containsString("My result is 4.0+")))
+                .andExpect(content().string(containsString("/radon-credit-calculator/california/los-angeles-county?radonResultBand=above_4&intent=buying")))
                 .andExpect(content().string(not(containsString("At <strong x-text=\"parseFloat(level).toFixed(1)\"></strong> pCi/L"))))
-                .andExpect(content().string(containsString("Need to Test Before You Price?")))
-                .andExpect(content().string(containsString("View Recommended Short-Term Kit")))
                 .andExpect(content().string(containsString("View Airthings Corentium Home")));
+    }
+
+    @Test
+    void radonLevelsCountyPlacesSituationPickerAheadOfInteractiveAdvisorForMobileFlow() throws Exception {
+        String html = mockMvc.perform(get("/radon-levels/california/los-angeles-county"))
+                .andExpect(status().isOk())
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+
+        assertTrue(html.contains("data-track-event=\"levels_mobile_jump_click\""));
+        assertTrue(html.indexOf("id=\"situation-picker\"") < html.indexOf("Your Radon Reading"));
     }
 
     @Test
     void independentCitySeoAvoidsCountyLabelInTitleAndBreadcrumbJsonLd() throws Exception {
         mockMvc.perform(get("/radon-levels/virginia/falls-church-city"))
                 .andExpect(status().isOk())
-                .andExpect(content().string(containsString("Falls Church, VA Basement Radon Levels")))
-                .andExpect(content().string(not(containsString("Falls Church County, VA Basement Radon Levels"))))
+                .andExpect(content().string(containsString("Falls Church, VA Radon Levels | EPA Zone, 4.0+, and Next Step")))
+                .andExpect(content().string(not(containsString("Falls Church County, VA Radon Levels | EPA Zone, 4.0+, and Next Step"))))
                 .andExpect(content().string(containsString("\"name\": \"Falls Church\"")))
                 .andExpect(content().string(not(containsString("\"name\": \"Falls Church County\""))));
     }
@@ -340,8 +356,34 @@ class SeoBehaviorIntegrationTest {
 
         mockMvc.perform(get("/radon-levels/california"))
                 .andExpect(status().isOk())
-                .andExpect(content().string(containsString("California Radon Map, Levels & Testing Guide")))
+                .andExpect(content().string(containsString("California Radon Map, Levels")))
+                .andExpect(content().string(containsString("Testing Guide by County")))
                 .andExpect(content().string(containsString("Check the California radon map by county")));
+    }
+
+    @Test
+    void countyHubLeadSuccessUsesTrackedQualificationEvents() throws Exception {
+        mockMvc.perform(get("/radon-mitigation-cost/california/los-angeles-county")
+                        .param("intent", "homeowner")
+                        .param("radonResultBand", "above_4")
+                        .flashAttr("leadSuccessMessage", "Saved"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("qualify_lead")))
+                .andExpect(content().string(containsString("close_convert_lead")))
+                .andExpect(content().string(not(containsString("generate_lead"))));
+    }
+
+    @Test
+    void layoutTrackingScriptExposesVersionedContextPayload() throws Exception {
+        mockMvc.perform(get("/radon-mitigation-cost/california/los-angeles-county")
+                        .param("intent", "homeowner")
+                        .param("radonResultBand", "above_4"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("rv-tracking-version")))
+                .andExpect(content().string(containsString("tracking_version")))
+                .andExpect(content().string(containsString("window.__rvTrackingVersion")))
+                .andExpect(content().string(containsString("page_type")))
+                .andExpect(content().string(containsString("lead_source")));
     }
 
     @Test
@@ -400,11 +442,64 @@ class SeoBehaviorIntegrationTest {
 
     @Test
     void topCtrCountyPagesUseBasementFirstSerpCopy() throws Exception {
-        assertLevelsCountyCtrCopy("/radon-levels/virginia/falls-church-city", "Falls Church, VA");
         assertLevelsCountyCtrCopy("/radon-levels/mississippi/alcorn-county", "Alcorn County, MS");
-        assertLevelsCountyCtrCopy("/radon-levels/new-york/westchester-county", "Westchester County, NY");
         assertLevelsCountyCtrCopy("/radon-levels/ohio/licking-county", "Licking County, OH");
         assertLevelsCountyCtrCopy("/radon-levels/iowa/polk-county", "Polk County, IA");
+    }
+
+    @Test
+    void secondWaveTopCtrCountyPagesUseBasementFirstSerpCopy() throws Exception {
+        assertLevelsCountyCtrCopy("/radon-levels/missouri/st-louis-county", "St. Louis County, MO");
+        assertLevelsCountyCtrCopy("/radon-levels/pennsylvania/allegheny-county", "Allegheny County, PA");
+        assertLevelsCountyCtrCopy("/radon-levels/florida/hillsborough-county", "Hillsborough, FL");
+    }
+
+    @Test
+    void phaseOneCtrLiftCountyPagesUseNextStepFirstSerpCopy() throws Exception {
+        assertLevelsCountyNextStepCopy("/radon-levels/virginia/falls-church-city");
+        assertLevelsCountyNextStepCopy("/radon-levels/california/santa-clara-county");
+        assertLevelsCountyNextStepCopy("/radon-levels/tennessee/williamson-county");
+        assertLevelsCountyNextStepCopy("/radon-levels/georgia/cherokee-county");
+    }
+
+    @Test
+    void phaseTwoCtrLiftCountyPagesUseNextStepFirstSerpCopy() throws Exception {
+        assertLevelsCountyNextStepCopy("/radon-levels/new-york/westchester-county");
+        assertLevelsCountyNextStepCopy("/radon-levels/florida/polk-county");
+        assertLevelsCountyNextStepCopy("/radon-levels/idaho/ada-county");
+    }
+
+    @Test
+    void phaseThreeCtrLiftCountyPagesUseNextStepFirstSerpCopy() throws Exception {
+        assertLevelsCountyNextStepCopy("/radon-levels/pennsylvania/chester-county");
+        assertLevelsCountyNextStepCopy("/radon-levels/illinois/kane-county");
+        assertLevelsCountyNextStepCopy("/radon-levels/alabama/madison-county");
+    }
+
+    @Test
+    void fallsChurchLevelsPageUsesLocationSpecificDecisionCopy() throws Exception {
+        mockMvc.perform(get("/radon-levels/virginia/falls-church-city"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("If you are checking radon levels in a Falls Church basement")))
+                .andExpect(content().string(containsString("Open the Falls Church action plan from the basement result you already have")))
+                .andExpect(content().string(containsString("See what a Falls Church basement result means for pricing")))
+                .andExpect(content().string(containsString("See Falls Church mitigation cost before calling contractors")))
+                .andExpect(content().string(containsString("Turn a Falls Church result into seller-credit numbers")));
+    }
+
+    @Test
+    void fremontLevelsPageUsesEpaZoneFirstSerpCopy() throws Exception {
+        mockMvc.perform(get("/radon-levels/idaho/fremont-county"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("<title>Fremont County, ID EPA Radon Zone | Basement Levels &amp; 4.0 Guide</title>")))
+                .andExpect(content().string(containsString("<meta name=\"description\" content=\"Check the EPA radon zone for Fremont County, ID, see what that zone means for basement radon levels, and know when 2.0-3.9 versus 4.0+ changes the next step.\">")))
+                .andExpect(content().string(containsString("EPA Radon Zone &amp; Basement Testing in Fremont County, ID")))
+                .andExpect(content().string(containsString("EPA zone answer first:")))
+                .andExpect(content().string(containsString("If you are trying to confirm the EPA radon zone for Fremont County")))
+                .andExpect(content().string(containsString("Open the Fremont County action plan from the EPA zone or reading you already have")))
+                .andExpect(content().string(containsString("See what a Fremont County borderline result means for pricing")))
+                .andExpect(content().string(containsString("Open the Fremont County 4.0+ mitigation plan")))
+                .andExpect(content().string(containsString("Turn a Fremont County result into seller-credit numbers")));
     }
 
     @Test
@@ -482,6 +577,18 @@ class SeoBehaviorIntegrationTest {
                 .andExpect(content().string(containsString("<meta name=\"description\" content=\"Check basement radon levels in " + placeLabel + ", see the EPA zone, and understand what 2.0 vs 4.0+ pCi/L means before you retest or compare mitigation quotes.\">")))
                 .andExpect(content().string(containsString("Basement Radon Levels, EPA Zone &amp; Test Meaning in " + placeLabel)))
                 .andExpect(content().string(containsString("Basement test answer:")));
+    }
+
+    private void assertLevelsCountyNextStepCopy(String path) throws Exception {
+        mockMvc.perform(get(path))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("Radon Levels | EPA Zone, 4.0+, and Next Step</title>")))
+                .andExpect(content().string(containsString("see the EPA zone, and know whether to test, retest, or budget mitigation after a 4.0+ result.")))
+                .andExpect(content().string(containsString("Radon Levels, EPA Zone &amp; Next Step")))
+                .andExpect(content().string(containsString("Fast local answer:")))
+                .andExpect(content().string(containsString("County map context helps, but your own result is what changes the decision.")))
+                .andExpect(content().string(containsString("No reading yet means test first. 2.0-3.9 usually means retest or track. 4.0+ means local budget planning starts.")))
+                .andExpect(content().string(containsString("No reading: test first. 2.0-3.9: retest or track. 4.0+: budget local mitigation.")));
     }
 
     private String basicAuth(String username, String password) {

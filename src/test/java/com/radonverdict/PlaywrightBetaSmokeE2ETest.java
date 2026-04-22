@@ -83,10 +83,12 @@ class PlaywrightBetaSmokeE2ETest {
     void persona01FirstTimeHomebuyerInvalidZipRecoveryFlow() {
         try (PersonaSession persona = openPersona("persona01_first_time_homebuyer", 1440, 900)) {
             persona.visit("/radon-cost-calculator");
-            assertTrue(persona.page.title().toLowerCase(Locale.US).contains("radon mitigation cost calculator"));
+            String title = persona.page.title().toLowerCase(Locale.US);
+            assertTrue(title.contains("radon action plan"));
+            assertTrue(title.contains("cost calculator"));
 
             persona.page.locator("input[name='zipCode']").fill("00000");
-            persona.page.locator("button:has-text('Get Estimate')").click();
+            persona.page.locator("button:has-text('Get Local Plan')").click();
             persona.page.waitForLoadState(LoadState.DOMCONTENTLOADED);
             if (!persona.page.url().contains("error=notfound")) {
                 persona.page.navigate(baseUrl() + "/radon-cost-calculator?error=notfound");
@@ -121,7 +123,7 @@ class PlaywrightBetaSmokeE2ETest {
             Response foundationResponse = persona.page.waitForResponse(
                     r -> r.url().contains("/htmx/calculate-receipt") && r.status() == 200,
                     () -> persona.page
-                            .locator("form[hx-post='/htmx/calculate-receipt'] label:has-text('Slab')")
+                            .locator("form[hx-post='/htmx/calculate-receipt'] label:has-text('Basement')")
                             .first()
                             .click());
             assertEquals(200, foundationResponse.status());
@@ -137,7 +139,7 @@ class PlaywrightBetaSmokeE2ETest {
             Response sizeResponse = persona.page.waitForResponse(
                     r -> r.url().contains("/htmx/calculate-receipt") && r.status() == 200,
                     () -> persona.page
-                            .locator("form[hx-post='/htmx/calculate-receipt'] label:has-text('Over 2,000 sq ft')")
+                            .locator("form[hx-post='/htmx/calculate-receipt'] label:has-text('Under 2,000 sq ft')")
                             .first()
                             .click());
             assertEquals(200, sizeResponse.status());
@@ -178,14 +180,19 @@ class PlaywrightBetaSmokeE2ETest {
 
             waitUntil(() -> Files.exists(leadsCsvPath) && Files.readString(leadsCsvPath).contains(email),
                     Duration.ofSeconds(8));
-            waitUntil(() -> Files.exists(telemetryCsvPath) && Files.readString(telemetryCsvPath).contains("generate_lead"),
+            waitUntil(() -> Files.exists(telemetryCsvPath) && Files.readString(telemetryCsvPath).contains("close_convert_lead"),
                     Duration.ofSeconds(8));
 
             String telemetryCsv = Files.readString(telemetryCsvPath);
-            assertTrue(telemetryCsv.contains("lead_form_submit"));
-            assertTrue(telemetryCsv.contains("generate_lead"));
-            assertFalse(telemetryCsv.contains("qualify_lead"));
-            assertFalse(telemetryCsv.contains("close_convert_lead"));
+            String normalizedTelemetryCsv = telemetryCsv.replace("\"\"", "\"");
+            assertTrue(normalizedTelemetryCsv.contains("lead_form_submit"));
+            assertTrue(normalizedTelemetryCsv.contains("qualify_lead"));
+            assertTrue(normalizedTelemetryCsv.contains("close_convert_lead"));
+            assertFalse(normalizedTelemetryCsv.contains("generate_lead"));
+            assertTrue(normalizedTelemetryCsv.contains("\"page_type\":\"cost_county\""));
+            assertTrue(normalizedTelemetryCsv.contains("\"state\":\"california\""));
+            assertTrue(normalizedTelemetryCsv.contains("\"county\":\"los-angeles-county\""));
+            assertTrue(normalizedTelemetryCsv.contains("\"tracking_version\":\"2026-04-22-tracking-v2\""));
 
             persona.screenshot("lead_submission_success");
             persona.assertNoFirstPartyFailures();
@@ -216,7 +223,7 @@ class PlaywrightBetaSmokeE2ETest {
         try (PersonaSession persona = openPersona("persona05_health_concerned", 1440, 900)) {
             persona.visit("/radon-levels/california/los-angeles-county");
 
-            assertTrue(persona.page.locator("text=Direct Answer:").first().isVisible());
+            assertTrue(persona.page.title().toLowerCase(Locale.US).contains("radon levels"));
             assertTrue(persona.page.locator("text=EPA Zone").first().isVisible());
 
             persona.page.locator("a[href='/radon-mitigation-cost/california/los-angeles-county']").first().click();
@@ -243,7 +250,7 @@ class PlaywrightBetaSmokeE2ETest {
             assertTrue(hasHowToSchema, "Radon testing guide should keep dedicated HowTo schema.");
 
             Locator shortTermLink = persona.page
-                    .locator("a[href*='amazon.com/s?k=radon+test+kit+charcoal+short+term']")
+                    .locator("a[href*='amazon.com/dp/B00002N83E']")
                     .first();
             assertEquals("sponsored nofollow noopener", shortTermLink.getAttribute("rel"));
 
@@ -278,7 +285,7 @@ class PlaywrightBetaSmokeE2ETest {
         try (PersonaSession persona = openPersona("persona08_mobile_quick_scan", 390, 844)) {
             persona.visit("/radon-mitigation-cost/california/los-angeles-county");
 
-            Locator stickyCta = persona.page.locator("a:has-text('Start Free Plan')").first();
+            Locator stickyCta = persona.page.locator("a[href='#estimate-form']:has-text('Get Next Step')").first();
             assertTrue(stickyCta.isVisible());
             assertEquals("#estimate-form", stickyCta.getAttribute("href"));
             persona.page.evaluate("() => document.getElementById('estimate-form').scrollIntoView({ behavior: 'auto' })");

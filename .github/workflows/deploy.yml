@@ -78,7 +78,15 @@ jobs:
           script: |
             # 배포 디렉토리 생성 및 이동
             mkdir -p ~/deploy/radonverdict
+            mkdir -p ~/deploy/radonverdict/data
             cd ~/deploy/radonverdict
+            
+            if docker ps -a --format '{{.Names}}' | grep -q '^radonverdict$'; then
+              if [ -z "$(ls -A ~/deploy/radonverdict/data 2>/dev/null)" ]; then
+                docker cp radonverdict:/app/data/. ~/deploy/radonverdict/data/ 2>/dev/null || true
+              fi
+            fi
+            chmod -R 0777 ~/deploy/radonverdict/data
             
             # docker-compose.yml 동적 생성 (하드코딩하지 않고 CI에서 바로 주입)
             cat << 'EOF' > docker-compose.yml
@@ -89,10 +97,15 @@ jobs:
                 restart: unless-stopped
                 ports:
                   - "8807:8080"
+                volumes:
+                  - ./data:/app/data
                 environment:
                   - GG_JTE_DEVELOPMENTMODE=false
                   - GG_JTE_USEPRECOMPILEDTEMPLATES=true
                   - SPRING_PROFILES_ACTIVE=prod
+                  - LEADS_CSV_PATH=/app/data/leads.csv
+                  - TELEMETRY_CSV_PATH=/app/data/telemetry_events.csv
+                  - CONTACT_CSV_PATH=/app/data/contact_messages.csv
                 deploy:
                   resources:
                     limits:

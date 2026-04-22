@@ -1,0 +1,19 @@
+parameter_name,display_name,scope,description
+page_type,Page Type,EVENT,Program page type or content surface that sent the event.
+state,State,EVENT,State slug or state context attached to the event.
+county,County,EVENT,County slug or county context attached to the event.
+result_band,Result Band,EVENT,Selected radon result band such as not_tested or above_4.
+intent,Intent,EVENT,User intent such as homeowner buying or selling.
+article_slug,Article Slug,EVENT,Guide article slug for guide events.
+cta_id,CTA ID,EVENT,Stable identifier for the clicked CTA.
+monetization_channel,Monetization Channel,EVENT,Monetization channel such as affiliate.
+offer_type,Offer Type,EVENT,Offer type such as test_kit or monitor.
+offer_brand,Offer Brand,EVENT,Offer brand associated with the CTA.
+offer_model,Offer Model,EVENT,Offer model associated with the CTA.
+placement_group,Placement Group,EVENT,High-level placement area such as guide or levels.
+placement_id,Placement ID,EVENT,Specific placement identifier for the CTA location.
+journey_stage,Journey Stage,EVENT,User journey stage such as first_test or followup_monitor.
+merchant,Merchant,EVENT,Merchant destination such as amazon.
+destination,Destination,EVENT,Final destination URL for the clicked CTA.
+destination_host,Destination Host,EVENT,Destination host for the clicked CTA.
+cta_text,CTA Text,EVENT,Visible CTA text at the time of click.

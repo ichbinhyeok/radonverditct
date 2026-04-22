@@ -23,27 +23,80 @@
     final String seoPlaceLabel = seoCountyDisplay + ", " + county.getStateAbbr();
     final String shortTermKitUrl = "https://www.amazon.com/dp/B00002N83E?tag=radonverdict-20";
     final String digitalMonitorUrl = "https://www.amazon.com/dp/B00H2VOSP8?tag=radonverdict-20";
+    final boolean fallsChurchDecisionCounty =
+            "virginia".equals(county.getStateSlug()) && "falls-church-city".equals(county.getCountySlug());
+    final boolean fremontZoneCounty =
+            "idaho".equals(county.getStateSlug()) && "fremont-county".equals(county.getCountySlug());
+    final boolean williamsonDecisionCounty =
+            "tennessee".equals(county.getStateSlug()) && "williamson-county".equals(county.getCountySlug());
+    final boolean santaClaraDecisionCounty =
+            "california".equals(county.getStateSlug()) && "santa-clara-county".equals(county.getCountySlug());
+    final boolean cherokeeDecisionCounty =
+            "georgia".equals(county.getStateSlug()) && "cherokee-county".equals(county.getCountySlug());
+    final boolean westchesterDecisionCounty =
+            "new-york".equals(county.getStateSlug()) && "westchester-county".equals(county.getCountySlug());
+    final boolean polkFloridaDecisionCounty =
+            "florida".equals(county.getStateSlug()) && "polk-county".equals(county.getCountySlug());
+    final boolean adaDecisionCounty =
+            "idaho".equals(county.getStateSlug()) && "ada-county".equals(county.getCountySlug());
+    final boolean chesterDecisionCounty =
+            "pennsylvania".equals(county.getStateSlug()) && "chester-county".equals(county.getCountySlug());
+    final boolean kaneDecisionCounty =
+            "illinois".equals(county.getStateSlug()) && "kane-county".equals(county.getCountySlug());
+    final boolean madisonAlabamaDecisionCounty =
+            "alabama".equals(county.getStateSlug()) && "madison-county".equals(county.getCountySlug());
+    final boolean phaseOneCtrLiftCounty =
+            fallsChurchDecisionCounty
+                    || williamsonDecisionCounty
+                    || santaClaraDecisionCounty
+                    || cherokeeDecisionCounty;
+    final boolean phaseTwoCtrLiftCounty =
+            westchesterDecisionCounty
+                    || polkFloridaDecisionCounty
+                    || adaDecisionCounty;
+    final boolean phaseThreeCtrLiftCounty =
+            chesterDecisionCounty
+                    || kaneDecisionCounty
+                    || madisonAlabamaDecisionCounty;
+    final boolean nextStepCtrLiftCounty =
+            phaseOneCtrLiftCounty || phaseTwoCtrLiftCounty || phaseThreeCtrLiftCounty;
     final boolean priorityCtrCounty =
             ("new-york".equals(county.getStateSlug()) && "schenectady-county".equals(county.getCountySlug()))
                     || ("massachusetts".equals(county.getStateSlug()) && "franklin-county".equals(county.getCountySlug()))
                     || ("virginia".equals(county.getStateSlug()) && "fairfax-city".equals(county.getCountySlug()))
-                    || ("virginia".equals(county.getStateSlug()) && "falls-church-city".equals(county.getCountySlug()))
+                    || fallsChurchDecisionCounty
                     || ("maryland".equals(county.getStateSlug()) && "howard-county".equals(county.getCountySlug()))
-                    || ("florida".equals(county.getStateSlug()) && "miami-dade-county".equals(county.getCountySlug()));
+                    || ("florida".equals(county.getStateSlug()) && "miami-dade-county".equals(county.getCountySlug()))
+                    || fremontZoneCounty;
     final boolean topCtrPriorityCounty =
-            ("virginia".equals(county.getStateSlug()) && "falls-church-city".equals(county.getCountySlug()))
+            fallsChurchDecisionCounty
                     || ("mississippi".equals(county.getStateSlug()) && "alcorn-county".equals(county.getCountySlug()))
                     || ("new-york".equals(county.getStateSlug()) && "westchester-county".equals(county.getCountySlug()))
                     || ("ohio".equals(county.getStateSlug()) && "licking-county".equals(county.getCountySlug()))
-                    || ("iowa".equals(county.getStateSlug()) && "polk-county".equals(county.getCountySlug()));
+                    || ("iowa".equals(county.getStateSlug()) && "polk-county".equals(county.getCountySlug()))
+                    || ("california".equals(county.getStateSlug()) && "santa-clara-county".equals(county.getCountySlug()))
+                    || ("missouri".equals(county.getStateSlug()) && "st-louis-county".equals(county.getCountySlug()))
+                    || ("tennessee".equals(county.getStateSlug()) && "williamson-county".equals(county.getCountySlug()))
+                    || ("pennsylvania".equals(county.getStateSlug()) && "allegheny-county".equals(county.getCountySlug()))
+                    || ("florida".equals(county.getStateSlug()) && "hillsborough-county".equals(county.getCountySlug()));
 
-    final String seoTitle = topCtrPriorityCounty
+    final String seoTitle = fremontZoneCounty
+            ? seoPlaceLabel + " EPA Radon Zone | Basement Levels & 4.0 Guide"
+            : nextStepCtrLiftCounty
+            ? seoPlaceLabel + " Radon Levels | EPA Zone, 4.0+, and Next Step"
+            : topCtrPriorityCounty
             ? seoPlaceLabel + " Basement Radon Levels | EPA Zone & 4.0 Guide"
             : priorityCtrCounty
             ? seoPlaceLabel + " Radon Levels: EPA Zone & Basement Test Guide"
             : seoPlaceLabel + " Radon Levels, Zone Map & Home Testing Guide | EPA 4.0 pCi/L";
 
-    final String seoDescription = topCtrPriorityCounty
+    final String seoDescription = fremontZoneCounty
+            ? "Check the EPA radon zone for " + seoPlaceLabel
+            + ", see what that zone means for basement radon levels, and know when 2.0-3.9 versus 4.0+ changes the next step."
+            : nextStepCtrLiftCounty
+            ? "Check radon levels in " + seoPlaceLabel
+            + ", see the EPA zone, and know whether to test, retest, or budget mitigation after a 4.0+ result."
+            : topCtrPriorityCounty
             ? "Check basement radon levels in " + seoPlaceLabel
             + ", see the EPA zone, and understand what 2.0 vs 4.0+ pCi/L means before you retest or compare mitigation quotes."
             : priorityCtrCounty
@@ -51,17 +104,151 @@
             + ", what a basement test means at 2.0 vs 4.0+ pCi/L, and when to retest or compare mitigation quotes."
             : seoPlaceLabel + " radon guide for basement and lowest-level home tests. See EPA zone data, what 2.0, 4.0, and 8.0+ pCi/L mean, and when mitigation quotes are worth comparing.";
 
-    final String heroTitle = topCtrPriorityCounty
+    final String heroTitle = fremontZoneCounty
+            ? "EPA Radon Zone & Basement Testing in " + seoPlaceLabel
+            : nextStepCtrLiftCounty
+            ? seoPlaceLabel + " Radon Levels, EPA Zone & Next Step"
+            : topCtrPriorityCounty
             ? "Basement Radon Levels, EPA Zone & Test Meaning in " + seoPlaceLabel
             : priorityCtrCounty
             ? "Radon Levels, EPA Zone & Basement Testing in " + seoPlaceLabel
             : "Radon Levels & Zone Map in " + seoPlaceLabel;
 
-    final String directAnswerLead = topCtrPriorityCounty
+    final String directAnswerLead = fremontZoneCounty
+            ? "EPA zone answer first: "
+            : nextStepCtrLiftCounty
+            ? "Fast local answer: "
+            : topCtrPriorityCounty
             ? "Basement test answer: "
             : priorityCtrCounty
             ? "Short answer for homeowners, buyers, and sellers: "
             : "Direct Answer for basement and lowest-level tests: ";
+
+    final String introIntentLead = fallsChurchDecisionCounty
+            ? "If you are checking radon levels in a " + county.getAreaDisplayName()
+                    + " basement, use the EPA zone as context first, then decide whether a 2.0-3.9 result needs a retest or a 4.0+ result needs mitigation planning."
+            : phaseOneCtrLiftCounty
+            ? "Use the " + county.getAreaDisplayName()
+                    + " quick path to decide between first testing, retesting, or budgeting mitigation instead of starting with a generic radon guide."
+            : phaseTwoCtrLiftCounty
+            ? "If you already have a reading in " + county.getAreaDisplayName()
+                    + ", start with the local next-step answer before opening a longer guide."
+            : phaseThreeCtrLiftCounty
+            ? "Start with the short local verdict for " + county.getAreaDisplayName()
+                    + ", then go deeper only if you still need context."
+            : fremontZoneCounty
+            ? "If you are trying to confirm the EPA radon zone for " + county.getAreaDisplayName()
+                    + ", use this page for the quick zone answer first, then map that zone to what a basement or lowest-level test result actually means."
+            : null;
+
+    final String decisionFlowIntro = fallsChurchDecisionCounty
+            ? "Open the " + county.getAreaDisplayName()
+                    + " action plan from the basement result you already have, instead of starting from a generic cost page."
+            : phaseOneCtrLiftCounty
+            ? "Open the " + county.getAreaDisplayName()
+                    + " action plan from the result you already have, instead of reading a longer general guide first."
+            : phaseTwoCtrLiftCounty
+            ? "Jump into the " + county.getAreaDisplayName()
+                    + " action plan from your current result, instead of backing into it from a generic cost page."
+            : phaseThreeCtrLiftCounty
+            ? "Use the " + county.getAreaDisplayName()
+                    + " quick path first, then open the deeper reference only if you still need it."
+            : fremontZoneCounty
+            ? "Open the " + county.getAreaDisplayName()
+                    + " action plan from the EPA zone or reading you already have, instead of starting from a generic cost page."
+            : "Jump into a prefilled " + county.getAreaDisplayName()
+                    + " action plan based on the result you already have, instead of starting from a generic cost page.";
+
+    final String borderlineResultCta = fallsChurchDecisionCounty
+            ? "See what a " + county.getAreaDisplayName() + " basement result means for pricing"
+            : fremontZoneCounty
+            ? "See what a " + county.getAreaDisplayName() + " borderline result means for pricing"
+            : nextStepCtrLiftCounty
+            ? "See what a " + county.getAreaDisplayName() + " 2.0-3.9 result changes"
+            : "Should I retest or get quotes?";
+
+    final String highResultCta = fallsChurchDecisionCounty
+            ? "See " + county.getAreaDisplayName() + " mitigation cost before calling contractors"
+            : fremontZoneCounty
+            ? "Open the " + county.getAreaDisplayName() + " 4.0+ mitigation plan"
+            : nextStepCtrLiftCounty
+            ? "Open the " + county.getAreaDisplayName() + " 4.0+ action plan"
+            : "Budget mitigation before you call contractors";
+
+    final String buyerSellerResultCta = fallsChurchDecisionCounty || fremontZoneCounty
+            ? "Turn a " + county.getAreaDisplayName() + " result into seller-credit numbers"
+            : nextStepCtrLiftCounty
+            ? "Turn a " + county.getAreaDisplayName() + " result into a credit plan"
+            : "Turn the result into a seller-credit plan";
+
+    final String heroQuickVerdict = phaseOneCtrLiftCounty
+            ? county.getAreaDisplayName()
+            + " searchers usually need the practical next move fast. The first useful split is simple: no test yet, 2.0-3.9, or 4.0+."
+            : phaseTwoCtrLiftCounty
+            ? county.getAreaDisplayName()
+            + " works best as a reading-to-decision page. The county average is context, but your result is what changes the next move."
+            : phaseThreeCtrLiftCounty
+            ? "Start with the quick local verdict for " + county.getAreaDisplayName()
+            + ". If you still need more detail after that, the longer reference is below."
+            : county.getEpaZone() == 1
+            ? county.getAreaDisplayName() + " is a strong county-level radon signal. You still need a home test, but this is not a county where skipping the first test makes sense."
+            : county.getEpaZone() == 2
+            ? county.getAreaDisplayName() + " sits in the gray zone. The map helps, but your own reading matters more than the county average."
+            : county.getEpaZone() == 3
+            ? county.getAreaDisplayName() + " has a lower countywide signal, but that does not clear an individual home. A real test still beats the map."
+            : county.getAreaDisplayName() + " has no published county zone in our dataset, so the useful answer starts with a direct home test.";
+
+    final String quickDecisionHeading = phaseOneCtrLiftCounty
+            ? "Pick the lane fast"
+            : phaseTwoCtrLiftCounty
+            ? "Use the reading to choose the lane"
+            : phaseThreeCtrLiftCounty
+            ? "Take the quick verdict first"
+            : county.getEpaZone() == 1
+            ? "Do not guess in a higher-risk county"
+            : county.getEpaZone() == 2
+            ? "Treat the map as a hint, not the answer"
+            : county.getEpaZone() == 3
+            ? "Low county risk is not a home-level clear signal"
+            : "No map answer here";
+
+    final String quickDecisionBody = phaseOneCtrLiftCounty
+            ? "No test yet, 2.0-3.9, and 4.0+ each point to a different next move. This page is built to get you there without extra reading."
+            : phaseTwoCtrLiftCounty
+            ? "The county average matters less than the result in your home. Use the number to decide whether you test, retest, or price mitigation."
+            : phaseThreeCtrLiftCounty
+            ? "If your goal is just the next practical step, start with the local verdict and save the long explanation for later."
+            : county.getEpaZone() == 1
+            ? "Most users should either get a first test or move a 4.0+ result straight into mitigation pricing."
+            : county.getEpaZone() == 2
+            ? "Zone 2 is the gray area. A real reading is what decides whether you retest, track, or price mitigation."
+            : county.getEpaZone() == 3
+            ? "Do not let a Zone 3 label talk you out of the first test. House-by-house differences still matter."
+            : "With no county signal, direct testing is the first decision that matters.";
+
+    final String countySignalSummary = nextStepCtrLiftCounty
+            ? "County map context helps, but your own result is what changes the decision."
+            : county.getEpaZone() == 1
+            ? "Higher-than-average chance of 4.0+ readings across the county."
+            : county.getEpaZone() == 2
+            ? "Gray-zone county average. Some homes stay low, others cross the EPA line."
+            : county.getEpaZone() == 3
+            ? "Lower county average, but house-by-house spikes still happen."
+            : "No county average published. Treat direct testing as the only reliable input.";
+
+    final String thresholdSummary = nextStepCtrLiftCounty
+            ? "No reading yet means test first. 2.0-3.9 usually means retest or track. 4.0+ means local budget planning starts."
+            : "2.0-3.9 pCi/L usually means retest or track. 4.0+ is where EPA action and quote planning start to matter.";
+
+    final String fastMoveSummary = nextStepCtrLiftCounty
+            ? "No reading: test first. 2.0-3.9: retest or track. 4.0+: budget local mitigation."
+            : county.getEpaZone() == 1
+            ? "No reading: test now. Reading at 4.0+: move into mitigation planning."
+            : county.getEpaZone() == 2
+            ? "No reading: test first. Borderline results often need retest or long-term tracking."
+            : county.getEpaZone() == 3
+            ? "Low zone is not a free pass. Use a kit before you rule radon out."
+            : "Start with a test kit, then let the result decide whether pricing or credit planning matters.";
 
     String averageLevelAnswerBase;
     if (county.getEpaZone() == 1) {
@@ -151,7 +338,7 @@
         </script>
     `,
     content = @`
-        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 pb-24 lg:pb-10">
 
             <!-- Breadcrumb -->
             <nav class="text-sm font-medium text-slate-500 mb-8" aria-label="Breadcrumb">
@@ -165,7 +352,7 @@
             </nav>
 
             <!-- Hero Section -->
-            <div class="rounded-3xl bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 p-8 sm:p-12 mb-12 relative overflow-hidden">
+            <div class="rounded-3xl bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 p-6 sm:p-10 mb-10 relative overflow-hidden">
                 <div class="absolute inset-0 opacity-5" style="background-image: url('data:image/svg+xml,%3Csvg width=&quot;60&quot; height=&quot;60&quot; viewBox=&quot;0 0 60 60&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot;%3E%3Cg fill=&quot;none&quot; fill-rule=&quot;evenodd&quot;%3E%3Cg fill=&quot;%23ffffff&quot; fill-opacity=&quot;1&quot;%3E%3Cpath d=&quot;M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z&quot;/%3E%3C/g%3E%3C/g%3E%3C/svg%3E');"></div>
 
                 <div class="relative z-10">
@@ -191,121 +378,176 @@
                         @endif
                     </div>
 
-                    <h1 class="font-display font-black text-3xl sm:text-4xl md:text-5xl text-white leading-tight mb-6">${heroTitle}</h1>
+                    <div class="grid grid-cols-1 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)] gap-6 items-start">
+                        <div class="min-w-0">
+                            <h1 class="font-display font-black text-white leading-[0.98] mb-5 break-words" style="font-size: clamp(2rem, 10vw, 3.5rem);">${heroTitle}</h1>
 
-                    <p class="text-lg text-slate-300 leading-relaxed max-w-3xl" itemscope itemtype="https://schema.org/Answer" itemprop="text">
-                        <strong class="text-white">${directAnswerLead}</strong>
-                        @if(county.getEpaZone() == 1)
-                            ${county.getAreaDisplayName()} is classified as <strong class="text-white">EPA Zone 1 (High Risk)</strong>.
-                            The predicted average indoor radon screening level exceeds 4.0 pCi/L - the EPA's recommended action threshold.
-                            <strong class="text-red-300">Testing is strongly recommended for every home in this county.</strong>
-                        @elseif(county.getEpaZone() == 2)
-                            ${county.getAreaDisplayName()} is classified as <strong class="text-white">EPA Zone 2 (Moderate Risk)</strong>.
-                            Predicted average indoor screening levels fall between 2.0 and 4.0 pCi/L.
-                            While below the EPA action level, many individual homes still test above 4.0 due to local soil conditions and foundation type.
-                        @elseif(county.getEpaZone() == 3)
-                            ${county.getAreaDisplayName()} is classified as <strong class="text-white">EPA Zone 3 (Low Risk)</strong>.
-                            Predicted average indoor screening levels are below 2.0 pCi/L.
-                            However, the EPA recommends testing all homes regardless of zone - elevated readings have been found in every state.
-                        @else
-                            ${county.getAreaDisplayName()} currently has <strong class="text-white">no published EPA zone assignment</strong> in our source dataset.
-                            Because zone data is unavailable for this county, the safest approach is direct home testing.
-                            <strong class="text-slate-200">Use a short-term kit first, then follow up with mitigation planning if results are elevated.</strong>
-                        @endif
-                    </p>
+                            <p class="text-base sm:text-lg text-slate-300 leading-relaxed max-w-3xl" itemscope itemtype="https://schema.org/Answer" itemprop="text">
+                                <strong class="text-white">${directAnswerLead}</strong>
+                                @if(introIntentLead != null)
+                                    ${introIntentLead}
+                                @endif
+                                ${heroQuickVerdict}
+                            </p>
+
+                            <div class="mt-6 flex flex-col sm:flex-row gap-3">
+                                <a href="#situation-picker"
+                                   data-track-event="levels_primary_jump_click"
+                                   data-track-label="hero_jump"
+                                   class="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-2xl bg-white text-slate-900 text-sm font-black hover:bg-slate-100 transition-colors shadow-lg">
+                                    Pick My Next Step
+                                </a>
+                                <a href="/guides/how-to-test-for-radon"
+                                   data-track-event="levels_test_guide_click"
+                                   data-track-label="hero_primary"
+                                   class="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-2xl border border-white/20 text-white text-sm font-bold hover:bg-white/10 transition-colors">
+                                    I Need to Test First
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="min-w-0 rounded-[1.75rem] border border-white/15 bg-white/10 backdrop-blur-sm p-5 sm:p-6 shadow-2xl">
+                            <div class="text-xs font-bold uppercase tracking-[0.18em] text-sky-200 mb-3">Quick Read</div>
+                            <h2 class="font-display font-black text-2xl text-white leading-tight mb-3">${quickDecisionHeading}</h2>
+                            <p class="text-sm sm:text-base text-slate-200 leading-relaxed">${quickDecisionBody}</p>
+
+                            <div class="mt-5 space-y-3">
+                                <div class="rounded-2xl border border-white/10 bg-slate-950/20 p-3">
+                                    <div class="text-[11px] font-bold uppercase tracking-[0.18em] text-slate-300">County signal</div>
+                                    <p class="mt-1 text-sm font-semibold text-white leading-snug">${countySignalSummary}</p>
+                                </div>
+                                <div class="rounded-2xl border border-white/10 bg-slate-950/20 p-3">
+                                    <div class="text-[11px] font-bold uppercase tracking-[0.18em] text-slate-300">What the number changes</div>
+                                    <p class="mt-1 text-sm font-semibold text-white leading-snug">${thresholdSummary}</p>
+                                </div>
+                                <div class="rounded-2xl border border-white/10 bg-slate-950/20 p-3">
+                                    <div class="text-[11px] font-bold uppercase tracking-[0.18em] text-slate-300">Fastest next move</div>
+                                    <p class="mt-1 text-sm font-semibold text-white leading-snug">${fastMoveSummary}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="situation-picker" class="mt-8 rounded-[1.75rem] bg-white p-5 sm:p-6 shadow-2xl border border-white/10">
+                        <div class="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between mb-5">
+                            <div>
+                                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-100 text-slate-700 text-xs font-bold tracking-wider uppercase mb-3">
+                                    Fastest Path
+                                </div>
+                                <h2 class="font-display font-black text-2xl text-slate-900 leading-tight">Pick the situation that matches you</h2>
+                                <p class="mt-2 text-sm text-slate-600 leading-relaxed max-w-2xl">
+                                    You should not need to read the whole guide before clicking one of these. Start with the lane that matches your current stage, then come back for the deeper reference only if you still need it.
+                                </p>
+                            </div>
+                            <p class="text-sm text-slate-500 leading-relaxed max-w-sm">${decisionFlowIntro}</p>
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-3">
+                            <div class="rounded-2xl border border-emerald-200 bg-emerald-50 p-4 flex flex-col">
+                                <div class="text-xs font-bold uppercase tracking-wider text-emerald-700">No reading yet</div>
+                                <h3 class="mt-2 font-display font-bold text-lg text-slate-900">I have not tested yet</h3>
+                                <p class="mt-2 text-sm text-slate-700 leading-relaxed">
+                                    Do not price mitigation blind. Get the first number, then decide whether you need monitoring, quotes, or nothing at all.
+                                </p>
+                                <div class="mt-4 flex flex-col gap-2">
+                                    <a href="${shortTermKitUrl}"
+                                       data-rv-affiliate-link="true"
+                                       onclick="if(window.rvTrackAffiliateClick) window.rvTrackAffiliateClick(this, { cta_id: 'levels_situation_test_kit', offer_type: 'test_kit', offer_brand: 'first_alert', offer_model: 'rd1', placement_group: 'levels', placement_id: 'situation_not_tested_primary', journey_stage: 'first_test' });"
+                                       target="_blank"
+                                       rel="noopener sponsored nofollow"
+                                       class="inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-emerald-600 text-white text-sm font-bold hover:bg-emerald-700 transition-colors">
+                                        Start with a Short-Term Test Kit
+                                    </a>
+                                    <a href="/guides/how-to-test-for-radon"
+                                       data-track-event="levels_test_guide_click"
+                                       data-track-label="hero_not_tested"
+                                       class="inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl border border-emerald-200 text-emerald-800 text-sm font-bold hover:bg-emerald-100 transition-colors">
+                                        Read the 3-minute testing guide
+                                    </a>
+                                </div>
+                            </div>
+
+                            <a href="/radon-mitigation-cost/${county.getStateSlug()}/${county.getCountySlug()}?radonResultBand=between_2_and_4&intent=homeowner#estimate-form"
+                               data-track-event="levels_result_path_click"
+                               data-track-label="borderline_result"
+                               class="rounded-2xl border border-amber-200 bg-amber-50 p-4 hover:border-amber-300 hover:bg-amber-100 transition-colors flex flex-col">
+                                <div class="text-xs font-bold uppercase tracking-wider text-amber-700">2.0-3.9 pCi/L</div>
+                                <h3 class="mt-2 font-display font-bold text-lg text-slate-900">My result is 2.0-3.9</h3>
+                                <p class="mt-2 text-sm text-slate-700 leading-relaxed flex-1">
+                                    Usually retest or track first. If the reading keeps showing up, use the local action plan to decide whether pricing makes sense.
+                                </p>
+                                <div class="mt-4 inline-flex items-center justify-between gap-3 text-sm font-semibold text-slate-900">
+                                    <span>${borderlineResultCta}</span>
+                                    <svg class="w-4 h-4 text-amber-700 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+                                    </svg>
+                                </div>
+                            </a>
+
+                            <a href="/radon-mitigation-cost/${county.getStateSlug()}/${county.getCountySlug()}?radonResultBand=above_4&intent=homeowner#estimate-form"
+                               data-track-event="levels_result_path_click"
+                               data-track-label="high_result"
+                               class="rounded-2xl border border-red-200 bg-red-50 p-4 hover:border-red-300 hover:bg-red-100 transition-colors flex flex-col">
+                                <div class="text-xs font-bold uppercase tracking-wider text-red-700">4.0+ pCi/L</div>
+                                <h3 class="mt-2 font-display font-bold text-lg text-slate-900">My result is 4.0+</h3>
+                                <p class="mt-2 text-sm text-slate-700 leading-relaxed flex-1">
+                                    This is the EPA action line. Use the local cost page before calling contractors so you know the likely scope, timing, and budget.
+                                </p>
+                                <div class="mt-4 inline-flex items-center justify-between gap-3 text-sm font-semibold text-slate-900">
+                                    <span>${highResultCta}</span>
+                                    <svg class="w-4 h-4 text-red-700 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+                                    </svg>
+                                </div>
+                            </a>
+
+                            <a href="/radon-credit-calculator/${county.getStateSlug()}/${county.getCountySlug()}?radonResultBand=above_4&intent=buying"
+                               data-track-event="levels_result_path_click"
+                               data-track-label="buyer_seller_path"
+                               class="rounded-2xl border border-blue-200 bg-blue-50 p-4 hover:border-blue-300 hover:bg-blue-100 transition-colors flex flex-col">
+                                <div class="text-xs font-bold uppercase tracking-wider text-blue-700">Buying or selling</div>
+                                <h3 class="mt-2 font-display font-bold text-lg text-slate-900">I am buying or selling</h3>
+                                <p class="mt-2 text-sm text-slate-700 leading-relaxed flex-1">
+                                    Turn the reading into a credit or repair number before negotiation starts. This is the faster path than arguing from a generic article.
+                                </p>
+                                <div class="mt-4 inline-flex items-center justify-between gap-3 text-sm font-semibold text-slate-900">
+                                    <span>${buyerSellerResultCta}</span>
+                                    <svg class="w-4 h-4 text-blue-700 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+                                    </svg>
+                                </div>
+                            </a>
+                        </div>
+
+                        <div class="mt-5 pt-4 border-t border-slate-200 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                            <p class="text-xs text-slate-500 leading-relaxed">Already tested once and just want to watch the number trend?</p>
+                            <a href="${digitalMonitorUrl}"
+                               data-rv-affiliate-link="true"
+                               onclick="if(window.rvTrackAffiliateClick) window.rvTrackAffiliateClick(this, { cta_id: 'levels_situation_monitor_followup', offer_type: 'monitor', offer_brand: 'airthings', offer_model: 'corentium_home', placement_group: 'levels', placement_id: 'situation_followup_link', journey_stage: 'followup_monitor' });"
+                               target="_blank"
+                               rel="noopener sponsored nofollow"
+                               class="inline-flex items-center gap-2 text-sm font-bold text-indigo-700 hover:text-indigo-900 transition-colors">
+                                View Airthings Corentium Home
+                                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3" />
+                                </svg>
+                            </a>
+                        </div>
+                        <p class="mt-3 text-[11px] text-slate-400">Affiliate disclosure: we may earn a commission if you buy through these links.</p>
+                    </div>
                 </div>
             </div>
 
-            <!-- Quick Next Steps -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-10">
-                <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-50 text-brand-700 text-xs font-bold tracking-wider uppercase mb-3">
-                        Decision Flow
-                    </div>
-                    <h2 class="font-display font-bold text-xl text-slate-900 mb-2">Already Have a Reading?</h2>
-                    <p class="text-sm text-slate-600 leading-relaxed mb-4">
-                        Jump into a prefilled ${county.getAreaDisplayName()} action plan based on the result you already have, instead of starting from a generic cost page.
-                    </p>
-                    <div class="grid grid-cols-1 gap-3">
-                        <a href="/radon-mitigation-cost/${county.getStateSlug()}/${county.getCountySlug()}?radonResultBand=between_2_and_4&intent=homeowner#estimate-form"
-                           data-track-event="levels_result_path_click"
-                           data-track-label="borderline_result"
-                           class="rounded-xl border border-amber-200 bg-amber-50 p-4 hover:border-amber-300 hover:bg-amber-100 transition-colors">
-                            <div class="flex items-center justify-between gap-3">
-                                <div>
-                                    <div class="text-xs font-bold uppercase tracking-wider text-amber-700">2.0-3.9 pCi/L</div>
-                                    <div class="mt-1 text-sm font-semibold text-slate-900">Should I retest or get quotes?</div>
-                                </div>
-                                <svg class="w-4 h-4 text-amber-700 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
-                                </svg>
-                            </div>
-                        </a>
-                        <a href="/radon-mitigation-cost/${county.getStateSlug()}/${county.getCountySlug()}?radonResultBand=above_4&intent=homeowner#estimate-form"
-                           data-track-event="levels_result_path_click"
-                           data-track-label="high_result"
-                           class="rounded-xl border border-red-200 bg-red-50 p-4 hover:border-red-300 hover:bg-red-100 transition-colors">
-                            <div class="flex items-center justify-between gap-3">
-                                <div>
-                                    <div class="text-xs font-bold uppercase tracking-wider text-red-700">4.0+ pCi/L</div>
-                                    <div class="mt-1 text-sm font-semibold text-slate-900">Budget mitigation before you call contractors</div>
-                                </div>
-                                <svg class="w-4 h-4 text-red-700 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
-                                </svg>
-                            </div>
-                        </a>
-                        <a href="/radon-credit-calculator/${county.getStateSlug()}/${county.getCountySlug()}?radonResultBand=above_4&intent=buying"
-                           data-track-event="levels_result_path_click"
-                           data-track-label="buyer_seller_path"
-                           class="rounded-xl border border-blue-200 bg-blue-50 p-4 hover:border-blue-300 hover:bg-blue-100 transition-colors">
-                            <div class="flex items-center justify-between gap-3">
-                                <div>
-                                    <div class="text-xs font-bold uppercase tracking-wider text-blue-700">Buying or selling</div>
-                                    <div class="mt-1 text-sm font-semibold text-slate-900">Turn the result into a seller-credit plan</div>
-                                </div>
-                                <svg class="w-4 h-4 text-blue-700 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
-                                </svg>
-                            </div>
-                        </a>
-                    </div>
-                </div>
-                <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-50 text-emerald-700 text-xs font-bold tracking-wider uppercase mb-3">
-                        Test First
-                    </div>
-                    <h2 class="font-display font-bold text-xl text-slate-900 mb-2">Need to Test Before You Price?</h2>
-                    <p class="text-sm text-slate-600 leading-relaxed mb-4">
-                        Start with the testing guide if you do not have a confirmed number yet. For most homeowners, the first purchase should be a short-term kit. Digital monitors make more sense after your first test or for ongoing tracking.
-                    </p>
-                    <div class="flex flex-col sm:flex-row gap-3">
-                        <a href="/guides/how-to-test-for-radon"
-                           class="inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-slate-900 text-white text-sm font-bold hover:bg-slate-800 transition-colors">
-                            Read Testing Guide
-                        </a>
-                        <a href="${shortTermKitUrl}"
-                           data-rv-affiliate-link="true"
-                           onclick="if(window.rvTrackAffiliateClick) window.rvTrackAffiliateClick(this, { cta_id: 'levels_intro_test_kit', offer_type: 'test_kit', offer_brand: 'first_alert', offer_model: 'rd1', placement_group: 'levels', placement_id: 'intro_card', journey_stage: 'first_test' });"
-                           target="_blank"
-                           rel="noopener sponsored nofollow"
-                           class="inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl border border-slate-200 text-slate-700 text-sm font-bold hover:border-emerald-300 hover:text-emerald-700 transition-colors">
-                            View Recommended Short-Term Kit
-                        </a>
-                    </div>
-                    <a href="${digitalMonitorUrl}"
-                       data-rv-affiliate-link="true"
-                       onclick="if(window.rvTrackAffiliateClick) window.rvTrackAffiliateClick(this, { cta_id: 'levels_intro_monitor_followup', offer_type: 'monitor', offer_brand: 'airthings', offer_model: 'corentium_home', placement_group: 'levels', placement_id: 'intro_followup_link', journey_stage: 'followup_monitor' });"
-                       target="_blank"
-                       rel="noopener sponsored nofollow"
-                       class="mt-3 inline-flex items-center gap-2 text-xs font-bold text-indigo-600 hover:text-indigo-800 transition-colors">
-                        Already tested once? View Airthings Corentium Home
-                        <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3" />
-                        </svg>
-                    </a>
-                    <p class="mt-3 text-[11px] text-slate-400">Affiliate disclosure: we may earn a commission if you buy through these links.</p>
-                </div>
+            <div class="mobile-sticky-cta fixed bottom-4 right-4 z-40 lg:hidden" data-nosnippet>
+                <a href="#situation-picker"
+                   data-track-event="levels_mobile_jump_click"
+                   data-track-label="sticky_picker"
+                   class="inline-flex items-center gap-2 rounded-full border border-slate-800 bg-slate-950/95 px-4 py-3 text-sm font-black text-white shadow-2xl backdrop-blur transition-transform active:scale-95">
+                    Pick My Next Step
+                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+                    </svg>
+                </a>
             </div>
 
             @if(aeo != null)

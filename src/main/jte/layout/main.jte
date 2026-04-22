@@ -13,6 +13,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="rv-tracking-version" content="2026-04-22-tracking-v2">
     <title>${title}</title>
     
     <!-- Google tag (gtag.js) -->
@@ -26,8 +27,11 @@
     </script>
     <script>
       (function () {
+        const trackingVersion = '2026-04-22-tracking-v2';
         const telemetryEndpoint = '/api/telemetry/events';
         const sentScrollDepth = new Set();
+
+        window.__rvTrackingVersion = trackingVersion;
 
         function sendServerEvent(payload) {
           const body = JSON.stringify(payload);
@@ -50,7 +54,8 @@
           const query = new URLSearchParams(window.location.search || '');
           const context = {
             title: document.title,
-            page_path: path
+            page_path: path,
+            tracking_version: trackingVersion
           };
 
           if (segments.length === 0) {
