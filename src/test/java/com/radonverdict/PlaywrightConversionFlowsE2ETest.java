@@ -96,7 +96,7 @@ class PlaywrightConversionFlowsE2ETest {
         try (PersonaSession persona = openPersona("global_credit_zip_flow")) {
             persona.visit("/radon-credit-calculator");
 
-            assertTrue(persona.page.locator("h1").first().innerText().contains("Radon Seller Credit Calculator"));
+            assertTrue(persona.page.locator("h1").first().innerText().contains("Radon Failed Inspection Credit Calculator"));
 
             persona.page.locator("label[data-track-label='intent-buying']").first().click();
             persona.page.locator("label[data-track-label='result-above_4']").first().click();

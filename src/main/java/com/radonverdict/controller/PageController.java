@@ -29,6 +29,7 @@ import org.springframework.web.servlet.view.RedirectView;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.TreeMap;
 import java.time.LocalDate;
@@ -97,15 +98,17 @@ public class PageController {
 
     @GetMapping("/radon-credit-calculator")
     public String globalCreditCalculator(@RequestParam(name = "error", required = false) String error, Model model) {
-        model.addAttribute("title", "Radon Seller Credit Calculator " + LocalDate.now().getYear());
+        model.addAttribute("title", "Radon Failed Inspection Credit Calculator | Buyer/Seller Negotiation");
         ItemizedReceipt defaultReceipt = calcService.calculate("US", "National Average", "other", "buying");
         model.addAttribute("defaultReceipt", defaultReceipt);
+        model.addAttribute("trust", trustMetadataService.forGuidePage());
 
         if (error != null) {
             model.addAttribute("noindex", true);
         }
 
         Map<String, List<County>> stateMap = dataLoadService.getCountyBySlugMap().values().stream()
+                .filter(seoIndexingPolicyService::isCountyIndexableCandidate)
                 .collect(Collectors.groupingBy(County::getStateAbbr, TreeMap::new, Collectors.toList()));
         model.addAttribute("stateMap", stateMap);
 
@@ -189,11 +192,19 @@ public class PageController {
         List<County> visibleCounties = stateCounties.stream()
                 .filter(seoIndexingPolicyService::isCountyIndexableCandidate)
                 .toList();
+        String stateName = humanizeStateSlug(canonicalStateSlug, stateCounties.get(0).getStateAbbr());
+        String stateAbbr = stateCounties.get(0).getStateAbbr();
 
         model.addAttribute("stateSlug", canonicalStateSlug);
-        model.addAttribute("stateAbbr", stateCounties.get(0).getStateAbbr());
-        model.addAttribute("stateRule", resolveStateRule(stateCounties.get(0).getStateAbbr()));
+        model.addAttribute("stateAbbr", stateAbbr);
+        model.addAttribute("stateRule", resolveStateRule(stateAbbr));
         model.addAttribute("counties", visibleCounties);
+        model.addAttribute("basementReceipt", calcService.calculate(stateAbbr, stateName + " State Average", stateName, "basement", "homeowner", "under_2000"));
+        model.addAttribute("slabReceipt", calcService.calculate(stateAbbr, stateName + " State Average", stateName, "slab", "homeowner", "under_2000"));
+        model.addAttribute("crawlspaceReceipt", calcService.calculate(stateAbbr, stateName + " State Average", stateName, "crawlspace", "homeowner", "under_2000"));
+        model.addAttribute("zone1Count", stateCounties.stream().filter(c -> c.getEpaZone() == 1).count());
+        model.addAttribute("zone2Count", stateCounties.stream().filter(c -> c.getEpaZone() == 2).count());
+        model.addAttribute("zone3Count", stateCounties.stream().filter(c -> c.getEpaZone() == 3).count());
         model.addAttribute("noindex", visibleCounties.isEmpty());
         return "state_hub";
     }
@@ -384,6 +395,34 @@ public class PageController {
         return regulations.getStateRules().getOrDefault(
                 stateAbbr.toUpperCase(),
                 regulations.getDefaultStateRule());
+    }
+
+    private String humanizeStateSlug(String stateSlug, String fallback) {
+        if (stateSlug == null || stateSlug.isBlank()) {
+            return fallback;
+        }
+
+        String[] stateSlugParts = stateSlug.split("-");
+        StringBuilder stateNameBuilder = new StringBuilder();
+        for (int i = 0; i < stateSlugParts.length; i++) {
+            String part = stateSlugParts[i];
+            if (part == null || part.isBlank()) {
+                continue;
+            }
+            String normalized = part.toLowerCase(Locale.ROOT);
+            String displayPart;
+            if (i > 0 && ("of".equals(normalized) || "and".equals(normalized))) {
+                displayPart = normalized;
+            } else {
+                displayPart = normalized.substring(0, 1).toUpperCase(Locale.ROOT) + normalized.substring(1);
+            }
+            if (stateNameBuilder.length() > 0) {
+                stateNameBuilder.append(" ");
+            }
+            stateNameBuilder.append(displayPart);
+        }
+
+        return stateNameBuilder.length() > 0 ? stateNameBuilder.toString() : fallback;
     }
 
     private boolean hasCostScenarioOverrides(String foundation, String intent, String sqftCategory, String radonResultBand) {

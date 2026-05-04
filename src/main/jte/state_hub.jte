@@ -1,11 +1,18 @@
 @import java.util.List
 @import com.radonverdict.model.County
 @import com.radonverdict.model.StateRegulations.StateRule
+@import com.radonverdict.model.dto.ItemizedReceipt
 
 @param String stateSlug
 @param String stateAbbr
 @param StateRule stateRule = null
 @param List<County> counties
+@param ItemizedReceipt basementReceipt = null
+@param ItemizedReceipt slabReceipt = null
+@param ItemizedReceipt crawlspaceReceipt = null
+@param long zone1Count = 0
+@param long zone2Count = 0
+@param long zone3Count = 0
 @param boolean noindex = false
 
 !{
@@ -29,11 +36,12 @@
         stateNameBuilder.append(displayPart);
     }
     final String stateName = stateNameBuilder.length() > 0 ? stateNameBuilder.toString() : stateAbbr;
+    final long classifiedCountyCount = zone1Count + zone2Count + zone3Count;
 }
 
 @template.layout.main(
-    title = stateName + " Radon Mitigation Cost by County (" + java.time.LocalDate.now().getYear() + ") | Local Price Guide",
-    description = "Compare " + stateName + " radon mitigation cost ranges by county for basement, slab, and crawl space homes. Built for homeowners who already have a radon test result and need local quote context.",
+    title = stateName + " Radon Mitigation Cost by County, Foundation, and Rules | Local Price Guide",
+    description = "Compare " + stateName + " radon mitigation cost by county, foundation type, EPA zone context, and state rules before using a ZIP estimate or seller-credit calculator.",
     canonicalUrl = "https://radonverdict.com/radon-mitigation-cost/" + stateSlug,
     noindex = noindex,
     content = @`
@@ -55,10 +63,10 @@
                     ${stateName} Price Guide
                 </span>
                 <h1 class="font-display font-black text-3xl sm:text-5xl lg:text-6xl text-slate-900 tracking-tighter leading-tight mb-6">
-                    ${stateName} Radon Mitigation Cost by County
+                    ${stateName} Radon Mitigation Cost by County, Foundation, and Rules
                 </h1>
                 <p class="text-slate-500 text-lg sm:text-xl leading-relaxed font-medium max-w-2xl mx-auto">
-                    Compare typical local price ranges for basement, slab, and crawl space systems. Start with your county if you already have a radon result and need realistic quote context.
+                    Compare typical local price ranges for basement, slab, and crawl space systems. Use the state-level ranges first, then open your county when you need a local estimate after a confirmed radon result.
                 </p>
             </div>
 
@@ -102,7 +110,79 @@
                 )
             @endif
 
+            @if(basementReceipt != null && slabReceipt != null && crawlspaceReceipt != null)
+                <section class="mb-10 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+                    <div class="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
+                        <div>
+                            <p class="text-xs font-bold uppercase tracking-wider text-slate-500">${stateAbbr} Cost Starting Point</p>
+                            <h2 class="mt-2 font-display text-3xl font-bold tracking-tight text-slate-900">${stateName} cost range by foundation</h2>
+                        </div>
+                        <a href="/methodology" class="text-sm font-bold text-indigo-700 hover:underline">How these estimates are modeled</a>
+                    </div>
+
+                    <div class="mt-6 grid grid-cols-1 gap-4 md:grid-cols-3">
+                        <div class="rounded-2xl border border-slate-200 bg-slate-50 p-5">
+                            <p class="text-xs font-bold uppercase tracking-wider text-slate-500">Basement</p>
+                            <p class="mt-3 font-display text-3xl font-black text-slate-900">$${basementReceipt.getTotalLow()}-$${basementReceipt.getTotalHigh()}</p>
+                            <p class="mt-3 text-sm leading-relaxed text-slate-600">Use this when the home has a basement or lowest-level slab that supports a standard sub-slab suction system.</p>
+                        </div>
+                        <div class="rounded-2xl border border-slate-200 bg-slate-50 p-5">
+                            <p class="text-xs font-bold uppercase tracking-wider text-slate-500">Slab-on-Grade</p>
+                            <p class="mt-3 font-display text-3xl font-black text-slate-900">$${slabReceipt.getTotalLow()}-$${slabReceipt.getTotalHigh()}</p>
+                            <p class="mt-3 text-sm leading-relaxed text-slate-600">Slab homes can price differently when finished space, routing, or core drilling complicates the system path.</p>
+                        </div>
+                        <div class="rounded-2xl border border-slate-200 bg-slate-50 p-5">
+                            <p class="text-xs font-bold uppercase tracking-wider text-slate-500">Crawl Space</p>
+                            <p class="mt-3 font-display text-3xl font-black text-slate-900">$${crawlspaceReceipt.getTotalLow()}-$${crawlspaceReceipt.getTotalHigh()}</p>
+                            <p class="mt-3 text-sm leading-relaxed text-slate-600">Crawl-space jobs can move higher when vapor-barrier sealing, access, and sub-membrane suction add labor.</p>
+                        </div>
+                    </div>
+
+                    <div class="mt-6 grid grid-cols-1 gap-4 lg:grid-cols-[1.05fr_0.95fr]">
+                        <div class="rounded-2xl border border-slate-200 bg-white p-5">
+                            <p class="text-xs font-bold uppercase tracking-wider text-slate-500">State rules that can change the quote</p>
+                            @if(stateRule != null)
+                                <div class="mt-4 grid gap-3 text-sm leading-relaxed text-slate-600">
+                                    <p><strong class="text-slate-900">Disclosure:</strong> ${stateRule.isDisclosureRequired() ? "Required or commonly expected in this state context." : "No broad state disclosure requirement is modeled here."} ${stateRule.getDisclosureSummary()}</p>
+                                    <p><strong class="text-slate-900">Mitigation licensing:</strong> ${stateRule.isLicenseRequired() ? "State licensing can add contractor and permit friction." : "No state-specific mitigation license premium is modeled."} ${stateRule.getLicenseNote()}</p>
+                                </div>
+                            @else
+                                <p class="mt-4 text-sm leading-relaxed text-slate-600">State rule data is not available for this location yet, so the estimate uses the default public-data model.</p>
+                            @endif
+                        </div>
+
+                        <div class="rounded-2xl border border-slate-200 bg-white p-5">
+                            <p class="text-xs font-bold uppercase tracking-wider text-slate-500">EPA zone mix in ${stateName}</p>
+                            <div class="mt-4 grid grid-cols-3 gap-3">
+                                <div class="rounded-xl bg-red-50 p-4 text-center">
+                                    <p class="font-display text-2xl font-black text-red-700">${zone1Count}</p>
+                                    <p class="mt-1 text-xs font-bold uppercase tracking-wider text-red-700">Zone 1</p>
+                                </div>
+                                <div class="rounded-xl bg-amber-50 p-4 text-center">
+                                    <p class="font-display text-2xl font-black text-amber-700">${zone2Count}</p>
+                                    <p class="mt-1 text-xs font-bold uppercase tracking-wider text-amber-700">Zone 2</p>
+                                </div>
+                                <div class="rounded-xl bg-emerald-50 p-4 text-center">
+                                    <p class="font-display text-2xl font-black text-emerald-700">${zone3Count}</p>
+                                    <p class="mt-1 text-xs font-bold uppercase tracking-wider text-emerald-700">Zone 3</p>
+                                </div>
+                            </div>
+                            <p class="mt-4 text-sm leading-relaxed text-slate-600">
+                                ${classifiedCountyCount} classified counties are used for state-level risk context. EPA zones do not replace a home test, but they help explain why county pages and confirmed 4.0+ results matter before comparing quotes.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+            @endif
+
             <!-- County Grid -->
+            <div class="mb-6">
+                <p class="text-xs font-bold uppercase tracking-wider text-slate-500">County estimates</p>
+                <h2 class="mt-2 font-display text-3xl font-bold tracking-tight text-slate-900">Open a ${stateName} county page for local pricing</h2>
+                <p class="mt-3 max-w-2xl text-sm leading-relaxed text-slate-600">
+                    County pages narrow the state range with local EPA zone context, housing data, state rules, and the foundation scenario you choose.
+                </p>
+            </div>
             <div id="county-pricing" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mb-24">
                 @for(County county : counties)
                     <a href="/radon-mitigation-cost/${stateSlug}/${county.getCountySlug()}" 

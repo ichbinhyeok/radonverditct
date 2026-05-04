@@ -1812,3 +1812,64 @@ Next checks after deploy:
   - watch whether state/county pages receive impression lift from the parent pages.
 - Do not judge success from a few days of data.
   - Use a `28-day` comparison window once both parent pages are crawled.
+
+## 2026-05-04 - Credit Calculator and State Hub Growth Work
+
+Why this was prioritized:
+- This is not a new-article recommendation.
+- It strengthens two existing commercial / decision pages that already fit the project's current work pattern:
+  - `/radon-credit-calculator`
+  - `/radon-mitigation-cost/{state}`
+- GSC final data for `2026-04-02` to `2026-05-01` showed exact state cost hubs getting impressions but essentially no clicks yet.
+  - Highest visible state-hub impression examples included:
+    - `new-hampshire`
+    - `mississippi`
+    - `new-jersey`
+    - `massachusetts`
+    - `new-york`
+    - `connecticut`
+  - Because this is still low-volume, the practical move is template-level state-hub strengthening rather than another one-off CTR rewrite.
+
+Work shipped:
+- Repositioned `/radon-credit-calculator` from a narrow seller-credit page into a failed-inspection negotiation page.
+  - New framing covers:
+    - failed radon inspection
+    - seller credit
+    - repair request
+    - price reduction
+    - buyer ask
+    - seller response
+    - agent handoff
+  - Added stronger links to:
+    - buyer/seller payment guide
+    - negotiation worksheet
+    - mitigation cost guide
+    - radon levels guide
+    - methodology
+  - Added clearer limits:
+    - not a contractor bid
+    - not legal advice
+    - verify state disclosure rules, test validity, licensing, and contractor credentials
+- Strengthened `/radon-mitigation-cost/{state}` hubs.
+  - Added state-level foundation ranges:
+    - basement
+    - slab-on-grade
+    - crawl space
+  - Added state-rule block explaining disclosure and licensing implications.
+  - Added EPA zone mix summary for the state.
+  - Kept county navigation as the next step instead of turning the page into a generic article.
+
+Expected effect:
+- This is more offensive than the defensive `/radon-levels` parent page, but it is still not a guaranteed dramatic overnight lift.
+- The credit calculator should become a clearer commercial-intent destination for real-estate / failed-inspection searches.
+- State hubs should stop looking like thin directories and better support county cost pages.
+- Judge with a 28-day GSC window after recrawl, not a 2-3 day check.
+
+Verification run:
+- `.\gradlew.bat test --tests com.radonverdict.SeoBehaviorIntegrationTest`
+- `.\gradlew.bat test`
+- local render checks on `http://127.0.0.1:8091`:
+  - `/radon-credit-calculator`
+  - `/radon-mitigation-cost/california`
+- result:
+  - BUILD SUCCESSFUL

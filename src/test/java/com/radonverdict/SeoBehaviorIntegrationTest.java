@@ -106,7 +106,11 @@ class SeoBehaviorIntegrationTest {
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("href=\"/radon-mitigation-cost\"")))
                 .andExpect(content().string(containsString("Cost Basics")))
-                .andExpect(content().string(containsString("Use the national cost guide")));
+                .andExpect(content().string(containsString("Use the national cost guide")))
+                .andExpect(content().string(containsString("California cost range by foundation")))
+                .andExpect(content().string(containsString("State rules that can change the quote")))
+                .andExpect(content().string(containsString("EPA zone mix in California")))
+                .andExpect(content().string(containsString("Slab-on-Grade")));
 
         mockMvc.perform(get("/radon-mitigation-cost/california/los-angeles-county"))
                 .andExpect(status().isOk())
@@ -118,10 +122,14 @@ class SeoBehaviorIntegrationTest {
     void globalCreditCalculatorLandingLoads() throws Exception {
         mockMvc.perform(get("/radon-credit-calculator"))
                 .andExpect(status().isOk())
+                .andExpect(content().string(containsString("Radon Failed Inspection")))
                 .andExpect(content().string(containsString("Radon Seller Credit Calculator")))
+                .andExpect(content().string(containsString("repair request")))
+                .andExpect(content().string(containsString("price reduction")))
                 .andExpect(content().string(containsString("Get My Local Credit Number")))
                 .andExpect(content().string(containsString("Buyer asking for credit")))
-                .andExpect(content().string(containsString("Seller budgeting response")));
+                .andExpect(content().string(containsString("Seller budgeting response")))
+                .andExpect(content().string(containsString("legal advice")));
     }
 
     @Test
