@@ -18,9 +18,13 @@
     } else {
         initialLevelValue = county.getEpaZone() == 1 ? 5.5 : county.getEpaZone() == 2 ? 3.0 : 1.5;
     }
+    final String initialStatus = initialLevelValue >= 4.0 ? "danger" : initialLevelValue >= 2.0 ? "caution" : "safe";
     final String initialLevel = String.format(java.util.Locale.US, "%.1f", initialLevelValue);
     final String initialPostMitigationLow = String.format(java.util.Locale.US, "%.1f", Math.max(0.3, initialLevelValue * 0.05));
     final String initialPostMitigationHigh = String.format(java.util.Locale.US, "%.1f", Math.max(0.8, initialLevelValue * 0.15));
+    final String safeInitialStyle = "safe".equals(initialStatus) ? null : "display:none";
+    final String cautionInitialStyle = "caution".equals(initialStatus) ? null : "display:none";
+    final String dangerInitialStyle = "danger".equals(initialStatus) ? null : "display:none";
     final int initialBarWidth = (int) Math.min((initialLevelValue / 20.0) * 100.0, 100.0);
     final String initialBarColor = initialLevelValue >= 4.0 ? "bg-red-500" : initialLevelValue >= 2.0 ? "bg-amber-400" : "bg-emerald-500";
     final String shortTermKitUrl = "https://www.amazon.com/dp/B00002N83E?tag=radonverdict-20";
@@ -29,6 +33,7 @@
 
 <!-- Radon Level Decision Advisor: Pure Alpine.js (no server calls) -->
 <div class="bg-white rounded-[2rem] p-6 sm:p-8 shadow-sm border border-slate-200 mb-6 max-w-2xl mx-auto"
+     data-nosnippet
      x-data="{
         level: ${initialLevel},
         get status() {
@@ -116,6 +121,7 @@
 
     <!-- SAFE -->
     <div x-show="status === 'safe'" x-transition.opacity.duration.300ms
+         style="${safeInitialStyle}"
          class="rounded-2xl border-2 border-emerald-200 bg-emerald-50 p-5">
         <div class="flex items-start gap-4">
             <div class="w-10 h-10 rounded-full bg-emerald-500 text-white flex items-center justify-center shrink-0 shadow-sm">
@@ -170,6 +176,7 @@
 
     <!-- CAUTION -->
     <div x-show="status === 'caution'" x-transition.opacity.duration.300ms
+         style="${cautionInitialStyle}"
          class="rounded-2xl border-2 border-amber-200 bg-amber-50 p-5">
         <div class="flex items-start gap-4">
             <div class="w-10 h-10 rounded-full bg-amber-500 text-white flex items-center justify-center shrink-0 shadow-sm">
@@ -241,6 +248,7 @@
 
     <!-- DANGER -->
     <div x-show="status === 'danger'" x-transition.opacity.duration.300ms
+         style="${dangerInitialStyle}"
          class="rounded-2xl border-2 border-red-200 bg-red-50 p-5">
         <div class="flex items-start gap-4">
             <div class="w-10 h-10 rounded-full bg-red-600 text-white flex items-center justify-center shrink-0 shadow-sm animate-pulse">

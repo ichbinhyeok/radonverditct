@@ -22,6 +22,26 @@
 
 !{
     final String countyDisplay = county.getSeoDisplayName() + ", " + county.getStateAbbr();
+    String[] stateSlugParts = county.getStateSlug().split("-");
+    StringBuilder stateNameBuilder = new StringBuilder();
+    for (int i = 0; i < stateSlugParts.length; i++) {
+        String part = stateSlugParts[i];
+        if (part == null || part.isBlank()) {
+            continue;
+        }
+        String normalized = part.toLowerCase(java.util.Locale.ROOT);
+        String displayPart;
+        if (i > 0 && ("of".equals(normalized) || "and".equals(normalized))) {
+            displayPart = normalized;
+        } else {
+            displayPart = normalized.substring(0, 1).toUpperCase(java.util.Locale.ROOT) + normalized.substring(1);
+        }
+        if (stateNameBuilder.length() > 0) {
+            stateNameBuilder.append(" ");
+        }
+        stateNameBuilder.append(displayPart);
+    }
+    final String stateName = stateNameBuilder.length() > 0 ? stateNameBuilder.toString() : county.getStateAbbr();
     final int currentYear = java.time.LocalDate.now().getYear();
     final String seoTitle = "How Much Does Radon Mitigation Cost in " + countyDisplay + "? | " + currentYear + " Price Range";
     final String seoDescription = page.getSeoDescription() != null && !page.getSeoDescription().isBlank()
@@ -268,6 +288,17 @@
             </div>
             @endif
 
+            @template.components.state_radon_resources(
+                stateName = stateName,
+                stateAbbr = county.getStateAbbr(),
+                stateProgramUrl = page.getStateProgramUrl(),
+                disclosureRequired = page.isDisclosureRequired(),
+                disclosureSummary = page.getDisclosureSummary(),
+                licenseRequired = page.isLicenseRequired(),
+                licenseNote = page.getLicenseNote(),
+                className = "mt-20 mb-10"
+            )
+
             <!-- 5. Sources & Methodology / YMYL Disclaimers -->
             <div class="border-t border-slate-200 mt-20 pt-16 mb-10 text-sm text-slate-500">
                 <h3 class="font-display font-bold text-xl text-slate-900 mb-4">Sources & Methodology</h3>
@@ -290,7 +321,7 @@
                         </ul>
                     </div>
                 </div>
-                <p class="mt-8 text-xs text-slate-400 font-medium">Page Content Last Reviewed: ${trust != null && trust.getLastReviewed() != null && !trust.getLastReviewed().isBlank() ? trust.getLastReviewed() : "Source-level retrieval dates"}</p>
+                <p class="mt-8 text-xs text-slate-400 font-medium">Content review: ${trust != null && trust.getLastReviewed() != null && !trust.getLastReviewed().isBlank() ? trust.getLastReviewed() : "Source-level retrieval dates"}</p>
             </div>
             @if(trust != null)
                 @template.components.trust_metadata(trust = trust, quality = quality, showDebug = showSeoDebug)

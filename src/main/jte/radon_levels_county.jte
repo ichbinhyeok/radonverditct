@@ -21,10 +21,34 @@
 !{
     final String seoCountyDisplay = county.getSeoDisplayName();
     final String seoPlaceLabel = seoCountyDisplay + ", " + county.getStateAbbr();
+    String[] stateSlugParts = county.getStateSlug().split("-");
+    StringBuilder stateNameBuilder = new StringBuilder();
+    for (int i = 0; i < stateSlugParts.length; i++) {
+        String part = stateSlugParts[i];
+        if (part == null || part.isBlank()) {
+            continue;
+        }
+        String normalized = part.toLowerCase(java.util.Locale.ROOT);
+        String displayPart;
+        if (i > 0 && ("of".equals(normalized) || "and".equals(normalized))) {
+            displayPart = normalized;
+        } else {
+            displayPart = normalized.substring(0, 1).toUpperCase(java.util.Locale.ROOT) + normalized.substring(1);
+        }
+        if (stateNameBuilder.length() > 0) {
+            stateNameBuilder.append(" ");
+        }
+        stateNameBuilder.append(displayPart);
+    }
+    final String stateName = stateNameBuilder.length() > 0 ? stateNameBuilder.toString() : county.getStateAbbr();
     final String shortTermKitUrl = "https://www.amazon.com/dp/B00002N83E?tag=radonverdict-20";
     final String digitalMonitorUrl = "https://www.amazon.com/dp/B00H2VOSP8?tag=radonverdict-20";
     final boolean fallsChurchDecisionCounty =
             "virginia".equals(county.getStateSlug()) && "falls-church-city".equals(county.getCountySlug());
+    final boolean schenectadyZoneCounty =
+            "new-york".equals(county.getStateSlug()) && "schenectady-county".equals(county.getCountySlug());
+    final boolean dupageCtrCounty =
+            "illinois".equals(county.getStateSlug()) && "dupage-county".equals(county.getCountySlug());
     final boolean fremontZoneCounty =
             "idaho".equals(county.getStateSlug()) && "fremont-county".equals(county.getCountySlug());
     final boolean williamsonDecisionCounty =
@@ -79,9 +103,15 @@
                     || ("tennessee".equals(county.getStateSlug()) && "williamson-county".equals(county.getCountySlug()))
                     || ("pennsylvania".equals(county.getStateSlug()) && "allegheny-county".equals(county.getCountySlug()))
                     || ("florida".equals(county.getStateSlug()) && "hillsborough-county".equals(county.getCountySlug()));
+    final boolean basementCtrPriorityCounty =
+            fallsChurchDecisionCounty || dupageCtrCounty;
+    final boolean epaZoneCtrPriorityCounty =
+            fremontZoneCounty || schenectadyZoneCounty;
 
-    final String seoTitle = fremontZoneCounty
+    final String seoTitle = epaZoneCtrPriorityCounty
             ? seoPlaceLabel + " EPA Radon Zone | Basement Levels & 4.0 Guide"
+            : basementCtrPriorityCounty
+            ? seoPlaceLabel + " Basement Radon Levels | EPA Zone & 4.0 Guide"
             : nextStepCtrLiftCounty
             ? seoPlaceLabel + " Radon Levels | EPA Zone, 4.0+, and Next Step"
             : topCtrPriorityCounty
@@ -90,9 +120,12 @@
             ? seoPlaceLabel + " Radon Levels: EPA Zone & Basement Test Guide"
             : seoPlaceLabel + " Radon Levels, Zone Map & Home Testing Guide | EPA 4.0 pCi/L";
 
-    final String seoDescription = fremontZoneCounty
+    final String seoDescription = epaZoneCtrPriorityCounty
             ? "Check the EPA radon zone for " + seoPlaceLabel
             + ", see what that zone means for basement radon levels, and know when 2.0-3.9 versus 4.0+ changes the next step."
+            : basementCtrPriorityCounty
+            ? "Check basement radon levels in " + seoPlaceLabel
+            + ", see the EPA zone, and understand what 2.0 vs 4.0+ pCi/L means before you retest or compare mitigation quotes."
             : nextStepCtrLiftCounty
             ? "Check radon levels in " + seoPlaceLabel
             + ", see the EPA zone, and know whether to test, retest, or budget mitigation after a 4.0+ result."
@@ -104,8 +137,10 @@
             + ", what a basement test means at 2.0 vs 4.0+ pCi/L, and when to retest or compare mitigation quotes."
             : seoPlaceLabel + " radon guide for basement and lowest-level home tests. See EPA zone data, what 2.0, 4.0, and 8.0+ pCi/L mean, and when mitigation quotes are worth comparing.";
 
-    final String heroTitle = fremontZoneCounty
+    final String heroTitle = epaZoneCtrPriorityCounty
             ? "EPA Radon Zone & Basement Testing in " + seoPlaceLabel
+            : basementCtrPriorityCounty
+            ? "Basement Radon Levels, EPA Zone & Test Meaning in " + seoPlaceLabel
             : nextStepCtrLiftCounty
             ? seoPlaceLabel + " Radon Levels, EPA Zone & Next Step"
             : topCtrPriorityCounty
@@ -114,8 +149,10 @@
             ? "Radon Levels, EPA Zone & Basement Testing in " + seoPlaceLabel
             : "Radon Levels & Zone Map in " + seoPlaceLabel;
 
-    final String directAnswerLead = fremontZoneCounty
+    final String directAnswerLead = epaZoneCtrPriorityCounty
             ? "EPA zone answer first: "
+            : basementCtrPriorityCounty
+            ? "Basement test answer: "
             : nextStepCtrLiftCounty
             ? "Fast local answer: "
             : topCtrPriorityCounty
@@ -127,6 +164,12 @@
     final String introIntentLead = fallsChurchDecisionCounty
             ? "If you are checking radon levels in a " + county.getAreaDisplayName()
                     + " basement, use the EPA zone as context first, then decide whether a 2.0-3.9 result needs a retest or a 4.0+ result needs mitigation planning."
+            : schenectadyZoneCounty
+            ? "If you are trying to confirm the EPA radon zone for " + county.getAreaDisplayName()
+                    + ", use this page for the zone answer first, then map that zone to what a basement or lowest-level test result actually means."
+            : dupageCtrCounty
+            ? "If you are checking basement radon levels in " + county.getAreaDisplayName()
+                    + ", use the EPA zone as context first, then decide whether a 2.0-3.9 result needs retesting or a 4.0+ result needs mitigation planning."
             : phaseOneCtrLiftCounty
             ? "Use the " + county.getAreaDisplayName()
                     + " quick path to decide between first testing, retesting, or budgeting mitigation instead of starting with a generic radon guide."
@@ -184,6 +227,12 @@
     final String heroQuickVerdict = phaseOneCtrLiftCounty
             ? county.getAreaDisplayName()
             + " searchers usually need the practical next move fast. The first useful split is simple: no test yet, 2.0-3.9, or 4.0+."
+            : schenectadyZoneCounty
+            ? county.getAreaDisplayName()
+            + " is EPA Zone 2, which means predicted average indoor screening levels between 2.0 and 4.0 pCi/L. Individual basements can still test above 4.0, so your own reading decides the next move."
+            : dupageCtrCounty
+            ? county.getAreaDisplayName()
+            + " basement searchers usually need the practical split fast: no test yet, 2.0-3.9, or 4.0+. The county map is context, but the reading in your home drives the decision."
             : phaseTwoCtrLiftCounty
             ? county.getAreaDisplayName()
             + " works best as a reading-to-decision page. The county average is context, but your result is what changes the next move."
@@ -938,6 +987,19 @@
             </div>
             @endif
 
+            @if(stateRule != null)
+                @template.components.state_radon_resources(
+                    stateName = stateName,
+                    stateAbbr = county.getStateAbbr(),
+                    stateProgramUrl = stateRule.getStateProgramUrl(),
+                    disclosureRequired = stateRule.isDisclosureRequired(),
+                    disclosureSummary = stateRule.getDisclosureSummary(),
+                    licenseRequired = stateRule.isLicenseRequired(),
+                    licenseNote = stateRule.getLicenseNote(),
+                    className = "mt-20 mb-10"
+                )
+            @endif
+
             <!-- Sources & Disclaimers -->
             <div class="border-t border-slate-200 pt-16 mb-10 text-sm text-slate-500">
                 <h3 class="font-display font-bold text-xl text-slate-900 mb-4">Sources & Methodology</h3>
@@ -962,7 +1024,7 @@
                     and is not medical advice.
                 </p>
                 <p class="mt-4 text-xs text-slate-400 font-medium">
-                    Page Content Last Reviewed:
+                    Content review:
                     ${trust != null && trust.getLastReviewed() != null && !trust.getLastReviewed().isBlank() ? trust.getLastReviewed() : "Source-level retrieval dates"}
                 </p>
             </div>

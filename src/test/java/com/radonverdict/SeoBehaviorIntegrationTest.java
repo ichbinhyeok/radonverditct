@@ -80,6 +80,41 @@ class SeoBehaviorIntegrationTest {
     }
 
     @Test
+    void mitigationCostRootPillarLoadsAndConnectsCostSilo() throws Exception {
+        String html = mockMvc.perform(get("/radon-mitigation-cost"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(not(containsString("<meta name=\"robots\" content=\"noindex, follow\">"))))
+                .andExpect(content().string(containsString("<title>Radon Mitigation Cost by State, Foundation Type, and Result | RadonVerdict</title>")))
+                .andExpect(content().string(containsString("Radon Mitigation Cost by State, Foundation Type, and Test Result")))
+                .andExpect(content().string(containsString("Basement, slab, and crawl-space cost ranges")))
+                .andExpect(content().string(containsString("When the cost question becomes urgent")))
+                .andExpect(content().string(containsString("Browse radon mitigation cost by state")))
+                .andExpect(content().string(containsString("href=\"/radon-mitigation-cost/california\"")))
+                .andExpect(content().string(containsString("href=\"/radon-cost-calculator\"")))
+                .andExpect(content().string(containsString("href=\"/radon-credit-calculator\"")))
+                .andExpect(content().string(containsString("href=\"/radon-levels\"")))
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+
+        assertJsonLdBlocksAreValid(html);
+    }
+
+    @Test
+    void mitigationCostStateAndCountyPagesLinkBackToRootPillar() throws Exception {
+        mockMvc.perform(get("/radon-mitigation-cost/california"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("href=\"/radon-mitigation-cost\"")))
+                .andExpect(content().string(containsString("Cost Basics")))
+                .andExpect(content().string(containsString("Use the national cost guide")));
+
+        mockMvc.perform(get("/radon-mitigation-cost/california/los-angeles-county"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("Radon Mitigation Cost Guide")))
+                .andExpect(content().string(containsString("href=\"/radon-mitigation-cost\"")));
+    }
+
+    @Test
     void globalCreditCalculatorLandingLoads() throws Exception {
         mockMvc.perform(get("/radon-credit-calculator"))
                 .andExpect(status().isOk())
@@ -201,8 +236,53 @@ class SeoBehaviorIntegrationTest {
         mockMvc.perform(get("/radon-mitigation-cost/california/los-angeles-county"))
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("Your 30-second local estimate snapshot")))
+                .andExpect(content().string(containsString("Source dates shown below")))
                 .andExpect(content().string(containsString("Why this estimate looks like this")))
                 .andExpect(content().string(containsString("vs State vs National")));
+    }
+
+    @Test
+    void countyPagesUseSourceDatesAndOfficialStateResourcesForTrust() throws Exception {
+        String today = java.time.LocalDate.now().toString();
+
+        mockMvc.perform(get("/radon-mitigation-cost/california/los-angeles-county"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("Official State Resource")))
+                .andExpect(content().string(containsString("California radon program and rules")))
+                .andExpect(content().string(containsString("https://www.cdph.ca.gov/Programs/CEH/DRSEM/Pages/EMB/Radon.aspx")))
+                .andExpect(content().string(containsString("Content review: Source-level retrieval dates")))
+                .andExpect(content().string(not(containsString("Content review: " + today))));
+
+        mockMvc.perform(get("/radon-levels/california/los-angeles-county"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("Official State Resource")))
+                .andExpect(content().string(containsString("California radon program and rules")))
+                .andExpect(content().string(containsString("https://www.cdph.ca.gov/Programs/CEH/DRSEM/Pages/EMB/Radon.aspx")))
+                .andExpect(content().string(containsString("Content review:")))
+                .andExpect(content().string(not(containsString("Content review: " + today))));
+    }
+
+    @Test
+    void aboutAndMethodologyAvoidUnsupportedReviewerClaims() throws Exception {
+        mockMvc.perform(get("/about"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("A public-data tool for radon decisions")))
+                .andExpect(content().string(containsString("What We Do Not Do")))
+                .andExpect(content().string(containsString("Read the methodology")))
+                .andExpect(content().string(not(containsString("Reviewed &amp; Calibrated"))))
+                .andExpect(content().string(not(containsString("reviewed quarterly"))))
+                .andExpect(content().string(not(containsString("10-15%"))));
+
+        mockMvc.perform(get("/methodology"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("How RadonVerdict turns public radon data into local action guidance")))
+                .andExpect(content().string(containsString("We do not automatically label every page as reviewed today")));
+
+        mockMvc.perform(get("/contact"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("We do not maintain a public walk-in office")))
+                .andExpect(content().string(not(containsString("100 Innovation Drive"))))
+                .andExpect(content().string(not(containsString("Tech Hub, NY 10001"))));
     }
 
     @Test
@@ -313,6 +393,7 @@ class SeoBehaviorIntegrationTest {
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("Los Angeles County, CA Radon Levels, Zone Map")))
                 .andExpect(content().string(containsString("Home Testing Guide")))
+                .andExpect(content().string(containsString("data-nosnippet")))
                 .andExpect(content().string(containsString("Direct Answer for basement and lowest-level tests:")))
                 .andExpect(content().string(containsString("Pick the situation that matches you")))
                 .andExpect(content().string(containsString("Pick My Next Step")))
@@ -323,6 +404,39 @@ class SeoBehaviorIntegrationTest {
                 .andExpect(content().string(containsString("/radon-credit-calculator/california/los-angeles-county?radonResultBand=above_4&intent=buying")))
                 .andExpect(content().string(not(containsString("At <strong x-text=\"parseFloat(level).toFixed(1)\"></strong> pCi/L"))))
                 .andExpect(content().string(containsString("View Airthings Corentium Home")));
+    }
+
+    @Test
+    void radonLevelsRootPillarLoadsAndLinksTheLevelsSilo() throws Exception {
+        String html = mockMvc.perform(get("/radon-levels"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(not(containsString("<meta name=\"robots\" content=\"noindex, follow\">"))))
+                .andExpect(content().string(containsString("<title>Radon Levels: What 2.0, 4.0, and 8.0 pCi/L Mean | EPA Guide</title>")))
+                .andExpect(content().string(containsString("Radon Levels: What 2.0, 4.0, and 8.0 pCi/L Mean")))
+                .andExpect(content().string(containsString("What radon level should homeowners act on?")))
+                .andExpect(content().string(containsString("4.0+ pCi/L")))
+                .andExpect(content().string(containsString("Browse radon levels by state")))
+                .andExpect(content().string(containsString("/radon-levels/california")))
+                .andExpect(content().string(containsString("/radon-cost-calculator")))
+                .andExpect(content().string(containsString("/radon-credit-calculator")))
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+
+        assertJsonLdBlocksAreValid(html);
+    }
+
+    @Test
+    void radonLevelsStateAndCountyPagesLinkBackToRootPillar() throws Exception {
+        mockMvc.perform(get("/radon-levels/california"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("href=\"/radon-levels\"")))
+                .andExpect(content().string(containsString("2.0 vs 4.0 vs 8.0 pCi/L")));
+
+        mockMvc.perform(get("/radon-levels/california/los-angeles-county"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("Radon Levels: 2.0 vs 4.0 vs 8.0")))
+                .andExpect(content().string(containsString("href=\"/radon-levels\"")));
     }
 
     @Test
@@ -341,8 +455,8 @@ class SeoBehaviorIntegrationTest {
     void independentCitySeoAvoidsCountyLabelInTitleAndBreadcrumbJsonLd() throws Exception {
         mockMvc.perform(get("/radon-levels/virginia/falls-church-city"))
                 .andExpect(status().isOk())
-                .andExpect(content().string(containsString("Falls Church, VA Radon Levels | EPA Zone, 4.0+, and Next Step")))
-                .andExpect(content().string(not(containsString("Falls Church County, VA Radon Levels | EPA Zone, 4.0+, and Next Step"))))
+                .andExpect(content().string(containsString("<title>Falls Church, VA Basement Radon Levels | EPA Zone &amp; 4.0 Guide</title>")))
+                .andExpect(content().string(not(containsString("<title>Falls Church County, VA Basement Radon Levels | EPA Zone &amp; 4.0 Guide</title>"))))
                 .andExpect(content().string(containsString("\"name\": \"Falls Church\"")))
                 .andExpect(content().string(not(containsString("\"name\": \"Falls Church County\""))));
     }
@@ -456,7 +570,6 @@ class SeoBehaviorIntegrationTest {
 
     @Test
     void phaseOneCtrLiftCountyPagesUseNextStepFirstSerpCopy() throws Exception {
-        assertLevelsCountyNextStepCopy("/radon-levels/virginia/falls-church-city");
         assertLevelsCountyNextStepCopy("/radon-levels/california/santa-clara-county");
         assertLevelsCountyNextStepCopy("/radon-levels/tennessee/williamson-county");
         assertLevelsCountyNextStepCopy("/radon-levels/georgia/cherokee-county");
@@ -480,11 +593,31 @@ class SeoBehaviorIntegrationTest {
     void fallsChurchLevelsPageUsesLocationSpecificDecisionCopy() throws Exception {
         mockMvc.perform(get("/radon-levels/virginia/falls-church-city"))
                 .andExpect(status().isOk())
+                .andExpect(content().string(containsString("<title>Falls Church, VA Basement Radon Levels | EPA Zone &amp; 4.0 Guide</title>")))
+                .andExpect(content().string(containsString("Basement Radon Levels, EPA Zone &amp; Test Meaning in Falls Church, VA")))
+                .andExpect(content().string(containsString("Basement test answer:")))
                 .andExpect(content().string(containsString("If you are checking radon levels in a Falls Church basement")))
                 .andExpect(content().string(containsString("Open the Falls Church action plan from the basement result you already have")))
                 .andExpect(content().string(containsString("See what a Falls Church basement result means for pricing")))
                 .andExpect(content().string(containsString("See Falls Church mitigation cost before calling contractors")))
                 .andExpect(content().string(containsString("Turn a Falls Church result into seller-credit numbers")));
+    }
+
+    @Test
+    void schenectadyLevelsPageUsesEpaZoneFirstSerpCopy() throws Exception {
+        mockMvc.perform(get("/radon-levels/new-york/schenectady-county"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("<title>Schenectady County, NY EPA Radon Zone | Basement Levels &amp; 4.0 Guide</title>")))
+                .andExpect(content().string(containsString("<meta name=\"description\" content=\"Check the EPA radon zone for Schenectady County, NY, see what that zone means for basement radon levels, and know when 2.0-3.9 versus 4.0+ changes the next step.\">")))
+                .andExpect(content().string(containsString("EPA Radon Zone &amp; Basement Testing in Schenectady County, NY")))
+                .andExpect(content().string(containsString("EPA zone answer first:")))
+                .andExpect(content().string(containsString("If you are trying to confirm the EPA radon zone for Schenectady County")))
+                .andExpect(content().string(containsString("Schenectady County is EPA Zone 2")));
+    }
+
+    @Test
+    void dupageLevelsPageUsesBasementFirstSerpCopy() throws Exception {
+        assertLevelsCountyCtrCopy("/radon-levels/illinois/dupage-county", "DuPage County, IL");
     }
 
     @Test
@@ -541,6 +674,16 @@ class SeoBehaviorIntegrationTest {
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("Radon Seller Credit Worksheet")))
                 .andExpect(content().string(containsString("repair or credit ask")));
+    }
+
+    @Test
+    void energyCostGuideFrontloadsMonthlyAndAnnualAnswer() throws Exception {
+        mockMvc.perform(get("/guides/radon-system-electricity-cost"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("<title>Radon System Electricity Cost: $5-$15/Month to Run the Fan | RadonVerdict</title>")))
+                .andExpect(content().string(containsString("<meta name=\"description\" content=\"Most radon mitigation fans add about $5 to $15 per month ($60 to $180 per year) to the power bill. See the wattage math for typical 40 to 150 watt systems.\">")))
+                .andExpect(content().string(containsString("Radon System Electricity Cost: Usually $5-$15 Per Month")))
+                .andExpect(content().string(containsString("Most radon mitigation fans add about $5 to $15 per month to the power bill, or roughly $60 to $180 per year.")));
     }
 
     @Test

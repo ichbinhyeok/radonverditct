@@ -96,7 +96,7 @@ public class GuideController {
 
     @GetMapping("/guides/radon-system-electricity-cost")
     public String guideEnergyCosts(Model model) {
-        model.addAttribute("title", "Radon System Electricity Cost: How Much Power Does the Fan Use? | RadonVerdict");
+        model.addAttribute("title", "Radon System Electricity Cost: $5-$15/Month to Run the Fan | RadonVerdict");
         return "pages/guide_energy_costs";
     }
 

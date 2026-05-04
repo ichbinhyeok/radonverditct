@@ -22,6 +22,8 @@ import org.springframework.web.servlet.view.RedirectView;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 import java.util.stream.Collectors;
 
 @Controller
@@ -42,6 +44,42 @@ public class RadonLevelsController {
 
     @Value("${app.feature.seo-debug-visible:false}")
     private boolean seoDebugVisible;
+
+    @GetMapping("/radon-levels")
+    public String radonLevelsRoot(Model model) {
+        List<County> allCounties = dataLoadService.getCountyBySlugMap().values().stream()
+                .sorted(Comparator.comparing(County::getStateAbbr).thenComparing(County::getCountyName))
+                .toList();
+        List<County> visibleCounties = allCounties.stream()
+                .filter(seoIndexingPolicyService::isCountyIndexableCandidate)
+                .toList();
+
+        Map<String, List<County>> stateMap = visibleCounties.stream()
+                .collect(Collectors.groupingBy(County::getStateAbbr, TreeMap::new, Collectors.toList()));
+
+        long zone1Count = allCounties.stream().filter(c -> c.getEpaZone() == 1).count();
+        long zone2Count = allCounties.stream().filter(c -> c.getEpaZone() == 2).count();
+        long zone3Count = allCounties.stream().filter(c -> c.getEpaZone() == 3).count();
+        TrustMetadata trust = trustMetadataService.forGuidePage();
+
+        model.addAttribute("stateMap", stateMap);
+        model.addAttribute("zone1Count", zone1Count);
+        model.addAttribute("zone2Count", zone2Count);
+        model.addAttribute("zone3Count", zone3Count);
+        model.addAttribute("visibleCountyCount", visibleCounties.size());
+        model.addAttribute("trust", trust);
+        model.addAttribute("aeo", AeoAnswerBlock.builder()
+                .question("What radon level should homeowners act on?")
+                .directAnswer("In US guidance, 4.0 pCi/L or higher is the main action threshold for fixing a home. Results from 2.0 to 3.9 pCi/L still deserve attention because radon risk is not zero below 4.0; retest, track long-term, or consider reduction depending on the home and situation.")
+                .evidenceRows(List.of(
+                        AeoAnswerBlock.Row.builder().label("Under 2.0 pCi/L").value("Lower concern; keep periodic testing").build(),
+                        AeoAnswerBlock.Row.builder().label("2.0 to 3.9 pCi/L").value("Retest, track, or consider reduction").build(),
+                        AeoAnswerBlock.Row.builder().label("4.0+ pCi/L").value("EPA action threshold for fixing the home").build(),
+                        AeoAnswerBlock.Row.builder().label("8.0+ pCi/L").value("High reading; prioritize mitigation planning").build()))
+                .sources(trust != null ? trust.getSources() : List.of())
+                .build());
+        return "radon_levels_root";
+    }
 
     @GetMapping("/radon-levels/{stateSlug}")
     public Object stateLevelsHub(@PathVariable("stateSlug") String stateSlug, Model model) {
@@ -70,6 +108,7 @@ public class RadonLevelsController {
 
         model.addAttribute("stateSlug", canonicalStateSlug);
         model.addAttribute("stateAbbr", stateAbbr);
+        model.addAttribute("stateRule", resolveStateRule(stateAbbr));
         model.addAttribute("counties", visibleCounties);
         model.addAttribute("zone1Count", zone1Count);
         model.addAttribute("zone2Count", zone2Count);
@@ -183,5 +222,15 @@ public class RadonLevelsController {
         RedirectView view = new RedirectView(path, true);
         view.setStatusCode(HttpStatus.MOVED_PERMANENTLY);
         return view;
+    }
+
+    private StateRegulations.StateRule resolveStateRule(String stateAbbr) {
+        StateRegulations regulations = dataLoadService.getStateRegulations();
+        if (regulations == null || stateAbbr == null) {
+            return null;
+        }
+        return regulations.getStateRules().getOrDefault(
+                stateAbbr.toUpperCase(),
+                regulations.getDefaultStateRule());
     }
 }

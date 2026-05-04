@@ -13,8 +13,14 @@
             <dd class="text-slate-900 font-medium">${trust.getAuthorName()} (${trust.getAuthorRole()})</dd>
         </div>
         <div>
-            <dt class="text-slate-500">Last Reviewed</dt>
-            <dd class="text-slate-900 font-medium">${trust.getLastReviewed()}</dd>
+            <dt class="text-slate-500">Content Review</dt>
+            <dd class="text-slate-900 font-medium">
+                @if(trust.getLastReviewed() != null && !trust.getLastReviewed().isBlank())
+                    ${trust.getLastReviewed()}
+                @else
+                    Source-level dates shown below
+                @endif
+            </dd>
         </div>
         <div>
             <dt class="text-slate-500">Data Retrieved At</dt>

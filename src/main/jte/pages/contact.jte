@@ -65,11 +65,9 @@
                             </svg>
                         </div>
                         <div>
-                            <h3 class="font-display font-bold text-lg text-slate-900 mb-1">Office Location</h3>
+                            <h3 class="font-display font-bold text-lg text-slate-900 mb-1">Operations</h3>
                             <p class="text-slate-600 mb-2 font-medium">
-                                RadonVerdict Data Analytics<br>
-                                100 Innovation Drive<br>
-                                Tech Hub, NY 10001
+                                RadonVerdict is operated online as a public-data and software project. We do not maintain a public walk-in office.
                             </p>
                         </div>
                     </div>

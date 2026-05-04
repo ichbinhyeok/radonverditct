@@ -1,8 +1,10 @@
 @import com.radonverdict.model.County
+@import com.radonverdict.model.StateRegulations.StateRule
 @import java.util.List
 
 @param String stateSlug
 @param String stateAbbr
+@param StateRule stateRule = null
 @param List<County> counties
 @param long zone1Count = 0
 @param long zone2Count = 0
@@ -58,6 +60,8 @@
                 <ol class="inline-flex items-center space-x-2">
                     <li><a href="/" class="hover:text-slate-900 transition-colors">Home</a></li>
                     <li><span class="mx-1 text-slate-300">/</span></li>
+                    <li><a href="/radon-levels" class="hover:text-slate-900 transition-colors">Radon Levels</a></li>
+                    <li><span class="mx-1 text-slate-300">/</span></li>
                     <li class="text-slate-900 font-semibold" aria-current="page">${stateName} Radon Map</li>
                 </ol>
             </nav>
@@ -91,12 +95,18 @@
                 </div>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-10">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-10">
                 <a href="/radon-mitigation-cost/${stateSlug}"
                    class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm hover:border-slate-900 hover:shadow-md transition-all">
                     <p class="text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">Already Tested</p>
                     <h2 class="font-display font-bold text-lg text-slate-900 mb-2">View ${stateName} Cost Estimates</h2>
                     <p class="text-sm text-slate-600 leading-relaxed">If you already have a radon result, skip the directory and move straight to local price guidance.</p>
+                </a>
+                <a href="/radon-levels"
+                   class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm hover:border-indigo-300 hover:shadow-md transition-all">
+                    <p class="text-xs font-bold uppercase tracking-wider text-indigo-600 mb-2">Understand the Number</p>
+                    <h2 class="font-display font-bold text-lg text-slate-900 mb-2">2.0 vs 4.0 vs 8.0 pCi/L</h2>
+                    <p class="text-sm text-slate-600 leading-relaxed">Use the parent levels guide if you need the plain-English meaning of a radon result before browsing counties.</p>
                 </a>
                 <a href="/guides/how-to-test-for-radon"
                    class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm hover:border-emerald-300 hover:shadow-md transition-all">
@@ -111,6 +121,19 @@
                     <p class="text-sm text-slate-600 leading-relaxed">Open your county to see its EPA zone, testing meaning, and the point where mitigation becomes worth pricing.</p>
                 </a>
             </div>
+
+            @if(stateRule != null)
+                @template.components.state_radon_resources(
+                    stateName = stateName,
+                    stateAbbr = stateAbbr,
+                    stateProgramUrl = stateRule.getStateProgramUrl(),
+                    disclosureRequired = stateRule.isDisclosureRequired(),
+                    disclosureSummary = stateRule.getDisclosureSummary(),
+                    licenseRequired = stateRule.isLicenseRequired(),
+                    licenseNote = stateRule.getLicenseNote(),
+                    className = "mb-10"
+                )
+            @endif
 
             <!-- County Directory -->
             <div id="county-directory" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">

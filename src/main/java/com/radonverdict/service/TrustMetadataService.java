@@ -8,7 +8,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,7 +26,7 @@ public class TrustMetadataService {
     @Value("${app.content.reviewer-name:}")
     private String reviewerName;
 
-    @Value("${app.content.reviewer-role:Independent Reviewer}")
+    @Value("${app.content.reviewer-role:}")
     private String reviewerRole;
 
     @Value("${app.content.last-reviewed:}")
@@ -88,15 +87,16 @@ public class TrustMetadataService {
     private TrustMetadata.TrustMetadataBuilder baseBuilder() {
         String lastReviewed = (configuredLastReviewed != null && !configuredLastReviewed.isBlank())
                 ? configuredLastReviewed
-                : LocalDate.now().toString();
+                : null;
 
         String normalizedReviewerName = (reviewerName != null && !reviewerName.isBlank()) ? reviewerName : null;
+        String normalizedReviewerRole = (reviewerRole != null && !reviewerRole.isBlank()) ? reviewerRole : null;
 
         return TrustMetadata.builder()
                 .authorName(authorName)
                 .authorRole(authorRole)
                 .reviewerName(normalizedReviewerName)
-                .reviewerRole(normalizedReviewerName == null ? null : reviewerRole)
+                .reviewerRole(normalizedReviewerName == null ? null : normalizedReviewerRole)
                 .lastReviewed(lastReviewed);
     }
 }

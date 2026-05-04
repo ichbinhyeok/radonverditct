@@ -1667,3 +1667,148 @@ Next checks after deploy + recrawl:
   - `lead_form_submit`
 - interpretation rule:
   - if CTR rises but downstream lead / affiliate events do not, the remaining problem is monetization fit, not discoverability
+
+## 2026-05-04 - Trust cleanup + first two pillar pages
+
+Context:
+- User noticed a temporary impression drop and asked for a precise read.
+- Search Console read showed no confirmed sitewide collapse through the latest stable window:
+  - `2026-04-16` to `2026-04-23`: `57 clicks / 4,985 impressions / 1.14% CTR / 7.40 avg position`
+  - `2026-04-24` to `2026-05-01`: `57 clicks / 4,835 impressions / 1.18% CTR / 7.21 avg position`
+- The low `2026-05-02` and `2026-05-03` values were treated as likely GSC freshness / incomplete-data artifacts, not a real traffic collapse.
+- User pushed back correctly that the project has not been blindly increasing page count. The actual history remains selective strengthening of fixed pSEO pages, snippet framing, first-screen fit, tracking, and trust.
+
+Strategic interpretation:
+- Today's work should not be interpreted as a dramatic near-term ranking lever.
+- It is mostly structural and trust work:
+  - reduce "thin pSEO cluster" risk
+  - make county pages feel connected to parent topic systems
+  - remove unsupported trust claims
+  - give Google and users clearer topical architecture
+- Expected impact window:
+  - deploy + recrawl first
+  - early recognition may take `1-2 weeks`
+  - meaningful Search Console evaluation should use at least a `28-day` window
+- If growth appears, it is more likely from better internal consolidation and click-path fit than from an immediate algorithmic jump.
+
+Trust / YMYL cleanup shipped:
+- Removed the implicit "reviewed today" behavior from `TrustMetadataService`.
+  - `lastReviewed` now stays empty unless explicitly configured.
+  - templates fall back to source-level retrieval dates instead of pretending every page was reviewed today.
+- Removed default `Independent Reviewer` role unless a real reviewer name is configured.
+- Reworked `/about` from broad marketing / expertise language into a more honest operator page:
+  - RadonVerdict is an independent public-data and software project.
+  - It is not a medical provider, contractor, certified lab, government agency, or legal advisor.
+  - It explains what the site does and does not do.
+- Added `/methodology` as a trust page:
+  - explains EPA zone usage
+  - explains estimate inputs and limits
+  - explains source-level freshness
+  - gives a correction path
+- Removed fake physical office-style contact language from `/contact`.
+- Added reusable `state_radon_resources` component and surfaced official state radon program links / disclosure / licensing notes on:
+  - mitigation county pages
+  - levels county pages
+  - mitigation state hubs
+  - levels state hubs
+
+CTR / snippet cleanup shipped in the same workstream:
+- Added `data-nosnippet` and initial hidden styles around the radon level advisor dynamic states so hidden / non-selected copy is less likely to pollute snippets.
+- Tuned selected county `radon-levels` SERP copy:
+  - `schenectady-county`: EPA-zone-first framing
+  - `fremont-county`: EPA-zone-first framing
+  - `falls-church-city`: basement-first framing
+  - `dupage-county`: basement-first framing
+- Adjusted `radon-system-electricity-cost` guide so the monthly answer is explicitly about radon fan electricity cost, not a generic electricity-bill page.
+
+Pillar pages added:
+- `/radon-levels`
+  - role: defensive / architecture parent for the `radon-levels` silo
+  - explains `2.0`, `4.0`, and `8.0+ pCi/L`
+  - connects to:
+    - state radon maps
+    - county levels pages
+    - testing guide
+    - mitigation cost
+    - seller credit calculator
+  - purpose:
+    - make the 2,096+ county levels pages feel like part of a coherent topic system
+    - improve trust and internal consolidation
+    - not expected to produce a dramatic standalone lift immediately
+- `/radon-mitigation-cost`
+  - role: more offensive / commercial-intent parent for the cost silo
+  - explains national planning ranges by foundation type:
+    - basement
+    - slab-on-grade
+    - crawl space
+  - connects to:
+    - ZIP cost calculator
+    - state cost hubs
+    - county cost pages
+    - radon levels guide
+    - seller credit calculator
+  - purpose:
+    - capture "how much does radon mitigation cost" intent more directly
+    - send value to state/county cost pages
+    - create a cleaner commercial bridge than relying only on `/radon-cost-calculator`
+
+Internal link / sitemap changes:
+- Added top nav and footer links for:
+  - `Radon Levels`
+  - `Costs`
+- Added `/radon-levels` to `sitemap-core.xml`.
+- Added `/radon-mitigation-cost` to `sitemap-core.xml`.
+- Added parent-pillar links from:
+  - `radon_levels_state.jte`
+  - `radon_levels_county.jte` via `InternalLinkService`
+  - `state_hub.jte`
+  - mitigation county pages via `InternalLinkService`
+
+Files added:
+- `src/main/jte/radon_levels_root.jte`
+- `src/main/jte/mitigation_cost_root.jte`
+- `src/main/jte/pages/methodology.jte`
+- `src/main/jte/components/state_radon_resources.jte`
+
+Primary files modified:
+- `src/main/java/com/radonverdict/controller/RadonLevelsController.java`
+- `src/main/java/com/radonverdict/controller/PageController.java`
+- `src/main/java/com/radonverdict/controller/InfoController.java`
+- `src/main/java/com/radonverdict/controller/SitemapController.java`
+- `src/main/java/com/radonverdict/service/InternalLinkService.java`
+- `src/main/java/com/radonverdict/service/TrustMetadataService.java`
+- `src/main/jte/layout/main.jte`
+- `src/main/jte/pages/about.jte`
+- `src/main/jte/pages/contact.jte`
+- `src/main/jte/county_hub.jte`
+- `src/main/jte/state_hub.jte`
+- `src/main/jte/radon_levels_county.jte`
+- `src/main/jte/radon_levels_state.jte`
+- `src/test/java/com/radonverdict/SeoBehaviorIntegrationTest.java`
+
+Verification run:
+- `.\gradlew.bat test --tests com.radonverdict.SeoBehaviorIntegrationTest`
+- `.\gradlew.bat test`
+- result:
+  - BUILD SUCCESSFUL
+
+Local render checks:
+- `/radon-levels` verified on local port `8082`
+- `/radon-mitigation-cost` verified on local port `8083`
+- state / county / sitemap links checked by HTTP response content.
+
+Next checks after deploy:
+- Confirm both new root pages are indexed:
+  - `/radon-levels`
+  - `/radon-mitigation-cost`
+- In GSC after recrawl:
+  - compare query movement for:
+    - `radon levels`
+    - `acceptable radon levels`
+    - `radon level 4.0`
+    - `radon mitigation cost`
+    - `radon mitigation cost by state`
+    - `radon mitigation cost basement`
+  - watch whether state/county pages receive impression lift from the parent pages.
+- Do not judge success from a few days of data.
+  - Use a `28-day` comparison window once both parent pages are crawled.

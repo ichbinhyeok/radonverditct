@@ -65,7 +65,10 @@ public class SitemapController {
 
         // 1. Static & Hub Pages
         addUrl(xml, "/radon-cost-calculator", "0.9");
+        addUrl(xml, "/radon-mitigation-cost", "0.9");
+        addUrl(xml, "/radon-levels", "0.9");
         addUrl(xml, "/about", "0.8");
+        addUrl(xml, "/methodology", "0.8");
         addUrl(xml, "/contact", "0.8");
         addUrl(xml, "/guides", "0.8");
 

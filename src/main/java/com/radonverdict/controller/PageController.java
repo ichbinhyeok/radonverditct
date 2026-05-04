@@ -1,6 +1,7 @@
 package com.radonverdict.controller;
 
 import com.radonverdict.model.County;
+import com.radonverdict.model.StateRegulations;
 import com.radonverdict.model.dto.AeoAnswerBlock;
 import com.radonverdict.model.dto.CountyPageContent;
 import com.radonverdict.model.dto.ItemizedReceipt;
@@ -75,6 +76,23 @@ public class PageController {
         model.addAttribute("stateMap", stateMap);
 
         return "calculator";
+    }
+
+    @GetMapping("/radon-mitigation-cost")
+    public String mitigationCostRoot(Model model) {
+        model.addAttribute("title", "Radon Mitigation Cost by State, Foundation Type, and Result | RadonVerdict");
+        model.addAttribute("basementReceipt", calcService.calculate("US", "National Average", "Basement", "basement", "homeowner", "under_2000"));
+        model.addAttribute("slabReceipt", calcService.calculate("US", "National Average", "Slab-on-Grade", "slab", "homeowner", "under_2000"));
+        model.addAttribute("crawlspaceReceipt", calcService.calculate("US", "National Average", "Crawl Space", "crawlspace", "homeowner", "under_2000"));
+        model.addAttribute("defaultReceipt", calcService.calculate("US", "National Average", "other", "homeowner"));
+        model.addAttribute("trust", trustMetadataService.forGuidePage());
+
+        Map<String, List<County>> stateMap = dataLoadService.getCountyBySlugMap().values().stream()
+                .filter(seoIndexingPolicyService::isCountyIndexableCandidate)
+                .collect(Collectors.groupingBy(County::getStateAbbr, TreeMap::new, Collectors.toList()));
+        model.addAttribute("stateMap", stateMap);
+
+        return "mitigation_cost_root";
     }
 
     @GetMapping("/radon-credit-calculator")
@@ -174,6 +192,7 @@ public class PageController {
 
         model.addAttribute("stateSlug", canonicalStateSlug);
         model.addAttribute("stateAbbr", stateCounties.get(0).getStateAbbr());
+        model.addAttribute("stateRule", resolveStateRule(stateCounties.get(0).getStateAbbr()));
         model.addAttribute("counties", visibleCounties);
         model.addAttribute("noindex", visibleCounties.isEmpty());
         return "state_hub";
@@ -355,6 +374,16 @@ public class PageController {
 
     private RedirectView permanentRedirect(String path) {
         return redirect(path, HttpStatus.MOVED_PERMANENTLY);
+    }
+
+    private StateRegulations.StateRule resolveStateRule(String stateAbbr) {
+        StateRegulations regulations = dataLoadService.getStateRegulations();
+        if (regulations == null || stateAbbr == null) {
+            return null;
+        }
+        return regulations.getStateRules().getOrDefault(
+                stateAbbr.toUpperCase(),
+                regulations.getDefaultStateRule());
     }
 
     private boolean hasCostScenarioOverrides(String foundation, String intent, String sqftCategory, String radonResultBand) {

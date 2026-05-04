@@ -3,14 +3,14 @@
 @template.layout.main(
     title = title,
     canonicalUrl = "https://radonverdict.com/guides/radon-system-electricity-cost",
-    description = "How much electricity does a radon mitigation fan use? Calculate the running costs of an active sub-slab depressurization system on your monthly power bill.",
+    description = "Most radon mitigation fans add about $5 to $15 per month ($60 to $180 per year) to the power bill. See the wattage math for typical 40 to 150 watt systems.",
     content = @`
         <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24 prose prose-slate md:prose-lg max-w-none">
             <a href="/guides" class="not-prose inline-flex items-center gap-1 text-xs font-bold text-slate-400 hover:text-indigo-600 transition-colors uppercase tracking-wider mb-6"><svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg> All Guides</a>
             <span class="inline-block py-1 px-3 rounded-full bg-slate-100 text-slate-700 text-xs font-bold tracking-wider uppercase mb-6 ml-3">Maintenance &amp; Repair</span>
-            <h1 class="font-display font-bold text-4xl text-slate-900 mb-6 tracking-tight">Radon System Electricity Cost: How Much Power Does the Fan Use?</h1>
+            <h1 class="font-display font-bold text-4xl text-slate-900 mb-6 tracking-tight">Radon System Electricity Cost: Usually $5-$15 Per Month</h1>
             <p class="lead text-xl text-slate-600 mb-10 leading-relaxed font-medium pb-10 border-b border-slate-200">
-                You're planning to install an Active Sub-Slab Depressurization (ASD) radon system. Since the National Radon Proficiency Program (NRPP) mandates the fan run 24 hours a day, 365 days a year, the real hidden cost is the electricity bill. Just how much power does a radon fan suck?
+                Most radon mitigation fans add about $5 to $15 per month to the power bill, or roughly $60 to $180 per year. These fans are designed to run continuously, so the exact cost depends mostly on motor wattage and your local electric rate rather than any surprise maintenance fee.
             </p>
 
             <h2 class="font-display font-bold text-2xl text-slate-900 mt-12 mb-4">The Wattage Profile of a Modern Radon Fan</h2>

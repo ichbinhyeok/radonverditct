@@ -38,7 +38,13 @@
                     Source-level retrieval dates
                 @endif
             </p>
-            <p class="text-xs text-slate-500 mt-1">Method reviewed ${trust != null ? trust.getLastReviewed() : "recently"}</p>
+            <p class="text-xs text-slate-500 mt-1">
+                @if(trust != null && trust.getLastReviewed() != null && !trust.getLastReviewed().isBlank())
+                    Method reviewed ${trust.getLastReviewed()}
+                @else
+                    Source dates shown below
+                @endif
+            </p>
         </div>
         <div class="rounded-xl border border-slate-200 bg-slate-50 p-4">
             <p class="text-xs font-bold uppercase tracking-wider text-slate-500">Primary Source</p>

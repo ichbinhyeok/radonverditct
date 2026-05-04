@@ -236,7 +236,7 @@
                 },
                 "author": {
                     "@type": "Organization",
-                    "name": "RadonVerdict Editorial Team"
+                    "name": "RadonVerdict"
                 },
                 "publisher": {
                     "@type": "Organization",
@@ -291,6 +291,8 @@
             </a>
             <nav class="hidden md:flex gap-6 text-sm font-medium text-slate-500">
                 <a href="/radon-cost-calculator" class="tap-target-inline hover:text-slate-900 transition-colors">Action Plan</a>
+                <a href="/radon-mitigation-cost" class="tap-target-inline hover:text-slate-900 transition-colors">Costs</a>
+                <a href="/radon-levels" class="tap-target-inline hover:text-slate-900 transition-colors">Radon Levels</a>
                 <a href="/guides/how-to-test-for-radon" class="tap-target-inline hover:text-slate-900 transition-colors">Testing Guide</a>
                 <a href="/guides" class="tap-target-inline hover:text-slate-900 transition-colors">Guides</a>
                 <a href="/about" class="tap-target-inline hover:text-slate-900 transition-colors">About</a>
@@ -316,6 +318,8 @@
              class="md:hidden border-t border-slate-200/80 bg-white/95 backdrop-blur-sm">
             <nav class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex flex-col">
                 <a href="/radon-cost-calculator" class="tap-target-inline rounded-xl px-3 text-slate-700 hover:bg-slate-100 hover:text-slate-900">Action Plan</a>
+                <a href="/radon-mitigation-cost" class="tap-target-inline rounded-xl px-3 text-slate-700 hover:bg-slate-100 hover:text-slate-900">Costs</a>
+                <a href="/radon-levels" class="tap-target-inline rounded-xl px-3 text-slate-700 hover:bg-slate-100 hover:text-slate-900">Radon Levels</a>
                 <a href="/guides/how-to-test-for-radon" class="tap-target-inline rounded-xl px-3 text-slate-700 hover:bg-slate-100 hover:text-slate-900">Testing Guide</a>
                 <a href="/guides" class="tap-target-inline rounded-xl px-3 text-slate-700 hover:bg-slate-100 hover:text-slate-900">Guides</a>
                 <a href="/about" class="tap-target-inline rounded-xl px-3 text-slate-700 hover:bg-slate-100 hover:text-slate-900">About</a>
@@ -336,15 +340,18 @@
                 <div class="col-span-1 md:col-span-2">
                     <span class="font-display font-bold text-lg tracking-tight text-slate-900">Radon<span class="text-slate-400">Verdict</span></span>
                     <p class="mt-4 text-sm text-slate-500 leading-relaxed max-w-sm">
-                        Empowering homeowners with localized data. We analyze EPA zone risks, structure types, and local labor rates to provide precise estimates.
+                        Local radon action guidance built from public EPA, state, housing, and cost-reference data. We are not affiliated with the US EPA or any government agency.
                     </p>
                 </div>
                 <div>
                     <h4 class="font-bold text-slate-900 mb-4 text-sm uppercase tracking-wider">Company</h4>
                     <ul class="space-y-3 text-sm font-medium text-slate-500">
                         <li><a href="/about" class="tap-target-inline hover:text-indigo-600 transition-colors">About Us</a></li>
+                        <li><a href="/methodology" class="tap-target-inline hover:text-indigo-600 transition-colors">Methodology</a></li>
                         <li><a href="/contact" class="tap-target-inline hover:text-indigo-600 transition-colors">Contact</a></li>
                         <li><a href="/radon-cost-calculator" class="tap-target-inline hover:text-indigo-600 transition-colors">Action Plan</a></li>
+                        <li><a href="/radon-mitigation-cost" class="tap-target-inline hover:text-indigo-600 transition-colors">Mitigation Cost</a></li>
+                        <li><a href="/radon-levels" class="tap-target-inline hover:text-indigo-600 transition-colors">Radon Levels</a></li>
                         <li><a href="/guides/how-to-test-for-radon" class="tap-target-inline hover:text-indigo-600 transition-colors">Testing Guide</a></li>
                         <li><a href="/guides" class="tap-target-inline hover:text-indigo-600 transition-colors">Guides</a></li>
                     </ul>

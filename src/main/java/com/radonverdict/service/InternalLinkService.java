@@ -26,6 +26,13 @@ public class InternalLinkService {
         }
 
         add(links, InternalLinkItem.builder()
+                .title("Radon Mitigation Cost Guide")
+                .description("National cost ranges by foundation, result, and state.")
+                .url("/radon-mitigation-cost")
+                .bucket("pillar")
+                .build());
+
+        add(links, InternalLinkItem.builder()
                 .title(county.getAreaDisplayName() + " Radon Levels")
                 .description("EPA zone interpretation and testing guidance.")
                 .url("/radon-levels/" + county.getStateSlug() + "/" + county.getCountySlug())
@@ -81,6 +88,13 @@ public class InternalLinkService {
                 .description("Use your test result to compare local next steps and budget.")
                 .url("/radon-mitigation-cost/" + county.getStateSlug() + "/" + county.getCountySlug())
                 .bucket("cost")
+                .build());
+
+        add(links, InternalLinkItem.builder()
+                .title("Radon Levels: 2.0 vs 4.0 vs 8.0")
+                .description("Understand what the numbers mean before comparing local next steps.")
+                .url("/radon-levels")
+                .bucket("pillar")
                 .build());
 
         add(links, InternalLinkItem.builder()

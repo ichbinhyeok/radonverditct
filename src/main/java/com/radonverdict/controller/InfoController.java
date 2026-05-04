@@ -31,6 +31,12 @@ public class InfoController {
         return "pages/about";
     }
 
+    @GetMapping("/methodology")
+    public String methodology(Model model) {
+        model.addAttribute("title", "Methodology | RadonVerdict");
+        return "pages/methodology";
+    }
+
     @GetMapping("/privacy")
     public String privacy(Model model) {
         model.addAttribute("title", "Privacy Policy | RadonVerdict");

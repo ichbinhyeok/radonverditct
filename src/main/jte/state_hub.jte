@@ -1,8 +1,10 @@
 @import java.util.List
 @import com.radonverdict.model.County
+@import com.radonverdict.model.StateRegulations.StateRule
 
 @param String stateSlug
 @param String stateAbbr
+@param StateRule stateRule = null
 @param List<County> counties
 @param boolean noindex = false
 
@@ -41,6 +43,8 @@
                 <ol class="inline-flex items-center space-x-2">
                     <li><a href="/" class="hover:text-slate-900 transition-colors">Home</a></li>
                     <li><span class="mx-1 text-slate-300">/</span></li>
+                    <li><a href="/radon-mitigation-cost" class="hover:text-slate-900 transition-colors">Radon Mitigation Cost</a></li>
+                    <li><span class="mx-1 text-slate-300">/</span></li>
                     <li class="text-slate-900 font-semibold" aria-current="page">${stateName}</li>
                 </ol>
             </nav>
@@ -58,12 +62,18 @@
                 </p>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-10">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-10">
                 <a href="/radon-cost-calculator"
                    class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm hover:border-brand-300 hover:shadow-md transition-all">
                     <p class="text-xs font-bold uppercase tracking-wider text-brand-700 mb-2">Fastest Start</p>
                     <h2 class="font-display font-bold text-lg text-slate-900 mb-2">Use ZIP Instead of Scrolling</h2>
                     <p class="text-sm text-slate-600 leading-relaxed">If you know the property ZIP, jump straight to the right county estimate instead of browsing the full state list.</p>
+                </a>
+                <a href="/radon-mitigation-cost"
+                   class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm hover:border-slate-900 hover:shadow-md transition-all">
+                    <p class="text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">Cost Basics</p>
+                    <h2 class="font-display font-bold text-lg text-slate-900 mb-2">Foundation & Result Ranges</h2>
+                    <p class="text-sm text-slate-600 leading-relaxed">Use the national cost guide if you need basement, slab, crawl-space, or 4.0+ result context first.</p>
                 </a>
                 <a href="/radon-levels/${stateSlug}"
                    class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm hover:border-indigo-300 hover:shadow-md transition-all">
@@ -78,6 +88,19 @@
                     <p class="text-sm text-slate-600 leading-relaxed">Open your county if you already know the area and just need a local basement, slab, or crawl-space price range.</p>
                 </a>
             </div>
+
+            @if(stateRule != null)
+                @template.components.state_radon_resources(
+                    stateName = stateName,
+                    stateAbbr = stateAbbr,
+                    stateProgramUrl = stateRule.getStateProgramUrl(),
+                    disclosureRequired = stateRule.isDisclosureRequired(),
+                    disclosureSummary = stateRule.getDisclosureSummary(),
+                    licenseRequired = stateRule.isLicenseRequired(),
+                    licenseNote = stateRule.getLicenseNote(),
+                    className = "mb-10"
+                )
+            @endif
 
             <!-- County Grid -->
             <div id="county-pricing" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mb-24">
