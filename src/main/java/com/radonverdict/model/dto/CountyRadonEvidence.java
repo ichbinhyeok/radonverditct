@@ -27,6 +27,12 @@ public class CountyRadonEvidence {
     private String borderlineAction;
     private String elevatedAction;
     private String sourceCoverageSummary;
+    private String sourceProfileLabel;
+    private String sourceProfileSummary;
+    private String metricShapeLabel;
+    private String metricShapeSummary;
+    private String peerComparisonSummary;
+    private String intentMatchSummary;
     private String averagePercentileDisplay;
     private String above4PercentileDisplay;
     private String highEndPercentileDisplay;
