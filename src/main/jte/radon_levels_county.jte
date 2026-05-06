@@ -995,24 +995,24 @@
 
                         @if(radonEvidence.getSourceProfileLabel() != null && !radonEvidence.getSourceProfileLabel().isBlank())
                             <div class="mt-4 rounded-2xl border border-white/80 bg-white/70 p-3 sm:p-4">
-                                <p class="text-sm font-bold text-slate-950">How RadonVerdict reads this data</p>
+                                <p class="text-sm font-bold text-slate-950">How to use this county data</p>
                                 <div class="mt-3 grid grid-cols-1 gap-2 sm:gap-3 lg:grid-cols-2">
                                     <div class="rounded-xl border border-white/80 bg-white/80 p-3">
-                                        <p class="text-xs font-bold uppercase tracking-wider text-slate-500">Source type</p>
+                                        <p class="text-xs font-bold uppercase tracking-wider text-slate-500">Data source</p>
                                         <p class="mt-1 text-sm font-black text-slate-900">${radonEvidence.getSourceProfileLabel()}</p>
                                         <p class="mt-2 text-xs leading-relaxed text-slate-600">${radonEvidence.getSourceProfileSummary()}</p>
                                     </div>
                                     <div class="rounded-xl border border-white/80 bg-white/80 p-3">
-                                        <p class="text-xs font-bold uppercase tracking-wider text-slate-500">Metric shape</p>
+                                        <p class="text-xs font-bold uppercase tracking-wider text-slate-500">What the numbers show</p>
                                         <p class="mt-1 text-sm font-black text-slate-900">${radonEvidence.getMetricShapeLabel()}</p>
                                         <p class="mt-2 text-xs leading-relaxed text-slate-600">${radonEvidence.getMetricShapeSummary()}</p>
                                     </div>
                                     <div class="rounded-xl border border-white/80 bg-white/80 p-3">
-                                        <p class="text-xs font-bold uppercase tracking-wider text-slate-500">Peer read</p>
+                                        <p class="text-xs font-bold uppercase tracking-wider text-slate-500">Nearby comparison</p>
                                         <p class="mt-2 text-xs leading-relaxed text-slate-600">${radonEvidence.getPeerComparisonSummary()}</p>
                                     </div>
                                     <div class="rounded-xl border border-white/80 bg-white/80 p-3">
-                                        <p class="text-xs font-bold uppercase tracking-wider text-slate-500">Intent fit</p>
+                                        <p class="text-xs font-bold uppercase tracking-wider text-slate-500">How this helps</p>
                                         <p class="mt-2 text-xs leading-relaxed text-slate-600">${radonEvidence.getIntentMatchSummary()}</p>
                                     </div>
                                 </div>

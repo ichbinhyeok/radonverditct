@@ -159,12 +159,12 @@ public class CountyRadonEvidenceService {
                 .borderlineAction("A 2.0-3.9 pCi/L result should be retested or tracked because county source coverage is not enough to dismiss it.")
                 .elevatedAction("A 4.0+ pCi/L result should move straight into mitigation pricing or real-estate credit planning.")
                 .sourceCoverageSummary("Measurement gap: an official state source is identified, but normalized county metrics are not available yet.")
-                .sourceProfileLabel("Source context only")
+                .sourceProfileLabel("Map and source context")
                 .sourceProfileSummary("This page is held on EPA zone, Census housing context, and an identified source path, not a normalized county measurement row.")
-                .metricShapeLabel("Map-and-context signal")
+                .metricShapeLabel("No county readings yet")
                 .metricShapeSummary("No county measurement distribution is shown yet, so the page should explain testing decisions without ranking the county by pCi/L.")
-                .peerComparisonSummary("Peer comparison is deferred until comparable county measurement metrics are available.")
-                .intentMatchSummary("Best for: deciding whether a first home test is still warranted before any mitigation or credit planning.")
+                .peerComparisonSummary("Nearby comparison is unavailable until comparable county measurement numbers are available.")
+                .intentMatchSummary("Use this to decide whether a first home test still makes sense before mitigation pricing or credit planning.")
                 .averagePercentileDisplay("n/a")
                 .above4PercentileDisplay("n/a")
                 .highEndPercentileDisplay("n/a")
@@ -181,17 +181,17 @@ public class CountyRadonEvidenceService {
     private CountyRadonEvidence tierBackedEvidence(County county, CountyRadonTier tier) {
         String riskTone = tierRiskTone(tier);
         String riskBand = switch (riskTone) {
-            case "high" -> "High official tier burden";
-            case "elevated" -> "Elevated official tier burden";
-            case "borderline" -> "Mixed official tier burden";
-            default -> "Lower official tier burden";
+            case "high" -> "High radon-potential area";
+            case "elevated" -> "Elevated radon-potential area";
+            case "borderline" -> "Mixed radon-potential area";
+            default -> "Lower radon-potential area";
         };
         String countyLabel = county.getAreaDisplayName() + ", " + county.getStateAbbr();
         String tierSummary = countyLabel + " has " + tier.getTier1Count() + " Tier 1 municipalities, "
                 + tier.getTier2Count() + " Tier 2 municipalities, and " + tier.getTier3Count()
                 + " Tier 3 municipalities in the NJ DEP radon potential table.";
         String comparison = String.format(Locale.US,
-                "%.1f%% of municipalities are Tier 1 and %.1f%% are Tier 1 or Tier 2. This is a potential-tier signal, not a county average pCi/L measurement.",
+                "%.1f%% of municipalities are Tier 1 and %.1f%% are Tier 1 or Tier 2. This is a reason to prioritize testing, not a county average pCi/L measurement.",
                 tier.getTier1Pct(), tier.getTier1Or2Pct());
 
         return CountyRadonEvidence.builder()
@@ -211,17 +211,17 @@ public class CountyRadonEvidenceService {
                 .recommendedAction(tierRecommendedAction(county, riskTone))
                 .intentQuestion("Is " + county.getAreaDisplayName() + " a higher-priority radon testing county?")
                 .intentAnswer(county.getAreaDisplayName() + " is not shown from a county average table here; it is judged from NJ DEP municipal tier distribution. Treat Tier 1/Tier 2 concentration as a test-priority signal, then let the home result decide mitigation.")
-                .intentLabel("Tier-intent answer")
+                .intentLabel("Testing priority answer")
                 .noReadingAction("No reading yet: use the NJ tier signal to prioritize testing, but do not treat a tier as a home result.")
                 .borderlineAction("2.0-3.9 pCi/L: retest or track; tier context can justify not dismissing a borderline result.")
                 .elevatedAction("4.0+ pCi/L: move to mitigation quotes or seller-credit planning; the home result outranks the tier map.")
                 .sourceCoverageSummary("Source hierarchy: NJ DEP radon potential tiers are used for this county, with EPA zone and Census housing data as supporting context.")
-                .sourceProfileLabel("Official tier table")
+                .sourceProfileLabel("NJ municipal radon-potential table")
                 .sourceProfileSummary("NJ DEP publishes municipal radon-potential tiers, so this county is interpreted from local tier concentration rather than a county pCi/L average.")
-                .metricShapeLabel("Potential-tier signal")
-                .metricShapeSummary("The useful metric shape is Tier 1/Tier 2 concentration across municipalities; treat it as a testing-priority signal, not a home reading.")
-                .peerComparisonSummary("Tier peer context: compare this county by Tier 1 and Tier 1-or-2 municipal share, then let the property test decide action.")
-                .intentMatchSummary("Best for: deciding whether an NJ county deserves priority testing before purchase, renovation, or retest decisions.")
+                .metricShapeLabel("Town-level radon potential")
+                .metricShapeSummary("This uses the share of Tier 1 and Tier 2 municipalities. Treat it as a reason to test, not as a home reading.")
+                .peerComparisonSummary("Nearby comparison: compare NJ counties by Tier 1 and Tier 1-or-2 municipal share, then let the home test decide action.")
+                .intentMatchSummary("Use this when deciding whether to prioritize testing before purchase, renovation, or a retest.")
                 .averagePercentileDisplay("n/a")
                 .above4PercentileDisplay("n/a")
                 .highEndPercentileDisplay("n/a")
@@ -309,7 +309,7 @@ public class CountyRadonEvidenceService {
     }
 
     private String highEndOnlyBorderlineAction(County county) {
-        return "2.0-3.9 pCi/L: confirm with a follow-up or longer-term test because a high-end-only source proves elevated readings occur locally but does not show the full county distribution.";
+        return "2.0-3.9 pCi/L: confirm with a follow-up or longer-term test because this source proves elevated readings occur locally but does not show the full county distribution.";
     }
 
     private String measuredBurdenSummary(String countyLabel, Double average, Double above4, Double highEnd,
@@ -345,7 +345,8 @@ public class CountyRadonEvidenceService {
                 + " for 4.0+ share, " + percentileDisplay(highEndPercentile)
                 + " for high-end readings, and " + percentileDisplay(testVolumePercentile)
                 + " for test volume among " + peerCount + " measured counties in the state.";
-        String nearestAveragePeer = nearestPeerComparison(county, m -> primaryAverage(m.getMetrics()), "measured average");
+        String nearestAveragePeer = nearestPeerComparison(county, m -> primaryAverage(m.getMetrics()), "county average",
+                this::formatPci);
         if (nearestAveragePeer.isBlank()) {
             return summary;
         }
@@ -541,13 +542,13 @@ public class CountyRadonEvidenceService {
             return "Official source context";
         }
         return switch (measurement.getSourceId()) {
-            case "pa_dep_radon_zip" -> "Basement ZIP rollup";
-            case "nc_dhhs_radon" -> "High-end-only map";
-            case "epa_usgs_ms_residential_radon_survey" -> "Historical federal survey";
-            case "ia_hhs_radon" -> "Median county dashboard";
-            case "nj_dep_radon_potential" -> "Official tier table";
-            case "cdc_tracking_radon" -> "National measurement fallback";
-            default -> "Official measurement table";
+            case "pa_dep_radon_zip" -> "Basement and first-floor test data";
+            case "nc_dhhs_radon" -> "Highest reported county reading";
+            case "epa_usgs_ms_residential_radon_survey" -> "Older official survey";
+            case "ia_hhs_radon" -> "Median county result";
+            case "nj_dep_radon_potential" -> "NJ municipal radon-potential table";
+            case "cdc_tracking_radon" -> "National tracking data";
+            default -> "Official county measurements";
         };
     }
 
@@ -561,27 +562,27 @@ public class CountyRadonEvidenceService {
     private String metricShapeLabel(CountyRadonMeasurement measurement, Double average, Double median, Double above4,
             Double highEnd, boolean highEndOnly) {
         if (measurement != null && "pa_dep_radon_zip".equals(measurement.getSourceId())) {
-            return "Floor-specific burden";
+            return "Basement-focused results";
         }
         if (highEndOnly) {
-            return "Spike-potential signal";
+            return "High readings have occurred";
         }
         if (average != null && above4 != null && highEnd != null) {
-            return "Distribution-backed burden";
+            return "Fuller county picture";
         }
         if (median != null && average != null && above4 == null) {
-            return "Central-tendency signal";
+            return "Typical county result";
         }
         if (median != null && average == null) {
-            return "Median-only burden";
+            return "Median result only";
         }
         if (average != null) {
-            return "Average-only signal";
+            return "Average result only";
         }
         if (highEnd != null) {
-            return "High-end context";
+            return "Highest reading only";
         }
-        return "Limited metric shape";
+        return "Limited county numbers";
     }
 
     private String metricShapeSummary(CountyRadonMeasurement measurement, Double average, Double median, Double above4,
@@ -589,23 +590,23 @@ public class CountyRadonEvidenceService {
         String volume = testVolume != null ? String.format(Locale.US, "%,.0f reported tests/properties", testVolume)
                 : null;
         if (measurement != null && "pa_dep_radon_zip".equals(measurement.getSourceId())) {
-            return "The primary read is basement-weighted because PA DEP ZIP reports separate basement and first-floor results; this makes the page stronger for basement-level search intent and mitigation planning.";
+            return "PA separates basement and first-floor tests. RadonVerdict treats basement results as the main signal for mitigation planning and keeps first-floor results as context.";
         }
         if (highEndOnly) {
-            return "The source gives a highest measured value but not a county average or 4.0+ share, so RadonVerdict reads it as proof that elevated readings can occur locally, not as the typical county level.";
+            return "This source gives the highest measured value, not a county average. Use it to know high readings have happened locally, then verify your own home.";
         }
         if (average != null && above4 != null && highEnd != null) {
-            return "This is the strongest metric shape: central tendency, elevated-result share, high-end tail, and "
+            return "This is the most useful setup: county average, 4.0+ share, high-end readings, and "
                     + (volume != null ? volume : "test-volume context")
                     + " can be read together instead of relying on one number.";
         }
         if (median != null && above4 == null) {
-            return "This source is best for median burden and county ranking. It is useful for comparing local tendency, but it does not show how many homes cross 4.0 pCi/L.";
+            return "This source is useful for a typical county result and local ranking, but it does not show how many homes cross 4.0 pCi/L.";
         }
         if (average != null) {
-            return "This source supports directional county burden from an average result. Pair it with a fresh home test before mitigation or credit decisions.";
+            return "This source gives a directional county average. Pair it with a fresh home test before mitigation or credit decisions.";
         }
-        return "The available fields are limited, so the page keeps the source caveat visible and avoids pretending the county distribution is complete.";
+        return "The available fields are limited, so the page keeps the source caveat visible and avoids pretending the county picture is complete.";
     }
 
     private String peerComparisonSummary(County county, CountyRadonMeasurement measurement, boolean highEndOnly,
@@ -616,41 +617,44 @@ public class CountyRadonEvidenceService {
 
         String comparison;
         if (highEndOnly || average == null) {
-            comparison = nearestPeerComparison(county, m -> highEndValue(m.getMetrics()), "high-end reading");
+            comparison = nearestPeerComparison(county, m -> highEndValue(m.getMetrics()), "highest reported reading",
+                    this::formatPci);
         } else if (above4 != null && ("high".equals(riskTone(average, null, above4))
                 || "elevated".equals(riskTone(average, null, above4)))) {
             comparison = nearestPeerComparison(county,
                     m -> safeMetric(m, CountyRadonMeasurement.Metrics::getPercentTestsAtOrAbove4PciL),
-                    "4.0+ share");
+                    "share of tests at or above 4.0 pCi/L",
+                    this::formatPercent);
         } else {
-            comparison = nearestPeerComparison(county, m -> primaryAverage(m.getMetrics()), "measured average");
+            comparison = nearestPeerComparison(county, m -> primaryAverage(m.getMetrics()), "county average",
+                    this::formatPci);
         }
 
         if (comparison == null || comparison.isBlank()) {
-            return "Measured-risk peer: comparable peer ranking is limited because too few same-state counties expose the same metric shape.";
+            return "Nearby comparison is limited because too few same-state counties publish the same numbers.";
         }
-        return "Measured-risk peer: " + comparison;
+        return "Nearby comparison: " + comparison;
     }
 
     private String intentMatchSummary(County county, CountyRadonMeasurement measurement, String riskTone,
             boolean highEndOnly) {
         String place = county.getAreaDisplayName();
         if (measurement != null && "pa_dep_radon_zip".equals(measurement.getSourceId())) {
-            return "Best for: basement radon level searches, floor-specific test planning, and 4.0+ mitigation or seller-credit decisions in "
+            return "Use this for basement-level test planning and 4.0+ mitigation or seller-credit decisions in "
                     + place + ".";
         }
         if (highEndOnly) {
-            return "Best for: proving local spike potential and justifying a direct property test, without treating the highest county value as a typical home result.";
+            return "Use this to see that high readings have happened locally, then test the specific property before assuming the county value is typical.";
         }
         if (measurement != null && "epa_usgs_ms_residential_radon_survey".equals(measurement.getSourceId())) {
-            return "Best for: source-backed historical context and first-test decisions, not current-year county ranking or property prediction.";
+            return "Use this as older official context for a first-test decision, not as a current-year county ranking or property prediction.";
         }
         return switch (riskTone) {
-            case "high" -> "Best for: 'is radon bad here' searches, no-reading test urgency, and 4.0+ mitigation planning.";
-            case "elevated" -> "Best for: deciding whether a county signal is strong enough to justify testing or retesting before cost decisions.";
-            case "borderline" -> "Best for: 2.0-3.9 pCi/L interpretation, retest decisions, and avoiding a premature dismiss-or-mitigate answer.";
-            case "lower" -> "Best for: explaining why a lower county pattern still does not replace a direct home test.";
-            default -> "Best for: turning county context into a first-test decision before mitigation, monitoring, or credit planning.";
+            case "high" -> "Use this to decide how urgently to test, retest, or plan mitigation after a 4.0+ result.";
+            case "elevated" -> "Use this to decide whether the county signal is strong enough to justify testing or retesting before cost decisions.";
+            case "borderline" -> "Use this for 2.0-3.9 pCi/L results, where retesting is usually smarter than dismissing the issue.";
+            case "lower" -> "Use this to understand why a lower county pattern still does not replace a direct home test.";
+            default -> "Use this to turn county context into a first-test decision before mitigation, monitoring, or credit planning.";
         };
     }
 
@@ -790,7 +794,7 @@ public class CountyRadonEvidenceService {
     }
 
     private String nearestPeerComparison(County county, Function<CountyRadonMeasurement, Double> extractor,
-            String metricLabel) {
+            String metricLabel, Function<Double, String> formatter) {
         CountyRadonMeasurement current = dataLoadService.getRadonMeasurementByFipsMap().get(county.getFips());
         if (current == null) {
             return "";
@@ -828,17 +832,17 @@ public class CountyRadonEvidenceService {
         MeasuredPeer lower = currentIndex > 0 ? peers.get(currentIndex - 1) : null;
         MeasuredPeer higher = currentIndex < peers.size() - 1 ? peers.get(currentIndex + 1) : null;
         if (lower != null && higher != null) {
-            return "Closest measured peers by " + metricLabel + ": " + peerDisplayName(lower.measurement())
-                    + " (" + formatPci(lower.value()) + ") just below, and " + peerDisplayName(higher.measurement())
-                    + " (" + formatPci(higher.value()) + ") just above.";
+            return "Closest counties by " + metricLabel + ": " + peerDisplayName(lower.measurement())
+                    + " (" + formatter.apply(lower.value()) + ") is just lower, and " + peerDisplayName(higher.measurement())
+                    + " (" + formatter.apply(higher.value()) + ") is just higher.";
         }
         if (higher != null) {
-            return county.getAreaDisplayName() + " is the lowest measured peer by " + metricLabel + "; next above is "
-                    + peerDisplayName(higher.measurement()) + " (" + formatPci(higher.value()) + ").";
+            return county.getAreaDisplayName() + " is lower than every same-state county with this number; next closest is "
+                    + peerDisplayName(higher.measurement()) + " (" + formatter.apply(higher.value()) + ").";
         }
         if (lower != null) {
-            return county.getAreaDisplayName() + " is the highest measured peer by " + metricLabel + "; next below is "
-                    + peerDisplayName(lower.measurement()) + " (" + formatPci(lower.value()) + ").";
+            return county.getAreaDisplayName() + " is higher than every same-state county with this number; next closest is "
+                    + peerDisplayName(lower.measurement()) + " (" + formatter.apply(lower.value()) + ").";
         }
         return "";
     }
