@@ -130,19 +130,19 @@
                 </svg>
             </div>
             <div>
-                <h4 class="font-display font-bold text-emerald-900 text-lg">Safe Range</h4>
+                <h4 class="font-display font-bold text-emerald-900 text-lg">Lower Concern Range</h4>
                 <p class="text-sm text-emerald-800 leading-relaxed mt-1">
                     @if(costMode)
                         @if(unconfirmedCostMode)
-                        This sample reading is within the safe range. Both the EPA (4.0) and WHO (2.7) thresholds are not exceeded.
+                        This sample reading is below the common action reference levels. Both the EPA (4.0) and WHO (2.7) thresholds are not exceeded.
                         <strong>If your real result lands here, most homeowners monitor and retest instead of pricing mitigation right away.</strong>
                         @else
-                        Your reading is within the safe range. Both the EPA (4.0) and WHO (2.7) thresholds are not exceeded.
+                        Your reading is below the common action reference levels. Both the EPA (4.0) and WHO (2.7) thresholds are not exceeded.
                         <strong>Most homeowners would monitor and retest rather than install a mitigation system right now.</strong>
                         @endif
                     @else
-                        Your reading is within the safe range. Both the EPA (4.0) and WHO (2.7) thresholds are not exceeded.
-                        <strong>Mitigation is not needed right now.</strong> If you have never tested your home, start with a short-term kit first. If this is already a confirmed low reading, a digital monitor can help you keep an eye on seasonal changes.
+                        Your reading is below the common action reference levels. Both the EPA (4.0) and WHO (2.7) thresholds are not exceeded.
+                        <strong>Mitigation is usually not the next immediate step after a confirmed low result.</strong> If you have never tested your home, start with a short-term kit first. If this is already a confirmed low reading, a digital monitor can help you keep an eye on seasonal changes.
                     @endif
                 </p>
                 @if(costMode)

@@ -329,7 +329,7 @@
     </header>
 
     <!-- Main Content Injection -->
-    <main class="flex-grow flex flex-col">
+    <main class="flex-grow flex flex-col min-w-0 w-full">
         ${content}
     </main>
 

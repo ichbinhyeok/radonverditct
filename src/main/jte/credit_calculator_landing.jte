@@ -45,12 +45,12 @@
                 </div>
 
                 <div class="mt-10 grid gap-8 lg:grid-cols-[1.22fr_0.78fr]">
-                    <form action="/search-zip-credit" method="POST" class="rounded-2xl border border-white/10 bg-white/5 p-6 sm:p-8 shadow-2xl">
-                        <div class="grid gap-6">
+                    <form action="/search-zip-credit" method="POST" class="min-w-0 rounded-2xl border border-white/10 bg-white/5 p-4 shadow-2xl sm:p-8">
+                        <div class="grid min-w-0 gap-6">
                             <div>
-                                <label class="block text-xs font-bold uppercase tracking-[0.25em] text-slate-400 mb-3">ZIP Code</label>
+                                <label class="block text-xs font-bold uppercase tracking-widest text-slate-400 mb-3 sm:tracking-[0.25em]">ZIP Code</label>
                                 <input type="text" name="zipCode" pattern="[0-9]{5}" required placeholder="Enter 5-digit ZIP code"
-                                       class="block w-full rounded-2xl border-0 bg-white px-5 py-4 text-lg font-medium text-slate-900 shadow-xl shadow-black/10 ring-1 ring-inset ring-slate-200 placeholder:text-slate-400 focus:ring-2 focus:ring-brand-500">
+                                       class="block min-w-0 w-full rounded-2xl border-0 bg-white px-5 py-4 text-lg font-medium text-slate-900 shadow-xl shadow-black/10 ring-1 ring-inset ring-slate-200 placeholder:text-slate-400 focus:ring-2 focus:ring-brand-500">
                                 <script>
                                     if (window.location.search.includes('error=notfound')) {
                                         document.write('<p class="mt-3 text-rose-400 text-sm font-medium">ZIP code not found in database.</p>');
@@ -59,7 +59,7 @@
                             </div>
 
                             <div>
-                                <p class="text-xs font-bold uppercase tracking-[0.25em] text-slate-400 mb-3">Deal Side</p>
+                                <p class="text-xs font-bold uppercase tracking-widest text-slate-400 mb-3 sm:tracking-[0.25em]">Deal Side</p>
                                 <div class="grid grid-cols-2 gap-3">
                                     <label class="cursor-pointer" data-track-event="credit_prefill_pick" data-track-label="intent-buying">
                                         <input type="radio" name="intent" value="buying" checked class="peer sr-only">
@@ -77,7 +77,7 @@
                             </div>
 
                             <div>
-                                <p class="text-xs font-bold uppercase tracking-[0.25em] text-slate-400 mb-3">Radon Test Result</p>
+                                <p class="text-xs font-bold uppercase tracking-widest text-slate-400 mb-3 sm:tracking-[0.25em]">Radon Test Result</p>
                                 <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
                                     <label class="cursor-pointer" data-track-event="credit_prefill_pick" data-track-label="result-between_2_and_4">
                                         <input type="radio" name="radonResultBand" value="between_2_and_4" class="peer sr-only">

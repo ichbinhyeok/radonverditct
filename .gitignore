@@ -45,6 +45,9 @@ package-lock.json
 ### Build logs ###
 *.log
 
+### Local data collection/cache ###
+/data/
+
 ### OS generated ###
 Thumbs.db
 Desktop.ini

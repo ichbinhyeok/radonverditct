@@ -1,6 +1,8 @@
 @import com.radonverdict.model.County
+@import com.radonverdict.model.CountyRadonMeasurement
 @import com.radonverdict.model.StateRegulations.StateRule
 @import com.radonverdict.model.dto.AeoAnswerBlock
+@import com.radonverdict.model.dto.CountyRadonEvidence
 @import com.radonverdict.model.dto.InternalLinkItem
 @import com.radonverdict.model.dto.PageQualityResult
 @import com.radonverdict.model.dto.TrustMetadata
@@ -14,8 +16,15 @@
 @param boolean noindex = false
 @param AeoAnswerBlock aeo = null
 @param List relatedLinks = null
+@param CountyRadonMeasurement radonMeasurement = null
+@param CountyRadonEvidence radonEvidence = null
 @param PageQualityResult quality = null
 @param TrustMetadata trust = null
+@param int stateHousingPercentile = 0
+@param int stateOlderHomePercentile = 0
+@param int statePeerCountyCount = 0
+@param boolean priorityCounty = false
+@param String indexPriorityReason = null
 @param boolean monetizationHooksEnabled = false
 @param boolean showSeoDebug = false
 !{
@@ -41,6 +50,119 @@
         stateNameBuilder.append(displayPart);
     }
     final String stateName = stateNameBuilder.length() > 0 ? stateNameBuilder.toString() : county.getStateAbbr();
+    final boolean hasCountyStats = county.getStats() != null && county.getStats().getMetrics() != null;
+    final int totalHousingUnits = hasCountyStats ? county.getStats().getMetrics().getTotalHousingUnits() : 0;
+    final double builtBefore1980Pct = hasCountyStats ? county.getStats().getMetrics().getBuiltBefore1980Pct() : 0.0;
+    final int medianHomeValue = hasCountyStats ? county.getStats().getMetrics().getMedianHomeValue() : 0;
+    final String totalHousingUnitsDisplay = totalHousingUnits > 0
+            ? String.format(java.util.Locale.US, "%,d", totalHousingUnits)
+            : "Not available";
+    final String olderHomeDisplay = hasCountyStats
+            ? String.format(java.util.Locale.US, "%.1f%%", builtBefore1980Pct)
+            : "Not available";
+    final String medianHomeValueDisplay = medianHomeValue > 0
+            ? "$" + String.format(java.util.Locale.US, "%,d", medianHomeValue)
+            : "Not available";
+    final String housingPercentileDisplay = stateHousingPercentile > 0 ? stateHousingPercentile + "th" : "n/a";
+    final String olderHomePercentileDisplay = stateOlderHomePercentile > 0 ? stateOlderHomePercentile + "th" : "n/a";
+    final String countyEvidenceVerdict = county.getEpaZone() == 1
+            ? county.getAreaDisplayName() + " is a higher-priority testing county because the EPA zone signal is high and the page now ties that signal to local housing context."
+            : county.getEpaZone() == 2
+            ? county.getAreaDisplayName() + " is a gray-zone county: the EPA map is useful context, but the local housing profile and your own home test decide the next step."
+            : county.getEpaZone() == 3
+            ? county.getAreaDisplayName() + " has a lower predicted county average, so direct testing matters more than the map label."
+            : county.getAreaDisplayName() + " has no published EPA zone in this dataset, so the only reliable next step is direct home testing.";
+    final String priorityDisplay = priorityCounty
+            ? "High-evidence county page"
+            : "Reference county page";
+    final String priorityReasonDisplay = indexPriorityReason != null && !indexPriorityReason.isBlank()
+            ? indexPriorityReason
+            : "based on local demand, housing scale, and source coverage";
+    final boolean hasRadonMeasurement = radonMeasurement != null && radonMeasurement.getMetrics() != null;
+    final boolean paZipRadonMeasurement = hasRadonMeasurement && "pa_dep_radon_zip".equals(radonMeasurement.getSourceId());
+    final boolean highEndOnlyRadonMeasurement = hasRadonMeasurement
+            && radonMeasurement.getMetrics().getAverageTestResultPciL() == null
+            && radonMeasurement.getMetrics().getArithmeticMeanRadonValuePciL() == null
+            && radonMeasurement.getMetrics().getMedianRadonValuePciL() == null
+            && radonMeasurement.getMetrics().getPercentTestsAtOrAbove4PciL() == null
+            && (radonMeasurement.getMetrics().getMaximumTestResultPciL() != null
+            || radonMeasurement.getMetrics().getRadon95thPercentilePciL() != null);
+    final String measuredAverageDisplay = hasRadonMeasurement && radonMeasurement.getMetrics().getAverageTestResultPciL() != null
+            ? String.format(java.util.Locale.US, "%.1f pCi/L", radonMeasurement.getMetrics().getAverageTestResultPciL())
+            : "Not available";
+    final String measuredPrimaryResultLabel = paZipRadonMeasurement && radonMeasurement.getMetrics().getBasementAverageTestResultPciL() != null
+            ? "Basement average"
+            : highEndOnlyRadonMeasurement
+            ? "Highest measured"
+            : hasRadonMeasurement && radonMeasurement.getMetrics().getAverageTestResultPciL() != null
+            ? "Average result"
+            : hasRadonMeasurement && radonMeasurement.getMetrics().getMedianRadonValuePciL() != null
+            ? "Median result"
+            : "Primary result";
+    final String measuredPrimaryResultDisplay = hasRadonMeasurement && radonMeasurement.getMetrics().getAverageTestResultPciL() != null
+            ? measuredAverageDisplay
+            : highEndOnlyRadonMeasurement && radonMeasurement.getMetrics().getMaximumTestResultPciL() != null
+            ? String.format(java.util.Locale.US, "%.1f pCi/L", radonMeasurement.getMetrics().getMaximumTestResultPciL())
+            : highEndOnlyRadonMeasurement && radonMeasurement.getMetrics().getRadon95thPercentilePciL() != null
+            ? String.format(java.util.Locale.US, "%.1f pCi/L", radonMeasurement.getMetrics().getRadon95thPercentilePciL())
+            : hasRadonMeasurement && radonMeasurement.getMetrics().getMedianRadonValuePciL() != null
+            ? String.format(java.util.Locale.US, "%.1f pCi/L", radonMeasurement.getMetrics().getMedianRadonValuePciL())
+            : "Not available";
+    final String measuredMaxDisplay = hasRadonMeasurement && radonMeasurement.getMetrics().getMaximumTestResultPciL() != null
+            ? String.format(java.util.Locale.US, "%.1f pCi/L", radonMeasurement.getMetrics().getMaximumTestResultPciL())
+            : "Not available";
+    final String measuredHighEndLabel = hasRadonMeasurement && radonMeasurement.getMetrics().getMaximumTestResultPciL() != null
+            ? "Maximum reported"
+            : hasRadonMeasurement && radonMeasurement.getMetrics().getRadon95thPercentilePciL() != null
+            ? "95th percentile"
+            : "High-end signal";
+    final String measuredHighEndDisplay = hasRadonMeasurement && radonMeasurement.getMetrics().getMaximumTestResultPciL() != null
+            ? measuredMaxDisplay
+            : hasRadonMeasurement && radonMeasurement.getMetrics().getRadon95thPercentilePciL() != null
+            ? String.format(java.util.Locale.US, "%.1f pCi/L", radonMeasurement.getMetrics().getRadon95thPercentilePciL())
+            : "Not available";
+    final String measuredPercentAbove4Display = hasRadonMeasurement && radonMeasurement.getMetrics().getPercentTestsAtOrAbove4PciL() != null
+            ? String.format(java.util.Locale.US, "%.1f%%", radonMeasurement.getMetrics().getPercentTestsAtOrAbove4PciL())
+            : "Not available";
+    final String measuredPercentAbove2Display = hasRadonMeasurement && radonMeasurement.getMetrics().getPercentTestsAtOrAbove2PciL() != null
+            ? String.format(java.util.Locale.US, "%.1f%%", radonMeasurement.getMetrics().getPercentTestsAtOrAbove2PciL())
+            : "Not available";
+    final String measuredMedianDisplay = hasRadonMeasurement && radonMeasurement.getMetrics().getMedianRadonValuePciL() != null
+            ? String.format(java.util.Locale.US, "%.1f pCi/L", radonMeasurement.getMetrics().getMedianRadonValuePciL())
+            : "Not available";
+    final String measuredTestVolumeLabel = hasRadonMeasurement && radonMeasurement.getMetrics().getTotalTests() != null
+            ? "Reported tests"
+            : hasRadonMeasurement && radonMeasurement.getMetrics().getNumberBuildingsTested10Year() != null
+            ? "10-year tested"
+            : "Avg. tests/year";
+    final String measuredAverageTestsDisplay = hasRadonMeasurement && radonMeasurement.getMetrics().getTotalTests() != null
+            ? String.format(java.util.Locale.US, "%,.0f", radonMeasurement.getMetrics().getTotalTests())
+            : hasRadonMeasurement && radonMeasurement.getMetrics().getNumberBuildingsTested10Year() != null
+            ? String.format(java.util.Locale.US, "%,.0f", radonMeasurement.getMetrics().getNumberBuildingsTested10Year())
+            : hasRadonMeasurement && radonMeasurement.getMetrics().getAverageNumberOfTests() != null
+            ? String.format(java.util.Locale.US, "%.1f", radonMeasurement.getMetrics().getAverageNumberOfTests())
+            : "Not available";
+    final boolean hasPaFloorBreakdown = paZipRadonMeasurement
+            && (radonMeasurement.getMetrics().getBasementAverageTestResultPciL() != null
+            || radonMeasurement.getMetrics().getFirstFloorAverageTestResultPciL() != null);
+    final String measuredBasementAverageDisplay = hasRadonMeasurement && radonMeasurement.getMetrics().getBasementAverageTestResultPciL() != null
+            ? String.format(java.util.Locale.US, "%.1f pCi/L", radonMeasurement.getMetrics().getBasementAverageTestResultPciL())
+            : "Not available";
+    final String measuredBasementTestsDisplay = hasRadonMeasurement && radonMeasurement.getMetrics().getBasementTestCount() != null
+            ? String.format(java.util.Locale.US, "%,.0f", radonMeasurement.getMetrics().getBasementTestCount())
+            : "Not available";
+    final String measuredFirstFloorAverageDisplay = hasRadonMeasurement && radonMeasurement.getMetrics().getFirstFloorAverageTestResultPciL() != null
+            ? String.format(java.util.Locale.US, "%.1f pCi/L", radonMeasurement.getMetrics().getFirstFloorAverageTestResultPciL())
+            : "Not available";
+    final String measuredFirstFloorTestsDisplay = hasRadonMeasurement && radonMeasurement.getMetrics().getFirstFloorTestCount() != null
+            ? String.format(java.util.Locale.US, "%,.0f", radonMeasurement.getMetrics().getFirstFloorTestCount())
+            : "Not available";
+    final String evidenceFirstSourceHeading = hasRadonMeasurement && radonMeasurement.getSourceName() != null && !radonMeasurement.getSourceName().isBlank()
+            ? radonMeasurement.getSourceName()
+            : "Official county evidence";
+    final String evidenceFirstPeriodDisplay = hasRadonMeasurement && radonMeasurement.getPeriod() != null && !radonMeasurement.getPeriod().isBlank()
+            ? radonMeasurement.getPeriod()
+            : "Processed county verdict";
     final String shortTermKitUrl = "https://www.amazon.com/dp/B00002N83E?tag=radonverdict-20";
     final String digitalMonitorUrl = "https://www.amazon.com/dp/B00H2VOSP8?tag=radonverdict-20";
     final boolean fallsChurchDecisionCounty =
@@ -455,7 +577,7 @@
                             </div>
                         </div>
 
-                        <div class="min-w-0 rounded-[1.75rem] border border-white/15 bg-white/10 backdrop-blur-sm p-5 sm:p-6 shadow-2xl">
+                        <div class="levels-county-hero-quick-read min-w-0 rounded-[1.75rem] border border-white/15 bg-white/10 backdrop-blur-sm p-5 sm:p-6 shadow-2xl">
                             <div class="text-xs font-bold uppercase tracking-[0.18em] text-sky-200 mb-3">Quick Read</div>
                             <h2 class="font-display font-black text-2xl text-white leading-tight mb-3">${quickDecisionHeading}</h2>
                             <p class="text-sm sm:text-base text-slate-200 leading-relaxed">${quickDecisionBody}</p>
@@ -476,6 +598,95 @@
                             </div>
                         </div>
                     </div>
+
+                    @if(radonEvidence != null)
+                        <div id="county-evidence-first" class="mt-8 rounded-[1.75rem] bg-white p-5 sm:p-6 shadow-2xl border border-white/10">
+                            <div class="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
+                                <div>
+                                    <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500">
+                                        @if(hasRadonMeasurement) Measured Radon Data
+                                        @else Official County Evidence
+                                        @endif
+                                    </p>
+                                    <h2 class="mt-2 font-display text-2xl font-black text-slate-900">${county.getAreaDisplayName()} evidence before the next step</h2>
+                                    <p class="mt-2 max-w-3xl text-sm leading-relaxed text-slate-600">
+                                        @if(radonEvidence.getWhyThisPageExists() != null && !radonEvidence.getWhyThisPageExists().isBlank())
+                                            ${radonEvidence.getWhyThisPageExists()}
+                                        @else
+                                            ${evidenceFirstSourceHeading} is shown before product or cost paths so the page starts with the county signal, then turns that signal into an action.
+                                        @endif
+                                    </p>
+                                </div>
+                                <div class="rounded-2xl border border-slate-100 bg-slate-50 px-4 py-3">
+                                    <p class="text-xs font-bold uppercase tracking-wider text-slate-500">Source window</p>
+                                    <p class="mt-1 text-sm font-black text-slate-900">${evidenceFirstPeriodDisplay}</p>
+                                </div>
+                            </div>
+
+                            <div class="mt-5 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
+                                <div class="rounded-2xl border border-slate-100 bg-slate-50 p-4">
+                                    <p class="text-xs font-bold uppercase tracking-wider text-slate-500">Processed verdict</p>
+                                    <p class="mt-2 font-display text-xl font-black text-slate-900">${radonEvidence.getRiskBand()}</p>
+                                    <p class="mt-1 text-xs text-slate-500">${radonEvidence.getConfidenceLabel()} confidence - ${radonEvidence.getConfidenceScore()}/100</p>
+                                </div>
+                                <div class="rounded-2xl border border-slate-100 bg-slate-50 p-4">
+                                    <p class="text-xs font-bold uppercase tracking-wider text-slate-500">
+                                        @if(highEndOnlyRadonMeasurement) Highest measured
+                                        @else Primary result
+                                        @endif
+                                    </p>
+                                    <p class="mt-2 font-display text-xl font-black text-slate-900">${radonEvidence.getPrimaryAverageDisplay()}</p>
+                                    <p class="mt-1 text-xs text-slate-500">
+                                        @if(highEndOnlyRadonMeasurement) ${radonEvidence.getHighEndPercentileDisplay()} in-state
+                                        @else ${radonEvidence.getAveragePercentileDisplay()} in-state
+                                        @endif
+                                    </p>
+                                </div>
+                                <div class="rounded-2xl border border-slate-100 bg-slate-50 p-4">
+                                    <p class="text-xs font-bold uppercase tracking-wider text-slate-500">4.0+ signal</p>
+                                    <p class="mt-2 font-display text-xl font-black text-slate-900">${radonEvidence.getAbove4Display()}</p>
+                                    <p class="mt-1 text-xs text-slate-500">${radonEvidence.getAbove4PercentileDisplay()} in-state</p>
+                                </div>
+                                <div class="rounded-2xl border border-slate-100 bg-slate-50 p-4">
+                                    <p class="text-xs font-bold uppercase tracking-wider text-slate-500">High-end signal</p>
+                                    <p class="mt-2 font-display text-xl font-black text-slate-900">${radonEvidence.getHighEndDisplay()}</p>
+                                    <p class="mt-1 text-xs text-slate-500">${radonEvidence.getHighEndPercentileDisplay()} in-state</p>
+                                </div>
+                            </div>
+
+                            @if(radonEvidence.getDecisionHeadline() != null && !radonEvidence.getDecisionHeadline().isBlank())
+                                <div class="mt-5 grid grid-cols-1 gap-3 lg:grid-cols-3">
+                                    <div class="rounded-2xl border border-slate-200 bg-slate-50 p-4 lg:col-span-2">
+                                        <p class="text-xs font-bold uppercase tracking-wider text-slate-500">County-specific verdict</p>
+                                        <h3 class="mt-2 font-display text-xl font-black text-slate-950">${radonEvidence.getDecisionHeadline()}</h3>
+                                        <p class="mt-2 text-sm leading-relaxed text-slate-700">${radonEvidence.getLocalDecisionSummary()}</p>
+                                    </div>
+                                    <div class="rounded-2xl border border-slate-200 bg-slate-50 p-4">
+                                        <p class="text-xs font-bold uppercase tracking-wider text-slate-500">Real-estate use</p>
+                                        <p class="mt-2 text-sm leading-relaxed text-slate-700">${radonEvidence.getRealEstateDecisionSummary()}</p>
+                                    </div>
+                                </div>
+                            @endif
+
+                            <div class="mt-5 grid grid-cols-1 gap-3 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-center">
+                                <p class="text-sm leading-relaxed text-slate-700">${radonEvidence.getRecommendedAction()}</p>
+                                <a href="#situation-picker"
+                                   data-track-event="levels_evidence_next_step_click"
+                                   data-track-label="evidence_first"
+                                   class="inline-flex items-center justify-center rounded-xl border border-slate-900 bg-slate-900 px-4 py-3 text-sm font-black text-white hover:bg-slate-800 transition-colors">
+                                    Choose Next Step
+                                </a>
+                            </div>
+
+                            @if(radonEvidence.getIntentQuestion() != null && !radonEvidence.getIntentQuestion().isBlank())
+                                <div class="mt-4 rounded-2xl border border-slate-200 bg-slate-50 p-4">
+                                    <p class="text-xs font-bold uppercase tracking-wider text-slate-500">${radonEvidence.getIntentLabel()}</p>
+                                    <h3 class="mt-2 font-display text-lg font-black text-slate-950">${radonEvidence.getIntentQuestion()}</h3>
+                                    <p class="mt-2 text-sm leading-relaxed text-slate-700">${radonEvidence.getIntentAnswer()}</p>
+                                </div>
+                            @endif
+                        </div>
+                    @endif
 
                     <div id="situation-picker" class="mt-8 rounded-[1.75rem] bg-white p-5 sm:p-6 shadow-2xl border border-white/10">
                         <div class="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between mb-5">
@@ -599,6 +810,200 @@
                 </a>
             </div>
 
+            <section class="mb-10 rounded-[1.75rem] border border-slate-200 bg-white p-5 sm:p-6 shadow-sm">
+                <div class="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
+                    <div>
+                        <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500">County Evidence Snapshot</p>
+                        <h2 class="mt-2 font-display text-2xl font-black text-slate-900">${county.getAreaDisplayName()} testing context</h2>
+                    </div>
+                    <div class="rounded-full border px-3 py-1 text-xs font-bold
+                        @if(priorityCounty) border-indigo-200 bg-indigo-50 text-indigo-700
+                        @else border-slate-200 bg-slate-50 text-slate-600
+                        @endif
+                    ">
+                        ${priorityDisplay}
+                    </div>
+                </div>
+
+                <p class="mt-4 max-w-3xl text-sm leading-relaxed text-slate-700">${countyEvidenceVerdict}</p>
+
+                <div class="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
+                    <div class="rounded-2xl border border-slate-200 bg-slate-50 p-4">
+                        <p class="text-xs font-bold uppercase tracking-wider text-slate-500">EPA map signal</p>
+                        <p class="mt-2 font-display text-2xl font-black text-slate-900">Zone ${county.getEpaZone() > 0 ? Integer.toString(county.getEpaZone()) : "?"}</p>
+                        <p class="mt-1 text-xs leading-relaxed text-slate-500">County-level predicted indoor screening range, not a home-level test result.</p>
+                    </div>
+                    <div class="rounded-2xl border border-slate-200 bg-slate-50 p-4">
+                        <p class="text-xs font-bold uppercase tracking-wider text-slate-500">Housing base</p>
+                        <p class="mt-2 font-display text-2xl font-black text-slate-900">${totalHousingUnitsDisplay}</p>
+                        <p class="mt-1 text-xs leading-relaxed text-slate-500">${housingPercentileDisplay} percentile among ${statePeerCountyCount} ${county.getStateAbbr()} counties with data.</p>
+                    </div>
+                    <div class="rounded-2xl border border-slate-200 bg-slate-50 p-4">
+                        <p class="text-xs font-bold uppercase tracking-wider text-slate-500">Older housing share</p>
+                        <p class="mt-2 font-display text-2xl font-black text-slate-900">${olderHomeDisplay}</p>
+                        <p class="mt-1 text-xs leading-relaxed text-slate-500">${olderHomePercentileDisplay} percentile in-state; older homes often need clearer test placement decisions.</p>
+                    </div>
+                    <div class="rounded-2xl border border-slate-200 bg-slate-50 p-4">
+                        <p class="text-xs font-bold uppercase tracking-wider text-slate-500">Median home value</p>
+                        <p class="mt-2 font-display text-2xl font-black text-slate-900">${medianHomeValueDisplay}</p>
+                        <p class="mt-1 text-xs leading-relaxed text-slate-500">Used as context for whether mitigation is a small maintenance item or a negotiation issue.</p>
+                    </div>
+                </div>
+
+                <div class="mt-5 rounded-2xl border border-indigo-100 bg-indigo-50 p-4">
+                    <p class="text-sm font-bold text-indigo-950">Why this page is being kept or reduced</p>
+                    <p class="mt-1 text-sm leading-relaxed text-indigo-900">${priorityReasonDisplay}. This page is strongest when it connects the EPA zone, local housing context, and official radon-source context to a specific home-test decision.</p>
+                </div>
+
+                @if(hasRadonMeasurement)
+                    <div class="mt-5 rounded-[1.5rem] border border-sky-200 bg-sky-50 p-4 sm:p-5">
+                        <div class="flex flex-col gap-2 md:flex-row md:items-start md:justify-between">
+                            <div>
+                                <p class="text-xs font-bold uppercase tracking-[0.18em] text-sky-700">Measured Radon Data</p>
+                                <h3 class="mt-1 font-display text-xl font-black text-slate-900">${radonMeasurement.getSourceName()}</h3>
+                            </div>
+                            <p class="text-xs font-bold text-sky-800">${radonMeasurement.getPeriod()}</p>
+                        </div>
+
+                        <div class="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
+                            <div class="rounded-2xl border border-sky-100 bg-white p-4">
+                                <p class="text-xs font-bold uppercase tracking-wider text-slate-500">${measuredPrimaryResultLabel}</p>
+                                <p class="mt-2 font-display text-2xl font-black text-slate-900">${measuredPrimaryResultDisplay}</p>
+                            </div>
+                            <div class="rounded-2xl border border-sky-100 bg-white p-4">
+                                <p class="text-xs font-bold uppercase tracking-wider text-slate-500">At or above 4.0</p>
+                                <p class="mt-2 font-display text-2xl font-black text-slate-900">${measuredPercentAbove4Display}</p>
+                            </div>
+                            <div class="rounded-2xl border border-sky-100 bg-white p-4">
+                                <p class="text-xs font-bold uppercase tracking-wider text-slate-500">${measuredHighEndLabel}</p>
+                                <p class="mt-2 font-display text-2xl font-black text-slate-900">${measuredHighEndDisplay}</p>
+                            </div>
+                            <div class="rounded-2xl border border-sky-100 bg-white p-4">
+                                <p class="text-xs font-bold uppercase tracking-wider text-slate-500">${measuredTestVolumeLabel}</p>
+                                <p class="mt-2 font-display text-2xl font-black text-slate-900">${measuredAverageTestsDisplay}</p>
+                            </div>
+                        </div>
+
+                        @if(!"Not available".equals(measuredMedianDisplay) || !"Not available".equals(measuredPercentAbove2Display))
+                            <div class="mt-3 rounded-2xl border border-sky-100 bg-white p-4 text-sm leading-relaxed text-slate-700">
+                                @if(!"Not available".equals(measuredMedianDisplay))
+                                    <span class="font-semibold text-slate-900">Median result:</span> ${measuredMedianDisplay}.
+                                @endif
+                                @if(!"Not available".equals(measuredPercentAbove2Display))
+                                    <span class="font-semibold text-slate-900">At or above 2.0 pCi/L:</span> ${measuredPercentAbove2Display}.
+                                @endif
+                            </div>
+                        @endif
+
+                        @if(hasPaFloorBreakdown)
+                            <div class="mt-3 rounded-2xl border border-sky-100 bg-white p-4 text-sm leading-relaxed text-slate-700">
+                                <span class="font-semibold text-slate-900">PA DEP floor rollup:</span>
+                                basement average ${measuredBasementAverageDisplay} from ${measuredBasementTestsDisplay} tests;
+                                first-floor average ${measuredFirstFloorAverageDisplay} from ${measuredFirstFloorTestsDisplay} tests.
+                            </div>
+                        @endif
+
+                        <p class="mt-4 text-xs leading-relaxed text-sky-900">
+                            ${radonMeasurement.getCaveat()}
+                        </p>
+                    </div>
+                @endif
+
+                @if(radonEvidence != null)
+                    <div class="mt-5 rounded-[1.5rem] border p-4 sm:p-5
+                        @if("high".equals(radonEvidence.getRiskTone())) border-red-200 bg-red-50
+                        @elseif("elevated".equals(radonEvidence.getRiskTone())) border-orange-200 bg-orange-50
+                        @elseif("borderline".equals(radonEvidence.getRiskTone())) border-amber-200 bg-amber-50
+                        @elseif("lower".equals(radonEvidence.getRiskTone())) border-emerald-200 bg-emerald-50
+                        @else border-slate-200 bg-slate-50
+                        @endif
+                    ">
+                        <div class="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
+                            <div>
+                                <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-600">RadonVerdict Processed Verdict</p>
+                                <h3 class="mt-1 font-display text-xl font-black text-slate-950">${radonEvidence.getRiskBand()}</h3>
+                            </div>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="rounded-full border border-white/70 bg-white/80 px-3 py-1 text-xs font-black text-slate-800">
+                                    ${radonEvidence.getConfidenceLabel()} confidence
+                                </span>
+                                <span class="rounded-full border border-white/70 bg-white/80 px-3 py-1 text-xs font-black text-slate-800">
+                                    ${radonEvidence.getConfidenceScore()}/100
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-4">
+                            <div class="rounded-2xl border border-white/80 bg-white/80 p-4">
+                                <p class="text-xs font-bold uppercase tracking-wider text-slate-500">
+                                    @if(highEndOnlyRadonMeasurement) High-end rank
+                                    @else Primary result rank
+                                    @endif
+                                </p>
+                                <p class="mt-2 font-display text-xl font-black text-slate-900">
+                                    @if(highEndOnlyRadonMeasurement) ${radonEvidence.getHighEndPercentileDisplay()}
+                                    @else ${radonEvidence.getAveragePercentileDisplay()}
+                                    @endif
+                                </p>
+                                <p class="mt-1 text-xs text-slate-500">
+                                    @if(highEndOnlyRadonMeasurement) ${radonEvidence.getHighEndDisplay()}
+                                    @else ${radonEvidence.getPrimaryAverageDisplay()}
+                                    @endif
+                                </p>
+                            </div>
+                            <div class="rounded-2xl border border-white/80 bg-white/80 p-4">
+                                <p class="text-xs font-bold uppercase tracking-wider text-slate-500">4.0+ rank</p>
+                                <p class="mt-2 font-display text-xl font-black text-slate-900">${radonEvidence.getAbove4PercentileDisplay()}</p>
+                                <p class="mt-1 text-xs text-slate-500">${radonEvidence.getAbove4Display()} at or above 4.0</p>
+                            </div>
+                            <div class="rounded-2xl border border-white/80 bg-white/80 p-4">
+                                <p class="text-xs font-bold uppercase tracking-wider text-slate-500">High-end rank</p>
+                                <p class="mt-2 font-display text-xl font-black text-slate-900">${radonEvidence.getHighEndPercentileDisplay()}</p>
+                                <p class="mt-1 text-xs text-slate-500">${radonEvidence.getHighEndDisplay()}</p>
+                            </div>
+                            <div class="rounded-2xl border border-white/80 bg-white/80 p-4">
+                                <p class="text-xs font-bold uppercase tracking-wider text-slate-500">Test volume rank</p>
+                                <p class="mt-2 font-display text-xl font-black text-slate-900">${radonEvidence.getTestVolumePercentileDisplay()}</p>
+                                <p class="mt-1 text-xs text-slate-500">${radonEvidence.getTestVolumeDisplay()}</p>
+                            </div>
+                        </div>
+
+                        <div class="mt-4 grid grid-cols-1 gap-3 lg:grid-cols-2">
+                            <div class="rounded-2xl border border-white/80 bg-white/80 p-4">
+                                <p class="text-sm font-bold text-slate-950">What the data says</p>
+                                <p class="mt-2 text-sm leading-relaxed text-slate-700">${radonEvidence.getMeasuredBurdenSummary()}</p>
+                                <p class="mt-2 text-sm leading-relaxed text-slate-700">${radonEvidence.getStateComparisonSummary()}</p>
+                            </div>
+                            <div class="rounded-2xl border border-white/80 bg-white/80 p-4">
+                                <p class="text-sm font-bold text-slate-950">What to do with it</p>
+                                <p class="mt-2 text-sm leading-relaxed text-slate-700">${radonEvidence.getRecommendedAction()}</p>
+                                @if(radonEvidence.getRetestTriggerSummary() != null && !radonEvidence.getRetestTriggerSummary().isBlank())
+                                    <p class="mt-2 text-sm leading-relaxed text-slate-700">${radonEvidence.getRetestTriggerSummary()}</p>
+                                @endif
+                                <p class="mt-2 text-xs leading-relaxed text-slate-500">${radonEvidence.getConfidenceSummary()}</p>
+                            </div>
+                        </div>
+
+                        <div class="mt-4 grid grid-cols-1 gap-3 md:grid-cols-3">
+                            <div class="rounded-2xl border border-white/80 bg-white/80 p-4">
+                                <p class="text-xs font-bold uppercase tracking-wider text-emerald-700">No reading yet</p>
+                                <p class="mt-2 text-sm leading-relaxed text-slate-700">${radonEvidence.getNoReadingAction()}</p>
+                            </div>
+                            <div class="rounded-2xl border border-white/80 bg-white/80 p-4">
+                                <p class="text-xs font-bold uppercase tracking-wider text-amber-700">2.0-3.9 result</p>
+                                <p class="mt-2 text-sm leading-relaxed text-slate-700">${radonEvidence.getBorderlineAction()}</p>
+                            </div>
+                            <div class="rounded-2xl border border-white/80 bg-white/80 p-4">
+                                <p class="text-xs font-bold uppercase tracking-wider text-red-700">4.0+ result</p>
+                                <p class="mt-2 text-sm leading-relaxed text-slate-700">${radonEvidence.getElevatedAction()}</p>
+                            </div>
+                        </div>
+
+                        <p class="mt-4 text-xs leading-relaxed text-slate-600">${radonEvidence.getSourceCoverageSummary()}</p>
+                    </div>
+                @endif
+            </section>
+
             @if(aeo != null)
                 @template.components.aeo_answer_block(block = aeo)
             @endif
@@ -623,10 +1028,10 @@
                                     &lt;2.0
                                 </div>
                                 <div>
-                                    <h3 class="font-bold text-emerald-900 text-sm">Below 2.0 pCi/L - Acceptable Range</h3>
+                                    <h3 class="font-bold text-emerald-900 text-sm">Below 2.0 pCi/L - Lower Concern, Keep Testing</h3>
                                     <p class="text-xs text-emerald-800 leading-relaxed mt-1">
-                                        Below both the EPA (4.0) and WHO (2.7) action levels. No mitigation needed. The average outdoor radon level
-                                        is approximately 0.4 pCi/L. Periodic monitoring is still recommended, as levels can change over time due to
+                                        Below both the EPA (4.0) and WHO (2.7) action reference levels. This usually means mitigation is not the next immediate step after a confirmed result. The average outdoor radon level
+                                        is approximately 0.4 pCi/L, and there is no known risk-free indoor level. Periodic testing is still recommended because levels can change over time due to
                                         seasonal variations, changes in home ventilation, or foundation settling.
                                     </p>
                                 </div>

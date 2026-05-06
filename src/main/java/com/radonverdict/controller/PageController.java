@@ -73,6 +73,7 @@ public class PageController {
 
         // Group counties by state for the directory
         Map<String, List<County>> stateMap = dataLoadService.getCountyBySlugMap().values().stream()
+                .filter(seoIndexingPolicyService::isCountyIndexableCandidate)
                 .collect(Collectors.groupingBy(County::getStateAbbr, TreeMap::new, Collectors.toList()));
         model.addAttribute("stateMap", stateMap);
 

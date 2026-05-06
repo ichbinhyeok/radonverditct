@@ -6,6 +6,7 @@ import com.microsoft.playwright.BrowserType;
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.Playwright;
+import com.microsoft.playwright.Response;
 import com.microsoft.playwright.options.LoadState;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -18,6 +19,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -40,6 +42,12 @@ class PlaywrightResponsiveLayoutE2ETest {
     private Playwright playwright;
     private Browser browser;
     private Path artifactDir;
+
+    private record LayoutRoute(String label, String path) {
+    }
+
+    private record ViewportCase(String label, int width, int height, boolean mobile) {
+    }
 
     @BeforeAll
     void beforeAll() throws IOException {
@@ -149,6 +157,116 @@ class PlaywrightResponsiveLayoutE2ETest {
         }
     }
 
+    @Test
+    void criticalEntryAndSeoPagesAvoidOverflowAndMobileZipCtaOverlap() {
+        List<LayoutRoute> routes = List.of(
+                new LayoutRoute("cost-calculator", "/radon-cost-calculator"),
+                new LayoutRoute("credit-calculator", "/radon-credit-calculator"),
+                new LayoutRoute("levels-root", "/radon-levels"),
+                new LayoutRoute("levels-state", "/radon-levels/california"),
+                new LayoutRoute("levels-county", "/radon-levels/california/los-angeles-county"),
+                new LayoutRoute("levels-colorado", "/radon-levels/colorado"),
+                new LayoutRoute("levels-colorado-county", "/radon-levels/colorado/boulder-county"),
+                new LayoutRoute("levels-illinois", "/radon-levels/illinois"),
+                new LayoutRoute("levels-illinois-county", "/radon-levels/illinois/dupage-county"),
+                new LayoutRoute("levels-iowa-county", "/radon-levels/iowa/polk-county"),
+                new LayoutRoute("levels-north-carolina-county", "/radon-levels/north-carolina/wake-county"),
+                new LayoutRoute("levels-pennsylvania", "/radon-levels/pennsylvania"),
+                new LayoutRoute("levels-pennsylvania-county", "/radon-levels/pennsylvania/northampton-county"),
+                new LayoutRoute("levels-utah-county", "/radon-levels/utah/salt-lake-county"),
+                new LayoutRoute("levels-virginia-county", "/radon-levels/virginia/fairfax-county"),
+                new LayoutRoute("cost-root", "/radon-mitigation-cost"),
+                new LayoutRoute("cost-state", "/radon-mitigation-cost/california"),
+                new LayoutRoute("cost-county", "/radon-mitigation-cost/california/los-angeles-county"),
+                new LayoutRoute("credit-county", "/radon-credit-calculator/california/los-angeles-county?intent=buying&radonResultBand=above_4"),
+                new LayoutRoute("testing-guide", "/guides/how-to-test-for-radon"),
+                new LayoutRoute("seller-credit-guide", "/guides/radon-seller-credit-worksheet"));
+
+        List<ViewportCase> viewports = List.of(
+                new ViewportCase("mobile-390", 390, 844, true),
+                new ViewportCase("narrow-320", 320, 760, true),
+                new ViewportCase("desktop-1440", 1440, 1200, false));
+
+        List<String> failures = new ArrayList<>();
+
+        for (ViewportCase viewport : viewports) {
+            try (BrowserContext context = browser.newContext(new Browser.NewContextOptions()
+                    .setViewportSize(viewport.width(), viewport.height()))) {
+                context.setDefaultTimeout(30_000);
+                context.setDefaultNavigationTimeout(30_000);
+                Page page = context.newPage();
+                List<String> firstPartyFailures = new ArrayList<>();
+                List<String> pageErrors = new ArrayList<>();
+
+                context.onRequestFailed(request -> {
+                    if (request.url().startsWith(baseUrl())) {
+                        firstPartyFailures.add("REQUEST_FAILED " + request.method() + " " + request.url()
+                                + " => " + request.failure());
+                    }
+                });
+                context.onResponse(response -> {
+                    if (response.url().startsWith(baseUrl()) && response.status() >= 500) {
+                        firstPartyFailures.add("HTTP_" + response.status() + " " + response.url());
+                    }
+                });
+                page.onPageError(pageErrors::add);
+
+                for (LayoutRoute route : routes) {
+                    Response response = page.navigate(baseUrl() + route.path());
+                    page.waitForLoadState(LoadState.DOMCONTENTLOADED);
+                    page.waitForTimeout(700);
+
+                    if (response == null || response.status() >= 400) {
+                        failures.add(viewport.label() + " " + route.path() + " returned "
+                                + (response == null ? "no response" : response.status()));
+                        continue;
+                    }
+
+                    Map<String, Object> viewportReport = viewportReport(page);
+                    if ((Boolean) viewportReport.get("documentOverflow")) {
+                        failures.add(viewport.label() + " " + route.path()
+                                + " has horizontal overflow: " + viewportReport);
+                    }
+
+                    List<Map<String, Object>> clippedInteractiveElements = clippedInteractiveReport(page);
+                    if (!clippedInteractiveElements.isEmpty()) {
+                        failures.add(viewport.label() + " " + route.path()
+                                + " has clipped interactive elements: " + clippedInteractiveElements);
+                    }
+
+                    if (viewport.mobile()) {
+                        List<Map<String, Object>> zipOverlaps = mobileZipCtaOverlapReport(page);
+                        if (!zipOverlaps.isEmpty()) {
+                            failures.add(viewport.label() + " " + route.path()
+                                    + " has ZIP input/button overlap: " + zipOverlaps);
+                        }
+
+                        List<Map<String, Object>> oversizedStickyCtas = oversizedMobileStickyCtaReport(page);
+                        if (!oversizedStickyCtas.isEmpty()) {
+                            failures.add(viewport.label() + " " + route.path()
+                                    + " has oversized mobile sticky CTA: " + oversizedStickyCtas);
+                        }
+
+                        List<Map<String, Object>> quickReadStickyOverlaps = levelsQuickReadStickyOverlapReport(page);
+                        if (!quickReadStickyOverlaps.isEmpty()) {
+                            failures.add(viewport.label() + " " + route.path()
+                                    + " has levels quick read/sticky CTA overlap: " + quickReadStickyOverlaps);
+                        }
+                    }
+
+                    page.screenshot(new Page.ScreenshotOptions()
+                            .setPath(artifactDir.resolve("critical-" + viewport.label() + "-" + route.label() + ".png"))
+                            .setFullPage(false));
+                }
+
+                failures.addAll(firstPartyFailures);
+                failures.addAll(pageErrors);
+            }
+        }
+
+        assertTrue(failures.isEmpty(), String.join(System.lineSeparator(), failures));
+    }
+
     @SuppressWarnings("unchecked")
     private Map<String, Object> viewportReport(Page page) {
         return (Map<String, Object>) page.evaluate("""
@@ -189,6 +307,191 @@ class PlaywrightResponsiveLayoutE2ETest {
                     documentOverflow: root.scrollWidth > root.clientWidth + 1,
                     offenders: offenders.slice(0, 12)
                   };
+                }
+                """);
+    }
+
+    @SuppressWarnings("unchecked")
+    private List<Map<String, Object>> clippedInteractiveReport(Page page) {
+        return (List<Map<String, Object>>) page.evaluate("""
+                () => {
+                  const viewportWidth = window.innerWidth;
+                  const viewportHeight = window.innerHeight;
+                  const interactiveSelector = [
+                    'a[href]',
+                    'button',
+                    'input',
+                    'select',
+                    'textarea',
+                    'label'
+                  ].join(',');
+
+                  return Array.from(document.querySelectorAll(interactiveSelector))
+                    .filter((element) => {
+                      const style = window.getComputedStyle(element);
+                      if (style.display === 'none' || style.visibility === 'hidden' || style.opacity === '0') {
+                        return false;
+                      }
+                      const rect = element.getBoundingClientRect();
+                      return rect.width > 0 && rect.height > 0
+                        && rect.bottom > 0
+                        && rect.top < viewportHeight;
+                    })
+                    .filter((element) => {
+                      const rect = element.getBoundingClientRect();
+                      return rect.left < -1 || rect.right > viewportWidth + 1 || rect.width > viewportWidth + 1;
+                    })
+                    .slice(0, 12)
+                    .map((element) => {
+                      const rect = element.getBoundingClientRect();
+                      return {
+                        tag: element.tagName,
+                        className: element.className ? String(element.className).slice(0, 120) : '',
+                        text: (element.innerText || element.value || element.getAttribute('aria-label') || '')
+                          .replace(/\\s+/g, ' ')
+                          .trim()
+                          .slice(0, 80),
+                        left: Math.round(rect.left),
+                        right: Math.round(rect.right),
+                        width: Math.round(rect.width)
+                      };
+                    });
+                }
+                """);
+    }
+
+    @SuppressWarnings("unchecked")
+    private List<Map<String, Object>> mobileZipCtaOverlapReport(Page page) {
+        return (List<Map<String, Object>>) page.evaluate("""
+                () => {
+                  function visible(element) {
+                    if (!element) {
+                      return false;
+                    }
+                    const style = window.getComputedStyle(element);
+                    const rect = element.getBoundingClientRect();
+                    return style.display !== 'none'
+                      && style.visibility !== 'hidden'
+                      && rect.width > 0
+                      && rect.height > 0;
+                  }
+
+                  function overlaps(first, second) {
+                    return first.left < second.right
+                      && first.right > second.left
+                      && first.top < second.bottom
+                      && first.bottom > second.top;
+                  }
+
+                  return Array.from(document.querySelectorAll('form'))
+                    .flatMap((form) => {
+                      const input = form.querySelector("input[name='zipCode']");
+                      const button = form.querySelector("button[type='submit'], button:not([type])");
+                      if (!visible(input) || !visible(button)) {
+                        return [];
+                      }
+
+                      const inputRect = input.getBoundingClientRect();
+                      const buttonRect = button.getBoundingClientRect();
+                      if (!overlaps(inputRect, buttonRect)) {
+                        return [];
+                      }
+
+                      return [{
+                        inputPlaceholder: input.getAttribute('placeholder') || '',
+                        buttonText: (button.innerText || '').replace(/\\s+/g, ' ').trim(),
+                        input: {
+                          left: Math.round(inputRect.left),
+                          top: Math.round(inputRect.top),
+                          right: Math.round(inputRect.right),
+                          bottom: Math.round(inputRect.bottom)
+                        },
+                        button: {
+                          left: Math.round(buttonRect.left),
+                          top: Math.round(buttonRect.top),
+                          right: Math.round(buttonRect.right),
+                          bottom: Math.round(buttonRect.bottom)
+                        }
+                      }];
+                    })
+                    .slice(0, 8);
+                }
+                """);
+    }
+
+    @SuppressWarnings("unchecked")
+    private List<Map<String, Object>> oversizedMobileStickyCtaReport(Page page) {
+        return (List<Map<String, Object>>) page.evaluate("""
+                () => {
+                  const viewportHeight = window.innerHeight;
+                  return Array.from(document.querySelectorAll('.mobile-sticky-cta'))
+                    .filter((element) => {
+                      const style = window.getComputedStyle(element);
+                      const rect = element.getBoundingClientRect();
+                      const text = (element.innerText || '').replace(/\\s+/g, ' ').trim();
+                      return style.display !== 'none'
+                        && style.visibility !== 'hidden'
+                        && rect.width > 0
+                        && rect.height > 0
+                        && text === 'Pick My Next Step'
+                        && (rect.height > 64 || rect.height / viewportHeight > 0.09);
+                    })
+                    .map((element) => {
+                      const rect = element.getBoundingClientRect();
+                      return {
+                        text: (element.innerText || '').replace(/\\s+/g, ' ').trim().slice(0, 80),
+                        top: Math.round(rect.top),
+                        bottom: Math.round(rect.bottom),
+                        height: Math.round(rect.height),
+                        viewportHeight
+                      };
+                    });
+                }
+                """);
+    }
+
+    @SuppressWarnings("unchecked")
+    private List<Map<String, Object>> levelsQuickReadStickyOverlapReport(Page page) {
+        return (List<Map<String, Object>>) page.evaluate("""
+                () => {
+                  function visible(element) {
+                    if (!element) {
+                      return false;
+                    }
+                    const style = window.getComputedStyle(element);
+                    const rect = element.getBoundingClientRect();
+                    return style.display !== 'none'
+                      && style.visibility !== 'hidden'
+                      && rect.width > 0
+                      && rect.height > 0;
+                  }
+
+                  function overlaps(first, second) {
+                    return first.left < second.right
+                      && first.right > second.left
+                      && first.top < second.bottom
+                      && first.bottom > second.top;
+                  }
+
+                  const quickRead = document.querySelector('.levels-county-hero-quick-read');
+                  const sticky = Array.from(document.querySelectorAll('.mobile-sticky-cta'))
+                    .find((element) => (element.innerText || '').replace(/\\s+/g, ' ').trim() === 'Pick My Next Step');
+                  if (!visible(quickRead) || !visible(sticky)) {
+                    return [];
+                  }
+
+                  const quickReadRect = quickRead.getBoundingClientRect();
+                  const stickyRect = sticky.getBoundingClientRect();
+                  if (!overlaps(quickReadRect, stickyRect)) {
+                    return [];
+                  }
+
+                  return [{
+                    quickReadTop: Math.round(quickReadRect.top),
+                    quickReadBottom: Math.round(quickReadRect.bottom),
+                    stickyTop: Math.round(stickyRect.top),
+                    stickyBottom: Math.round(stickyRect.bottom)
+                  }];
                 }
                 """);
     }

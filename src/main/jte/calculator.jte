@@ -48,19 +48,19 @@
                             Enter your ZIP code to open the county plan, then tune it by result band and goal before you compare quotes or negotiate a repair request.
                         </p>
 
-                        <div class="mt-6 relative group">
-                            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                        <div class="mt-6 group sm:relative">
+                            <div class="pointer-events-none absolute ml-4 mt-4 flex items-center sm:inset-y-0 sm:left-0 sm:ml-0 sm:mt-0 sm:pl-4">
                                 <svg class="h-6 w-6 text-slate-400 group-focus-within:text-brand-500 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                                 </svg>
                             </div>
                             <input type="text" name="zipCode" pattern="[0-9]{5}" required placeholder="Enter 5-digit ZIP code"
-                                class="block w-full pl-12 pr-32 py-4 bg-white rounded-2xl border-0 ring-1 ring-inset ring-slate-200 focus:ring-2 focus:ring-inset focus:ring-brand-500 text-slate-900 text-lg shadow-xl shadow-black/10 placeholder:text-slate-400 font-medium">
+                                class="block min-w-0 w-full rounded-2xl border-0 bg-white py-4 pl-12 pr-4 text-lg font-medium text-slate-900 shadow-xl shadow-black/10 ring-1 ring-inset ring-slate-200 placeholder:text-slate-400 focus:ring-2 focus:ring-inset focus:ring-brand-500 sm:pr-36">
                             <button type="submit"
                                     data-track-event="home_path_pick"
                                     data-track-label="have_result_zip"
-                                    class="absolute inset-y-2 right-2 flex items-center bg-slate-900 hover:bg-slate-800 text-white font-bold px-6 rounded-xl transition-colors shadow-sm">
+                                    class="mt-3 flex min-h-[52px] w-full items-center justify-center rounded-xl bg-slate-900 px-6 font-bold text-white shadow-sm transition-colors hover:bg-slate-800 sm:absolute sm:inset-y-2 sm:right-2 sm:mt-0 sm:min-h-0 sm:w-auto">
                                 Get Local Plan
                             </button>
                         </div>

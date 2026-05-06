@@ -17,12 +17,9 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.time.Duration;
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-import java.util.function.BooleanSupplier;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -78,9 +75,9 @@ class PlaywrightConversionFlowsE2ETest {
             persona.page.locator("input[name='zipCode']").fill("22030");
             persona.page.locator("form[action='/search-zip']")
                     .evaluate("form => form.submit()");
-            waitUntil(() -> persona.page.content().contains("4.0+ Action Plan for Buyers"),
-                    Duration.ofSeconds(10));
+            persona.page.waitForURL("**/radon-mitigation-cost/**");
             persona.page.waitForLoadState(LoadState.DOMCONTENTLOADED);
+            persona.page.locator("text=4.0+ Action Plan for Buyers").first().waitFor();
 
             assertTrue(persona.page.content().contains("Fairfax, VA"));
             assertTrue(persona.page.locator("text=4.0+ Action Plan for Buyers").first().isVisible());
@@ -103,9 +100,9 @@ class PlaywrightConversionFlowsE2ETest {
             persona.page.locator("input[name='zipCode']").fill("22030");
             persona.page.locator("form[action='/search-zip-credit']")
                     .evaluate("form => form.submit()");
-            waitUntil(() -> persona.page.content().contains("Opening ask"),
-                    Duration.ofSeconds(10));
+            persona.page.waitForURL("**/radon-credit-calculator/**");
             persona.page.waitForLoadState(LoadState.DOMCONTENTLOADED);
+            persona.page.locator("text=Opening ask").first().waitFor();
 
             assertTrue(persona.page.content().contains("Fairfax, VA"));
             assertTrue(persona.page.locator("h1").first().innerText().contains("Buyer Radon Credit Calculator for Fairfax, VA"));
@@ -168,22 +165,6 @@ class PlaywrightConversionFlowsE2ETest {
 
     private String baseUrl() {
         return LOCAL_BASE_URL;
-    }
-
-    private static void waitUntil(BooleanSupplier condition, Duration timeout) {
-        Instant deadline = Instant.now().plus(timeout);
-        while (Instant.now().isBefore(deadline)) {
-            if (condition.getAsBoolean()) {
-                return;
-            }
-            try {
-                Thread.sleep(200);
-            } catch (InterruptedException interruptedException) {
-                Thread.currentThread().interrupt();
-                throw new IllegalStateException("Interrupted while waiting for condition", interruptedException);
-            }
-        }
-        throw new IllegalStateException("Condition was not met within timeout " + timeout);
     }
 
     private final class PersonaSession implements AutoCloseable {

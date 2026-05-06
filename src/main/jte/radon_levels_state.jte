@@ -1,5 +1,7 @@
 @import com.radonverdict.model.County
 @import com.radonverdict.model.StateRegulations.StateRule
+@import com.radonverdict.model.dto.RadonEvidenceCoverageSummary
+@import com.radonverdict.model.dto.RadonStateEvidenceInsight
 @import java.util.List
 
 @param String stateSlug
@@ -9,6 +11,8 @@
 @param long zone1Count = 0
 @param long zone2Count = 0
 @param long zone3Count = 0
+@param RadonEvidenceCoverageSummary evidenceCoverage = null
+@param RadonStateEvidenceInsight stateEvidenceInsight = null
 @param boolean noindex = false
 
 !{
@@ -94,6 +98,190 @@
                     <div class="text-xs font-bold text-emerald-500 uppercase tracking-wider mt-1">Zone 3<br>Low Risk</div>
                 </div>
             </div>
+
+            @if(evidenceCoverage != null && evidenceCoverage.getTotalCount() > 0)
+                <section class="mb-10 rounded-2xl border border-slate-200 bg-white p-5 sm:p-6 shadow-sm">
+                    <div class="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+                        <div>
+                            <p class="text-xs font-bold uppercase tracking-wider text-slate-500">Official Evidence in ${stateName}</p>
+                            <h2 class="mt-2 font-display text-2xl font-black text-slate-900">
+                                ${evidenceCoverage.getOfficialEvidenceCount()} of ${evidenceCoverage.getTotalCount()} listed counties have official evidence
+                            </h2>
+                            <p class="mt-2 max-w-3xl text-sm leading-relaxed text-slate-600">
+                                Open a county page to see the processed verdict: source confidence, local burden, state percentile, and the next step for no reading, 2.0-3.9, or 4.0+ pCi/L.
+                            </p>
+                        </div>
+                        <div class="rounded-2xl border border-indigo-100 bg-indigo-50 px-5 py-4 text-center">
+                            <p class="font-display text-3xl font-black text-indigo-700">${evidenceCoverage.getOfficialEvidencePercent()}%</p>
+                            <p class="mt-1 text-xs font-bold uppercase tracking-wider text-indigo-800">covered</p>
+                        </div>
+                    </div>
+
+                    <div class="mt-5 grid grid-cols-2 gap-3 md:grid-cols-4">
+                        <div class="rounded-xl border border-slate-100 bg-slate-50 p-4">
+                            <p class="text-xs font-bold uppercase tracking-wider text-slate-500">Measured</p>
+                            <p class="mt-2 font-display text-2xl font-black text-slate-900">${evidenceCoverage.getMeasuredCount()}</p>
+                        </div>
+                        <div class="rounded-xl border border-slate-100 bg-slate-50 p-4">
+                            <p class="text-xs font-bold uppercase tracking-wider text-slate-500">State source</p>
+                            <p class="mt-2 font-display text-2xl font-black text-slate-900">${evidenceCoverage.getStateOfficialMeasuredCount()}</p>
+                        </div>
+                        <div class="rounded-xl border border-slate-100 bg-slate-50 p-4">
+                            <p class="text-xs font-bold uppercase tracking-wider text-slate-500">CDC source</p>
+                            <p class="mt-2 font-display text-2xl font-black text-slate-900">${evidenceCoverage.getCdcMeasuredCount()}</p>
+                        </div>
+                        <div class="rounded-xl border border-slate-100 bg-slate-50 p-4">
+                            <p class="text-xs font-bold uppercase tracking-wider text-slate-500">Needs source detail</p>
+                            <p class="mt-2 font-display text-2xl font-black text-slate-900">${evidenceCoverage.getSourcePendingCount()}</p>
+                        </div>
+                    </div>
+
+                    <div class="mt-5 flex flex-wrap gap-2">
+                        @for(var source : evidenceCoverage.getSourceRows())
+                            <span class="rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-xs font-semibold text-slate-700">
+                                ${source.getSourceName()}: ${source.getCount()}
+                            </span>
+                        @endfor
+                    </div>
+                </section>
+            @endif
+
+            @if(stateEvidenceInsight != null && stateEvidenceInsight.getMeasuredCountyCount() > 0)
+                <section class="mb-10 rounded-2xl border border-slate-200 bg-white p-5 sm:p-6 shadow-sm">
+                    <div class="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
+                        <div>
+                            <p class="text-xs font-bold uppercase tracking-wider text-slate-500">Measured Risk Leaders in ${stateName}</p>
+                            <h2 class="mt-2 font-display text-2xl font-black text-slate-900">
+                                County rankings from actual reported radon tests
+                            </h2>
+                            <p class="mt-2 max-w-3xl text-sm leading-relaxed text-slate-600">
+                                These lists rank the visible ${stateName} county pages by measured radon signals, not by the EPA zone label alone. Use them to spot where the state hub has a real data story before opening individual county pages.
+                            </p>
+                        </div>
+                        <div class="rounded-2xl border border-slate-100 bg-slate-50 px-5 py-4 text-center">
+                            <p class="font-display text-3xl font-black text-slate-900">${stateEvidenceInsight.getMeasuredCountyCount()}</p>
+                            <p class="mt-1 text-xs font-bold uppercase tracking-wider text-slate-500">measured counties</p>
+                        </div>
+                    </div>
+
+                    @if(stateEvidenceInsight.getDecisionHeadline() != null && !stateEvidenceInsight.getDecisionHeadline().isBlank())
+                        <div class="mt-5 rounded-2xl border border-slate-200 bg-slate-50 p-4">
+                            <p class="text-xs font-bold uppercase tracking-wider text-slate-500">State-level verdict</p>
+                            <h3 class="mt-2 font-display text-xl font-black text-slate-950">${stateEvidenceInsight.getDecisionHeadline()}</h3>
+                            <p class="mt-2 text-sm leading-relaxed text-slate-700">${stateEvidenceInsight.getStateDecisionSummary()}</p>
+                        </div>
+
+                        <div class="mt-4 grid grid-cols-1 gap-3 lg:grid-cols-3">
+                            <div class="rounded-2xl border border-emerald-100 bg-emerald-50 p-4">
+                                <p class="text-xs font-bold uppercase tracking-wider text-emerald-700">First-click counties</p>
+                                <p class="mt-2 text-sm leading-relaxed text-slate-700">${stateEvidenceInsight.getFirstClickSummary()}</p>
+                            </div>
+                            <div class="rounded-2xl border border-sky-100 bg-sky-50 p-4">
+                                <p class="text-xs font-bold uppercase tracking-wider text-sky-700">Buyer/seller lane</p>
+                                <p class="mt-2 text-sm leading-relaxed text-slate-700">${stateEvidenceInsight.getBuyerSellerSummary()}</p>
+                            </div>
+                            <div class="rounded-2xl border border-amber-100 bg-amber-50 p-4">
+                                <p class="text-xs font-bold uppercase tracking-wider text-amber-700">Retest lane</p>
+                                <p class="mt-2 text-sm leading-relaxed text-slate-700">${stateEvidenceInsight.getRetestSummary()}</p>
+                            </div>
+                        </div>
+                    @endif
+
+                    @if(stateEvidenceInsight.getPriorityDecisionRows() != null && !stateEvidenceInsight.getPriorityDecisionRows().isEmpty())
+                        <div class="mt-5 rounded-2xl border border-slate-200 bg-slate-50 p-4">
+                            <div class="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+                                <div>
+                                    <p class="text-xs font-bold uppercase tracking-wider text-slate-500">Best county pages to open first</p>
+                                    <h3 class="mt-1 font-display text-xl font-black text-slate-950">Start with these local evidence pages</h3>
+                                </div>
+                                <p class="max-w-sm text-xs leading-relaxed text-slate-500">
+                                    Ranked by measured burden, 4.0+ share, test volume, and whether the EPA zone understates the measurement signal.
+                                </p>
+                            </div>
+                            <div class="mt-4 grid grid-cols-1 gap-3 md:grid-cols-2">
+                                @for(var row : stateEvidenceInsight.getPriorityDecisionRows())
+                                    <a href="${row.getCountyPath()}" class="block rounded-xl border border-white bg-white p-4 hover:border-slate-300 hover:shadow-sm transition-all">
+                                        <div class="flex items-start justify-between gap-3">
+                                            <div>
+                                                <p class="text-sm font-black text-slate-950">${row.getCountyName()}</p>
+                                                <p class="mt-1 text-xs font-bold uppercase tracking-wider text-slate-400">${row.getSourceShortName()}</p>
+                                            </div>
+                                            <span class="shrink-0 rounded-full border border-slate-200 bg-slate-50 px-2.5 py-1 text-xs font-black text-slate-700">${row.getMetricDisplay()}</span>
+                                        </div>
+                                        <p class="mt-2 text-xs font-semibold text-slate-600">${row.getSupportingDisplay()}</p>
+                                        <p class="mt-2 text-sm leading-relaxed text-slate-700">${row.getDecisionDisplay()}</p>
+                                    </a>
+                                @endfor
+                            </div>
+                        </div>
+                    @endif
+
+                    <div class="mt-6 grid grid-cols-1 gap-4 lg:grid-cols-3">
+                        <div class="rounded-2xl border border-red-100 bg-red-50 p-4">
+                            <p class="text-xs font-bold uppercase tracking-wider text-red-700">Highest 4.0+ share</p>
+                            <div class="mt-3 space-y-3">
+                                @for(var row : stateEvidenceInsight.getTopAbove4Rows())
+                                    <a href="${row.getCountyPath()}" class="block rounded-xl border border-white/80 bg-white/85 p-3 hover:border-red-200 hover:bg-white transition-colors">
+                                        <div class="flex items-start justify-between gap-3">
+                                            <span class="text-sm font-black text-slate-900">${row.getCountyName()}</span>
+                                            <span class="shrink-0 text-sm font-black text-red-700">${row.getMetricDisplay()}</span>
+                                        </div>
+                                        <p class="mt-1 text-xs leading-relaxed text-slate-600">${row.getSupportingDisplay()}</p>
+                                        <p class="mt-1 text-[11px] font-bold uppercase tracking-wider text-slate-400">${row.getSourceShortName()}</p>
+                                    </a>
+                                @endfor
+                            </div>
+                        </div>
+
+                        <div class="rounded-2xl border border-orange-100 bg-orange-50 p-4">
+                            <p class="text-xs font-bold uppercase tracking-wider text-orange-700">Highest high-end reading</p>
+                            <div class="mt-3 space-y-3">
+                                @for(var row : stateEvidenceInsight.getTopHighEndRows())
+                                    <a href="${row.getCountyPath()}" class="block rounded-xl border border-white/80 bg-white/85 p-3 hover:border-orange-200 hover:bg-white transition-colors">
+                                        <div class="flex items-start justify-between gap-3">
+                                            <span class="text-sm font-black text-slate-900">${row.getCountyName()}</span>
+                                            <span class="shrink-0 text-sm font-black text-orange-700">${row.getMetricDisplay()}</span>
+                                        </div>
+                                        <p class="mt-1 text-xs leading-relaxed text-slate-600">${row.getSupportingDisplay()}</p>
+                                        <p class="mt-1 text-[11px] font-bold uppercase tracking-wider text-slate-400">${row.getSourceShortName()}</p>
+                                    </a>
+                                @endfor
+                            </div>
+                        </div>
+
+                        <div class="rounded-2xl border border-indigo-100 bg-indigo-50 p-4">
+                            <p class="text-xs font-bold uppercase tracking-wider text-indigo-700">Most reported tests</p>
+                            <div class="mt-3 space-y-3">
+                                @for(var row : stateEvidenceInsight.getTopTestVolumeRows())
+                                    <a href="${row.getCountyPath()}" class="block rounded-xl border border-white/80 bg-white/85 p-3 hover:border-indigo-200 hover:bg-white transition-colors">
+                                        <div class="flex items-start justify-between gap-3">
+                                            <span class="text-sm font-black text-slate-900">${row.getCountyName()}</span>
+                                            <span class="shrink-0 text-sm font-black text-indigo-700">${row.getMetricDisplay()}</span>
+                                        </div>
+                                        <p class="mt-1 text-xs leading-relaxed text-slate-600">${row.getSupportingDisplay()}</p>
+                                        <p class="mt-1 text-[11px] font-bold uppercase tracking-wider text-slate-400">${row.getSourceShortName()}</p>
+                                    </a>
+                                @endfor
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-5 grid grid-cols-1 gap-3 lg:grid-cols-3">
+                        <div class="rounded-2xl border border-slate-200 bg-slate-50 p-4">
+                            <p class="text-xs font-bold uppercase tracking-wider text-slate-500">Measured pattern</p>
+                            <p class="mt-2 text-sm leading-relaxed text-slate-700">${stateEvidenceInsight.getPatternSummary()}</p>
+                        </div>
+                        <div class="rounded-2xl border border-slate-200 bg-slate-50 p-4">
+                            <p class="text-xs font-bold uppercase tracking-wider text-slate-500">Map vs measurements</p>
+                            <p class="mt-2 text-sm leading-relaxed text-slate-700">${stateEvidenceInsight.getZoneContrastSummary()}</p>
+                        </div>
+                        <div class="rounded-2xl border border-slate-200 bg-slate-50 p-4">
+                            <p class="text-xs font-bold uppercase tracking-wider text-slate-500">Source confidence</p>
+                            <p class="mt-2 text-sm leading-relaxed text-slate-700">${stateEvidenceInsight.getSourceStrategySummary()}</p>
+                        </div>
+                    </div>
+                </section>
+            @endif
 
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-10">
                 <a href="/radon-mitigation-cost/${stateSlug}"

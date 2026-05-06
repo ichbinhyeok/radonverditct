@@ -80,7 +80,7 @@
             <p class="mt-3 text-sm leading-relaxed text-slate-600 sm:text-base">${description}</p>
         </div>
 
-        <div class="grid min-w-[280px] gap-3 sm:grid-cols-2 lg:grid-cols-1 lg:w-[300px]">
+        <div class="grid min-w-0 gap-3 sm:min-w-[280px] sm:grid-cols-2 lg:grid-cols-1 lg:w-[300px]">
             <div class="rounded-2xl border border-slate-200 bg-slate-50 p-4">
                 <p class="text-[11px] font-bold uppercase tracking-widest text-slate-500">${primaryValueLabel}</p>
                 <p class="mt-2 text-2xl font-black tracking-tight text-slate-900">${primaryValue}</p>

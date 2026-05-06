@@ -18,13 +18,11 @@
 }
 
 .mobile-sticky-cta {
-  border: 1px solid rgba(51, 65, 85, 0.9);
-  border-radius: 1rem;
-  background: rgba(15, 23, 42, 0.94);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  box-shadow: 0 16px 40px rgba(15, 23, 42, 0.28);
-  padding: 0.875rem 1rem calc(0.875rem + env(safe-area-inset-bottom, 0px));
+  border: 0;
+  border-radius: 9999px;
+  background: transparent;
+  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.22);
+  padding: 0 0 env(safe-area-inset-bottom, 0px);
 }
 
 nav[aria-label="Breadcrumb"] a {
@@ -41,6 +39,34 @@ nav[aria-label="Breadcrumb"] a:hover {
 }
 
 @media (max-width: 640px) {
+  html,
+  body {
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+
+  .grid > *,
+  .flex > * {
+    min-width: 0;
+  }
+
+  input,
+  select,
+  textarea,
+  button {
+    max-width: 100%;
+    min-width: 0;
+  }
+
+  nav[aria-label="Breadcrumb"] ol {
+    flex-wrap: wrap;
+    row-gap: 0.25rem;
+  }
+
+  .levels-county-hero-quick-read {
+    margin-top: 10rem;
+  }
+
   .glass-header {
     background: rgba(248, 250, 252, 0.94);
     backdrop-filter: blur(8px);

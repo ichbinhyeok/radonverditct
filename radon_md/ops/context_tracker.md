@@ -1,6 +1,6 @@
 # RadonVerdict Context Tracker
 
-Last updated: 2026-04-23 (Asia/Seoul)
+Last updated: 2026-05-06 (Asia/Seoul)
 
 ## 1) Current Snapshot
 
@@ -1873,3 +1873,176 @@ Verification run:
   - `/radon-mitigation-cost/california`
 - result:
   - BUILD SUCCESSFUL
+
+## 2026-05-06 - Index Footprint Pivot + Official County Data Moat
+
+Why this pass happened:
+- User saw a sharp recent Search Console impression drop and noted that GA4 also declined, so the concern could not be dismissed as Search Console freshness alone.
+- The working interpretation changed from "wait and see" to "assume Google is re-evaluating the county-page set and reduce the weak surface now."
+- The strategic pivot was not to make more county pages. It was to:
+  - stop asking Google to evaluate thousands of similar Zone 1/2 county pages
+  - keep only the counties with enough demand, housing scale, EPA risk, or historical search evidence
+  - make those retained pages materially stronger with official measurement/tier data
+  - make the parent hubs explain and route the data instead of acting like thin directories
+
+What changed strategically:
+- Old posture:
+  - many indexable county pages
+  - EPA zone + Census + generic decision framing carried too much of the page value
+  - county pages could look similar unless the user was already deep in the flow
+- New posture:
+  - retained priority county pages only
+  - Zone 3 stays closed
+  - low-priority Zone 1/2 counties are left accessible but noindexed
+  - retained pages lead with official radon evidence, source caveats, state comparison, and concrete next-step decisions
+  - root/state hubs carry more of the routing job
+
+Indexing policy implications:
+- Existing indexed pages that are noindexed should be allowed to fall out naturally after Google recrawls them.
+- Do not use Search Console URL removals for this class of pages unless a page is harmful, private, or urgently must disappear from results.
+- Do not block these URLs in `robots.txt`; Google must be able to crawl them to see `noindex, follow`.
+- Keep the pages returning `200` with `noindex, follow` rather than turning them into `404/410`, because they can still pass crawl paths and user navigation value.
+- Keep noindexed counties out of XML sitemaps and state hub listings. This is already covered by the current tests.
+- After deploy:
+  - submit or ping the updated sitemap
+  - inspect a small sample of noindexed counties in GSC
+  - monitor Page indexing for "Excluded by noindex"
+  - monitor that retained county pages stay indexed and continue receiving impressions
+
+Data moat work shipped:
+- Built a county radon evidence data layer:
+  - `CountyRadonMeasurement`
+  - `CountyRadonTier`
+  - `CountyRadonEvidence`
+  - national/state coverage summary DTOs
+  - `CountyRadonEvidenceService`
+- Added reproducible ingestion scripts for official/state/federal data sources:
+  - CDC Tracking
+  - New York DOH
+  - Minnesota Health
+  - Kansas KDHE
+  - Colorado CDPHE
+  - Illinois IEMA-OHS
+  - Iowa HHS
+  - North Carolina DHHS
+  - Mississippi EPA/USGS historical survey
+  - Wisconsin DHS
+  - Tennessee Health
+  - Pennsylvania DEP ZIP reports
+  - Virginia VDH
+  - Missouri DHSS
+  - Utah EPHT
+  - New Jersey DEP radon tiers
+- Generated committed production data:
+  - `county_radon_measurements.json`
+  - `county_radon_tiers.json`
+  - `radon_measurement_sources.json`
+  - `radon_measurement_coverage.json`
+- Final retained coverage after this pass:
+  - retained county pages: `736`
+  - measurement-backed: `719`
+  - official-tier-backed: `17`
+  - state-source gap: `0`
+  - CDC-needed gap: `0`
+
+High-leverage source expansions:
+- Pennsylvania:
+  - expanded PA DEP ZIP rollups to all `50` retained PA counties
+  - removed the remaining PA retained counties from CDC fallback
+- Iowa:
+  - ingested Iowa HHS county median radon dashboard data
+- North Carolina:
+  - ingested NCDHHS county highest-measured radon map data as high-end signal only, not as an average
+- Mississippi:
+  - closed the Alcorn County gap with EPA/USGS Mississippi supporting documentation from the `1990-1991` State/EPA Residential Radon Survey
+  - preserved caveats that the data is historical context, not a current property prediction
+
+Content and UX changes:
+- County `radon-levels` pages now lead with official evidence before affiliate/product paths.
+- County evidence blocks expose:
+  - primary result
+  - 4.0+ share where available
+  - high-end reading where available
+  - test volume
+  - median / 2.0+ context where available
+  - source caveat and processed verdict
+- Root `/radon-levels` hub now explains the official-data state paths and highlights states with stronger county evidence.
+- State hubs now rank and explain measured-risk leaders instead of acting only as county directories.
+- Mobile QA fixed the county `radon-levels` top-screen issue where sticky CTA and quick-read content could crowd each other.
+- Added `/data/` to `.gitignore` so local collection caches and telemetry CSVs are not committed accidentally.
+
+Why this is not just defensive:
+- The noindex reduction is defensive.
+- The official measurement/tier coverage is offensive.
+- The retained pages now have a reason to exist beyond EPA zone repetition: they answer "what does the local data say, how reliable is it, and what should I do with my own reading?"
+- This gives the retained set a better chance to recover because it changes the page substance, not just the crawl instructions.
+
+Verification run:
+- `.\gradlew.bat --no-daemon test --tests com.radonverdict.SeoBehaviorIntegrationTest`
+- `.\gradlew.bat --no-daemon test --tests com.radonverdict.PlaywrightResponsiveLayoutE2ETest`
+- `.\gradlew.bat --no-daemon test`
+- result:
+  - BUILD SUCCESSFUL
+
+Post-deploy monitoring:
+- Within the first crawl window:
+  - verify `/radon-levels` and key state hubs render indexed
+  - verify sample noindexed counties show `noindex, follow`
+  - verify sample retained counties are in sitemap and do not show noindex
+- In GSC after recrawl:
+  - compare impressions/clicks for retained county pages only
+  - separately monitor excluded noindexed pages instead of treating their impression loss as a failure
+  - watch whether root/state hub impressions rise as county breadth narrows
+- Do not judge the pivot from a 2-3 day Search Console movement.
+  - Use a crawl-complete sample plus a 28-day retained-page comparison.
+
+## Backlog - Realtor / Inspector Toolkit Link Experiment
+
+Decision:
+- Do not build this immediately.
+- Treat it as a later small experiment, not as a guaranteed SEO lift.
+- The concern is valid: the SEO impact is a black box unless outreach produces real links or real usage.
+
+Candidate page:
+- `/radon-failed-inspection-toolkit`
+- Working title: `Radon Failed Inspection Toolkit for Realtors & Home Inspectors`
+
+Why it might be worth testing later:
+- It gives home inspectors and real estate agents a customer-facing resource they can send after a 4.0+ pCi/L result.
+- It can bundle existing assets instead of requiring a large new content build:
+  - `/radon-credit-calculator`
+  - `/radon-mitigation-cost`
+  - `/guides/who-pays-radon-mitigation-buyer-or-seller`
+  - `/guides/radon-seller-credit-worksheet`
+  - state disclosure / licensing context
+  - `/methodology`
+- Its direct search traffic is likely limited.
+- Its real value would be as a backlink / referral asset.
+
+How to run it if revisited:
+- Build a small MVP page only.
+- Do not spend multiple days on design, PDF assets, or heavy tooling before validation.
+- Add:
+  - short buyer/seller explanation
+  - customer-sendable copy block
+  - links to calculator, worksheet, state rules, and methodology
+  - clear limits: not legal advice, not a contractor bid, verify state rules and test validity
+- Test outreach manually with 30 relevant targets first:
+  - home inspectors
+  - real estate agents with resource pages
+  - local real-estate blogs
+  - radon testing / inspection companies where the resource is complementary
+
+Success criteria:
+- 30 targets sent.
+- Continue only if one of these happens:
+  - 2+ replies
+  - 1+ real relevant backlink
+  - a credible inspector / agent says they would send it to customers
+- If there is no response, pause and consider a data-report asset instead.
+
+Expected SEO value:
+- Toolkit page alone: low.
+- Toolkit plus internal links: modest.
+- Toolkit plus relevant outreach: potentially useful.
+- Actual relevant backlinks: meaningful for this project because external authority is still weak compared with the internal page structure.

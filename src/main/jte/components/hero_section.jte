@@ -7,9 +7,9 @@
     final String budgetLabel = notTested ? "Future Cost Context:" : "Budget Context:";
 }
 
-<div class="mb-12 relative overflow-hidden rounded-[2.5rem] bg-slate-900 border border-slate-800 p-8 sm:p-12 shadow-2xl">
+<div class="mb-12 relative overflow-hidden rounded-[1.75rem] bg-slate-900 border border-slate-800 p-6 sm:rounded-[2.5rem] sm:p-12 shadow-2xl">
     <!-- Decorative background elements -->
-    <div class="absolute top-0 right-0 -mr-20 -mt-20 w-64 h-64 rounded-full mix-blend-multiply filter blur-3xl opacity-20 pointer-events-none 
+    <div class="absolute top-0 right-0 -mr-20 -mt-20 hidden w-64 h-64 rounded-full mix-blend-multiply filter blur-3xl opacity-20 pointer-events-none sm:block
         @if("red".equals(page.getBadgeColor())) bg-rose-500 @elseif("yellow".equals(page.getBadgeColor())) bg-amber-500 @else bg-emerald-500 @endif">
     </div>
 

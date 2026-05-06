@@ -8,6 +8,22 @@
         "notes": "County-level radon zone classifications (Zone 1/2/3). Primary source for risk context."
     },
     {
+        "id": "epa_citizens_guide",
+        "name": "EPA A Citizen's Guide to Radon",
+        "url": "https://www.epa.gov/radon/citizens-guide-radon-guide-protecting-yourself-and-your-family-radon",
+        "type": "epa",
+        "retrieved_at": "2026-05-05",
+        "notes": "EPA homeowner guidance for testing, action levels, and mitigation decisions."
+    },
+    {
+        "id": "cdc_radon_testing",
+        "name": "CDC Environmental Public Health Tracking - Radon Testing",
+        "url": "https://www.cdc.gov/environmental-health-tracking/php/data-research/radon-testing.html",
+        "type": "health",
+        "retrieved_at": "2026-05-05",
+        "notes": "Official public-health context for radon testing metrics and county/state tracking data."
+    },
+    {
         "id": "angi_cost_guide",
         "name": "Angi Radon Mitigation Cost Guide",
         "url": "https://www.angi.com/articles/how-much-does-it-cost-remove-radon-gas.htm",

@@ -190,7 +190,7 @@
             @template.components.cost_benchmark_compare(county = county, page = page)
             @template.components.decision_worksheet_cta(county = county, page = page)
 
-            <!-- 2.5 Local Data Moat -->
+            <!-- Local housing context -->
             @if(county.getStats() != null && county.getStats().getMetrics() != null && county.getStats().getMetrics().getTotalHousingUnits() > 0)
             <div class="border-t border-slate-200 mt-20 pt-16 mb-10">
                 <h3 class="font-display font-bold text-2xl text-slate-900 mb-6">${county.getAreaDisplayName()} Housing Statistics</h3>
@@ -215,7 +215,7 @@
                     <span>Source: US Census Bureau, American Community Survey (Data retrieved ${county.getStats().getRetrievedAt()})</span>
                 </div>
                 
-                <!-- Radon Insight Synthesis Box (AEO & Local Moat) -->
+                <!-- Local radon insight synthesis -->
                 <div class="mt-8 bg-indigo-50/50 border border-indigo-100 rounded-2xl p-6 sm:p-8 flex items-start gap-4">
                     <div class="flex-shrink-0 w-12 h-12 bg-indigo-100 text-indigo-600 rounded-full flex items-center justify-center">
                         <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>

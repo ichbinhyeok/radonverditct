@@ -93,7 +93,7 @@
                         <p class="text-xs font-bold uppercase tracking-wider text-slate-500">National Planning Range</p>
                         <div class="mt-4 rounded-2xl border border-slate-200 bg-white p-5">
                             <p class="text-sm text-slate-500">Typical standard setup</p>
-                            <p class="mt-2 font-display text-5xl font-black tracking-tight text-slate-900">$${defaultReceipt.getTotalLow()}-$${defaultReceipt.getTotalHigh()}</p>
+                            <p class="mt-2 font-display text-3xl font-black tracking-tight text-slate-900 sm:text-5xl">$${defaultReceipt.getTotalLow()}-$${defaultReceipt.getTotalHigh()}</p>
                             <p class="mt-2 text-sm leading-relaxed text-slate-600">
                                 Average planning number: <strong>$${defaultReceipt.getTotalAvg()}</strong>. County pages adjust this for state rules, local labor, foundation, and project complexity.
                             </p>

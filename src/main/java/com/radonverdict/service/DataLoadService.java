@@ -31,6 +31,10 @@ public class DataLoadService {
     @Getter
     private Map<String, County> countyBySlugMap = new HashMap<>(); // key: stateSlug/countySlug
     @Getter
+    private Map<String, CountyRadonMeasurement> radonMeasurementByFipsMap = new HashMap<>();
+    @Getter
+    private Map<String, CountyRadonTier> radonTierByFipsMap = new HashMap<>();
+    @Getter
     private Map<String, String> zipToFipsMap = new HashMap<>();
     @Getter
     private List<ReferenceSource> referenceSources;
@@ -97,22 +101,54 @@ public class DataLoadService {
             }
             log.info("Successfully merged {} County data objects", countByFipsMap.size());
 
-            // 4. Load ZIP to FIPS Map
+            // 4. Load optional county-level radon measurement summaries.
+            try {
+                List<CountyRadonMeasurement> measurements = readJson("data/county_radon_measurements.json",
+                        new TypeReference<List<CountyRadonMeasurement>>() {
+                        });
+                for (CountyRadonMeasurement measurement : measurements) {
+                    if (measurement.getCountyFips() != null && !measurement.getCountyFips().isBlank()) {
+                        radonMeasurementByFipsMap.put(measurement.getCountyFips(), measurement);
+                    }
+                }
+                log.info("Loaded {} County Radon Measurement summaries", radonMeasurementByFipsMap.size());
+            } catch (Exception e) {
+                log.warn("Failed to load county_radon_measurements.json. Measurement moat will be disabled. Error: {}",
+                        e.getMessage());
+            }
+
+            // 4.5 Load optional official radon tier summaries.
+            try {
+                List<CountyRadonTier> tiers = readJson("data/county_radon_tiers.json",
+                        new TypeReference<List<CountyRadonTier>>() {
+                        });
+                for (CountyRadonTier tier : tiers) {
+                    if (tier.getCountyFips() != null && !tier.getCountyFips().isBlank()) {
+                        radonTierByFipsMap.put(tier.getCountyFips(), tier);
+                    }
+                }
+                log.info("Loaded {} County Radon Tier summaries", radonTierByFipsMap.size());
+            } catch (Exception e) {
+                log.warn("Failed to load county_radon_tiers.json. Tier moat will be disabled. Error: {}",
+                        e.getMessage());
+            }
+
+            // 5. Load ZIP to FIPS Map
             zipToFipsMap = readJson("data/zip_primary_county.json", new TypeReference<Map<String, String>>() {
             });
             log.info("Loaded {} ZIP to FIPS mappings", zipToFipsMap.size());
 
-            // 5. Load Sources
+            // 6. Load Sources
             referenceSources = readJson("data/reference_sources.json", new TypeReference<List<ReferenceSource>>() {
             });
             log.info("Loaded {} reference sources", referenceSources.size());
 
-            // 6. Load Pricing Config
+            // 7. Load Pricing Config
             pricingConfig = readJson("data/pricing_config.json", new TypeReference<PricingConfig>() {
             });
             log.info("Loaded pricing config. Default Multiplier: {}", pricingConfig.getDefaultMultiplier());
 
-            // 7. Load Content Templates
+            // 8. Load Content Templates
             contentTemplates = readJson("data/content_templates.json", new TypeReference<ContentTemplates>() {
             });
             log.info("Loaded content templates: {} zones, {} foundations, {} intents",
@@ -120,12 +156,12 @@ public class DataLoadService {
                     contentTemplates.getFoundationDescriptions().size(),
                     contentTemplates.getIntentContent().size());
 
-            // 8. Load State Regulations
+            // 9. Load State Regulations
             stateRegulations = readJson("data/state_regulations.json", new TypeReference<StateRegulations>() {
             });
             log.info("Loaded state regulations for {} states", stateRegulations.getStateRules().size());
 
-            // 9. Load FAQ Templates
+            // 10. Load FAQ Templates
             faqTemplates = readJson("data/faq_templates.json", new TypeReference<FaqTemplates>() {
             });
             log.info("Loaded FAQ templates: {} pools", faqTemplates.getFaqPool().size());

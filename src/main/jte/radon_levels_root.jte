@@ -1,5 +1,7 @@
 @import com.radonverdict.model.County
 @import com.radonverdict.model.dto.AeoAnswerBlock
+@import com.radonverdict.model.dto.RadonEvidenceCoverageSummary
+@import com.radonverdict.model.dto.RadonNationalEvidenceInsight
 @import com.radonverdict.model.dto.TrustMetadata
 @import com.radonverdict.util.JsonLdUtils
 @import java.util.List
@@ -11,6 +13,8 @@
 @param long zone3Count = 0
 @param int visibleCountyCount = 0
 @param AeoAnswerBlock aeo = null
+@param RadonEvidenceCoverageSummary evidenceCoverage = null
+@param RadonNationalEvidenceInsight nationalEvidenceInsight = null
 @param TrustMetadata trust = null
 
 !{
@@ -76,7 +80,7 @@
                             Radon Levels: What 2.0, 4.0, and 8.0 pCi/L Mean
                         </h1>
                         <p class="mt-6 text-lg sm:text-xl text-slate-600 leading-relaxed font-medium">
-                            Use this page to translate a radon test result into a practical next step. Then open your state or county page for EPA zone context and local mitigation pricing.
+                            Use this page to translate a radon test result into a practical next step, then open state and county pages backed by official measurement tables, CDC summaries, or official radon maps.
                         </p>
                         <div class="mt-8 flex flex-col sm:flex-row gap-3">
                             <a href="#level-meaning"
@@ -112,6 +116,157 @@
         </div>
 
         <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
+            @if(evidenceCoverage != null && evidenceCoverage.getTotalCount() > 0)
+                <section class="mb-14 rounded-2xl border border-slate-200 bg-white p-5 sm:p-6 shadow-sm">
+                    <div class="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+                        <div>
+                            <p class="text-xs font-bold uppercase tracking-wider text-slate-500">Official County Data</p>
+                            <h2 class="mt-2 font-display text-2xl font-black text-slate-900">
+                                ${evidenceCoverage.getOfficialEvidenceCount()} of ${evidenceCoverage.getTotalCount()} listed county pages use official radon support
+                            </h2>
+                            <p class="mt-2 max-w-3xl text-sm leading-relaxed text-slate-600">
+                                Measured counties use official state tables or CDC Tracking summaries. Map-classified counties use official radon-potential categories when a county pCi/L table is not published.
+                            </p>
+                        </div>
+                        <div class="rounded-2xl border border-emerald-100 bg-emerald-50 px-5 py-4 text-center">
+                            <p class="font-display text-3xl font-black text-emerald-700">${evidenceCoverage.getOfficialEvidencePercent()}%</p>
+                            <p class="mt-1 text-xs font-bold uppercase tracking-wider text-emerald-800">official support</p>
+                        </div>
+                    </div>
+
+                    <div class="mt-5 grid grid-cols-2 gap-3 md:grid-cols-4">
+                        <div class="rounded-xl border border-slate-100 bg-slate-50 p-4">
+                            <p class="text-xs font-bold uppercase tracking-wider text-slate-500">Measured counties</p>
+                            <p class="mt-2 font-display text-2xl font-black text-slate-900">${evidenceCoverage.getMeasuredCount()}</p>
+                        </div>
+                        <div class="rounded-xl border border-slate-100 bg-slate-50 p-4">
+                            <p class="text-xs font-bold uppercase tracking-wider text-slate-500">State tables</p>
+                            <p class="mt-2 font-display text-2xl font-black text-slate-900">${evidenceCoverage.getStateOfficialMeasuredCount()}</p>
+                        </div>
+                        <div class="rounded-xl border border-slate-100 bg-slate-50 p-4">
+                            <p class="text-xs font-bold uppercase tracking-wider text-slate-500">Map classified</p>
+                            <p class="mt-2 font-display text-2xl font-black text-slate-900">${evidenceCoverage.getTierCount()}</p>
+                        </div>
+                        <div class="rounded-xl border border-slate-100 bg-slate-50 p-4">
+                            <p class="text-xs font-bold uppercase tracking-wider text-slate-500">More county detail</p>
+                            <p class="mt-2 font-display text-2xl font-black text-slate-900">${evidenceCoverage.getSourcePendingCount()}</p>
+                        </div>
+                    </div>
+
+                    <div class="mt-5 flex flex-wrap gap-2">
+                        @for(var source : evidenceCoverage.getSourceRows())
+                            <span class="rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-xs font-semibold text-slate-700">
+                                ${"source_pending".equals(source.getSourceId()) ? "More county detail needed" : source.getSourceName()}: ${source.getCount()}
+                            </span>
+                        @endfor
+                    </div>
+                </section>
+            @endif
+
+            <section class="mb-14 rounded-2xl border border-slate-200 bg-slate-950 p-5 text-white shadow-sm sm:p-6">
+                <div class="grid grid-cols-1 gap-6 lg:grid-cols-[0.95fr_1.05fr] lg:items-start">
+                    <div>
+                        <p class="text-xs font-bold uppercase tracking-wider text-cyan-200">Open Official-Data States First</p>
+                        <h2 class="mt-2 font-display text-2xl font-black tracking-tight">
+                            Route from the national threshold to state-specific radon data
+                        </h2>
+                        <p class="mt-3 text-sm leading-relaxed text-slate-300">
+                            Some states publish county measurements, while others are best read through CDC Tracking or official radon-potential maps. Start with the states below when you need county pages with clearer public data behind the recommendation.
+                        </p>
+                    </div>
+                    <div class="grid grid-cols-2 gap-2 sm:grid-cols-3">
+                        <a href="/radon-levels/iowa" class="rounded-xl border border-white/10 bg-white/10 px-3 py-3 text-sm font-black text-white transition-colors hover:bg-white/15">IA <span class="block text-xs font-semibold text-cyan-100">Iowa HHS medians</span></a>
+                        <a href="/radon-levels/north-carolina" class="rounded-xl border border-white/10 bg-white/10 px-3 py-3 text-sm font-black text-white transition-colors hover:bg-white/15">NC <span class="block text-xs font-semibold text-cyan-100">NCDHHS highs</span></a>
+                        <a href="/radon-levels/pennsylvania" class="rounded-xl border border-white/10 bg-white/10 px-3 py-3 text-sm font-black text-white transition-colors hover:bg-white/15">PA <span class="block text-xs font-semibold text-cyan-100">DEP ZIP data</span></a>
+                        <a href="/radon-levels/illinois" class="rounded-xl border border-white/10 bg-white/10 px-3 py-3 text-sm font-black text-white transition-colors hover:bg-white/15">IL <span class="block text-xs font-semibold text-cyan-100">state results</span></a>
+                        <a href="/radon-levels/colorado" class="rounded-xl border border-white/10 bg-white/10 px-3 py-3 text-sm font-black text-white transition-colors hover:bg-white/15">CO <span class="block text-xs font-semibold text-cyan-100">CDPHE data</span></a>
+                        <a href="/radon-levels/utah" class="rounded-xl border border-white/10 bg-white/10 px-3 py-3 text-sm font-black text-white transition-colors hover:bg-white/15">UT <span class="block text-xs font-semibold text-cyan-100">EPHT results</span></a>
+                    </div>
+                </div>
+
+                <div class="mt-6 grid grid-cols-1 gap-3 md:grid-cols-3">
+                    <div class="rounded-xl border border-cyan-300/20 bg-cyan-300/10 p-4">
+                        <p class="text-xs font-bold uppercase tracking-wider text-cyan-100">State measurements</p>
+                        <p class="mt-2 text-sm leading-relaxed text-slate-100">Iowa HHS publishes county median radon values. Osceola County, IA shows an 11.4 pCi/L median, so its page should be opened before treating Iowa as only a zone-map question.</p>
+                    </div>
+                    <div class="rounded-xl border border-rose-300/20 bg-rose-300/10 p-4">
+                        <p class="text-xs font-bold uppercase tracking-wider text-rose-100">Highest measured examples</p>
+                        <p class="mt-2 text-sm leading-relaxed text-slate-100">North Carolina DHHS maps the highest measured radon level by county. Rutherford County, NC shows 681 pCi/L as a high-end county signal, not a county average.</p>
+                    </div>
+                    <div class="rounded-xl border border-amber-300/20 bg-amber-300/10 p-4">
+                        <p class="text-xs font-bold uppercase tracking-wider text-amber-100">CDC and map coverage</p>
+                        <p class="mt-2 text-sm leading-relaxed text-slate-100">CDC summaries and official state/federal radon-potential maps still help when a state does not publish a county measurement table. Use them as context, then let a home test decide.</p>
+                    </div>
+                </div>
+            </section>
+
+            @if(nationalEvidenceInsight != null)
+                <section class="mb-14 rounded-2xl border border-slate-200 bg-white p-5 sm:p-6 shadow-sm">
+                    <div class="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+                        <div>
+                            <p class="text-xs font-bold uppercase tracking-wider text-slate-500">National Data Guide</p>
+                            <h2 class="mt-2 font-display text-2xl font-black text-slate-900">${nationalEvidenceInsight.getDecisionHeadline()}</h2>
+                            <p class="mt-2 max-w-3xl text-sm leading-relaxed text-slate-600">${nationalEvidenceInsight.getRouterSummary()}</p>
+                        </div>
+                        <div class="rounded-2xl border border-slate-100 bg-slate-50 px-5 py-4 text-center">
+                            <p class="font-display text-3xl font-black text-slate-900">${nationalEvidenceInsight.getMeasuredCountyCount()}</p>
+                            <p class="mt-1 text-xs font-bold uppercase tracking-wider text-slate-500">measured counties</p>
+                        </div>
+                    </div>
+
+                    <div class="mt-5 grid grid-cols-1 gap-3 lg:grid-cols-3">
+                        <div class="rounded-2xl border border-emerald-100 bg-emerald-50 p-4">
+                            <p class="text-xs font-bold uppercase tracking-wider text-emerald-700">Official source base</p>
+                            <p class="mt-2 text-sm leading-relaxed text-slate-700">${nationalEvidenceInsight.getSourceMoatSummary()}</p>
+                        </div>
+                        <div class="rounded-2xl border border-sky-100 bg-sky-50 p-4">
+                            <p class="text-xs font-bold uppercase tracking-wider text-sky-700">How to use it</p>
+                            <p class="mt-2 text-sm leading-relaxed text-slate-700">${nationalEvidenceInsight.getDeployReadinessSummary()}</p>
+                        </div>
+                        <div class="rounded-2xl border border-amber-100 bg-amber-50 p-4">
+                            <p class="text-xs font-bold uppercase tracking-wider text-amber-700">Where county detail is lighter</p>
+                            <p class="mt-2 text-sm leading-relaxed text-slate-700">
+                                Some counties still depend on broader federal summaries or state pages without county pCi/L metrics. In those cases, use the county page as context and let a fresh home test control the decision.
+                            </p>
+                        </div>
+                    </div>
+
+                    @if(nationalEvidenceInsight.getPriorityStateRows() != null && !nationalEvidenceInsight.getPriorityStateRows().isEmpty())
+                        <div class="mt-5 rounded-2xl border border-slate-200 bg-slate-50 p-4">
+                            <div class="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+                                <div>
+                                    <p class="text-xs font-bold uppercase tracking-wider text-slate-500">Open these state hubs first</p>
+                                    <h3 class="mt-1 font-display text-xl font-black text-slate-950">States with the strongest county evidence</h3>
+                                </div>
+                                <p class="max-w-sm text-xs leading-relaxed text-slate-500">
+                                    Ranked by official coverage, measured county pages, elevated/high county count, and state measurement strength.
+                                </p>
+                            </div>
+
+                            <div class="mt-4 grid grid-cols-1 gap-3 md:grid-cols-2">
+                                @for(var row : nationalEvidenceInsight.getPriorityStateRows())
+                                    <a href="${row.getStatePath()}" class="block rounded-xl border border-white bg-white p-4 hover:border-slate-300 hover:shadow-sm transition-all">
+                                        <div class="flex items-start justify-between gap-3">
+                                            <div>
+                                                <p class="text-lg font-black text-slate-950">${row.getStateAbbr()}</p>
+                                                <p class="mt-1 text-xs font-bold uppercase tracking-wider text-slate-400">${row.getSourceMixDisplay()}</p>
+                                            </div>
+                                            <span class="shrink-0 rounded-full border border-slate-200 bg-slate-50 px-2.5 py-1 text-xs font-black text-slate-700">${row.getPriorityLabel()}</span>
+                                        </div>
+                                        <div class="mt-3 grid grid-cols-1 gap-2 sm:grid-cols-3">
+                                            <p class="rounded-lg border border-slate-100 bg-slate-50 px-3 py-2 text-xs font-semibold text-slate-600">${row.getCoverageDisplay()}</p>
+                                            <p class="rounded-lg border border-slate-100 bg-slate-50 px-3 py-2 text-xs font-semibold text-slate-600">${row.getMeasuredDisplay()}</p>
+                                            <p class="rounded-lg border border-slate-100 bg-slate-50 px-3 py-2 text-xs font-semibold text-slate-600">${row.getElevatedDisplay()}</p>
+                                        </div>
+                                        <p class="mt-3 text-sm leading-relaxed text-slate-700">${row.getDecisionDisplay()}</p>
+                                    </a>
+                                @endfor
+                            </div>
+                        </div>
+                    @endif
+                </section>
+            @endif
+
             @if(aeo != null)
                 @template.components.aeo_answer_block(block = aeo)
             @endif

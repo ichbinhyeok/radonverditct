@@ -1,12 +1,14 @@
 package com.radonverdict.service;
 
 import com.radonverdict.model.County;
+import com.radonverdict.model.CountyRadonMeasurement;
 import com.radonverdict.model.dto.CountyPageContent;
 import com.radonverdict.model.dto.InternalLinkItem;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
@@ -99,7 +101,7 @@ public class InternalLinkService {
 
         add(links, InternalLinkItem.builder()
                 .title(county.getStateAbbr() + " Radon Levels Hub")
-                .description("Compare every county in the state.")
+                .description("Compare measured 4.0+ share, high-end readings, and official source coverage.")
                 .url("/radon-levels/" + county.getStateSlug())
                 .bucket("state")
                 .build());
@@ -127,19 +129,134 @@ public class InternalLinkService {
                 .bucket("intent")
                 .build());
 
+        buildMeasuredRiskPeerLinks(county).forEach(link -> add(links, link));
+
         if (nearbyCounties != null) {
             nearbyCounties.stream()
                     .filter(seoIndexingPolicyService::isCountyIndexableCandidate)
                     .limit(3)
                     .forEach(nearby -> add(links, InternalLinkItem.builder()
                     .title(nearby.getAreaDisplayName() + " Levels")
-                    .description("Nearby county comparison in " + county.getStateAbbr() + ".")
+                    .description(nearbyDescription(county, nearby))
                     .url("/radon-levels/" + nearby.getStateSlug() + "/" + nearby.getCountySlug())
-                    .bucket("nearby")
+                    .bucket("measured-peer")
                     .build()));
         }
 
         return new ArrayList<>(links.values());
+    }
+
+    private List<InternalLinkItem> buildMeasuredRiskPeerLinks(County county) {
+        CountyRadonMeasurement target = measurement(county);
+        if (target == null || target.getMetrics() == null) {
+            return List.of();
+        }
+
+        return dataLoadService.getCountyBySlugMap().values().stream()
+                .filter(candidate -> candidate.getStateAbbr().equalsIgnoreCase(county.getStateAbbr()))
+                .filter(candidate -> !candidate.getFips().equals(county.getFips()))
+                .filter(seoIndexingPolicyService::isCountyIndexableCandidate)
+                .filter(candidate -> measurement(candidate) != null)
+                .sorted(Comparator
+                        .comparingDouble((County candidate) -> measuredSimilarityScore(target, measurement(candidate)))
+                        .thenComparing(County::getCountyName))
+                .limit(2)
+                .map(candidate -> InternalLinkItem.builder()
+                        .title("Measured-risk peer: " + candidate.getAreaDisplayName())
+                        .description(peerDescription(target, measurement(candidate)))
+                        .url("/radon-levels/" + candidate.getStateSlug() + "/" + candidate.getCountySlug())
+                        .bucket("measured-peer")
+                        .build())
+                .toList();
+    }
+
+    private String nearbyDescription(County county, County nearby) {
+        CountyRadonMeasurement target = measurement(county);
+        CountyRadonMeasurement peer = measurement(nearby);
+        if (target == null || peer == null) {
+            return "Same-state county comparison in " + county.getStateAbbr() + ".";
+        }
+        return peerDescription(target, peer);
+    }
+
+    private String peerDescription(CountyRadonMeasurement target, CountyRadonMeasurement peer) {
+        Double targetAbove4 = above4(target);
+        Double peerAbove4 = above4(peer);
+        Double peerPrimary = primaryResult(peer);
+        if (targetAbove4 != null && peerAbove4 != null) {
+            return "Compare against a county with " + formatPercent(peerAbove4)
+                    + " of reported tests at or above 4.0 pCi/L"
+                    + (peerPrimary != null ? " and " + formatPci(peerPrimary) + " primary result." : ".");
+        }
+        if (peerPrimary != null) {
+            return "Compare against a same-state county with " + formatPci(peerPrimary)
+                    + " primary measured radon result.";
+        }
+        return "Compare against another same-state official measurement page.";
+    }
+
+    private double measuredSimilarityScore(CountyRadonMeasurement target, CountyRadonMeasurement peer) {
+        double score = 0.0;
+        score += normalizedDiff(above4(target), above4(peer), 100.0) * 5.0;
+        score += normalizedDiff(primaryResult(target), primaryResult(peer), 10.0) * 3.0;
+        score += normalizedDiff(highEnd(target), highEnd(peer), 100.0);
+        if (target.getSourceId() != null && target.getSourceId().equals(peer.getSourceId())) {
+            score -= 0.35;
+        }
+        return Math.max(0.0, score);
+    }
+
+    private double normalizedDiff(Double left, Double right, double scale) {
+        if (left == null || right == null) {
+            return 1.0;
+        }
+        return Math.min(1.0, Math.abs(left - right) / scale);
+    }
+
+    private CountyRadonMeasurement measurement(County county) {
+        if (county == null) {
+            return null;
+        }
+        return dataLoadService.getRadonMeasurementByFipsMap().get(county.getFips());
+    }
+
+    private Double primaryResult(CountyRadonMeasurement measurement) {
+        if (measurement == null || measurement.getMetrics() == null) {
+            return null;
+        }
+        CountyRadonMeasurement.Metrics metrics = measurement.getMetrics();
+        if (metrics.getAverageTestResultPciL() != null) {
+            return metrics.getAverageTestResultPciL();
+        }
+        if (metrics.getArithmeticMeanRadonValuePciL() != null) {
+            return metrics.getArithmeticMeanRadonValuePciL();
+        }
+        return metrics.getMedianRadonValuePciL();
+    }
+
+    private Double above4(CountyRadonMeasurement measurement) {
+        return measurement != null && measurement.getMetrics() != null
+                ? measurement.getMetrics().getPercentTestsAtOrAbove4PciL()
+                : null;
+    }
+
+    private Double highEnd(CountyRadonMeasurement measurement) {
+        if (measurement == null || measurement.getMetrics() == null) {
+            return null;
+        }
+        CountyRadonMeasurement.Metrics metrics = measurement.getMetrics();
+        if (metrics.getRadon95thPercentilePciL() != null) {
+            return metrics.getRadon95thPercentilePciL();
+        }
+        return metrics.getMaximumTestResultPciL();
+    }
+
+    private String formatPci(Double value) {
+        return value != null ? String.format(Locale.US, "%.1f pCi/L", value) : "n/a";
+    }
+
+    private String formatPercent(Double value) {
+        return value != null ? String.format(Locale.US, "%.1f%%", value) : "n/a";
     }
 
     private InternalLinkItem zoneGuideLink(int zone) {
