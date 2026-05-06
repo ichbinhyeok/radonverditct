@@ -46,7 +46,6 @@ public class SeoIndexingPolicyService {
             "new-york/schenectady-county",
             "illinois/dupage-county",
             "idaho/fremont-county",
-            "mississippi/alcorn-county",
             "ohio/licking-county",
             "iowa/polk-county",
             "missouri/st-louis-county",
@@ -109,27 +108,6 @@ public class SeoIndexingPolicyService {
         }
 
         return county.getEpaZone() == 1 && housingUnits >= ZONE_ONE_HOUSING_FLOOR;
-    }
-
-    public String describePriorityReason(County county) {
-        if (county == null || !hasDataMoat(county)) {
-            return "No usable county housing data";
-        }
-
-        if (HISTORICAL_PRIORITY_COUNTIES.contains(slugKey(county))) {
-            return "kept because it already showed Google Search Console demand";
-        }
-
-        int housingUnits = county.getStats().getMetrics().getTotalHousingUnits();
-        if (housingUnits >= LARGE_HOUSING_UNIT_THRESHOLD) {
-            return "kept because the county has a large housing base";
-        }
-
-        if (county.getEpaZone() == 1 && housingUnits >= ZONE_ONE_HOUSING_FLOOR) {
-            return "kept because it is Zone 1 with enough local housing demand";
-        }
-
-        return "reduced because local demand signals are still weak";
     }
 
     private String slugKey(County county) {

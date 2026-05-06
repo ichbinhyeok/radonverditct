@@ -186,7 +186,6 @@ public class RadonLevelsController {
         model.addAttribute("stateOlderHomePercentile", statePercentile(county, Metric.OLDER_HOME_SHARE));
         model.addAttribute("statePeerCountyCount", statePeerCountyCount(county));
         model.addAttribute("priorityCounty", seoIndexingPolicyService.isPriorityCountyCandidate(county));
-        model.addAttribute("indexPriorityReason", seoIndexingPolicyService.describePriorityReason(county));
         model.addAttribute("monetizationHooksEnabled", monetizationHooksEnabled);
         model.addAttribute("showSeoDebug", seoDebugVisible);
         model.addAttribute("canonicalUrl",

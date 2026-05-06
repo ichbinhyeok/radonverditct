@@ -24,7 +24,6 @@
 @param int stateOlderHomePercentile = 0
 @param int statePeerCountyCount = 0
 @param boolean priorityCounty = false
-@param String indexPriorityReason = null
 @param boolean monetizationHooksEnabled = false
 @param boolean showSeoDebug = false
 !{
@@ -70,14 +69,11 @@
             : county.getEpaZone() == 2
             ? county.getAreaDisplayName() + " is a gray-zone county: the EPA map is useful context, but the local housing profile and your own home test decide the next step."
             : county.getEpaZone() == 3
-            ? county.getAreaDisplayName() + " has a lower predicted county average, so direct testing matters more than the map label."
+            ? county.getAreaDisplayName() + " has a lower predicted countywide zone signal, so direct testing matters more than the map label."
             : county.getAreaDisplayName() + " has no published EPA zone in this dataset, so the only reliable next step is direct home testing.";
     final String priorityDisplay = priorityCounty
-            ? "High-evidence county page"
-            : "Reference county page";
-    final String priorityReasonDisplay = indexPriorityReason != null && !indexPriorityReason.isBlank()
-            ? indexPriorityReason
-            : "based on local demand, housing scale, and source coverage";
+            ? "Source-backed county page"
+            : "County reference page";
     final boolean hasRadonMeasurement = radonMeasurement != null && radonMeasurement.getMetrics() != null;
     final boolean paZipRadonMeasurement = hasRadonMeasurement && "pa_dep_radon_zip".equals(radonMeasurement.getSourceId());
     final boolean highEndOnlyRadonMeasurement = hasRadonMeasurement
@@ -87,11 +83,18 @@
             && radonMeasurement.getMetrics().getPercentTestsAtOrAbove4PciL() == null
             && (radonMeasurement.getMetrics().getMaximumTestResultPciL() != null
             || radonMeasurement.getMetrics().getRadon95thPercentilePciL() != null);
+    final boolean historicalSurveyRadonMeasurement = hasRadonMeasurement
+            && "epa_usgs_ms_residential_radon_survey".equals(radonMeasurement.getSourceId());
+    final boolean tierBackedRadonEvidence = radonEvidence != null
+            && !radonEvidence.isMeasurementBacked()
+            && "NJ municipal radon-potential table".equals(radonEvidence.getSourceProfileLabel());
     final String measuredAverageDisplay = hasRadonMeasurement && radonMeasurement.getMetrics().getAverageTestResultPciL() != null
             ? String.format(java.util.Locale.US, "%.1f pCi/L", radonMeasurement.getMetrics().getAverageTestResultPciL())
             : "Not available";
     final String measuredPrimaryResultLabel = paZipRadonMeasurement && radonMeasurement.getMetrics().getBasementAverageTestResultPciL() != null
             ? "Basement average"
+            : historicalSurveyRadonMeasurement
+            ? "Historical survey average"
             : highEndOnlyRadonMeasurement
             ? "Highest measured"
             : hasRadonMeasurement && radonMeasurement.getMetrics().getAverageTestResultPciL() != null
@@ -216,7 +219,6 @@
                     || fremontZoneCounty;
     final boolean topCtrPriorityCounty =
             fallsChurchDecisionCounty
-                    || ("mississippi".equals(county.getStateSlug()) && "alcorn-county".equals(county.getCountySlug()))
                     || ("new-york".equals(county.getStateSlug()) && "westchester-county".equals(county.getCountySlug()))
                     || ("ohio".equals(county.getStateSlug()) && "licking-county".equals(county.getCountySlug()))
                     || ("iowa".equals(county.getStateSlug()) && "polk-county".equals(county.getCountySlug()))
@@ -351,20 +353,20 @@
             + " searchers usually need the practical next move fast. The first useful split is simple: no test yet, 2.0-3.9, or 4.0+."
             : schenectadyZoneCounty
             ? county.getAreaDisplayName()
-            + " is EPA Zone 2, which means predicted average indoor screening levels between 2.0 and 4.0 pCi/L. Individual basements can still test above 4.0, so your own reading decides the next move."
+            + " is EPA Zone 2, which means a predicted indoor screening range between 2.0 and 4.0 pCi/L. Individual basements can still test above 4.0, so your own reading decides the next move."
             : dupageCtrCounty
             ? county.getAreaDisplayName()
             + " basement searchers usually need the practical split fast: no test yet, 2.0-3.9, or 4.0+. The county map is context, but the reading in your home drives the decision."
             : phaseTwoCtrLiftCounty
             ? county.getAreaDisplayName()
-            + " works best as a reading-to-decision page. The county average is context, but your result is what changes the next move."
+            + " works best as a reading-to-decision page. The county signal is context, but your result is what changes the next move."
             : phaseThreeCtrLiftCounty
             ? "Start with the quick local verdict for " + county.getAreaDisplayName()
             + ". If you still need more detail after that, the longer reference is below."
             : county.getEpaZone() == 1
             ? county.getAreaDisplayName() + " is a strong county-level radon signal. You still need a home test, but this is not a county where skipping the first test makes sense."
             : county.getEpaZone() == 2
-            ? county.getAreaDisplayName() + " sits in the gray zone. The map helps, but your own reading matters more than the county average."
+            ? county.getAreaDisplayName() + " sits in the gray zone. The map helps, but your own reading matters more than the countywide signal."
             : county.getEpaZone() == 3
             ? county.getAreaDisplayName() + " has a lower countywide signal, but that does not clear an individual home. A real test still beats the map."
             : county.getAreaDisplayName() + " has no published county zone in our dataset, so the useful answer starts with a direct home test.";
@@ -386,7 +388,7 @@
     final String quickDecisionBody = phaseOneCtrLiftCounty
             ? "No test yet, 2.0-3.9, and 4.0+ each point to a different next move. This page is built to get you there without extra reading."
             : phaseTwoCtrLiftCounty
-            ? "The county average matters less than the result in your home. Use the number to decide whether you test, retest, or price mitigation."
+            ? "The county signal matters less than the result in your home. Use the number to decide whether you test, retest, or price mitigation."
             : phaseThreeCtrLiftCounty
             ? "If your goal is just the next practical step, start with the local verdict and save the long explanation for later."
             : county.getEpaZone() == 1
@@ -397,15 +399,21 @@
             ? "Do not let a Zone 3 label talk you out of the first test. House-by-house differences still matter."
             : "With no county signal, direct testing is the first decision that matters.";
 
-    final String countySignalSummary = nextStepCtrLiftCounty
+    final String countySignalSummary = highEndOnlyRadonMeasurement
+            ? "Official source shows a highest reported county value, not a county average."
+            : tierBackedRadonEvidence
+            ? "Official tier data shows local radon potential, not a county pCi/L average."
+            : historicalSurveyRadonMeasurement
+            ? "Older survey data is context for testing, not a current county prediction."
+            : nextStepCtrLiftCounty
             ? "County map context helps, but your own result is what changes the decision."
             : county.getEpaZone() == 1
-            ? "Higher-than-average chance of 4.0+ readings across the county."
+            ? "Higher countywide chance of 4.0+ readings."
             : county.getEpaZone() == 2
-            ? "Gray-zone county average. Some homes stay low, others cross the EPA line."
+            ? "Gray-zone county signal. Some homes stay low, others cross the EPA line."
             : county.getEpaZone() == 3
-            ? "Lower county average, but house-by-house spikes still happen."
-            : "No county average published. Treat direct testing as the only reliable input.";
+            ? "Lower countywide map signal, but house-by-house spikes still happen."
+            : "No county signal published. Treat direct testing as the only reliable input.";
 
     final String thresholdSummary = nextStepCtrLiftCounty
             ? "No reading yet means test first. 2.0-3.9 usually means retest or track. 4.0+ means local budget planning starts."
@@ -421,21 +429,46 @@
             ? "Low zone is not a free pass. Use a kit before you rule radon out."
             : "Start with a test kit, then let the result decide whether pricing or credit planning matters.";
 
-    String averageLevelAnswerBase;
-    if (county.getEpaZone() == 1) {
-        averageLevelAnswerBase = county.getAreaDisplayName() + " is classified as EPA Zone 1 (High Risk). The predicted average indoor radon screening level exceeds 4.0 pCi/L, which is above the EPA action level.";
+    String radonSignalQuestion;
+    String radonSignalAnswerBase;
+    if (highEndOnlyRadonMeasurement) {
+        radonSignalQuestion = "What does the highest reported radon reading in " + seoPlaceLabel + " mean?";
+        String sourceName = radonMeasurement.getSourceName() != null && !radonMeasurement.getSourceName().isBlank()
+                ? radonMeasurement.getSourceName()
+                : "The official county source";
+        radonSignalAnswerBase = sourceName + " reports " + measuredPrimaryResultDisplay
+                + " as the highest measured county value for " + county.getAreaDisplayName()
+                + ". That is not a county average; use it as proof that high readings have occurred locally, then test the home directly.";
+    } else if (tierBackedRadonEvidence) {
+        radonSignalQuestion = "What do the radon potential tiers mean in " + seoPlaceLabel + "?";
+        radonSignalAnswerBase = radonEvidence.getSourceProfileSummary() + " "
+                + radonEvidence.getIntentAnswer();
+    } else if (historicalSurveyRadonMeasurement) {
+        radonSignalQuestion = "What does the historical radon survey show in " + seoPlaceLabel + "?";
+        radonSignalAnswerBase = "The EPA/USGS survey row for " + county.getAreaDisplayName()
+                + " is older official context from " + evidenceFirstPeriodDisplay + ". It reports "
+                + measuredPrimaryResultDisplay + " in that survey, but it is not a current property prediction; test the home directly before mitigation or credit decisions.";
+    } else if (radonEvidence != null && radonEvidence.getIntentAnswer() != null && !radonEvidence.getIntentAnswer().isBlank()) {
+        radonSignalQuestion = "What do the radon data show in " + seoPlaceLabel + "?";
+        radonSignalAnswerBase = radonEvidence.getIntentAnswer();
+    } else if (county.getEpaZone() == 1) {
+        radonSignalQuestion = "What radon zone applies in " + seoPlaceLabel + "?";
+        radonSignalAnswerBase = county.getAreaDisplayName() + " is classified as EPA Zone 1 (High Risk). The predicted indoor screening range is above 4.0 pCi/L, which is above the EPA action level.";
     } else if (county.getEpaZone() == 2) {
-        averageLevelAnswerBase = county.getAreaDisplayName() + " is classified as EPA Zone 2 (Moderate Risk). The predicted average indoor screening level is between 2.0 and 4.0 pCi/L.";
+        radonSignalQuestion = "What radon zone applies in " + seoPlaceLabel + "?";
+        radonSignalAnswerBase = county.getAreaDisplayName() + " is classified as EPA Zone 2 (Moderate Risk). The predicted indoor screening range is between 2.0 and 4.0 pCi/L.";
     } else if (county.getEpaZone() == 3) {
-        averageLevelAnswerBase = county.getAreaDisplayName() + " is classified as EPA Zone 3 (Low Risk). The predicted average indoor screening level is below 2.0 pCi/L.";
+        radonSignalQuestion = "What radon zone applies in " + seoPlaceLabel + "?";
+        radonSignalAnswerBase = county.getAreaDisplayName() + " is classified as EPA Zone 3 (Low Risk). The predicted indoor screening range is below 2.0 pCi/L.";
     } else {
-        averageLevelAnswerBase = county.getAreaDisplayName() + " is classified as an unclassified EPA zone (Data Pending). The EPA zone for this county is currently unclassified in our source data. Please rely on direct home testing to determine risk.";
+        radonSignalQuestion = "What radon zone applies in " + seoPlaceLabel + "?";
+        radonSignalAnswerBase = county.getAreaDisplayName() + " is classified as an unclassified EPA zone (Data Pending). The EPA zone for this county is currently unclassified in our source data. Please rely on direct home testing to determine risk.";
     }
-    final String averageLevelAnswer = averageLevelAnswerBase + " The EPA recommends testing all homes regardless of zone.";
+    final String radonSignalAnswer = radonSignalAnswerBase + " The EPA recommends testing all homes regardless of zone.";
 
     final String isProblemAnswer;
     if (county.getEpaZone() == 1) {
-        isProblemAnswer = "Yes, " + county.getAreaDisplayName() + " is in EPA Zone 1 (High Risk). Most homes should be tested and many will need mitigation.";
+        isProblemAnswer = "Yes, " + county.getAreaDisplayName() + " is in EPA Zone 1 (High Risk). Most homes should be tested, and confirmed 4.0+ home results should move into mitigation planning.";
     } else if (county.getEpaZone() == 2) {
         isProblemAnswer = county.getAreaDisplayName() + " is in EPA Zone 2 (Moderate Risk). Many individual homes can still have elevated levels above the EPA action threshold.";
     } else if (county.getEpaZone() == 3) {
@@ -460,10 +493,10 @@
                 "mainEntity": [
                     {
                         "@type": "Question",
-                        "name": $unsafe{JsonLdUtils.json("What is the average radon level in " + seoPlaceLabel + "?")},
+                        "name": $unsafe{JsonLdUtils.json(radonSignalQuestion)},
                         "acceptedAnswer": {
                             "@type": "Answer",
-                            "text": $unsafe{JsonLdUtils.json(averageLevelAnswer)}
+                            "text": $unsafe{JsonLdUtils.json(radonSignalAnswer)}
                         }
                     },
                     {
@@ -875,11 +908,6 @@
                     </div>
                 </div>
 
-                <div class="mt-5 rounded-2xl border border-indigo-100 bg-indigo-50 p-4">
-                    <p class="text-sm font-bold text-indigo-950">Why this page is being kept or reduced</p>
-                    <p class="mt-1 text-sm leading-relaxed text-indigo-900">${priorityReasonDisplay}. This page is strongest when it connects the EPA zone, local housing context, and official radon-source context to a specific home-test decision.</p>
-                </div>
-
                 @if(hasRadonMeasurement)
                     <div class="mt-5 rounded-[1.5rem] border border-sky-200 bg-sky-50 p-4 sm:p-5">
                         <div class="flex flex-col gap-2 md:flex-row md:items-start md:justify-between">
@@ -1066,10 +1094,10 @@
                 <div class="lg:col-span-7">
 
                     <!-- Radon Level Analyzer (Reused component with enhanced context) -->
-                    @template.components.radon_level_advisor(county = county)
+                    @template.components.radon_level_advisor(county = county, radonMeasurement = radonMeasurement, radonEvidence = radonEvidence)
 
                     <!-- What the Numbers Mean - Educational Section -->
-                    <div class="bg-white rounded-[2rem] p-6 sm:p-8 shadow-sm border border-slate-200 mt-6">
+                    <div class="bg-white rounded-[2rem] p-6 sm:p-8 shadow-sm border border-slate-200 mt-6" data-nosnippet>
                         <h2 class="font-display font-bold text-xl text-slate-900 mb-6">Understanding Radon Levels: Complete Reference</h2>
 
                         <div class="space-y-4">
@@ -1138,7 +1166,7 @@
                     </div>
 
                     <!-- Geological Context - Zone-Specific Unique Content -->
-                    <div class="bg-white rounded-[2rem] p-6 sm:p-8 shadow-sm border border-slate-200 mt-6">
+                    <div class="bg-white rounded-[2rem] p-6 sm:p-8 shadow-sm border border-slate-200 mt-6" data-nosnippet>
                         <h2 class="font-display font-bold text-xl text-slate-900 mb-4">Why Radon is
                             @if(county.getEpaZone() == 1)
                                 a Serious Concern
@@ -1159,8 +1187,8 @@
                                 and enters homes through foundation cracks, gaps around pipes, and sump pits.
                             </p>
                             <p class="text-sm text-slate-700 leading-relaxed mb-4">
-                                In Zone 1 counties like ${county.getCountyName()}, the EPA predicts that the average home will have a screening level
-                                above 4.0 pCi/L. However, individual homes can vary dramatically - even neighboring houses can differ by a factor of 10 or more.
+                                In Zone 1 counties like ${county.getCountyName()}, the EPA predicts indoor screening levels are commonly above
+                                4.0 pCi/L. Individual homes can still vary dramatically - even neighboring houses can differ by a factor of 10 or more.
                                 This is why <strong>every home needs its own test</strong>, regardless of what a neighbor's reading shows.
                             </p>
                             <p class="text-sm text-slate-700 leading-relaxed">
@@ -1170,9 +1198,9 @@
                             </p>
                         @elseif(county.getEpaZone() == 2)
                             <p class="text-sm text-slate-700 leading-relaxed mb-4">
-                                ${county.getAreaDisplayName()} falls in EPA Zone 2, where predicted average indoor screening levels
-                                range between 2.0 and 4.0 pCi/L. While the county average may fall below the EPA action level,
-                                geological variability means that a significant percentage of individual homes will still test above 4.0 pCi/L.
+                                ${county.getAreaDisplayName()} falls in EPA Zone 2, where the predicted indoor screening range is
+                                between 2.0 and 4.0 pCi/L. Even when the countywide map signal sits below the EPA action level,
+                                geological variability means that some individual homes will still test above 4.0 pCi/L.
                             </p>
                             <p class="text-sm text-slate-700 leading-relaxed mb-4">
                                 The soil composition in this area typically includes a mix of sedimentary formations that can contain moderate
@@ -1186,8 +1214,8 @@
                             </p>
                         @elseif(county.getEpaZone() == 3)
                             <p class="text-sm text-slate-700 leading-relaxed mb-4">
-                                ${county.getAreaDisplayName()} is classified as EPA Zone 3, with predicted average indoor screening levels below 2.0 pCi/L.
-                                This does <strong>not</strong> mean radon is absent - it means the statistical average is low.
+                                ${county.getAreaDisplayName()} is classified as EPA Zone 3, with a lower predicted indoor screening range below 2.0 pCi/L.
+                                This does <strong>not</strong> mean radon is absent - it means the countywide map signal is low.
                             </p>
                             <p class="text-sm text-slate-700 leading-relaxed mb-4">
                                 The EPA has documented elevated radon readings in every state and in homes in every zone classification.
@@ -1215,7 +1243,7 @@
                     </div>
 
                     <!-- Health Impact Section -->
-                    <div class="bg-white rounded-[2rem] p-6 sm:p-8 shadow-sm border border-slate-200 mt-6">
+                    <div class="bg-white rounded-[2rem] p-6 sm:p-8 shadow-sm border border-slate-200 mt-6" data-nosnippet>
                         <h2 class="font-display font-bold text-xl text-slate-900 mb-4">Radon & Health: What the Science Says</h2>
 
                         <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
@@ -1270,7 +1298,7 @@
 
                             <p class="text-sm text-slate-600 leading-relaxed mb-5">
                                 Testing is the <strong>only</strong> way to know your home's radon level. Zone data tells you the regional risk,
-                                but your home could be significantly higher or lower than the county average. For most homeowners, the right first purchase is a low-cost short-term test kit.
+                                but your home could be significantly higher or lower than the countywide pattern. For most homeowners, the right first purchase is a low-cost short-term test kit.
                             </p>
 
                             <div class="space-y-4">
@@ -1475,7 +1503,7 @@
                     </li>
                 </ul>
                 <p class="text-xs text-slate-400">
-                    <strong>Disclaimer:</strong> Zone data represents county-level averages and cannot predict the radon level in any specific home.
+                    <strong>Disclaimer:</strong> Zone data represents county-level screening ranges and cannot predict the radon level in any specific home.
                     Testing is the only reliable method to determine your home's radon concentration. This content is for informational purposes
                     and is not medical advice.
                 </p>

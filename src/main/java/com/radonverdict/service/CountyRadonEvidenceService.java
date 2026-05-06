@@ -414,7 +414,7 @@ public class CountyRadonEvidenceService {
 
     private String realEstateDecisionSummary(County county, String riskTone) {
         return switch (riskTone) {
-            case "high", "elevated" -> "Buyer or seller use: ask for a fresh lowest-level test before inspection deadlines, tie any 4.0+ result to a contractor quote, and do not negotiate from the county average alone.";
+            case "high", "elevated" -> "Buyer or seller use: ask for a fresh lowest-level test before inspection deadlines, tie any 4.0+ result to a contractor quote, and do not negotiate from the county signal alone.";
             case "borderline" -> "Buyer or seller use: use the county signal to justify a test contingency or retest, then reserve credits for confirmed 4.0+ home results.";
             case "lower" -> "Buyer or seller use: the county pattern is not enough for a credit demand by itself; use an actual home test to decide whether anything needs pricing.";
             default -> "Buyer or seller use: treat the county context as a prompt to test, not as a substitute for the property's own radon result.";
@@ -452,7 +452,7 @@ public class CountyRadonEvidenceService {
         String place = county.getAreaDisplayName();
         return switch (riskTone) {
             case "high" -> place + " should be treated as a county where a first test is urgent and a 4.0+ result should move directly into mitigation pricing or seller-credit math.";
-            case "elevated" -> place + " has enough measured elevation that buyers and owners should not stop at the county average; confirm the home and price mitigation if the result crosses 4.0.";
+            case "elevated" -> place + " has enough measured elevation that buyers and owners should not stop at the county signal; confirm the home and price mitigation if the result crosses 4.0.";
             case "borderline" -> place + " is a split-decision county: no reading means test first, 2.0-3.9 means retest or track, and 4.0+ means cost planning starts.";
             case "lower" -> place + " has a lower measured county signal, but the page should still push direct testing because individual homes can sit above the county pattern.";
             default -> place + " needs direct home testing before any mitigation or credit decision.";
@@ -528,7 +528,7 @@ public class CountyRadonEvidenceService {
     }
 
     private String elevatedAction(County county, String riskTone) {
-        return "4.0+ pCi/L: use the result for mitigation quotes, repair scope, or seller-credit negotiation; the county average is no longer the deciding input.";
+        return "4.0+ pCi/L: use the result for mitigation quotes, repair scope, or seller-credit negotiation; the county signal is no longer the deciding input.";
     }
 
     private String sourceCoverageSummary(CountyRadonMeasurement measurement) {

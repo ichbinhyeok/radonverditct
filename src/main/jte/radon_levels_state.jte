@@ -36,6 +36,10 @@
         stateNameBuilder.append(displayPart);
     }
     final String stateName = stateNameBuilder.length() > 0 ? stateNameBuilder.toString() : stateAbbr;
+    final int listedCountyCount = counties != null ? counties.size() : 0;
+    final String listedCountyPhrase = listedCountyCount == 1
+            ? "1 listed county page"
+            : listedCountyCount + " listed county pages";
     final boolean priorityCtrState = "montana".equals(stateSlug);
     final String seoTitle = priorityCtrState
             ? stateName + " Radon Map by County | EPA Zones, Levels & Basement Testing"
@@ -47,8 +51,8 @@
             ? stateName + " Radon Map by County, EPA Zones & Basement Testing"
             : stateName + " Radon Map, Levels & Testing Guide";
     final String heroIntro = priorityCtrState
-            ? "Check county-by-county EPA radon zones across " + stateName + ". Start with your county if you want to know what a basement result means at 2.0 vs 4.0+ pCi/L before you price mitigation."
-            : "View EPA radon zone classifications for every county in " + stateName + ". Open your county to compare basement test meaning, EPA action thresholds, and when mitigation pricing becomes worth checking.";
+            ? "Check the listed EPA radon zone pages across " + stateName + ". Start with a listed county if you want to know what a basement result means at 2.0 vs 4.0+ pCi/L before you price mitigation."
+            : "Browse the " + listedCountyPhrase + " surfaced for " + stateName + ". Open a listed county to compare its EPA zone, source caveats, testing meaning, and when mitigation pricing becomes worth checking.";
 }
 
 @template.layout.main(
@@ -324,28 +328,39 @@
             @endif
 
             <!-- County Directory -->
-            <div id="county-directory" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
-                @for(var c : counties)
-                    <a href="/radon-levels/${c.getStateSlug()}/${c.getCountySlug()}"
-                       class="flex items-center justify-between p-4 rounded-xl bg-white border border-slate-200 hover:border-indigo-300 hover:shadow-md transition-all group">
-                        <div>
-                            <span class="block font-semibold text-sm text-slate-800 group-hover:text-indigo-600 transition-colors">${c.getAreaDisplayName()}</span>
-                            <span class="text-xs
-                                @if(c.getEpaZone() == 1) text-red-500
-                                @elseif(c.getEpaZone() == 2) text-amber-500
-                                @else text-emerald-500
-                                @endif
-                            ">Zone ${c.getEpaZone()}</span>
-                        </div>
-                        <span class="w-2.5 h-2.5 rounded-full shrink-0
-                            @if(c.getEpaZone() == 1) bg-red-400
-                            @elseif(c.getEpaZone() == 2) bg-amber-400
-                            @else bg-emerald-400
-                            @endif
-                        "></span>
+            @if(counties == null || counties.isEmpty())
+                <div id="county-directory" class="rounded-2xl border border-slate-200 bg-white p-6 text-center shadow-sm">
+                    <p class="font-display text-xl font-black text-slate-900">No county pages are surfaced for ${stateName} right now.</p>
+                    <p class="mt-2 text-sm leading-relaxed text-slate-600">Use the national levels guide for the 2.0, 4.0, and 8.0 pCi/L thresholds, then rely on a direct home test for property decisions.</p>
+                    <a href="/radon-levels"
+                       class="mt-4 inline-flex items-center justify-center rounded-xl bg-slate-900 px-5 py-3 text-sm font-bold text-white hover:bg-slate-800 transition-colors">
+                        Open the Radon Levels Guide
                     </a>
-                @endfor
-            </div>
+                </div>
+            @else
+                <div id="county-directory" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+                    @for(var c : counties)
+                        <a href="/radon-levels/${c.getStateSlug()}/${c.getCountySlug()}"
+                           class="flex items-center justify-between p-4 rounded-xl bg-white border border-slate-200 hover:border-indigo-300 hover:shadow-md transition-all group">
+                            <div>
+                                <span class="block font-semibold text-sm text-slate-800 group-hover:text-indigo-600 transition-colors">${c.getAreaDisplayName()}</span>
+                                <span class="text-xs
+                                    @if(c.getEpaZone() == 1) text-red-500
+                                    @elseif(c.getEpaZone() == 2) text-amber-500
+                                    @else text-emerald-500
+                                    @endif
+                                ">Zone ${c.getEpaZone()}</span>
+                            </div>
+                            <span class="w-2.5 h-2.5 rounded-full shrink-0
+                                @if(c.getEpaZone() == 1) bg-red-400
+                                @elseif(c.getEpaZone() == 2) bg-amber-400
+                                @else bg-emerald-400
+                                @endif
+                            "></span>
+                        </a>
+                    @endfor
+                </div>
+            @endif
 
             <!-- CTA at the bottom -->
             <div class="mt-16 text-center">

@@ -1,10 +1,27 @@
 @import com.radonverdict.model.County
+@import com.radonverdict.model.CountyRadonMeasurement
+@import com.radonverdict.model.dto.CountyRadonEvidence
 
 @param County county
 @param boolean costMode = false
 @param String selectedResultBand = null
+@param CountyRadonMeasurement radonMeasurement = null
+@param CountyRadonEvidence radonEvidence = null
 
 !{
+    final boolean hasRadonMeasurement = radonMeasurement != null && radonMeasurement.getMetrics() != null;
+    final boolean highEndOnlyRadonMeasurement = hasRadonMeasurement
+            && radonMeasurement.getMetrics().getAverageTestResultPciL() == null
+            && radonMeasurement.getMetrics().getArithmeticMeanRadonValuePciL() == null
+            && radonMeasurement.getMetrics().getMedianRadonValuePciL() == null
+            && radonMeasurement.getMetrics().getPercentTestsAtOrAbove4PciL() == null
+            && (radonMeasurement.getMetrics().getMaximumTestResultPciL() != null
+            || radonMeasurement.getMetrics().getRadon95thPercentilePciL() != null);
+    final boolean historicalSurveyRadonMeasurement = hasRadonMeasurement
+            && "epa_usgs_ms_residential_radon_survey".equals(radonMeasurement.getSourceId());
+    final boolean tierBackedRadonEvidence = radonEvidence != null
+            && !radonEvidence.isMeasurementBacked()
+            && "NJ municipal radon-potential table".equals(radonEvidence.getSourceProfileLabel());
     final double initialLevelValue;
     final boolean unconfirmedCostMode = costMode && (selectedResultBand == null || selectedResultBand.isBlank() || "not_tested".equals(selectedResultBand));
     if ("under_2".equals(selectedResultBand)) {
@@ -29,6 +46,17 @@
     final String initialBarColor = initialLevelValue >= 4.0 ? "bg-red-500" : initialLevelValue >= 2.0 ? "bg-amber-400" : "bg-emerald-500";
     final String shortTermKitUrl = "https://www.amazon.com/dp/B00002N83E?tag=radonverdict-20";
     final String digitalMonitorUrl = "https://www.amazon.com/dp/B00H2VOSP8?tag=radonverdict-20";
+    final String advisorIntro = costMode
+            ? unconfirmedCostMode
+            ? "You have not tested yet. Use a sample reading here to see how the action plan changes, then replace it with your real number later."
+            : "Adjust the level to match your latest result and compare likely mitigation outcomes before pricing local quotes."
+            : highEndOnlyRadonMeasurement
+            ? "Enter your home's measured level. This county source publishes a highest reported value, so the slider does not start from a county average."
+            : tierBackedRadonEvidence
+            ? "Enter your home's measured level. The county evidence is a radon-potential tier, not a pCi/L reading."
+            : historicalSurveyRadonMeasurement
+            ? "Enter your home's measured level. The county source is an older survey, so the slider is for your home result, not a current average."
+            : "Enter your home's measured level; the starting value is only a planning example until you have your own result.";
 }
 
 <!-- Radon Level Decision Advisor: Pure Alpine.js (no server calls) -->
@@ -70,15 +98,7 @@
             @endif
         </h3>
         <p class="text-slate-500 text-sm mt-1 font-medium">
-            @if(costMode)
-                @if(unconfirmedCostMode)
-                You have not tested yet. Use a sample reading here to see how the action plan changes, then replace it with your real number later.
-                @else
-                Adjust the level to match your latest result and compare likely mitigation outcomes before pricing local quotes.
-                @endif
-            @else
-                Enter your home's measured level or use the ${county.getAreaDisplayName()} average
-            @endif
+            ${advisorIntro}
         </p>
     </div>
 
