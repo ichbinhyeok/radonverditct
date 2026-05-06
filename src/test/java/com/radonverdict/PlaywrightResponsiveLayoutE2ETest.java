@@ -241,6 +241,12 @@ class PlaywrightResponsiveLayoutE2ETest {
                                     + " has ZIP input/button overlap: " + zipOverlaps);
                         }
 
+                        List<Map<String, Object>> clippedZipPlaceholders = mobileZipPlaceholderFitReport(page);
+                        if (!clippedZipPlaceholders.isEmpty()) {
+                            failures.add(viewport.label() + " " + route.path()
+                                    + " has clipped ZIP placeholder text: " + clippedZipPlaceholders);
+                        }
+
                         List<Map<String, Object>> oversizedStickyCtas = oversizedMobileStickyCtaReport(page);
                         if (!oversizedStickyCtas.isEmpty()) {
                             failures.add(viewport.label() + " " + route.path()
@@ -412,6 +418,51 @@ class PlaywrightResponsiveLayoutE2ETest {
                           right: Math.round(buttonRect.right),
                           bottom: Math.round(buttonRect.bottom)
                         }
+                      }];
+                    })
+                    .slice(0, 8);
+                }
+                """);
+    }
+
+    @SuppressWarnings("unchecked")
+    private List<Map<String, Object>> mobileZipPlaceholderFitReport(Page page) {
+        return (List<Map<String, Object>>) page.evaluate("""
+                () => {
+                  function visible(element) {
+                    if (!element) {
+                      return false;
+                    }
+                    const style = window.getComputedStyle(element);
+                    const rect = element.getBoundingClientRect();
+                    return style.display !== 'none'
+                      && style.visibility !== 'hidden'
+                      && rect.width > 0
+                      && rect.height > 0;
+                  }
+
+                  const canvas = document.createElement('canvas');
+                  const context = canvas.getContext('2d');
+                  return Array.from(document.querySelectorAll("input[name='zipCode'][placeholder]"))
+                    .filter(visible)
+                    .flatMap((input) => {
+                      const style = window.getComputedStyle(input);
+                      context.font = style.font;
+                      const placeholder = input.getAttribute('placeholder') || '';
+                      const availableWidth = input.clientWidth
+                        - parseFloat(style.paddingLeft || '0')
+                        - parseFloat(style.paddingRight || '0');
+                      const placeholderWidth = context.measureText(placeholder).width;
+                      if (placeholderWidth <= availableWidth + 2) {
+                        return [];
+                      }
+                      const rect = input.getBoundingClientRect();
+                      return [{
+                        placeholder,
+                        availableWidth: Math.round(availableWidth),
+                        placeholderWidth: Math.ceil(placeholderWidth),
+                        inputWidth: Math.round(rect.width),
+                        font: style.font
                       }];
                     })
                     .slice(0, 8);

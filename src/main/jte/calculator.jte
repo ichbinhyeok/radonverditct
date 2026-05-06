@@ -41,7 +41,7 @@
                 </div>
 
                 <div class="mt-12 grid gap-6 lg:grid-cols-2 items-start">
-                    <form action="/search-zip" method="POST" class="rounded-[2rem] border border-white/10 bg-white/5 p-6 sm:p-8 text-left shadow-2xl">
+                    <form action="/search-zip" method="POST" class="calculator-path-form rounded-[2rem] border border-white/10 bg-white/5 p-6 sm:p-8 text-left shadow-2xl">
                         <p class="text-xs font-bold uppercase tracking-[0.25em] text-slate-400">Path 1</p>
                         <h2 class="mt-3 font-display text-3xl font-bold tracking-tight text-white">I already have a radon result</h2>
                         <p class="mt-3 text-sm sm:text-base leading-relaxed text-slate-300">
@@ -49,14 +49,14 @@
                         </p>
 
                         <div class="mt-6 group sm:relative">
-                            <div class="pointer-events-none absolute ml-4 mt-4 flex items-center sm:inset-y-0 sm:left-0 sm:ml-0 sm:mt-0 sm:pl-4">
+                            <div class="calculator-zip-icon pointer-events-none absolute ml-4 mt-4 flex items-center sm:inset-y-0 sm:left-0 sm:ml-0 sm:mt-0 sm:pl-4">
                                 <svg class="h-6 w-6 text-slate-400 group-focus-within:text-brand-500 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                                 </svg>
                             </div>
-                            <input type="text" name="zipCode" pattern="[0-9]{5}" required placeholder="Enter 5-digit ZIP code"
-                                class="block min-w-0 w-full rounded-2xl border-0 bg-white py-4 pl-12 pr-4 text-lg font-medium text-slate-900 shadow-xl shadow-black/10 ring-1 ring-inset ring-slate-200 placeholder:text-slate-400 focus:ring-2 focus:ring-inset focus:ring-brand-500 sm:pr-36">
+                            <input type="text" name="zipCode" pattern="[0-9]{5}" required placeholder="5-digit ZIP code"
+                                class="calculator-zip-input block min-w-0 w-full rounded-2xl border-0 bg-white py-4 pl-12 pr-4 text-lg font-medium text-slate-900 shadow-xl shadow-black/10 ring-1 ring-inset ring-slate-200 placeholder:text-slate-400 focus:ring-2 focus:ring-inset focus:ring-brand-500 sm:pr-36">
                             <button type="submit"
                                     data-track-event="home_path_pick"
                                     data-track-label="have_result_zip"

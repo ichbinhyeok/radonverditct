@@ -600,7 +600,7 @@
                     </div>
 
                     @if(radonEvidence != null)
-                        <div id="county-evidence-first" class="mt-8 rounded-[1.75rem] bg-white p-5 sm:p-6 shadow-2xl border border-white/10">
+                        <div id="county-evidence-first" class="levels-evidence-reading-block mt-8 rounded-[1.75rem] bg-white p-4 sm:p-6 shadow-2xl border border-white/10">
                             <div class="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
                                 <div>
                                     <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500">
@@ -798,7 +798,7 @@
                 </div>
             </div>
 
-            <div class="mobile-sticky-cta fixed bottom-4 right-4 z-40 lg:hidden" data-nosnippet>
+            <div class="mobile-sticky-cta levels-mobile-sticky-cta fixed bottom-4 right-4 z-40 lg:hidden" data-nosnippet>
                 <a href="#situation-picker"
                    data-track-event="levels_mobile_jump_click"
                    data-track-label="sticky_picker"
@@ -809,6 +809,31 @@
                     </svg>
                 </a>
             </div>
+            <script>
+                document.addEventListener('DOMContentLoaded', () => {
+                    const stickyCta = document.querySelector('.levels-mobile-sticky-cta');
+                    const evidenceBlocks = Array.from(document.querySelectorAll('.levels-evidence-reading-block'));
+                    if (!stickyCta || evidenceBlocks.length === 0 || !('IntersectionObserver' in window)) {
+                        return;
+                    }
+                    const visibleBlocks = new Set();
+                    const observer = new IntersectionObserver((entries) => {
+                        entries.forEach((entry) => {
+                            if (entry.isIntersecting) {
+                                visibleBlocks.add(entry.target);
+                            } else {
+                                visibleBlocks.delete(entry.target);
+                            }
+                        });
+                        stickyCta.classList.toggle('levels-mobile-sticky-cta--hidden', visibleBlocks.size > 0);
+                    }, {
+                        root: null,
+                        rootMargin: '0px 0px -10% 0px',
+                        threshold: 0.04
+                    });
+                    evidenceBlocks.forEach((block) => observer.observe(block));
+                });
+            </script>
 
             <section class="mb-10 rounded-[1.75rem] border border-slate-200 bg-white p-5 sm:p-6 shadow-sm">
                 <div class="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
@@ -910,7 +935,7 @@
                 @endif
 
                 @if(radonEvidence != null)
-                    <div class="mt-5 rounded-[1.5rem] border p-4 sm:p-5
+                    <div class="levels-evidence-reading-block mt-5 rounded-[1.5rem] border p-3 sm:p-5
                         @if("high".equals(radonEvidence.getRiskTone())) border-red-200 bg-red-50
                         @elseif("elevated".equals(radonEvidence.getRiskTone())) border-orange-200 bg-orange-50
                         @elseif("borderline".equals(radonEvidence.getRiskTone())) border-amber-200 bg-amber-50
@@ -969,9 +994,9 @@
                         </div>
 
                         @if(radonEvidence.getSourceProfileLabel() != null && !radonEvidence.getSourceProfileLabel().isBlank())
-                            <div class="mt-4 rounded-2xl border border-white/80 bg-white/70 p-4">
+                            <div class="mt-4 rounded-2xl border border-white/80 bg-white/70 p-3 sm:p-4">
                                 <p class="text-sm font-bold text-slate-950">How RadonVerdict reads this data</p>
-                                <div class="mt-3 grid grid-cols-1 gap-3 lg:grid-cols-2">
+                                <div class="mt-3 grid grid-cols-1 gap-2 sm:gap-3 lg:grid-cols-2">
                                     <div class="rounded-xl border border-white/80 bg-white/80 p-3">
                                         <p class="text-xs font-bold uppercase tracking-wider text-slate-500">Source type</p>
                                         <p class="mt-1 text-sm font-black text-slate-900">${radonEvidence.getSourceProfileLabel()}</p>
