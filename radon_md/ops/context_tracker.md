@@ -1,6 +1,6 @@
 # RadonVerdict Context Tracker
 
-Last updated: 2026-05-06 (Asia/Seoul)
+Last updated: 2026-05-07 (Asia/Seoul)
 
 ## 1) Current Snapshot
 
@@ -1995,6 +1995,98 @@ Post-deploy monitoring:
   - watch whether root/state hub impressions rise as county breadth narrows
 - Do not judge the pivot from a 2-3 day Search Console movement.
   - Use a crawl-complete sample plus a 28-day retained-page comparison.
+
+## 2026-05-07 - Source-Specific SEO Contradiction Fix
+
+Why this follow-up happened:
+- The 2026-05-06 pivot correctly added official evidence and reduced the indexable county footprint, but the first review missed a critical layer.
+- The visible evidence block had become source-specific, while FAQ JSON-LD, advisor copy, some hub copy, and internal policy wording still spoke in older generic terms.
+- This was not a small wording issue. It created contradictions between what the page said in the body and what Google or users could see in machine-readable and reusable blocks.
+
+Critical misses found after the initial pass:
+- Wake County:
+  - body evidence said North Carolina data is highest-measured radon, not an average
+  - FAQ/advisor language still implied county average usage
+- Morris County:
+  - body evidence explained New Jersey tier data
+  - older average-style phrasing still blurred the source meaning
+- Alcorn County:
+  - source was a 1990-1991 historical survey with only limited support value
+  - it was still retained/indexable through priority policy
+- State hubs:
+  - hub copy could say every county even when only the retained/indexable set was linked
+- County pages:
+  - the "Why this page is being kept or reduced" card exposed internal SEO/indexing logic as if it were user value
+- Generic reference/health/geology sections:
+  - these could still dominate the search-visible surface instead of the new county evidence
+
+What changed:
+- Source-specific FAQ and JSON-LD wording now follows the actual evidence type:
+  - measured average / median where appropriate
+  - highest-only caveat for North Carolina
+  - tier-based caveat for New Jersey
+  - historical-survey caveat for Mississippi/Alcorn
+- The radon level advisor no longer tells users to use a county average where the source is not an average.
+- The internal kept/reduced policy card was removed from the public county template.
+- State hub copy now describes surfaced/listed retained counties instead of overclaiming every county when the page is intentionally narrowed.
+- Alcorn County was removed from the retained priority set and now returns `200` with `noindex, follow`.
+- Generic long reference blocks were marked with `data-nosnippet` so snippets have a better chance to reflect county-specific evidence.
+
+Commit/deploy:
+- Commit:
+  - `d250eb1 Fix source-specific radon SEO contradictions`
+- GitHub Actions:
+  - run `25452592961`
+  - `build_and_push` succeeded
+  - `deploy` succeeded
+
+Verification:
+- Local:
+  - `.\gradlew.bat --no-daemon test --tests com.radonverdict.SeoBehaviorIntegrationTest`
+  - `.\gradlew.bat --no-daemon test`
+  - result: BUILD SUCCESSFUL
+- Production canary:
+  - Wake County: highest-only FAQ present, old average FAQ absent, advisor average language absent
+  - Morris County: New Jersey tier FAQ present, average contradiction absent
+  - Alcorn County: `200` + `noindex, follow`, historical survey FAQ present, sitemap/hub exclusion confirmed
+  - Mississippi hub: `noindex, follow`, Alcorn link absent
+  - `sitemap.xml`: only high-priority sitemap retained; no moderate sitemap and no Alcorn URL
+
+Operational insight:
+- Evidence is not enough by itself.
+- Every source-type pivot must align five layers at once:
+  - visible evidence
+  - FAQ JSON-LD
+  - reusable advisor/components
+  - hub and sitemap/noindex policy
+  - snippet-visible generic blocks
+- Future reviews must test by source cohort, not by one happy-path county:
+  - measured average counties
+  - basement/first-floor split counties
+  - highest-only counties
+  - tier-only counties
+  - historical-survey counties
+  - noindex counties
+
+Recovery interpretation:
+- This fix does not guarantee old impressions come back.
+- It does make the retained pages more defensible because the page, structured data, and crawl/index signals now tell the same story.
+- Short-term total impressions can still fall while noindexed URLs leave the index.
+- The real success metric is retained indexed URL quality:
+  - impressions per retained indexed county
+  - retained county crawl frequency
+  - snippet matching the source-specific evidence
+  - root/state hub impressions replacing some lost county breadth
+
+Monitoring windows:
+- 2026-05-07 to 2026-05-21:
+  - confirm noindex exclusions grow for reduced URLs
+  - inspect retained URL samples and top legacy noindex samples
+- 2026-05-21 to 2026-06-30:
+  - watch retained county impressions per indexed page
+  - compare source cohorts separately
+- 2026-07 to 2026-08:
+  - if retained cohorts do not move, assume the pivot fixed crawl quality but still needs stronger external/data/product signals
 
 ## Backlog - Realtor / Inspector Toolkit Link Experiment
 
