@@ -200,8 +200,8 @@ public class CountyRadonEvidenceService {
                 .riskTone(riskTone)
                 .confidenceLabel("Tier-backed")
                 .confidenceScore(62)
-                .confidenceSummary("Tier-backed confidence (62/100) from NJ DEP municipality-level radon potential designations; numeric county pCi/L metrics are still not normalized.")
-                .decisionHeadline(countyLabel + " is judged from NJ municipal radon tiers, not a county average.")
+                .confidenceSummary("Source-backed context from NJ DEP municipality-level radon potential designations; numeric county pCi/L metrics are still not normalized.")
+                .decisionHeadline(countyLabel + " is interpreted from NJ municipal radon tiers, not a county average.")
                 .whyThisPageExists(countyLabel + " has more than the EPA map: NJ DEP exposes municipality radon potential tiers, with " + String.format(Locale.US, "%.1f%%", tier.getTier1Pct()) + " Tier 1 and " + String.format(Locale.US, "%.1f%%", tier.getTier1Or2Pct()) + " Tier 1 or Tier 2 municipalities.")
                 .localDecisionSummary(tierLocalDecisionSummary(county, riskTone, tier))
                 .realEstateDecisionSummary(realEstateDecisionSummary(county, riskTone))
@@ -210,7 +210,7 @@ public class CountyRadonEvidenceService {
                 .stateComparisonSummary(comparison)
                 .recommendedAction(tierRecommendedAction(county, riskTone))
                 .intentQuestion("Is " + county.getAreaDisplayName() + " a higher-priority radon testing county?")
-                .intentAnswer(county.getAreaDisplayName() + " is not shown from a county average table here; it is judged from NJ DEP municipal tier distribution. Treat Tier 1/Tier 2 concentration as a test-priority signal, then let the home result decide mitigation.")
+                .intentAnswer(county.getAreaDisplayName() + " is not shown from a county average table here; it is interpreted from NJ DEP municipal tier distribution. Treat Tier 1/Tier 2 concentration as a test-priority signal, then let the home result decide mitigation.")
                 .intentLabel("Testing priority answer")
                 .noReadingAction("No reading yet: use the NJ tier signal to prioritize testing, but do not treat a tier as a home result.")
                 .borderlineAction("2.0-3.9 pCi/L: retest or track; tier context can justify not dismissing a borderline result.")
@@ -278,7 +278,7 @@ public class CountyRadonEvidenceService {
             String sourceShort) {
         String rank = highEndPercentile > 0 ? " It ranks at the " + percentileDisplay(highEndPercentile)
                 + " for high-end readings among measured counties in the state." : "";
-        return county.getAreaDisplayName() + " is not being judged from an average table here. "
+        return county.getAreaDisplayName() + " is not being read from an average table here. "
                 + sourceShort + " exposes a highest measured county value of " + formatPci(highEnd)
                 + ", so the useful decision is proof of local spike potential: test the home directly, then use a 4.0+ property result for mitigation pricing."
                 + rank;
@@ -669,15 +669,15 @@ public class CountyRadonEvidenceService {
             case "va_vdh_radon" -> "Virginia values come from VDH-received 2016-2024 indoor air radon results by locality. VDH suppresses averages below 25 tests, so test count and maximum can remain useful even when the average is unavailable.";
             case "mo_dhss_radon" -> "Missouri values come from the DHSS residential radon dashboard. County averages and maximums come from the summary layer, while the 4.0+ share is computed only from non-suppressed point records.";
             case "ut_epht_radon" -> "Utah values come from DHHS EPHT/IBIS radon test kit result queries. RadonVerdict combines county average, test count, 4.0+ count, median, and maximum queries for the same 2006-2019 period; Utah notes that tests outside its subsidized kit program are not included.";
-            case "il_iema_radon" -> "Illinois values come from the IEMA-OHS licensed-measurement dashboard. RadonVerdict stores only county-level aggregates, excludes invalid tests and negative result sentinels, and uses the 95th percentile before the raw maximum so outlier records do not dominate the local verdict.";
+            case "il_iema_radon" -> "Illinois values come from the IEMA-OHS licensed-measurement dashboard. RadonVerdict stores only county-level aggregates, excludes invalid tests and negative result sentinels, and uses the 95th percentile before the raw maximum so outlier records do not dominate the local interpretation.";
             case "ia_hhs_radon" -> "Iowa values come from the HHS/IDPH county metrics dashboard export. The median is useful for ranking local testing burden, but it still cannot predict a specific home's reading.";
             case "nc_dhhs_radon" -> "North Carolina values come from the DHHS county radon map export. The source publishes each county's highest measured value, so RadonVerdict treats it as a high-end spike signal rather than a county average.";
             case "epa_usgs_ms_residential_radon_survey" -> "Mississippi values come from the historical State/EPA Residential Radon Survey table in EPA/USGS map-support documentation. Treat the county row as older official context, not a current prediction for a specific home.";
             case "co_cdphe_radon" -> "Colorado values are pre-mitigation test results, so they are strongest as a problem-finding signal and should not be read as post-repair household averages.";
             case "wi_dhs_radon" -> "Wisconsin values are long-period ZIP-level test summaries rolled into county context, so they are useful for local burden but not a current-year snapshot.";
             case "ny_doh_tracking_radon" -> "NY DOH values are submitted residential tests; higher testing participation can make the volume signal especially useful for local context.";
-            case "mn_health_radon" -> "Minnesota values combine reported commercial and residential tests, so the verdict favors distribution signals like 4.0+ share and high-end readings.";
-            case "ks_kdhe_radon" -> "Kansas values come from a state tracking snapshot, so the county verdict should be paired with a fresh home test before mitigation pricing.";
+            case "mn_health_radon" -> "Minnesota values combine reported commercial and residential tests, so the interpretation favors distribution signals like 4.0+ share and high-end readings.";
+            case "ks_kdhe_radon" -> "Kansas values come from a state tracking snapshot, so the county context should be paired with a fresh home test before mitigation pricing.";
             case "cdc_tracking_radon" -> "CDC Tracking provides comparable county-level measurement fields; state-specific sources still outrank it when they expose stable county tables.";
             default -> "Use this official measurement table as county context, then let the home's own test result control mitigation or credit decisions.";
         };
@@ -714,7 +714,7 @@ public class CountyRadonEvidenceService {
         String fieldText = highEndOnly
                 ? " plus high-end county measurement context."
                 : " plus comparable county-level measurement fields.";
-        return confidenceLabel + " confidence (" + confidenceScore + "/100) from " + sourceShort + volumeText
+        return "Source-backed context from " + sourceShort + volumeText
                 + fieldText;
     }
 

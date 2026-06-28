@@ -64,7 +64,7 @@
             : "Not available";
     final String housingPercentileDisplay = stateHousingPercentile > 0 ? stateHousingPercentile + "th" : "n/a";
     final String olderHomePercentileDisplay = stateOlderHomePercentile > 0 ? stateOlderHomePercentile + "th" : "n/a";
-    final String countyEvidenceVerdict = county.getEpaZone() == 1
+    final String countyEvidenceSummary = county.getEpaZone() == 1
             ? county.getAreaDisplayName() + " is a higher-priority testing county because the EPA zone signal is high and the page now ties that signal to local housing context."
             : county.getEpaZone() == 2
             ? county.getAreaDisplayName() + " is a gray-zone county: the EPA map is useful context, but the local housing profile and your own home test decide the next step."
@@ -165,9 +165,32 @@
             : "Official county evidence";
     final String evidenceFirstPeriodDisplay = hasRadonMeasurement && radonMeasurement.getPeriod() != null && !radonMeasurement.getPeriod().isBlank()
             ? radonMeasurement.getPeriod()
-            : "Processed county verdict";
-    final String shortTermKitUrl = "https://www.amazon.com/dp/B00002N83E?tag=radonverdict-20";
-    final String digitalMonitorUrl = "https://www.amazon.com/dp/B00H2VOSP8?tag=radonverdict-20";
+            : "Current source summary";
+    final String stateProgramUrl = stateRule != null && stateRule.getStateProgramUrl() != null && !stateRule.getStateProgramUrl().isBlank()
+            ? stateRule.getStateProgramUrl()
+            : "https://www.epa.gov/radon/find-information-about-local-radon-zones-and-state-contact-information";
+    final String epaZoneMapUrl = "https://www.epa.gov/radon/epa-map-radon-zones";
+    final String censusAcsUrl = "https://www.census.gov/programs-surveys/acs";
+    final String nrppProSearchUrl = "https://nrpp.info/pro-search/";
+    final String epaQualifiedProviderUrl = "https://www.epa.gov/radon/how-can-you-find-qualified-radon-service-provider-your-area";
+    final String evidenceSourceLinkUrl = hasRadonMeasurement && radonMeasurement.getSourceUrl() != null && !radonMeasurement.getSourceUrl().isBlank()
+            ? radonMeasurement.getSourceUrl()
+            : stateProgramUrl;
+    final String evidenceSourceLinkLabel = hasRadonMeasurement
+            ? "Open source dataset"
+            : "Open official state source";
+    final String evidenceRetrievedDisplay = hasRadonMeasurement && radonMeasurement.getRetrievedAt() != null && !radonMeasurement.getRetrievedAt().isBlank()
+            ? radonMeasurement.getRetrievedAt()
+            : "See source";
+    final String evidenceDossierSourceLabel = radonEvidence != null && radonEvidence.getSourceProfileLabel() != null && !radonEvidence.getSourceProfileLabel().isBlank()
+            ? radonEvidence.getSourceProfileLabel()
+            : evidenceFirstSourceHeading;
+    final String evidenceDossierSourceSummary = radonEvidence != null && radonEvidence.getSourceProfileSummary() != null && !radonEvidence.getSourceProfileSummary().isBlank()
+            ? radonEvidence.getSourceProfileSummary()
+            : "County evidence is shown as source context only; a valid home test controls mitigation and hiring decisions.";
+    final String evidenceCaveatDisplay = hasRadonMeasurement && radonMeasurement.getCaveat() != null && !radonMeasurement.getCaveat().isBlank()
+            ? radonMeasurement.getCaveat()
+            : "This county context cannot diagnose a specific property. Use it to choose the right test and official follow-up path.";
     final boolean fallsChurchDecisionCounty =
             "virginia".equals(county.getStateSlug()) && "falls-church-city".equals(county.getCountySlug());
     final boolean schenectadyZoneCounty =
@@ -301,7 +324,7 @@
             ? "If you already have a reading in " + county.getAreaDisplayName()
                     + ", start with the local next-step answer before opening a longer guide."
             : phaseThreeCtrLiftCounty
-            ? "Start with the short local verdict for " + county.getAreaDisplayName()
+            ? "Start with the short local evidence read for " + county.getAreaDisplayName()
                     + ", then go deeper only if you still need context."
             : fremontZoneCounty
             ? "If you are trying to confirm the EPA radon zone for " + county.getAreaDisplayName()
@@ -327,12 +350,12 @@
                     + " action plan based on the result you already have, instead of starting from a generic cost page.";
 
     final String borderlineResultCta = fallsChurchDecisionCounty
-            ? "See what a " + county.getAreaDisplayName() + " basement result means for pricing"
+            ? "Plan a confirmatory basement test"
             : fremontZoneCounty
-            ? "See what a " + county.getAreaDisplayName() + " borderline result means for pricing"
+            ? "Plan a confirmatory zone test"
             : nextStepCtrLiftCounty
-            ? "See what a " + county.getAreaDisplayName() + " 2.0-3.9 result changes"
-            : "Should I retest or get quotes?";
+            ? "Confirm the " + county.getAreaDisplayName() + " 2.0-3.9 result"
+            : "Plan the confirmatory test";
 
     final String highResultCta = fallsChurchDecisionCounty
             ? "See " + county.getAreaDisplayName() + " mitigation cost before calling contractors"
@@ -348,7 +371,7 @@
             ? "Turn a " + county.getAreaDisplayName() + " result into a credit plan"
             : "Turn the result into a seller-credit plan";
 
-    final String heroQuickVerdict = phaseOneCtrLiftCounty
+    final String heroQuickEvidenceRead = phaseOneCtrLiftCounty
             ? county.getAreaDisplayName()
             + " searchers usually need the practical next move fast. The first useful split is simple: no test yet, 2.0-3.9, or 4.0+."
             : schenectadyZoneCounty
@@ -361,7 +384,7 @@
             ? county.getAreaDisplayName()
             + " works best as a reading-to-decision page. The county signal is context, but your result is what changes the next move."
             : phaseThreeCtrLiftCounty
-            ? "Start with the quick local verdict for " + county.getAreaDisplayName()
+            ? "Start with the quick local evidence read for " + county.getAreaDisplayName()
             + ". If you still need more detail after that, the longer reference is below."
             : county.getEpaZone() == 1
             ? county.getAreaDisplayName() + " is a strong county-level radon signal. You still need a home test, but this is not a county where skipping the first test makes sense."
@@ -376,7 +399,7 @@
             : phaseTwoCtrLiftCounty
             ? "Use the reading to choose the lane"
             : phaseThreeCtrLiftCounty
-            ? "Take the quick verdict first"
+            ? "Take the quick evidence read first"
             : county.getEpaZone() == 1
             ? "Do not guess in a higher-risk county"
             : county.getEpaZone() == 2
@@ -390,7 +413,7 @@
             : phaseTwoCtrLiftCounty
             ? "The county signal matters less than the result in your home. Use the number to decide whether you test, retest, or price mitigation."
             : phaseThreeCtrLiftCounty
-            ? "If your goal is just the next practical step, start with the local verdict and save the long explanation for later."
+            ? "If your goal is just the next practical step, start with the local evidence read and save the long explanation for later."
             : county.getEpaZone() == 1
             ? "Most users should either get a first test or move a 4.0+ result straight into mitigation pricing."
             : county.getEpaZone() == 2
@@ -591,7 +614,7 @@
                                 @if(introIntentLead != null)
                                     ${introIntentLead}
                                 @endif
-                                ${heroQuickVerdict}
+                                ${heroQuickEvidenceRead}
                             </p>
 
                             <div class="mt-6 flex flex-col sm:flex-row gap-3">
@@ -646,7 +669,7 @@
                                         @if(radonEvidence.getWhyThisPageExists() != null && !radonEvidence.getWhyThisPageExists().isBlank())
                                             ${radonEvidence.getWhyThisPageExists()}
                                         @else
-                                            ${evidenceFirstSourceHeading} is shown before product or cost paths so the page starts with the county signal, then turns that signal into an action.
+                                            ${evidenceFirstSourceHeading} is shown before calculators or cost paths so the page starts with source context, then turns that context into a home-specific next step.
                                         @endif
                                     </p>
                                 </div>
@@ -658,9 +681,9 @@
 
                             <div class="mt-5 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
                                 <div class="rounded-2xl border border-slate-100 bg-slate-50 p-4">
-                                    <p class="text-xs font-bold uppercase tracking-wider text-slate-500">Processed verdict</p>
+                                    <p class="text-xs font-bold uppercase tracking-wider text-slate-500">County evidence type</p>
                                     <p class="mt-2 font-display text-xl font-black text-slate-900">${radonEvidence.getRiskBand()}</p>
-                                    <p class="mt-1 text-xs text-slate-500">${radonEvidence.getConfidenceLabel()} confidence - ${radonEvidence.getConfidenceScore()}/100</p>
+                                    <p class="mt-1 text-xs text-slate-500">County context only; your home test controls the decision.</p>
                                 </div>
                                 <div class="rounded-2xl border border-slate-100 bg-slate-50 p-4">
                                     <p class="text-xs font-bold uppercase tracking-wider text-slate-500">
@@ -687,10 +710,127 @@
                                 </div>
                             </div>
 
+                            <div class="mt-5 rounded-2xl border border-slate-200 bg-slate-50 p-4 sm:p-5">
+                                <div class="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
+                                    <div>
+                                        <p class="text-xs font-bold uppercase tracking-wider text-slate-500">Official evidence dossier</p>
+                                        <h3 class="mt-2 font-display text-xl font-black text-slate-950">Source record for ${county.getAreaDisplayName()}, ${county.getStateAbbr()}</h3>
+                                        <p class="mt-2 max-w-3xl text-sm leading-relaxed text-slate-700">${evidenceDossierSourceSummary}</p>
+                                    </div>
+                                    <a href="${evidenceSourceLinkUrl}"
+                                       target="_blank"
+                                       rel="noopener"
+                                       data-track-event="levels_official_source_click"
+                                       data-track-label="evidence_dossier_source"
+                                       class="inline-flex shrink-0 items-center justify-center rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm font-black text-slate-900 hover:border-slate-500 transition-colors">
+                                        ${evidenceSourceLinkLabel}
+                                    </a>
+                                </div>
+
+                                <div class="mt-5 grid grid-cols-1 gap-3 md:grid-cols-4">
+                                    <div>
+                                        <p class="text-xs font-bold uppercase tracking-wider text-slate-500">Primary public source</p>
+                                        <p class="mt-1 text-sm font-black text-slate-900">${evidenceDossierSourceLabel}</p>
+                                    </div>
+                                    <div>
+                                        <p class="text-xs font-bold uppercase tracking-wider text-slate-500">Measurement window</p>
+                                        <p class="mt-1 text-sm font-black text-slate-900">${evidenceFirstPeriodDisplay}</p>
+                                    </div>
+                                    <div>
+                                        <p class="text-xs font-bold uppercase tracking-wider text-slate-500">Retrieved / checked</p>
+                                        <p class="mt-1 text-sm font-black text-slate-900">${evidenceRetrievedDisplay}</p>
+                                    </div>
+                                    <div>
+                                        <p class="text-xs font-bold uppercase tracking-wider text-slate-500">County FIPS</p>
+                                        <p class="mt-1 text-sm font-black text-slate-900">${county.getFips()}</p>
+                                    </div>
+                                </div>
+
+                                <div class="mt-5 rounded-2xl border border-slate-200 bg-white p-4">
+                                    <p class="text-xs font-bold uppercase tracking-wider text-slate-500">Evidence stack</p>
+                                    <div class="mt-3 grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-4">
+                                        <a href="${evidenceSourceLinkUrl}"
+                                           target="_blank"
+                                           rel="noopener"
+                                           data-track-event="levels_official_source_click"
+                                           data-track-label="evidence_stack_primary"
+                                           class="rounded-xl border border-slate-200 bg-slate-50 p-3 hover:border-slate-400 transition-colors">
+                                            <p class="text-xs font-bold uppercase tracking-wider text-slate-500">County source</p>
+                                            <p class="mt-1 text-sm font-black text-slate-950">${evidenceDossierSourceLabel}</p>
+                                            <p class="mt-1 text-xs leading-relaxed text-slate-600">Primary source used for the county evidence row.</p>
+                                        </a>
+                                        <a href="${epaZoneMapUrl}"
+                                           target="_blank"
+                                           rel="noopener"
+                                           data-track-event="levels_official_source_click"
+                                           data-track-label="evidence_stack_epa_zone"
+                                           class="rounded-xl border border-slate-200 bg-slate-50 p-3 hover:border-slate-400 transition-colors">
+                                            <p class="text-xs font-bold uppercase tracking-wider text-slate-500">Federal map</p>
+                                            <p class="mt-1 text-sm font-black text-slate-950">EPA Map of Radon Zones</p>
+                                            <p class="mt-1 text-xs leading-relaxed text-slate-600">Zone ${county.getEpaZone() > 0 ? Integer.toString(county.getEpaZone()) : "?"} is context, not a property result.</p>
+                                        </a>
+                                        <a href="${censusAcsUrl}"
+                                           target="_blank"
+                                           rel="noopener"
+                                           data-track-event="levels_official_source_click"
+                                           data-track-label="evidence_stack_census"
+                                           class="rounded-xl border border-slate-200 bg-slate-50 p-3 hover:border-slate-400 transition-colors">
+                                            <p class="text-xs font-bold uppercase tracking-wider text-slate-500">Housing context</p>
+                                            <p class="mt-1 text-sm font-black text-slate-950">US Census ACS housing context</p>
+                                            <p class="mt-1 text-xs leading-relaxed text-slate-600">${olderHomeDisplay} built before 1980; ${totalHousingUnitsDisplay} housing units.</p>
+                                        </a>
+                                        <a href="${stateProgramUrl}"
+                                           target="_blank"
+                                           rel="noopener"
+                                           data-track-event="levels_official_source_click"
+                                           data-track-label="evidence_stack_state_program"
+                                           class="rounded-xl border border-slate-200 bg-slate-50 p-3 hover:border-slate-400 transition-colors">
+                                            <p class="text-xs font-bold uppercase tracking-wider text-slate-500">State follow-up</p>
+                                            <p class="mt-1 text-sm font-black text-slate-950">State radon program</p>
+                                            <p class="mt-1 text-xs leading-relaxed text-slate-600">Use the state source before hiring or interpreting local rules.</p>
+                                        </a>
+                                    </div>
+                                </div>
+
+                                <div class="mt-5 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
+                                    <div class="rounded-xl border border-white bg-white p-3">
+                                        <p class="text-xs font-bold uppercase tracking-wider text-slate-500">Primary field</p>
+                                        <p class="mt-1 text-sm font-black text-slate-900">${radonEvidence.getPrimaryAverageDisplay()}</p>
+                                    </div>
+                                    <div class="rounded-xl border border-white bg-white p-3">
+                                        <p class="text-xs font-bold uppercase tracking-wider text-slate-500">Median field</p>
+                                        <p class="mt-1 text-sm font-black text-slate-900">${radonEvidence.getMedianDisplay()}</p>
+                                    </div>
+                                    <div class="rounded-xl border border-white bg-white p-3">
+                                        <p class="text-xs font-bold uppercase tracking-wider text-slate-500">4.0+ field</p>
+                                        <p class="mt-1 text-sm font-black text-slate-900">${radonEvidence.getAbove4Display()}</p>
+                                    </div>
+                                    <div class="rounded-xl border border-white bg-white p-3">
+                                        <p class="text-xs font-bold uppercase tracking-wider text-slate-500">Sample / volume</p>
+                                        <p class="mt-1 text-sm font-black text-slate-900">${radonEvidence.getTestVolumeDisplay()}</p>
+                                    </div>
+                                </div>
+
+                                <div class="mt-5 grid grid-cols-1 gap-3 lg:grid-cols-3">
+                                    <div>
+                                        <p class="text-xs font-bold uppercase tracking-wider text-slate-500">Metric shape</p>
+                                        <p class="mt-1 text-sm leading-relaxed text-slate-700">${radonEvidence.getMetricShapeSummary()}</p>
+                                    </div>
+                                    <div>
+                                        <p class="text-xs font-bold uppercase tracking-wider text-slate-500">Source limitation</p>
+                                        <p class="mt-1 text-sm leading-relaxed text-slate-700">${evidenceCaveatDisplay}</p>
+                                    </div>
+                                    <div>
+                                        <p class="text-xs font-bold uppercase tracking-wider text-slate-500">Property-level limit</p>
+                                        <p class="mt-1 text-sm leading-relaxed text-slate-700">Not a property-level diagnosis. The county record explains local evidence; your home's own test result controls the next decision.</p>
+                                    </div>
+                                </div>
+                            </div>
+
                             @if(radonEvidence.getDecisionHeadline() != null && !radonEvidence.getDecisionHeadline().isBlank())
                                 <div class="mt-5 grid grid-cols-1 gap-3 lg:grid-cols-3">
                                     <div class="rounded-2xl border border-slate-200 bg-slate-50 p-4 lg:col-span-2">
-                                        <p class="text-xs font-bold uppercase tracking-wider text-slate-500">County-specific verdict</p>
+                                        <p class="text-xs font-bold uppercase tracking-wider text-slate-500">County-specific interpretation</p>
                                         <h3 class="mt-2 font-display text-xl font-black text-slate-950">${radonEvidence.getDecisionHeadline()}</h3>
                                         <p class="mt-2 text-sm leading-relaxed text-slate-700">${radonEvidence.getLocalDecisionSummary()}</p>
                                     </div>
@@ -707,7 +847,40 @@
                                    data-track-event="levels_evidence_next_step_click"
                                    data-track-label="evidence_first"
                                    class="inline-flex items-center justify-center rounded-xl border border-slate-900 bg-slate-900 px-4 py-3 text-sm font-black text-white hover:bg-slate-800 transition-colors">
-                                    Choose Next Step
+                                    Use This Evidence
+                                </a>
+                            </div>
+
+                            <div class="mt-5 grid grid-cols-1 gap-3 md:grid-cols-3">
+                                <a href="${stateProgramUrl}"
+                                   target="_blank"
+                                   rel="noopener"
+                                   data-track-event="levels_official_source_click"
+                                   data-track-label="state_program"
+                                   class="rounded-2xl border border-slate-200 bg-white p-4 hover:border-slate-300 hover:bg-slate-50 transition-colors">
+                                    <p class="text-xs font-bold uppercase tracking-wider text-slate-500">Official state path</p>
+                                    <p class="mt-2 text-sm font-black text-slate-950">Open the state radon program</p>
+                                    <p class="mt-1 text-xs leading-relaxed text-slate-600">Use state rules and local program contacts before choosing a contractor.</p>
+                                </a>
+                                <a href="${epaQualifiedProviderUrl}"
+                                   target="_blank"
+                                   rel="noopener"
+                                   data-track-event="levels_official_source_click"
+                                   data-track-label="epa_provider_guidance"
+                                   class="rounded-2xl border border-slate-200 bg-white p-4 hover:border-slate-300 hover:bg-slate-50 transition-colors">
+                                    <p class="text-xs font-bold uppercase tracking-wider text-slate-500">EPA hiring guidance</p>
+                                    <p class="mt-2 text-sm font-black text-slate-950">Find a qualified radon provider</p>
+                                    <p class="mt-1 text-xs leading-relaxed text-slate-600">EPA points homeowners to state programs and national proficiency listings.</p>
+                                </a>
+                                <a href="${nrppProSearchUrl}"
+                                   target="_blank"
+                                   rel="noopener"
+                                   data-track-event="levels_official_source_click"
+                                   data-track-label="nrpp_pro_search"
+                                   class="rounded-2xl border border-slate-200 bg-white p-4 hover:border-slate-300 hover:bg-slate-50 transition-colors">
+                                    <p class="text-xs font-bold uppercase tracking-wider text-slate-500">Certified professional search</p>
+                                    <p class="mt-2 text-sm font-black text-slate-950">Search NRPP-certified pros</p>
+                                    <p class="mt-1 text-xs leading-relaxed text-slate-600">Use this after you have a valid result or need professional testing.</p>
                                 </a>
                             </div>
 
@@ -743,31 +916,31 @@
                                     Do not price mitigation blind. Get the first number, then decide whether you need monitoring, quotes, or nothing at all.
                                 </p>
                                 <div class="mt-4 flex flex-col gap-2">
-                                    <a href="${shortTermKitUrl}"
-                                       data-rv-affiliate-link="true"
-                                       onclick="if(window.rvTrackAffiliateClick) window.rvTrackAffiliateClick(this, { cta_id: 'levels_situation_test_kit', offer_type: 'test_kit', offer_brand: 'first_alert', offer_model: 'rd1', placement_group: 'levels', placement_id: 'situation_not_tested_primary', journey_stage: 'first_test' });"
-                                       target="_blank"
-                                       rel="noopener sponsored nofollow"
-                                       class="inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-emerald-600 text-white text-sm font-bold hover:bg-emerald-700 transition-colors">
-                                        Start with a Short-Term Test Kit
-                                    </a>
                                     <a href="/guides/how-to-test-for-radon"
                                        data-track-event="levels_test_guide_click"
-                                       data-track-label="hero_not_tested"
+                                       data-track-label="situation_not_tested_primary"
+                                       class="inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-emerald-600 text-white text-sm font-bold hover:bg-emerald-700 transition-colors">
+                                        Read the testing guide first
+                                    </a>
+                                    <a href="${stateProgramUrl}"
+                                       target="_blank"
+                                       rel="noopener"
+                                       data-track-event="levels_official_source_click"
+                                       data-track-label="situation_state_program"
                                        class="inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl border border-emerald-200 text-emerald-800 text-sm font-bold hover:bg-emerald-100 transition-colors">
-                                        Read the 3-minute testing guide
+                                        Check your state radon program
                                     </a>
                                 </div>
                             </div>
 
-                            <a href="/radon-mitigation-cost/${county.getStateSlug()}/${county.getCountySlug()}?radonResultBand=between_2_and_4&intent=homeowner#estimate-form"
-                               data-track-event="levels_result_path_click"
+                            <a href="/guides/how-to-test-for-radon"
+                               data-track-event="levels_test_guide_click"
                                data-track-label="borderline_result"
                                class="rounded-2xl border border-amber-200 bg-amber-50 p-4 hover:border-amber-300 hover:bg-amber-100 transition-colors flex flex-col">
                                 <div class="text-xs font-bold uppercase tracking-wider text-amber-700">2.0-3.9 pCi/L</div>
                                 <h3 class="mt-2 font-display font-bold text-lg text-slate-900">My result is 2.0-3.9</h3>
                                 <p class="mt-2 text-sm text-slate-700 leading-relaxed flex-1">
-                                    Usually retest or track first. If the reading keeps showing up, use the local action plan to decide whether pricing makes sense.
+                                    Usually confirm the reading first. If it keeps showing up, use the county evidence and official guidance before deciding whether pricing makes sense.
                                 </p>
                                 <div class="mt-4 inline-flex items-center justify-between gap-3 text-sm font-semibold text-slate-900">
                                     <span>${borderlineResultCta}</span>
@@ -813,20 +986,17 @@
                         </div>
 
                         <div class="mt-5 pt-4 border-t border-slate-200 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-                            <p class="text-xs text-slate-500 leading-relaxed">Already tested once and just want to watch the number trend?</p>
-                            <a href="${digitalMonitorUrl}"
-                               data-rv-affiliate-link="true"
-                               onclick="if(window.rvTrackAffiliateClick) window.rvTrackAffiliateClick(this, { cta_id: 'levels_situation_monitor_followup', offer_type: 'monitor', offer_brand: 'airthings', offer_model: 'corentium_home', placement_group: 'levels', placement_id: 'situation_followup_link', journey_stage: 'followup_monitor' });"
-                               target="_blank"
-                               rel="noopener sponsored nofollow"
+                            <p class="text-xs text-slate-500 leading-relaxed">Already tested once and need the cleanest follow-up path?</p>
+                            <a href="/guides/how-to-test-for-radon"
+                               data-track-event="levels_test_guide_click"
+                               data-track-label="situation_followup_link"
                                class="inline-flex items-center gap-2 text-sm font-bold text-indigo-700 hover:text-indigo-900 transition-colors">
-                                View Airthings Corentium Home
+                                Review retesting steps
                                 <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3" />
                                 </svg>
                             </a>
                         </div>
-                        <p class="mt-3 text-[11px] text-slate-400">Affiliate disclosure: we may earn a commission if you buy through these links.</p>
                     </div>
                 </div>
             </div>
@@ -883,7 +1053,7 @@
                     </div>
                 </div>
 
-                <p class="mt-4 max-w-3xl text-sm leading-relaxed text-slate-700">${countyEvidenceVerdict}</p>
+                <p class="mt-4 max-w-3xl text-sm leading-relaxed text-slate-700">${countyEvidenceSummary}</p>
 
                 <div class="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
                     <div class="rounded-2xl border border-slate-200 bg-slate-50 p-4">
@@ -973,15 +1143,15 @@
                     ">
                         <div class="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
                             <div>
-                                <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-600">RadonVerdict Processed Verdict</p>
+                                <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-600">County evidence interpretation</p>
                                 <h3 class="mt-1 font-display text-xl font-black text-slate-950">${radonEvidence.getRiskBand()}</h3>
                             </div>
                             <div class="flex flex-wrap gap-2">
                                 <span class="rounded-full border border-white/70 bg-white/80 px-3 py-1 text-xs font-black text-slate-800">
-                                    ${radonEvidence.getConfidenceLabel()} confidence
+                                    Source-backed context
                                 </span>
                                 <span class="rounded-full border border-white/70 bg-white/80 px-3 py-1 text-xs font-black text-slate-800">
-                                    ${radonEvidence.getConfidenceScore()}/100
+                                    Not a home-specific result
                                 </span>
                             </div>
                         </div>
@@ -1297,46 +1467,41 @@
                             </div>
 
                             <p class="text-sm text-slate-600 leading-relaxed mb-5">
-                                Testing is the <strong>only</strong> way to know your home's radon level. Zone data tells you the regional risk,
-                                but your home could be significantly higher or lower than the countywide pattern. For most homeowners, the right first purchase is a low-cost short-term test kit.
+                                Testing is the <strong>only</strong> way to know your home's radon level. Zone and county data tell you the regional signal,
+                                but your home could be significantly higher or lower than the countywide pattern. Start with a valid test setup before using any cost path.
                             </p>
 
                             <div class="space-y-4">
-                                <a href="${shortTermKitUrl}"
-                                   data-rv-affiliate-link="true"
-                                   target="_blank" rel="sponsored nofollow noopener"
-                                   onclick="if(window.rvTrackAffiliateClick) window.rvTrackAffiliateClick(this, { cta_id: 'levels_sticky_test_kit', offer_type: 'test_kit', offer_brand: 'first_alert', offer_model: 'rd1', placement_group: 'levels', placement_id: 'sticky_primary_card', journey_stage: 'first_test' });"
+                                <a href="/guides/how-to-test-for-radon"
+                                   data-track-event="levels_test_guide_click"
+                                   data-track-label="sticky_primary_card"
                                    class="flex items-center justify-between w-full px-4 py-3 rounded-xl bg-slate-900 text-white hover:bg-slate-800 transition-colors group">
                                     <div>
-                                        <div class="text-xs font-bold uppercase tracking-wider text-slate-400">Recommended first step</div>
-                                        <div class="mt-1 text-sm font-bold">Recommended Short-Term Test Kit</div>
-                                        <div class="text-xs text-slate-400">Results in 2-7 days - $15-$30</div>
+                                        <div class="text-xs font-bold uppercase tracking-wider text-slate-400">Testing first</div>
+                                        <div class="mt-1 text-sm font-bold">Open the home testing guide</div>
+                                        <div class="text-xs text-slate-400">Short-term, long-term, retest, and real-estate setup</div>
                                     </div>
                                     <svg class="w-4 h-4 text-slate-400 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3" />
                                     </svg>
                                 </a>
                                 <div class="rounded-xl border border-slate-200 bg-slate-50 p-4">
-                                    <div class="text-xs font-bold uppercase tracking-wider text-slate-500">Already tested once?</div>
+                                    <div class="text-xs font-bold uppercase tracking-wider text-slate-500">Need the official path?</div>
                                     <p class="mt-1 text-sm text-slate-600 leading-relaxed">
-                                        A digital monitor is a better fit after your first result, for seasonal re-checks, or to keep tracking levels after mitigation.
+                                        State radon programs and EPA provider guidance are the right reference before hiring or confirming local requirements.
                                     </p>
-                                    <a href="${digitalMonitorUrl}"
-                                       data-rv-affiliate-link="true"
-                                       target="_blank" rel="sponsored nofollow noopener"
-                                       onclick="if(window.rvTrackAffiliateClick) window.rvTrackAffiliateClick(this, { cta_id: 'levels_sticky_monitor_followup', offer_type: 'monitor', offer_brand: 'airthings', offer_model: 'corentium_home', placement_group: 'levels', placement_id: 'sticky_followup_card', journey_stage: 'followup_monitor' });"
+                                    <a href="${stateProgramUrl}"
+                                       target="_blank" rel="noopener"
+                                       data-track-event="levels_official_source_click"
+                                       data-track-label="sticky_state_program"
                                        class="inline-flex items-center gap-2 mt-3 text-sm font-bold text-indigo-700 hover:text-indigo-900 transition-colors">
-                                        View Airthings Corentium Home
+                                        Open the state radon program
                                         <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                             <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3" />
                                         </svg>
                                     </a>
                                 </div>
                             </div>
-
-                            <p class="text-[10px] text-slate-400 mt-3 text-center">
-                                As an Amazon Associate, RadonVerdict earns from qualifying purchases.
-                            </p>
                         </div>
 
                         <!-- CTA Card 2: Already Have Results? Go to Cost Calculator -->

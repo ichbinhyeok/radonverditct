@@ -44,8 +44,6 @@
     final String dangerInitialStyle = "danger".equals(initialStatus) ? null : "display:none";
     final int initialBarWidth = (int) Math.min((initialLevelValue / 20.0) * 100.0, 100.0);
     final String initialBarColor = initialLevelValue >= 4.0 ? "bg-red-500" : initialLevelValue >= 2.0 ? "bg-amber-400" : "bg-emerald-500";
-    final String shortTermKitUrl = "https://www.amazon.com/dp/B00002N83E?tag=radonverdict-20";
-    final String digitalMonitorUrl = "https://www.amazon.com/dp/B00H2VOSP8?tag=radonverdict-20";
     final String advisorIntro = costMode
             ? unconfirmedCostMode
             ? "You have not tested yet. Use a sample reading here to see how the action plan changes, then replace it with your real number later."
@@ -162,7 +160,7 @@
                         @endif
                     @else
                         Your reading is below the common action reference levels. Both the EPA (4.0) and WHO (2.7) thresholds are not exceeded.
-                        <strong>Mitigation is usually not the next immediate step after a confirmed low result.</strong> If you have never tested your home, start with a short-term kit first. If this is already a confirmed low reading, a digital monitor can help you keep an eye on seasonal changes.
+                        <strong>Mitigation is usually not the next immediate step after a confirmed low result.</strong> If you have never tested your home, use the testing guide first. If this is already a confirmed low reading, use the retesting guidance for seasonal follow-up.
                     @endif
                 </p>
                 @if(costMode)
@@ -171,22 +169,20 @@
                 </p>
                 @else
                 <div class="mt-4 flex flex-col sm:flex-row sm:flex-wrap gap-3">
-                    <a href="${shortTermKitUrl}"
-                       data-rv-affiliate-link="true"
-                       target="_blank" rel="sponsored nofollow noopener"
-                       onclick="if(window.rvTrackAffiliateClick) window.rvTrackAffiliateClick(this, { cta_id: 'advisor_safe_test_kit', offer_type: 'test_kit', offer_brand: 'first_alert', offer_model: 'rd1', placement_group: 'advisor', placement_id: 'safe_primary', journey_stage: 'first_test' });"
+                    <a href="/guides/how-to-test-for-radon"
+                       data-track-event="advisor_testing_guide_click"
+                       data-track-label="safe_primary"
                        class="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-emerald-600 text-white text-sm font-bold hover:bg-emerald-700 transition-colors shadow-sm">
                         <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                         </svg>
-                        Start with a Short-Term Test Kit
+                        Read the Testing Guide First
                     </a>
-                    <a href="${digitalMonitorUrl}"
-                       data-rv-affiliate-link="true"
-                       target="_blank" rel="sponsored nofollow noopener"
-                       onclick="if(window.rvTrackAffiliateClick) window.rvTrackAffiliateClick(this, { cta_id: 'advisor_safe_monitor_followup', offer_type: 'monitor', offer_brand: 'airthings', offer_model: 'corentium_home', placement_group: 'advisor', placement_id: 'safe_followup', journey_stage: 'followup_monitor' });"
+                    <a href="/guides/how-to-test-for-radon"
+                       data-track-event="advisor_testing_guide_click"
+                       data-track-label="safe_followup"
                        class="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl border border-emerald-300 text-emerald-800 text-sm font-bold hover:bg-emerald-100 transition-colors">
-                        Already tested once? View Airthings Corentium Home
+                        Review retesting steps
                     </a>
                 </div>
                 @endif
@@ -243,22 +239,20 @@
                 </p>
                 @if(!costMode)
                 <div class="mt-4 flex flex-col sm:flex-row sm:flex-wrap gap-3">
-                    <a href="${digitalMonitorUrl}"
-                       data-rv-affiliate-link="true"
-                       target="_blank" rel="sponsored nofollow noopener"
-                       onclick="if(window.rvTrackAffiliateClick) window.rvTrackAffiliateClick(this, { cta_id: 'advisor_caution_monitor_primary', offer_type: 'monitor', offer_brand: 'airthings', offer_model: 'corentium_home', placement_group: 'advisor', placement_id: 'caution_primary', journey_stage: 'followup_monitor' });"
+                    <a href="/guides/how-to-test-for-radon"
+                       data-track-event="advisor_testing_guide_click"
+                       data-track-label="caution_confirmatory"
                        class="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-amber-600 text-white text-sm font-bold hover:bg-amber-700 transition-colors shadow-sm">
                         <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
                         </svg>
-                        Track it with Airthings Corentium Home
+                        Review confirmatory testing
                     </a>
-                    <a href="${shortTermKitUrl}"
-                       data-rv-affiliate-link="true"
-                       target="_blank" rel="sponsored nofollow noopener"
-                       onclick="if(window.rvTrackAffiliateClick) window.rvTrackAffiliateClick(this, { cta_id: 'advisor_caution_test_kit_secondary', offer_type: 'test_kit', offer_brand: 'first_alert', offer_model: 'rd1', placement_group: 'advisor', placement_id: 'caution_secondary', journey_stage: 'first_test' });"
+                    <a href="/guides/how-to-test-for-radon"
+                       data-track-event="advisor_testing_guide_click"
+                       data-track-label="caution_secondary"
                        class="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl border border-amber-300 text-amber-800 text-sm font-bold hover:bg-amber-100 transition-colors">
-                        Need a first test instead?
+                        Compare short-term vs long-term testing
                     </a>
                 </div>
                 @endif

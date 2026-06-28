@@ -50,6 +50,9 @@ public class PageController {
     @Value("${app.feature.monetization-hooks.enabled:false}")
     private boolean monetizationHooksEnabled;
 
+    @Value("${app.site.index-county-cost-pages:false}")
+    private boolean indexCountyCostPages;
+
     @Value("${app.site.base-url:https://radonverdict.com}")
     private String baseUrl;
 
@@ -240,7 +243,9 @@ public class PageController {
                         radonResultBand != null ? radonResultBand : "not_tested")
                 : contentService.buildDefaultPageContent(county);
         PageQualityResult quality = pageQualityService.scoreMitigationCountyPage(county, pageContent);
-        pageContent.setIndexable(quality.isIndexable() && seoIndexingPolicyService.isCountyIndexableCandidate(county));
+        pageContent.setIndexable(indexCountyCostPages
+                && quality.isIndexable()
+                && seoIndexingPolicyService.isCountyIndexableCandidate(county));
 
         TrustMetadata trust = trustMetadataService.forCountyPage(county);
         AeoAnswerBlock aeo = buildMitigationAeoBlock(county, pageContent, trust);

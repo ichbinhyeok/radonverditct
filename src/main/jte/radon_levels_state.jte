@@ -112,7 +112,7 @@
                                 ${evidenceCoverage.getOfficialEvidenceCount()} of ${evidenceCoverage.getTotalCount()} listed counties have official evidence
                             </h2>
                             <p class="mt-2 max-w-3xl text-sm leading-relaxed text-slate-600">
-                                Open a county page to see the processed verdict: source confidence, local burden, state percentile, and the next step for no reading, 2.0-3.9, or 4.0+ pCi/L.
+                                Open a county page to see the official source context: measurement fields, local burden, state percentile, and the next step for no reading, 2.0-3.9, or 4.0+ pCi/L.
                             </p>
                         </div>
                         <div class="rounded-2xl border border-indigo-100 bg-indigo-50 px-5 py-4 text-center">
@@ -170,7 +170,7 @@
 
                     @if(stateEvidenceInsight.getDecisionHeadline() != null && !stateEvidenceInsight.getDecisionHeadline().isBlank())
                         <div class="mt-5 rounded-2xl border border-slate-200 bg-slate-50 p-4">
-                            <p class="text-xs font-bold uppercase tracking-wider text-slate-500">State-level verdict</p>
+                            <p class="text-xs font-bold uppercase tracking-wider text-slate-500">State-level evidence read</p>
                             <h3 class="mt-2 font-display text-xl font-black text-slate-950">${stateEvidenceInsight.getDecisionHeadline()}</h3>
                             <p class="mt-2 text-sm leading-relaxed text-slate-700">${stateEvidenceInsight.getStateDecisionSummary()}</p>
                         </div>
@@ -280,7 +280,7 @@
                             <p class="mt-2 text-sm leading-relaxed text-slate-700">${stateEvidenceInsight.getZoneContrastSummary()}</p>
                         </div>
                         <div class="rounded-2xl border border-slate-200 bg-slate-50 p-4">
-                            <p class="text-xs font-bold uppercase tracking-wider text-slate-500">Source confidence</p>
+                            <p class="text-xs font-bold uppercase tracking-wider text-slate-500">Source strategy</p>
                             <p class="mt-2 text-sm leading-relaxed text-slate-700">${stateEvidenceInsight.getSourceStrategySummary()}</p>
                         </div>
                     </div>

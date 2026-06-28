@@ -36,6 +36,7 @@ public class SitemapController {
         xml.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
         xml.append("<sitemapindex xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">");
 
+        addSitemapUrl(xml, "/sitemap-recovery.xml");
         addSitemapUrl(xml, "/sitemap-core.xml");
         addSitemapUrl(xml, "/sitemap-zone-high.xml");
         if (seoIndexingPolicyService.includeZoneLowSitemap()) {
@@ -54,6 +55,28 @@ public class SitemapController {
         xml.append("<loc>").append(normalizedBaseUrl()).append(path).append("</loc>");
         xml.append("<lastmod>").append(resolveLastmod()).append("</lastmod>");
         xml.append("</sitemap>");
+    }
+
+    @GetMapping(value = "/sitemap-recovery.xml", produces = MediaType.APPLICATION_XML_VALUE)
+    @ResponseBody
+    public String generateRecoverySitemap() {
+        StringBuilder xml = new StringBuilder();
+        xml.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
+        xml.append("<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">");
+
+        dataLoadService.getCountyBySlugMap().values().stream()
+                .filter(seoIndexingPolicyService::isCountyIndexableCandidate)
+                .filter(seoIndexingPolicyService::isRecoveryTrafficCandidate)
+                .sorted((left, right) -> Integer.compare(
+                        seoIndexingPolicyService.recoveryTrafficRank(left),
+                        seoIndexingPolicyService.recoveryTrafficRank(right)))
+                .forEach(county -> addUrl(xml,
+                        "/radon-levels/" + county.getStateSlug() + "/" + county.getCountySlug(),
+                        "0.9",
+                        resolveCountyLastmod(county)));
+
+        xml.append("</urlset>");
+        return xml.toString();
     }
 
     @GetMapping(value = "/sitemap-core.xml", produces = MediaType.APPLICATION_XML_VALUE)
@@ -116,12 +139,11 @@ public class SitemapController {
         for (County county : counties) {
             if (!seoIndexingPolicyService.isCountyIndexableCandidate(county))
                 continue;
+            if (seoIndexingPolicyService.isRecoveryTrafficCandidate(county))
+                continue;
 
             if (county.getEpaZone() == 1 || county.getEpaZone() == 2) {
-                // Cost Calculator pSEO
-                addUrl(xml, "/radon-mitigation-cost/" + county.getStateSlug() + "/" + county.getCountySlug(), "0.8",
-                        resolveCountyLastmod(county));
-                // Radon Levels pSEO
+                // Recovery cohort: submit the official-evidence levels page, not the conversion-only cost page.
                 addUrl(xml, "/radon-levels/" + county.getStateSlug() + "/" + county.getCountySlug(), "0.8",
                         resolveCountyLastmod(county));
             }
@@ -148,12 +170,11 @@ public class SitemapController {
         for (County county : counties) {
             if (!seoIndexingPolicyService.isCountyIndexableCandidate(county))
                 continue;
+            if (seoIndexingPolicyService.isRecoveryTrafficCandidate(county))
+                continue;
 
             if (county.getEpaZone() == 3) {
-                // Cost Calculator pSEO
-                addUrl(xml, "/radon-mitigation-cost/" + county.getStateSlug() + "/" + county.getCountySlug(), "0.4",
-                        resolveCountyLastmod(county));
-                // Radon Levels pSEO
+                // Recovery cohort: submit the official-evidence levels page, not the conversion-only cost page.
                 addUrl(xml, "/radon-levels/" + county.getStateSlug() + "/" + county.getCountySlug(), "0.4",
                         resolveCountyLastmod(county));
             }
@@ -175,10 +196,10 @@ public class SitemapController {
         for (County county : counties) {
             if (!seoIndexingPolicyService.hasDataMoat(county))
                 continue;
+            if (seoIndexingPolicyService.isRecoveryTrafficCandidate(county))
+                continue;
 
             if (county.getEpaZone() <= 0) {
-                addUrl(xml, "/radon-mitigation-cost/" + county.getStateSlug() + "/" + county.getCountySlug(), "0.3",
-                        resolveCountyLastmod(county));
                 addUrl(xml, "/radon-levels/" + county.getStateSlug() + "/" + county.getCountySlug(), "0.3",
                         resolveCountyLastmod(county));
             }

@@ -4,6 +4,7 @@ import com.radonverdict.model.County;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Set;
 
 @Service
@@ -11,6 +12,23 @@ public class SeoIndexingPolicyService {
 
     private static final int LARGE_HOUSING_UNIT_THRESHOLD = 50_000;
     private static final int ZONE_ONE_HOUSING_FLOOR = 10_000;
+
+    private static final List<String> RECOVERY_TRAFFIC_COUNTIES = List.of(
+            "maryland/prince-georges-county",
+            "florida/marion-county",
+            "virginia/loudoun-county",
+            "virginia/fairfax-city",
+            "new-jersey/monmouth-county",
+            "colorado/mesa-county",
+            "colorado/boulder-county",
+            "new-york/ulster-county",
+            "iowa/ringgold-county",
+            "california/los-angeles-county",
+            "new-york/schenectady-county",
+            "illinois/dupage-county",
+            "virginia/falls-church-city");
+
+    private static final Set<String> RECOVERY_TRAFFIC_COUNTY_SET = Set.copyOf(RECOVERY_TRAFFIC_COUNTIES);
 
     private static final Set<String> HISTORICAL_PRIORITY_COUNTIES = Set.of(
             "california/san-francisco-county",
@@ -86,6 +104,24 @@ public class SeoIndexingPolicyService {
         return indexZone3Pages;
     }
 
+    public boolean isRecoveryTrafficCandidate(County county) {
+        if (!hasDataMoat(county) || county.getEpaZone() <= 0) {
+            return false;
+        }
+        if (!indexZone3Pages && county.getEpaZone() == 3) {
+            return false;
+        }
+        return RECOVERY_TRAFFIC_COUNTY_SET.contains(slugKey(county));
+    }
+
+    public int recoveryTrafficRank(County county) {
+        if (county == null) {
+            return Integer.MAX_VALUE;
+        }
+        int index = RECOVERY_TRAFFIC_COUNTIES.indexOf(slugKey(county));
+        return index >= 0 ? index : Integer.MAX_VALUE;
+    }
+
     public boolean hasDataMoat(County county) {
         return county != null
                 && county.getStats() != null
@@ -98,7 +134,7 @@ public class SeoIndexingPolicyService {
             return false;
         }
 
-        if (HISTORICAL_PRIORITY_COUNTIES.contains(slugKey(county))) {
+        if (isRecoveryTrafficCandidate(county) || HISTORICAL_PRIORITY_COUNTIES.contains(slugKey(county))) {
             return true;
         }
 
