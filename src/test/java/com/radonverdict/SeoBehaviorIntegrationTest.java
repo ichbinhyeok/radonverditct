@@ -8,6 +8,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDate;
 import java.util.Base64;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -206,7 +207,9 @@ class SeoBehaviorIntegrationTest {
     }
 
     @Test
-    void sitemapIndexPrioritizesHighIntentAndUsesCountyFreshness() throws Exception {
+    void sitemapIndexPrioritizesHighIntentAndUsesDeployFreshness() throws Exception {
+        String today = LocalDate.now().toString();
+
         mockMvc.perform(get("/sitemap.xml"))
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("/sitemap-recovery.xml")))
@@ -236,7 +239,7 @@ class SeoBehaviorIntegrationTest {
                 .andExpect(content().string(not(containsString("/radon-levels/maryland/prince-georges-county"))))
                 .andExpect(content().string(not(containsString("/radon-levels/colorado/broomfield-county"))))
                 .andExpect(content().string(not(containsString("/radon-mitigation-cost/california/alameda-county"))))
-                .andExpect(content().string(containsString("<lastmod>2026-02-24</lastmod>")));
+                .andExpect(content().string(containsString("<lastmod>" + today + "</lastmod>")));
     }
 
     @Test

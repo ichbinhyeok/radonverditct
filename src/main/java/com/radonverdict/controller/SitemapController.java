@@ -10,8 +10,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.Collection;
 import java.time.LocalDate;
+import java.util.Collection;
 
 @Controller
 @RequiredArgsConstructor
@@ -262,18 +262,10 @@ public class SitemapController {
         if (configuredLastmod != null && !configuredLastmod.isBlank()) {
             return configuredLastmod;
         }
-        // Use a static approach like first day of the current month
-        LocalDate now = LocalDate.now();
-        return LocalDate.of(now.getYear(), now.getMonth(), 1).toString();
+        return LocalDate.now().toString();
     }
 
     private String resolveCountyLastmod(County county) {
-        if (county != null
-                && county.getStats() != null
-                && county.getStats().getRetrievedAt() != null
-                && county.getStats().getRetrievedAt().matches("^\\d{4}-\\d{2}-\\d{2}$")) {
-            return county.getStats().getRetrievedAt();
-        }
         return resolveLastmod();
     }
 
