@@ -29,6 +29,9 @@ public class SitemapController {
     @Value("${app.site.include-unknown-sitemap:false}")
     private boolean includeUnknownSitemap;
 
+    @Value("${app.site.include-broad-zone-sitemap:false}")
+    private boolean includeBroadZoneSitemap;
+
     @GetMapping(value = "/sitemap.xml", produces = MediaType.APPLICATION_XML_VALUE)
     @ResponseBody
     public String generateSitemapIndex() {
@@ -37,12 +40,15 @@ public class SitemapController {
         xml.append("<sitemapindex xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">");
 
         addSitemapUrl(xml, "/sitemap-recovery.xml");
+        addSitemapUrl(xml, "/sitemap-growth.xml");
         addSitemapUrl(xml, "/sitemap-core.xml");
-        addSitemapUrl(xml, "/sitemap-zone-high.xml");
-        if (seoIndexingPolicyService.includeZoneLowSitemap()) {
+        if (includeBroadZoneSitemap) {
+            addSitemapUrl(xml, "/sitemap-zone-high.xml");
+        }
+        if (includeBroadZoneSitemap && seoIndexingPolicyService.includeZoneLowSitemap()) {
             addSitemapUrl(xml, "/sitemap-zone-low.xml");
         }
-        if (includeUnknownSitemap) {
+        if (includeBroadZoneSitemap && includeUnknownSitemap) {
             addSitemapUrl(xml, "/sitemap-zone-unknown.xml");
         }
 
@@ -73,6 +79,29 @@ public class SitemapController {
                 .forEach(county -> addUrl(xml,
                         "/radon-levels/" + county.getStateSlug() + "/" + county.getCountySlug(),
                         "0.9",
+                        resolveCountyLastmod(county)));
+
+        xml.append("</urlset>");
+        return xml.toString();
+    }
+
+    @GetMapping(value = "/sitemap-growth.xml", produces = MediaType.APPLICATION_XML_VALUE)
+    @ResponseBody
+    public String generateGrowthSitemap() {
+        StringBuilder xml = new StringBuilder();
+        xml.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
+        xml.append("<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">");
+
+        dataLoadService.getCountyBySlugMap().values().stream()
+                .filter(seoIndexingPolicyService::isCountyIndexableCandidate)
+                .filter(seoIndexingPolicyService::isGrowthTrafficCandidate)
+                .filter(county -> !seoIndexingPolicyService.isRecoveryTrafficCandidate(county))
+                .sorted((left, right) -> Integer.compare(
+                        seoIndexingPolicyService.growthTrafficRank(left),
+                        seoIndexingPolicyService.growthTrafficRank(right)))
+                .forEach(county -> addUrl(xml,
+                        "/radon-levels/" + county.getStateSlug() + "/" + county.getCountySlug(),
+                        "0.85",
                         resolveCountyLastmod(county)));
 
         xml.append("</urlset>");
@@ -139,7 +168,7 @@ public class SitemapController {
         for (County county : counties) {
             if (!seoIndexingPolicyService.isCountyIndexableCandidate(county))
                 continue;
-            if (seoIndexingPolicyService.isRecoveryTrafficCandidate(county))
+            if (seoIndexingPolicyService.isSearchTrafficCandidate(county))
                 continue;
 
             if (county.getEpaZone() == 1 || county.getEpaZone() == 2) {
@@ -170,7 +199,7 @@ public class SitemapController {
         for (County county : counties) {
             if (!seoIndexingPolicyService.isCountyIndexableCandidate(county))
                 continue;
-            if (seoIndexingPolicyService.isRecoveryTrafficCandidate(county))
+            if (seoIndexingPolicyService.isSearchTrafficCandidate(county))
                 continue;
 
             if (county.getEpaZone() == 3) {
@@ -196,7 +225,7 @@ public class SitemapController {
         for (County county : counties) {
             if (!seoIndexingPolicyService.hasDataMoat(county))
                 continue;
-            if (seoIndexingPolicyService.isRecoveryTrafficCandidate(county))
+            if (seoIndexingPolicyService.isSearchTrafficCandidate(county))
                 continue;
 
             if (county.getEpaZone() <= 0) {

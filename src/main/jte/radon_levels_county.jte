@@ -24,6 +24,7 @@
 @param int stateOlderHomePercentile = 0
 @param int statePeerCountyCount = 0
 @param boolean priorityCounty = false
+@param boolean searchTrafficCounty = false
 @param boolean monetizationHooksEnabled = false
 @param boolean showSeoDebug = false
 !{
@@ -265,6 +266,8 @@
             ? seoPlaceLabel + " Basement Radon Levels | EPA Zone & 4.0 Guide"
             : priorityCtrCounty
             ? seoPlaceLabel + " Radon Levels: EPA Zone & Basement Test Guide"
+            : searchTrafficCounty
+            ? "Radon Levels in " + seoPlaceLabel + " | Official Data & Testing Guide"
             : seoPlaceLabel + " Radon Levels, Zone Map & Home Testing Guide | EPA 4.0 pCi/L";
 
     final String seoDescription = epaZoneCtrPriorityCounty
@@ -282,6 +285,9 @@
             : priorityCtrCounty
             ? "Check the EPA radon zone for " + seoPlaceLabel
             + ", what a basement test means at 2.0 vs 4.0+ pCi/L, and when to retest or compare mitigation quotes."
+            : searchTrafficCounty
+            ? "Check radon levels in " + seoPlaceLabel
+            + " using official county, state, EPA zone, and testing-source context. See when to test, retest, or act after a 4.0+ pCi/L result."
             : seoPlaceLabel + " radon guide for basement and lowest-level home tests. See EPA zone data, what 2.0, 4.0, and 8.0+ pCi/L mean, and when mitigation quotes are worth comparing.";
 
     final String heroTitle = epaZoneCtrPriorityCounty
@@ -294,6 +300,8 @@
             ? "Basement Radon Levels, EPA Zone & Test Meaning in " + seoPlaceLabel
             : priorityCtrCounty
             ? "Radon Levels, EPA Zone & Basement Testing in " + seoPlaceLabel
+            : searchTrafficCounty
+            ? "Radon Levels in " + seoPlaceLabel
             : "Radon Levels & Zone Map in " + seoPlaceLabel;
 
     final String directAnswerLead = epaZoneCtrPriorityCounty
@@ -306,6 +314,8 @@
             ? "Basement test answer: "
             : priorityCtrCounty
             ? "Short answer for homeowners, buyers, and sellers: "
+            : searchTrafficCounty
+            ? "Official local answer: "
             : "Direct Answer for basement and lowest-level tests: ";
 
     final String introIntentLead = fallsChurchDecisionCounty
@@ -1015,7 +1025,8 @@
             <script>
                 document.addEventListener('DOMContentLoaded', () => {
                     const stickyCta = document.querySelector('.levels-mobile-sticky-cta');
-                    const evidenceBlocks = Array.from(document.querySelectorAll('.levels-evidence-reading-block'));
+                    const evidenceBlocks = Array.from(document.querySelectorAll(
+                        '.levels-county-hero-quick-read, .levels-evidence-reading-block'));
                     if (!stickyCta || evidenceBlocks.length === 0 || !('IntersectionObserver' in window)) {
                         return;
                     }
