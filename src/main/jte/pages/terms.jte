@@ -28,12 +28,12 @@
 
             <h2 class="font-display font-bold text-2xl text-slate-900 mt-10 mb-4">4. Waitlist and Notifications</h2>
             <p class="text-slate-600 mb-6">
-                When you submit a request for an action plan or join our waitlist, you authorize us to notify you when trusted local mitigation professionals become available in your area. We do not perform the mitigation services ourselves. We do not guarantee the quality of work, pricing, or licensing status of the third-party providers. It is your responsibility to verify the credentials, insurance, and state certifications of any contractor you hire.
+                When you submit a request for a saved radon plan, you authorize us to contact you about that plan and relevant local follow-up options. We do not perform mitigation services ourselves. We do not guarantee the quality of work, pricing, or licensing status of any third-party providers. It is your responsibility to verify the credentials, insurance, and state certifications of any contractor you hire.
             </p>
 
             <h2 class="font-display font-bold text-2xl text-slate-900 mt-10 mb-4">5. Contact Consent</h2>
             <p class="text-slate-600 mb-6">
-                By providing your contact information, you consent to receive direct communications (emails and/or text messages if provided) from RadonVerdict regarding your personalized radon action plan, educational materials, and availability alerts for local contractors. You may opt out of these communications at any time.
+                By providing your contact information, you consent to receive direct communications (emails and/or text messages if provided) from RadonVerdict regarding your personalized radon plan, educational materials, and relevant local follow-up options. You may opt out of these communications at any time.
             </p>
             
             <h2 class="font-display font-bold text-2xl text-slate-900 mt-10 mb-4">6. Limitation of Liability</h2>

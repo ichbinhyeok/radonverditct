@@ -22,7 +22,7 @@
                data-track-event="mobile_cta_click"
                onclick="event.preventDefault(); document.getElementById('estimate-form').scrollIntoView({behavior: 'smooth'})"
                class="tap-target inline-flex items-center gap-2 rounded-xl bg-indigo-600 px-5 text-sm font-bold text-white shadow-md whitespace-nowrap transition-transform active:scale-95 hover:bg-indigo-500">
-                Get Next Step
+                Save Plan
                 <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
             </a>
         </div>
@@ -34,7 +34,7 @@
     (() => {
         const setupCostStickyCta = () => {
             const stickyCta = document.querySelector('.cost-mobile-sticky-cta');
-            const hideTargets = Array.from(document.querySelectorAll('.cost-hero-section, .receipt-card, #quote-coach'));
+            const hideTargets = Array.from(document.querySelectorAll('.cost-hero-section, .receipt-card, #quote-coach, #estimate-form'));
             if (!stickyCta || hideTargets.length === 0 || !('IntersectionObserver' in window)) {
                 return;
             }
@@ -46,7 +46,7 @@
             const visibleTargets = new Set();
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach((entry) => {
-                    if (entry.isIntersecting && entry.intersectionRatio > 0.08) {
+                    if (entry.isIntersecting) {
                         visibleTargets.add(entry.target);
                     } else {
                         visibleTargets.delete(entry.target);
@@ -61,14 +61,19 @@
             hideTargets.forEach((target) => observer.observe(target));
         };
 
-        setupCostStickyCta();
-        document.addEventListener('DOMContentLoaded', setupCostStickyCta);
-        document.body.addEventListener('htmx:afterSettle', () => {
+        const resetAndSetupCostStickyCta = () => {
             document.querySelectorAll('.cost-mobile-sticky-cta').forEach((stickyCta) => {
                 stickyCta.dataset.rvStickyObserverReady = 'false';
             });
             setupCostStickyCta();
-        });
+        };
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', resetAndSetupCostStickyCta);
+        } else {
+            resetAndSetupCostStickyCta();
+        }
+        document.body.addEventListener('htmx:afterSettle', resetAndSetupCostStickyCta);
     })();
 </script>
 

@@ -286,7 +286,7 @@ class PlaywrightBetaSmokeE2ETest {
             persona.visit("/radon-mitigation-cost/california/los-angeles-county");
 
             assertTrue(persona.page.locator("a:has-text('Get Full Local Plan')").first().isVisible());
-            Locator stickyCta = persona.page.locator("a[href='#estimate-form']:has-text('Get Next Step')").first();
+            Locator stickyCta = persona.page.locator("a[href='#estimate-form']:has-text('Save Plan')").first();
             assertEquals("#estimate-form", stickyCta.getAttribute("href"));
             persona.page.waitForFunction(
                     "() => document.querySelector('.cost-mobile-sticky-cta')?.classList.contains('cost-mobile-sticky-cta--hidden') === true");

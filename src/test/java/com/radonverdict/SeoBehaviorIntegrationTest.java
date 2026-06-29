@@ -37,10 +37,19 @@ class SeoBehaviorIntegrationTest {
     private MockMvc mockMvc;
 
     @Test
-    void homeRedirectUsesCanonicalHttpsUrl() throws Exception {
+    void homeRendersDecisionWorkspaceAndCanonicalUrl() throws Exception {
         mockMvc.perform(get("/"))
-                .andExpect(status().isMovedPermanently())
-                .andExpect(header().string("Location", "/radon-cost-calculator"));
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("<title>RadonVerdict | Radon Result, Cost, and Next-Step Planner</title>")))
+                .andExpect(content().string(containsString("<link rel=\"canonical\" href=\"https://radonverdict.com/\">")))
+                .andExpect(content().string(containsString("RadonVerdict")))
+                .andExpect(content().string(containsString("Decision console")))
+                .andExpect(content().string(containsString("Radon reading")))
+                .andExpect(content().string(containsString("Instant verdict")))
+                .andExpect(content().string(containsString("Start with ZIP")))
+                .andExpect(content().string(containsString("Open local action plan")))
+                .andExpect(content().string(containsString("Every path starts from the decision you actually need.")))
+                .andExpect(content().string(containsString("Not another radon article.")));
     }
 
     @Test
@@ -247,6 +256,7 @@ class SeoBehaviorIntegrationTest {
 
         mockMvc.perform(get("/sitemap-core.xml"))
                 .andExpect(status().isOk())
+                .andExpect(content().string(containsString("<loc>https://radonverdict.com/</loc>")))
                 .andExpect(content().string(containsString("/radon-data-sources")));
 
         mockMvc.perform(get("/sitemap-zone-high.xml"))
@@ -460,8 +470,8 @@ class SeoBehaviorIntegrationTest {
                 .andExpect(content().string(containsString("Current Result")))
                 .andExpect(content().string(containsString("Not tested")))
                 .andExpect(content().string(containsString("4.0+")))
-                .andExpect(content().string(containsString("action plan")))
-                .andExpect(content().string(containsString("Get Next Step")));
+                .andExpect(content().string(containsString("Saved snapshot of this county, result band, and selected foundation")))
+                .andExpect(content().string(containsString("Save Plan")));
     }
 
     @Test
@@ -509,7 +519,7 @@ class SeoBehaviorIntegrationTest {
                 .andExpect(content().string(containsString("Seller Credit Starting Point")))
                 .andExpect(content().string(containsString("Open Credit Calculator")))
                 .andExpect(content().string(containsString("/radon-credit-calculator/california/los-angeles-county?intent=buying&amp;radonResultBand=above_4")))
-                .andExpect(content().string(containsString("Send My Credit Strategy")));
+                .andExpect(content().string(containsString("Save My Credit Plan")));
     }
 
     @Test
@@ -521,7 +531,7 @@ class SeoBehaviorIntegrationTest {
                 .andExpect(content().string(containsString("4.0+ Radon Result in Los Angeles County, CA: Cost and Next Step")))
                 .andExpect(content().string(containsString("High Reading Budget Snapshot")))
                 .andExpect(content().string(containsString("Open 4.0+ Worksheet")))
-                .andExpect(content().string(containsString("Send My 4.0+ Action Plan")));
+                .andExpect(content().string(containsString("Save My 4.0+ Plan")));
     }
 
     @Test

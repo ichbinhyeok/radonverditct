@@ -60,8 +60,8 @@ public class PageController {
     private boolean seoDebugVisible;
 
     @GetMapping("/")
-    public RedirectView home() {
-        return redirect("/radon-cost-calculator", HttpStatus.MOVED_PERMANENTLY);
+    public String home() {
+        return "index";
     }
 
     @GetMapping("/radon-cost-calculator")

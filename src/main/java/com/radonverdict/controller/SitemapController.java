@@ -135,6 +135,7 @@ public class SitemapController {
         xml.append("<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">");
 
         // 1. Static & Hub Pages
+        addUrl(xml, "/", "1.0");
         addUrl(xml, "/radon-cost-calculator", "0.9");
         addUrl(xml, "/radon-mitigation-cost", "0.9");
         addUrl(xml, "/radon-levels", "0.9");

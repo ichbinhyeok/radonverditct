@@ -81,7 +81,7 @@ class PlaywrightConversionFlowsE2ETest {
 
             assertTrue(persona.page.content().contains("Fairfax, VA"));
             assertTrue(persona.page.locator("text=4.0+ Action Plan for Buyers").first().isVisible());
-            assertTrue(persona.page.locator("button:has-text('Send My Credit Strategy')").first().isVisible());
+            assertTrue(persona.page.locator("button:has-text('Save My Credit Plan')").first().isVisible());
 
             persona.screenshot("county_action_plan_buying_above_4");
             persona.assertNoFirstPartyFailures();
@@ -145,7 +145,7 @@ class PlaywrightConversionFlowsE2ETest {
             persona.page.waitForLoadState(LoadState.DOMCONTENTLOADED);
 
             assertTrue(persona.page.content().contains("4.0+ Action Plan for Homeowners"));
-            assertTrue(persona.page.locator("button:has-text('Send My 4.0+ Action Plan')").first().isVisible());
+            assertTrue(persona.page.locator("button:has-text('Save My 4.0+ Plan')").first().isVisible());
 
             persona.screenshot("levels_high_result_action_plan");
             persona.assertNoFirstPartyFailures();

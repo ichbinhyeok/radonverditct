@@ -32,15 +32,15 @@
                 We will only use your personal data when the law allows us to. Most commonly, we will use your personal data in the following circumstances:
             </p>
             <ul class="list-disc pl-6 text-slate-600 mb-6 space-y-2">
-                <li>Where we need to provide your personalized radon action plan and add you to our waitlist.</li>
-                <li>Where we contact you to notify you of local contractor availability in your area.</li>
+                <li>Where we need to provide your personalized radon plan and save your selected scenario.</li>
+                <li>Where we contact you about relevant local follow-up options tied to that plan.</li>
                 <li>Where it is necessary for our legitimate interests (or those of a third party) and your interests and fundamental rights do not override those interests.</li>
                 <li>Where we need to comply with a legal or regulatory obligation.</li>
             </ul>
 
             <h2 class="font-display font-bold text-2xl text-slate-900 mt-10 mb-4">4. Disclosures of Your Personal Data</h2>
             <p class="text-slate-600 mb-6">
-                By submitting a request, you explicitly consent to your information being used to provide an action plan and to notify you when trusted local mitigation professionals become available in your geographical area. We securely store this data and do not sell it to unauthorized data brokers. 
+                By submitting a request, you explicitly consent to your information being used to provide a personalized radon plan and relevant local follow-up options. We securely store this data and do not sell it to unauthorized data brokers.
             </p>
             
             <h2 class="font-display font-bold text-2xl text-slate-900 mt-10 mb-4">5. Data Security & Analytics</h2>

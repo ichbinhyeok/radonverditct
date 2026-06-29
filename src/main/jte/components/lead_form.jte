@@ -19,36 +19,36 @@
             ? page.getSelectedFoundationType()
             : "other";
     final String actionBadge = transactionIntent
-            ? "Local credit range"
+            ? "Saved credit plan"
             : highReading
-                    ? "4.0+ next-step plan"
+                    ? "Saved 4.0+ plan"
                     : notTested
-                            ? "Test-first plan"
-                            : "Local next-step plan";
+                            ? "Saved test-first plan"
+                            : "Saved local plan";
     final String actionHeadline = transactionIntent
-            ? "Get the local credit range for " + county.getAreaDisplayName()
+            ? "Save the local credit plan for " + county.getAreaDisplayName()
             : highReading
-                    ? "Get the 4.0+ plan for " + county.getAreaDisplayName()
+                    ? "Save the 4.0+ plan for " + county.getAreaDisplayName()
                     : notTested
-                            ? "Get the test-first plan for " + county.getAreaDisplayName()
-                            : "Get the local next-step plan for " + county.getAreaDisplayName();
+                            ? "Save the test-first plan for " + county.getAreaDisplayName()
+                            : "Save this local plan for " + county.getAreaDisplayName();
     final String actionIntro = transactionIntent
-            ? "Use this to follow up on the opening ask, ceiling, and fallback range that fit this county and this deal stage."
+            ? "We package the opening ask, ceiling, fallback range, and county context so you can use it in the next deal conversation."
             : highReading
-                    ? "Use this to follow up on the local price anchor, the immediate next move, and the range you can take into quote conversations."
+                    ? "We package the local price anchor, immediate next move, quote script, and bid checks so you can compare contractors without rebuilding context."
                     : notTested
-                            ? "Use this to follow up on what to test with, what to ignore for now, and when it is actually time to price mitigation."
-                            : "Use this to follow up on whether to retest, hold, or move toward local quote planning with the scenario you already selected.";
+                            ? "We package the testing path, what to ignore for now, and when it is actually time to price mitigation."
+                            : "We package the selected result, county range, and next move so you can decide whether to retest, hold, or plan quotes.";
     final String submitLabel = transactionIntent
-            ? "Send My Credit Strategy"
+            ? "Save My Credit Plan"
             : highReading
-                    ? "Send My 4.0+ Action Plan"
+                    ? "Save My 4.0+ Plan"
                     : notTested
-                            ? "Send My Test + Action Plan"
-                            : "Send My Local Action Plan";
+                            ? "Save My Test Plan"
+                            : "Save My Local Plan";
     final String footerCopy = transactionIntent
-            ? "We contact only about this local range, this scenario, and contractor availability updates."
-            : "We contact only about this local plan and contractor availability updates.";
+            ? "We contact only about this saved credit plan and relevant local follow-up options."
+            : "We contact only about this saved plan and relevant local follow-up options.";
 }
 
 <div class="bg-slate-900 rounded-3xl p-8 shadow-2xl mt-12 mb-12" id="estimate-form" data-nosnippet>
@@ -61,20 +61,20 @@
                 ${actionHeadline}
             </h3>
             <p class="text-slate-300 text-lg mb-6 leading-relaxed">
-                ${actionIntro} No obligation and no auto-enrollment.
+                ${actionIntro} No obligation, no call blasts, and no auto-enrollment.
             </p>
             <ul class="space-y-3">
                 <li class="flex items-center text-slate-300">
                     <svg class="h-5 w-5 text-indigo-400 mr-3 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path></svg>
-                    Scenario-aware next move, not a generic contractor push
+                    Saved snapshot of this county, result band, and selected foundation
                 </li>
                 <li class="flex items-center text-slate-300">
                     <svg class="h-5 w-5 text-indigo-400 mr-3 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path></svg>
-                    Local number and decision framing tied to this county
+                    Quote, retest, or deal notes you can use without rebuilding the page
                 </li>
                 <li class="flex items-center text-slate-300">
                     <svg class="h-5 w-5 text-indigo-400 mr-3 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path></svg>
-                    Clear next steps for buying, selling, or staying
+                    Optional local availability context only when it fits the scenario
                 </li>
             </ul>
         </div>
@@ -271,7 +271,7 @@
                             <input id="consent" name="consent" type="checkbox" required class="h-4 w-4 rounded border-slate-300 text-indigo-600 focus:ring-indigo-500" @change="if($event.target.checked && typeof rvTrack === 'function') rvTrack('consent_checked', { event_category: 'engagement', lead_source: 'county_action_plan_form' });">
                         </div>
                         <div class="ml-3 text-xs leading-tight text-slate-500">
-                            <label for="consent">Prior to submitting, I consent to be contacted regarding my personalized radon action plan and local contractor availability.</label>
+                            <label for="consent">Prior to submitting, I consent to be contacted regarding my personalized radon plan and relevant local follow-up options.</label>
                         </div>
                     </div>
 
