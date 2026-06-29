@@ -575,20 +575,37 @@ class SeoBehaviorIntegrationTest {
     void highSignalRecoveryCountiesDoNotLeadWithWeakZoneCopy() throws Exception {
         mockMvc.perform(get("/radon-levels/virginia/loudoun-county"))
                 .andExpect(status().isOk())
+                .andExpect(content().string(containsString("Is radon bad in Loudoun County?")))
                 .andExpect(content().string(containsString("Loudoun County is stronger than the EPA zone label suggests.")))
                 .andExpect(content().string(containsString("Official county data shows 4.1 pCi/L as the primary measured signal.")))
-                .andExpect(content().string(not(containsString("Loudoun County sits in the gray zone."))));
+                .andExpect(content().string(containsString("Loudoun County should be treated as a testing-priority county because the official source signal is stronger than the EPA zone label suggests.")))
+                .andExpect(content().string(containsString("a Testing Priority")))
+                .andExpect(content().string(not(containsString("Loudoun County sits in the gray zone."))))
+                .andExpect(content().string(not(containsString("Loudoun County is a gray-zone county"))))
+                .andExpect(content().string(not(containsString("Loudoun County is currently categorized as EPA Zone 2"))))
+                .andExpect(content().string(not(containsString("Loudoun County falls in EPA Zone 2"))));
 
         mockMvc.perform(get("/radon-levels/florida/marion-county"))
                 .andExpect(status().isOk())
+                .andExpect(content().string(containsString("Is radon bad in Marion County?")))
                 .andExpect(content().string(containsString("Marion County is stronger than the EPA zone label suggests.")))
                 .andExpect(content().string(containsString("Official county data shows 6.4 pCi/L and 42.9% at or above 4.0.")))
-                .andExpect(content().string(not(containsString("Marion County sits in the gray zone."))));
+                .andExpect(content().string(containsString("Marion County should be treated as a testing-priority county because the official source signal is stronger than the EPA zone label suggests.")))
+                .andExpect(content().string(containsString("a Testing Priority")))
+                .andExpect(content().string(not(containsString("Marion County sits in the gray zone."))))
+                .andExpect(content().string(not(containsString("Marion County is a gray-zone county"))))
+                .andExpect(content().string(not(containsString("Marion County is currently categorized as EPA Zone 2"))))
+                .andExpect(content().string(not(containsString("Marion County falls in EPA Zone 2"))));
 
         mockMvc.perform(get("/radon-levels/new-jersey/gloucester-county"))
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("NJ DEP tier table makes this a testing-priority county")))
-                .andExpect(content().string(not(containsString("Gloucester County sits in the gray zone."))));
+                .andExpect(content().string(containsString("Gloucester County has enough official radon signal that the answer should not stop at the EPA map.")))
+                .andExpect(content().string(containsString("a Testing Priority")))
+                .andExpect(content().string(not(containsString("Gloucester County sits in the gray zone."))))
+                .andExpect(content().string(not(containsString("Gloucester County is a gray-zone county"))))
+                .andExpect(content().string(not(containsString("Gloucester County is currently categorized as EPA Zone 2"))))
+                .andExpect(content().string(not(containsString("Gloucester County falls in EPA Zone 2"))));
     }
 
     @Test

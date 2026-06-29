@@ -65,13 +65,6 @@
             : "Not available";
     final String housingPercentileDisplay = stateHousingPercentile > 0 ? stateHousingPercentile + "th" : "n/a";
     final String olderHomePercentileDisplay = stateOlderHomePercentile > 0 ? stateOlderHomePercentile + "th" : "n/a";
-    final String countyEvidenceSummary = county.getEpaZone() == 1
-            ? county.getAreaDisplayName() + " is a higher-priority testing county because the EPA zone signal is high and the page now ties that signal to local housing context."
-            : county.getEpaZone() == 2
-            ? county.getAreaDisplayName() + " is a gray-zone county: the EPA map is useful context, but the local housing profile and your own home test decide the next step."
-            : county.getEpaZone() == 3
-            ? county.getAreaDisplayName() + " has a lower predicted countywide zone signal, so direct testing matters more than the map label."
-            : county.getAreaDisplayName() + " has no published EPA zone in this dataset, so the only reliable next step is direct home testing.";
     final String priorityDisplay = priorityCounty
             ? "Source-backed county page"
             : "County reference page";
@@ -260,6 +253,21 @@
                     || madisonAlabamaDecisionCounty;
     final boolean nextStepCtrLiftCounty =
             phaseOneCtrLiftCounty || phaseTwoCtrLiftCounty || phaseThreeCtrLiftCounty;
+    final String countyEvidenceSummary = !nextStepCtrLiftCounty && highOfficialEvidence
+            ? county.getAreaDisplayName() + " should be treated as a testing-priority county because the official source signal "
+                    + officialSignalPosition + ". " + evidenceMetricBrief.trim()
+                    + " Use the EPA map as context, but let the home test decide mitigation or credit planning."
+            : !nextStepCtrLiftCounty && elevatedOfficialEvidence
+            ? county.getAreaDisplayName() + " has enough official radon signal that the answer should not stop at the EPA map. "
+                    + evidenceMetricBrief.trim()
+                    + " Confirm the home before pricing mitigation, but do not dismiss the county as low urgency."
+            : county.getEpaZone() == 1
+            ? county.getAreaDisplayName() + " is a higher-priority testing county because the EPA zone signal is high and the page now ties that signal to local housing context."
+            : county.getEpaZone() == 2
+            ? county.getAreaDisplayName() + " is a moderate-signal county: the EPA map is useful context, but the local evidence, housing profile, and your own home test decide the next step."
+            : county.getEpaZone() == 3
+            ? county.getAreaDisplayName() + " has a lower predicted countywide zone signal, so direct testing matters more than the map label."
+            : county.getAreaDisplayName() + " has no published EPA zone in this dataset, so the only reliable next step is direct home testing.";
     final boolean priorityCtrCounty =
             ("new-york".equals(county.getStateSlug()) && "schenectady-county".equals(county.getCountySlug()))
                     || ("massachusetts".equals(county.getStateSlug()) && "franklin-county".equals(county.getCountySlug()))
@@ -548,7 +556,11 @@
     final String radonSignalAnswer = radonSignalAnswerBase + " The EPA recommends testing all homes regardless of zone.";
 
     final String isProblemAnswer;
-    if (county.getEpaZone() == 1) {
+    if (!nextStepCtrLiftCounty && (highOfficialEvidence || elevatedOfficialEvidence)) {
+        isProblemAnswer = "Yes. " + county.getAreaDisplayName()
+                + " should be treated as a testing-priority county. " + evidenceMetricBrief.trim()
+                + " The home result still controls mitigation, but a missing reading should start with testing.";
+    } else if (county.getEpaZone() == 1) {
         isProblemAnswer = "Yes, " + county.getAreaDisplayName() + " is in EPA Zone 1 (High Risk). Most homes should be tested, and confirmed 4.0+ home results should move into mitigation planning.";
     } else if (county.getEpaZone() == 2) {
         isProblemAnswer = county.getAreaDisplayName() + " is in EPA Zone 2 (Moderate Risk). Many individual homes can still have elevated levels above the EPA action threshold.";
@@ -1397,7 +1409,9 @@
                     <!-- Geological Context - Zone-Specific Unique Content -->
                     <div class="bg-white rounded-[2rem] p-6 sm:p-8 shadow-sm border border-slate-200 mt-6" data-nosnippet>
                         <h2 class="font-display font-bold text-xl text-slate-900 mb-4">Why Radon is
-                            @if(county.getEpaZone() == 1)
+                            @if(!nextStepCtrLiftCounty && (highOfficialEvidence || elevatedOfficialEvidence))
+                                a Testing Priority
+                            @elseif(county.getEpaZone() == 1)
                                 a Serious Concern
                             @elseif(county.getEpaZone() == 2)
                                 Worth Monitoring
@@ -1409,7 +1423,20 @@
                             in ${county.getAreaDisplayName()}
                         </h2>
 
-                        @if(county.getEpaZone() == 1)
+                        @if(!nextStepCtrLiftCounty && (highOfficialEvidence || elevatedOfficialEvidence))
+                            <p class="text-sm text-slate-700 leading-relaxed mb-4">
+                                The EPA map is only the starting layer for ${county.getAreaDisplayName()}. ${evidenceMetricBrief.trim()}
+                                That source-backed signal is why the practical move is testing or retesting before treating the county as low urgency.
+                            </p>
+                            <p class="text-sm text-slate-700 leading-relaxed mb-4">
+                                This still is not a diagnosis for any single home. Foundation type, lowest-level use, pressure differences,
+                                and small geological changes can move one house above or below the county pattern.
+                            </p>
+                            <p class="text-sm text-slate-700 leading-relaxed">
+                                If you do not have a reading yet, start with a short-term test in the lowest lived-in level. If the result is
+                                2.0-3.9 pCi/L, confirm it; if it is 4.0+ pCi/L, move into mitigation pricing or seller-credit planning.
+                            </p>
+                        @elseif(county.getEpaZone() == 1)
                             <p class="text-sm text-slate-700 leading-relaxed mb-4">
                                 ${county.getAreaDisplayName()} sits in a geological region with elevated uranium concentrations in the underlying bedrock and soil.
                                 As uranium naturally decays, it produces radium, which further decays into radon gas. This gas migrates upward through soil

@@ -5,6 +5,7 @@ import com.radonverdict.model.CountyRadonMeasurement;
 import com.radonverdict.model.CountyRadonTier;
 import com.radonverdict.model.StateRegulations;
 import com.radonverdict.model.dto.AeoAnswerBlock;
+import com.radonverdict.model.dto.CountyRadonEvidence;
 import com.radonverdict.model.dto.PageQualityResult;
 import com.radonverdict.model.dto.RadonEvidenceCoverageSummary;
 import com.radonverdict.model.dto.RadonNationalEvidenceInsight;
@@ -172,7 +173,8 @@ public class RadonLevelsController {
         model.addAttribute("nearbyCounties", nearbyCounties);
         PageQualityResult quality = pageQualityService.scoreRadonLevelsCountyPage(county, nearbyCounties.size());
         TrustMetadata trust = trustMetadataService.forRadonLevelsCountyPage(county);
-        AeoAnswerBlock aeo = buildRadonLevelAeoBlock(county, trust);
+        CountyRadonEvidence radonEvidence = countyRadonEvidenceService.buildEvidence(county);
+        AeoAnswerBlock aeo = buildRadonLevelAeoBlock(county, trust, radonEvidence);
 
         model.addAttribute("noindex", !(quality.isIndexable() && seoIndexingPolicyService.isCountyIndexableCandidate(county)));
         model.addAttribute("quality", quality);
@@ -181,7 +183,7 @@ public class RadonLevelsController {
         model.addAttribute("relatedLinks", internalLinkService.buildRadonLevelsCountyLinks(county, nearbyCounties));
         CountyRadonMeasurement radonMeasurement = dataLoadService.getRadonMeasurementByFipsMap().get(county.getFips());
         model.addAttribute("radonMeasurement", radonMeasurement);
-        model.addAttribute("radonEvidence", countyRadonEvidenceService.buildEvidence(county));
+        model.addAttribute("radonEvidence", radonEvidence);
         model.addAttribute("stateHousingPercentile", statePercentile(county, Metric.HOUSING_UNITS));
         model.addAttribute("stateOlderHomePercentile", statePercentile(county, Metric.OLDER_HOME_SHARE));
         model.addAttribute("statePeerCountyCount", statePeerCountyCount(county));
@@ -195,7 +197,7 @@ public class RadonLevelsController {
         return "radon_levels_county";
     }
 
-    private AeoAnswerBlock buildRadonLevelAeoBlock(County county, TrustMetadata trust) {
+    private AeoAnswerBlock buildRadonLevelAeoBlock(County county, TrustMetadata trust, CountyRadonEvidence radonEvidence) {
         if (county == null) {
             return null;
         }
@@ -216,10 +218,22 @@ public class RadonLevelsController {
             actionText = "Treat this county as unknown risk and rely on direct home testing.";
         }
 
+        boolean officialEvidencePriority = radonEvidence != null
+                && ("high".equals(radonEvidence.getRiskTone()) || "elevated".equals(radonEvidence.getRiskTone()))
+                && radonEvidence.getIntentQuestion() != null
+                && !radonEvidence.getIntentQuestion().isBlank()
+                && radonEvidence.getIntentAnswer() != null
+                && !radonEvidence.getIntentAnswer().isBlank();
+        String question = officialEvidencePriority
+                ? radonEvidence.getIntentQuestion()
+                : "What radon risk level should homeowners assume in " + county.getAreaDisplayName() + "?";
+        String directAnswer = officialEvidencePriority
+                ? radonEvidence.getIntentAnswer()
+                : county.getAreaDisplayName() + " is currently categorized as " + zoneText + ". " + actionText;
+
         return AeoAnswerBlock.builder()
-                .question("What radon risk level should homeowners assume in " + county.getAreaDisplayName() + "?")
-                .directAnswer(county.getAreaDisplayName() + " is currently categorized as " + zoneText + ". "
-                        + actionText)
+                .question(question)
+                .directAnswer(directAnswer)
                 .evidenceRows(List.of(
                         AeoAnswerBlock.Row.builder()
                                 .label("Area")
