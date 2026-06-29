@@ -56,6 +56,41 @@
                 }]
             }
         </script>
+        <script type="application/ld+json">
+            {
+                "@context": "https://schema.org",
+                "@type": "FAQPage",
+                "mainEntity": [{
+                    "@type": "Question",
+                    "name": "How much does radon mitigation cost?",
+                    "acceptedAnswer": {
+                        "@type": "Answer",
+                        "text": "Radon mitigation cost should be estimated from the home location, foundation type, test result, routing complexity, permits, and contractor availability. Start with the national planning range, then use ZIP lookup for the local county page."
+                    }
+                },{
+                    "@type": "Question",
+                    "name": "What changes radon mitigation cost by foundation type?",
+                    "acceptedAnswer": {
+                        "@type": "Answer",
+                        "text": "Basement and slab homes often have a simpler sub-slab suction path. Crawl-space homes can cost more when vapor-barrier sealing, sub-membrane suction, or access constraints add labor and material."
+                    }
+                },{
+                    "@type": "Question",
+                    "name": "Is radon mitigation cost different after a 4.0+ pCi/L result?",
+                    "acceptedAnswer": {
+                        "@type": "Answer",
+                        "text": "A 4.0+ pCi/L result makes mitigation pricing more practical and time-sensitive. The cost range still depends on the home, but the decision usually shifts from curiosity to action planning."
+                    }
+                },{
+                    "@type": "Question",
+                    "name": "How should buyers use radon mitigation cost after a failed inspection?",
+                    "acceptedAnswer": {
+                        "@type": "Answer",
+                        "text": "Buyers can use the local mitigation range to frame a repair request, seller credit, or quick-close fallback. The seller credit calculator turns the estimate into a negotiation starting point."
+                    }
+                }]
+            }
+        </script>
     `,
     content = @`
         <div class="bg-white border-b border-slate-200">
@@ -104,7 +139,46 @@
         </div>
 
         <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
-            <section>
+            <section class="mb-14 rounded-2xl border border-slate-200 bg-slate-950 p-5 text-white shadow-sm sm:p-6">
+                <div class="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+                    <div>
+                        <p class="text-xs font-bold uppercase tracking-wider text-cyan-200">Search Demand Map</p>
+                        <h2 class="mt-2 font-display text-2xl font-black tracking-tight">Popular radon mitigation cost searches</h2>
+                        <p class="mt-3 max-w-3xl text-sm leading-relaxed text-slate-300">
+                            If the search started with one of these questions, this page should answer it fast and move the visitor to the right local calculator or guide.
+                        </p>
+                    </div>
+                    <a href="/radon-cost-calculator"
+                       class="inline-flex shrink-0 items-center justify-center rounded-xl border border-white/10 bg-white px-4 py-3 text-sm font-black text-slate-950 transition-colors hover:bg-cyan-50">
+                        Open ZIP Estimate
+                    </a>
+                </div>
+
+                <div class="mt-6 grid grid-cols-1 gap-3 md:grid-cols-2">
+                    <a href="/radon-cost-calculator" class="block rounded-xl border border-white/10 bg-white/10 p-4 transition-colors hover:bg-white/15">
+                        <p class="text-sm font-black text-white">How much does radon mitigation cost?</p>
+                        <p class="mt-2 text-sm leading-relaxed text-slate-300">Start with $${defaultReceipt.getTotalLow()}-$${defaultReceipt.getTotalHigh()}, then use ZIP lookup because labor, permits, and routing change the real quote.</p>
+                        <span class="mt-3 inline-flex text-xs font-black uppercase tracking-wider text-cyan-100">Use local calculator &rarr;</span>
+                    </a>
+                    <a href="#foundation-cost-ranges" class="block rounded-xl border border-white/10 bg-white/10 p-4 transition-colors hover:bg-white/15">
+                        <p class="text-sm font-black text-white">Basement vs slab vs crawl-space radon system cost</p>
+                        <p class="mt-2 text-sm leading-relaxed text-slate-300">Foundation type is one of the biggest quote drivers because it changes suction path, sealing work, and access.</p>
+                        <span class="mt-3 inline-flex text-xs font-black uppercase tracking-wider text-cyan-100">Compare foundations &rarr;</span>
+                    </a>
+                    <a href="#test-result-cost-urgency" class="block rounded-xl border border-white/10 bg-white/10 p-4 transition-colors hover:bg-white/15">
+                        <p class="text-sm font-black text-white">Radon mitigation cost for 4.0+ pCi/L</p>
+                        <p class="mt-2 text-sm leading-relaxed text-slate-300">At 4.0 pCi/L and above, the cost question usually becomes an action plan, not a someday estimate.</p>
+                        <span class="mt-3 inline-flex text-xs font-black uppercase tracking-wider text-cyan-100">See urgency table &rarr;</span>
+                    </a>
+                    <a href="/radon-credit-calculator" class="block rounded-xl border border-white/10 bg-white/10 p-4 transition-colors hover:bg-white/15">
+                        <p class="text-sm font-black text-white">Radon mitigation cost after failed inspection</p>
+                        <p class="mt-2 text-sm leading-relaxed text-slate-300">Use the local range to shape a repair request, seller credit, or quick-close fallback before negotiation starts.</p>
+                        <span class="mt-3 inline-flex text-xs font-black uppercase tracking-wider text-cyan-100">Calculate seller credit &rarr;</span>
+                    </a>
+                </div>
+            </section>
+
+            <section id="foundation-cost-ranges">
                 <div class="flex flex-col gap-3 md:flex-row md:items-end md:justify-between mb-6">
                     <div>
                         <p class="text-xs font-bold uppercase tracking-wider text-slate-500">Foundation Type</p>
@@ -132,7 +206,7 @@
                 </div>
             </section>
 
-            <section class="mt-16">
+            <section id="test-result-cost-urgency" class="mt-16">
                 <p class="text-xs font-bold uppercase tracking-wider text-slate-500">Test Result</p>
                 <h2 class="mt-2 font-display font-bold text-3xl text-slate-900 tracking-tight">When the cost question becomes urgent</h2>
                 <div class="mt-6 overflow-hidden rounded-2xl border border-slate-200 bg-white">

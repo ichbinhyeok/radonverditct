@@ -2,6 +2,9 @@
     title = "RadonVerdict | Radon Result, Cost, and Next-Step Planner",
     canonicalUrl = "https://radonverdict.com/",
     description = "Use RadonVerdict to turn a radon test result, ZIP code, and buying/selling context into a local action plan.",
+    headContent = @`
+        <script src="/js/situation-decoder.js"></script>
+    `,
     content = @`
         <section class="relative overflow-hidden bg-slate-950 text-white">
             <div class="absolute inset-x-0 top-0 h-px bg-white/10"></div>
@@ -176,6 +179,8 @@
                 </div>
             </div>
         </section>
+
+        @template.components.situation_decoder()
 
         <section class="bg-white py-14 sm:py-16">
             <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">

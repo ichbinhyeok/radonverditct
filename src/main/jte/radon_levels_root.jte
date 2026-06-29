@@ -61,6 +61,41 @@
                 }]
             }
         </script>
+        <script type="application/ld+json">
+            {
+                "@context": "https://schema.org",
+                "@type": "FAQPage",
+                "mainEntity": [{
+                    "@type": "Question",
+                    "name": "What does a 4.0 pCi/L radon level mean?",
+                    "acceptedAnswer": {
+                        "@type": "Answer",
+                        "text": "A 4.0 pCi/L radon level is the main EPA action threshold. Homeowners should confirm the result if needed, then start mitigation planning and local cost comparison."
+                    }
+                },{
+                    "@type": "Question",
+                    "name": "Is a 2.5 pCi/L radon level bad?",
+                    "acceptedAnswer": {
+                        "@type": "Answer",
+                        "text": "A 2.5 pCi/L radon level is below the main EPA action threshold but it is not zero risk. Retesting, long-term monitoring, or pricing reduction can be reasonable depending on the home and situation."
+                    }
+                },{
+                    "@type": "Question",
+                    "name": "What does an 8.0 pCi/L radon level mean?",
+                    "acceptedAnswer": {
+                        "@type": "Answer",
+                        "text": "An 8.0 pCi/L radon level is a high reading. Mitigation quotes should be prioritized, and in a real-estate deal the local cost range can support a repair or credit request."
+                    }
+                },{
+                    "@type": "Question",
+                    "name": "Where can I check radon levels by county?",
+                    "acceptedAnswer": {
+                        "@type": "Answer",
+                        "text": "Use the state directory to open county pages. County pages combine EPA zone context with official state tables, CDC summaries, or official radon-potential maps when available."
+                    }
+                }]
+            }
+        </script>
     `,
     content = @`
         <div class="bg-white border-b border-slate-200">
@@ -116,6 +151,42 @@
         </div>
 
         <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
+            <section class="mb-14 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
+                <div class="flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
+                    <div>
+                        <p class="text-xs font-bold uppercase tracking-wider text-slate-500">Search Demand Map</p>
+                        <h2 class="mt-2 font-display text-2xl font-black tracking-tight text-slate-950">Popular radon level searches</h2>
+                        <p class="mt-3 max-w-3xl text-sm leading-relaxed text-slate-600">
+                            These are the searches that should land on the levels hub, get a plain answer, and then continue to cost, credit, or county evidence.
+                        </p>
+                    </div>
+                    <a href="#state-directory" class="text-sm font-black text-indigo-700 hover:underline">Open state directory</a>
+                </div>
+
+                <div class="mt-6 grid grid-cols-1 gap-3 md:grid-cols-2">
+                    <a href="#level-meaning" class="block rounded-xl border border-rose-100 bg-rose-50 p-4 transition-all hover:border-rose-200 hover:bg-rose-100">
+                        <p class="text-sm font-black text-rose-950">What does 4.0 pCi/L radon mean?</p>
+                        <p class="mt-2 text-sm leading-relaxed text-slate-700">It is the main EPA action threshold, so the next step is confirmation if needed and mitigation planning.</p>
+                        <span class="mt-3 inline-flex text-xs font-black uppercase tracking-wider text-rose-800">Interpret 4.0+ &rarr;</span>
+                    </a>
+                    <a href="#level-meaning" class="block rounded-xl border border-amber-100 bg-amber-50 p-4 transition-all hover:border-amber-200 hover:bg-amber-100">
+                        <p class="text-sm font-black text-amber-950">Is 2.5 pCi/L radon bad?</p>
+                        <p class="mt-2 text-sm leading-relaxed text-slate-700">It is below the main action threshold, but not an all-clear. Retesting or long-term monitoring usually decides the next move.</p>
+                        <span class="mt-3 inline-flex text-xs font-black uppercase tracking-wider text-amber-800">See borderline range &rarr;</span>
+                    </a>
+                    <a href="/radon-cost-calculator" class="block rounded-xl border border-red-100 bg-red-50 p-4 transition-all hover:border-red-200 hover:bg-red-100">
+                        <p class="text-sm font-black text-red-950">What does 8.0 pCi/L radon mean?</p>
+                        <p class="mt-2 text-sm leading-relaxed text-slate-700">That is a high reading. Prioritize mitigation quotes and use the ZIP calculator to open the local cost path.</p>
+                        <span class="mt-3 inline-flex text-xs font-black uppercase tracking-wider text-red-800">Price mitigation &rarr;</span>
+                    </a>
+                    <a href="#state-directory" class="block rounded-xl border border-indigo-100 bg-indigo-50 p-4 transition-all hover:border-indigo-200 hover:bg-indigo-100">
+                        <p class="text-sm font-black text-indigo-950">Radon levels by county</p>
+                        <p class="mt-2 text-sm leading-relaxed text-slate-700">Use the state directory to open county pages backed by EPA zones, state measurement tables, CDC summaries, or official maps.</p>
+                        <span class="mt-3 inline-flex text-xs font-black uppercase tracking-wider text-indigo-800">Browse counties &rarr;</span>
+                    </a>
+                </div>
+            </section>
+
             @if(evidenceCoverage != null && evidenceCoverage.getTotalCount() > 0)
                 <section class="mb-14 rounded-2xl border border-slate-200 bg-white p-5 sm:p-6 shadow-sm">
                     <div class="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
