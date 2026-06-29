@@ -54,6 +54,8 @@ class SeoBehaviorIntegrationTest {
                 .andExpect(content().string(containsString("<script src=\"/js/situation-decoder.js\"></script>")))
                 .andExpect(content().string(containsString("radonSituationDecoder()")))
                 .andExpect(content().string(containsString("Buyer inspection")))
+                .andExpect(content().string(containsString(":action=\"targetAction\"")))
+                .andExpect(content().string(containsString("name=\"foundationType\"")))
                 .andExpect(content().string(containsString("situation_decoder_submit")))
                 .andExpect(content().string(containsString("Not another radon article.")));
     }
@@ -84,6 +86,16 @@ class SeoBehaviorIntegrationTest {
                         .header("CF-Connecting-IP", "198.51.100.9"))
                 .andExpect(status().isMovedPermanently())
                 .andExpect(header().string("Location", "https://radonverdict.com/radon-cost-calculator"));
+    }
+
+    @Test
+    void canonicalFilterRedirectsTrailingSlashVariants() throws Exception {
+        mockMvc.perform(get("/radon-levels/")
+                        .queryParam("utm_source", "manual")
+                        .header("X-Forwarded-Proto", "https")
+                        .header("X-Forwarded-Host", "radonverdict.com"))
+                .andExpect(status().isMovedPermanently())
+                .andExpect(header().string("Location", "https://radonverdict.com/radon-levels?utm_source=manual"));
     }
 
     @Test
@@ -177,6 +189,18 @@ class SeoBehaviorIntegrationTest {
     }
 
     @Test
+    void searchZipDropsUnexpectedScenarioParametersAndKeepsSafeFoundation() throws Exception {
+        mockMvc.perform(post("/search-zip")
+                        .param("zipCode", "90210")
+                        .param("intent", "buying&bad=1")
+                        .param("radonResultBand", "above_4&bad=1")
+                        .param("foundationType", "crawl space"))
+                .andExpect(status().isSeeOther())
+                .andExpect(header().string("Location",
+                        "/radon-mitigation-cost/california/los-angeles-county?zipCode=90210&foundation=crawlspace"));
+    }
+
+    @Test
     void searchZipRecognizesLoudounRecoveryZip() throws Exception {
         mockMvc.perform(post("/search-zip")
                         .param("zipCode", "20147")
@@ -192,10 +216,22 @@ class SeoBehaviorIntegrationTest {
         mockMvc.perform(post("/search-zip-credit")
                         .param("zipCode", "90210")
                         .param("intent", "selling")
+                        .param("radonResultBand", "above_4")
+                        .param("foundationType", "basement"))
+                .andExpect(status().isSeeOther())
+                .andExpect(header().string("Location",
+                        "/radon-credit-calculator/california/los-angeles-county?intent=selling&radonResultBand=above_4&zipCode=90210&foundation=basement"));
+    }
+
+    @Test
+    void searchZipCreditAcceptsRoleFallbackForCreditIntent() throws Exception {
+        mockMvc.perform(post("/search-zip-credit")
+                        .param("zipCode", "90210")
+                        .param("role", "seller")
                         .param("radonResultBand", "above_4"))
                 .andExpect(status().isSeeOther())
                 .andExpect(header().string("Location",
-                        "/radon-credit-calculator/california/los-angeles-county?intent=selling&radonResultBand=above_4"));
+                        "/radon-credit-calculator/california/los-angeles-county?intent=selling&radonResultBand=above_4&zipCode=90210"));
     }
 
     @Test
@@ -268,7 +304,9 @@ class SeoBehaviorIntegrationTest {
         mockMvc.perform(get("/sitemap-core.xml"))
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("<loc>https://radonverdict.com/</loc>")))
-                .andExpect(content().string(containsString("/radon-data-sources")));
+                .andExpect(content().string(containsString("/radon-data-sources")))
+                .andExpect(content().string(containsString("/radon-credit-calculator")))
+                .andExpect(content().string(containsString("/guides/radon-seller-credit-worksheet")));
 
         mockMvc.perform(get("/sitemap-zone-high.xml"))
                 .andExpect(status().isOk())

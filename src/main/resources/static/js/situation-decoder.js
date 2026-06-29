@@ -29,8 +29,15 @@
       },
       get primaryCta() {
         if (this.noTest) return 'Open testing-first plan';
-        if (this.intent === 'buying' || this.intent === 'selling') return 'Open local credit path';
+        if (this.needsCreditPath) return 'Open local credit path';
         return 'Open local action plan';
+      },
+      get needsCreditPath() {
+        return (this.intent === 'buying' || this.intent === 'selling')
+          && (this.resultBand === 'above_4' || this.resultBand === 'between_2_and_4');
+      },
+      get targetAction() {
+        return this.needsCreditPath ? '/search-zip-credit' : '/search-zip';
       },
       loadExample(type) {
         if (type === 'buyer') {
@@ -106,7 +113,7 @@
         this.verdict = 'Action-level reading';
         this.routeSummary = this.intent === 'homeowner'
           ? 'Open the local cost plan and quote coach before calling contractors.'
-          : 'Open the local cost plan and seller-credit path before negotiation starts.';
+          : 'Open the local credit calculator with county cost anchors before negotiation starts.';
         this.toneClass = 'bg-rose-100 text-rose-800';
       }
     };

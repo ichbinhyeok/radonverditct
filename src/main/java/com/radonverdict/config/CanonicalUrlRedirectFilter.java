@@ -56,14 +56,19 @@ public class CanonicalUrlRedirectFilter extends OncePerRequestFilter {
         boolean localHost = isLocalHost(normalizedCurrentHost);
         boolean needsSchemeRedirect = !canonicalScheme.equalsIgnoreCase(currentScheme);
         boolean needsHostRedirect = !canonicalHost.equalsIgnoreCase(normalizedCurrentHost);
+        String requestUri = request.getRequestURI();
+        String canonicalPath = stripTrailingSlash(requestUri);
+        boolean needsPathRedirect = requestUri != null && !canonicalPath.equals(requestUri);
 
-        if (!localHost && (needsSchemeRedirect || needsHostRedirect)) {
+        if ((needsPathRedirect && localHost) || (!localHost && (needsSchemeRedirect || needsHostRedirect || needsPathRedirect))) {
             StringBuilder target = new StringBuilder();
-            target.append(canonicalScheme).append("://").append(canonicalHost);
-            if (canonicalBaseUri.getPort() != -1) {
-                target.append(':').append(canonicalBaseUri.getPort());
+            if (!localHost) {
+                target.append(canonicalScheme).append("://").append(canonicalHost);
+                if (canonicalBaseUri.getPort() != -1) {
+                    target.append(':').append(canonicalBaseUri.getPort());
+                }
             }
-            target.append(request.getRequestURI());
+            target.append(canonicalPath);
             if (request.getQueryString() != null && !request.getQueryString().isBlank()) {
                 target.append('?').append(request.getQueryString());
             }
@@ -123,6 +128,14 @@ public class CanonicalUrlRedirectFilter extends OncePerRequestFilter {
             return host;
         }
         return host.substring(0, idx);
+    }
+
+    private String stripTrailingSlash(String requestUri) {
+        if (requestUri == null || requestUri.length() <= 1 || !requestUri.endsWith("/")) {
+            return requestUri;
+        }
+
+        return requestUri.substring(0, requestUri.length() - 1);
     }
 
     private boolean isLocalHost(String host) {

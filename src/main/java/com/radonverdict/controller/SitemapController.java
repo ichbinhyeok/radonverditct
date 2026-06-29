@@ -137,6 +137,7 @@ public class SitemapController {
         // 1. Static & Hub Pages
         addUrl(xml, "/", "1.0");
         addUrl(xml, "/radon-cost-calculator", "0.9");
+        addUrl(xml, "/radon-credit-calculator", "0.9");
         addUrl(xml, "/radon-mitigation-cost", "0.9");
         addUrl(xml, "/radon-levels", "0.9");
         addUrl(xml, "/about", "0.8");
@@ -161,6 +162,7 @@ public class SitemapController {
         addUrl(xml, "/guides/sump-pump-radon-mitigation", "0.7");
         addUrl(xml, "/guides/radon-system-electricity-cost", "0.7");
         addUrl(xml, "/guides/radon-myths-granite-countertops", "0.7");
+        addUrl(xml, "/guides/radon-seller-credit-worksheet", "0.7");
 
         // 3. State Hubs (indexable candidates only)
         Collection<County> counties = dataLoadService.getCountyBySlugMap().values();

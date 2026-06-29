@@ -79,10 +79,11 @@
                             </div>
                         </div>
 
-                        <form action="/search-zip" method="POST" class="mt-5">
+                        <form :action="targetAction" method="POST" class="mt-5">
                             <input type="hidden" name="zipCode" :value="zip">
                             <input type="hidden" name="intent" :value="intent">
                             <input type="hidden" name="radonResultBand" :value="resultBand">
+                            <input type="hidden" name="foundationType" :value="foundation">
                             <button type="submit"
                                     :disabled="!zip"
                                     data-track-event="situation_decoder_submit"

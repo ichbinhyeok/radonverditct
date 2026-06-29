@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.util.UriComponentsBuilder;
 import org.springframework.web.servlet.view.RedirectView;
 
 import java.util.Comparator;
@@ -123,7 +124,9 @@ public class PageController {
     @PostMapping("/search-zip")
     public RedirectView searchZip(@RequestParam("zipCode") String zipCode,
                                   @RequestParam(name = "intent", required = false) String intent,
-                                  @RequestParam(name = "radonResultBand", required = false) String radonResultBand) {
+                                  @RequestParam(name = "radonResultBand", required = false) String radonResultBand,
+                                  @RequestParam(name = "foundationType", required = false) String foundationType,
+                                  @RequestParam(name = "foundation", required = false) String foundation) {
         String normalizedZip = zipCode == null ? null : zipCode.trim();
         String fips = dataLoadService.getZipToFipsMap().get(normalizedZip);
         if (fips == null) {
@@ -134,33 +137,26 @@ public class PageController {
         if (county == null) {
             return redirect("/radon-cost-calculator?error=notfound", HttpStatus.SEE_OTHER);
         }
-        StringBuilder target = new StringBuilder("/radon-mitigation-cost/")
-                .append(county.getStateSlug())
-                .append("/")
-                .append(county.getCountySlug());
 
-        boolean hasQuery = false;
-        if (intent != null && !intent.isBlank()) {
-            target.append(hasQuery ? "&" : "?").append("intent=").append(intent);
-            hasQuery = true;
-        }
-        if (radonResultBand != null && !radonResultBand.isBlank()) {
-            target.append(hasQuery ? "&" : "?").append("radonResultBand=").append(radonResultBand);
-            hasQuery = true;
-        }
-        if (normalizedZip != null && normalizedZip.matches("\\d{5}")) {
-            target.append(hasQuery ? "&" : "?").append("zipCode=").append(normalizedZip);
-        }
-
-        return redirect(target.toString(),
+        return redirect(buildCountyScenarioRedirect(
+                        "/radon-mitigation-cost/{stateSlug}/{countySlug}",
+                        county,
+                        sanitizeIntent(intent, null),
+                        sanitizeRadonResultBand(radonResultBand, null),
+                        normalizedZip,
+                        sanitizeFoundation(firstPresent(foundationType, foundation))),
                 HttpStatus.SEE_OTHER);
     }
 
     @PostMapping("/search-zip-credit")
     public RedirectView searchZipCredit(@RequestParam("zipCode") String zipCode,
                                         @RequestParam(name = "intent", required = false) String intent,
-                                        @RequestParam(name = "radonResultBand", required = false) String radonResultBand) {
-        String fips = dataLoadService.getZipToFipsMap().get(zipCode.trim());
+                                        @RequestParam(name = "role", required = false) String role,
+                                        @RequestParam(name = "radonResultBand", required = false) String radonResultBand,
+                                        @RequestParam(name = "foundationType", required = false) String foundationType,
+                                        @RequestParam(name = "foundation", required = false) String foundation) {
+        String normalizedZip = zipCode == null ? null : zipCode.trim();
+        String fips = dataLoadService.getZipToFipsMap().get(normalizedZip);
         if (fips == null) {
             return redirect("/radon-credit-calculator?error=notfound", HttpStatus.SEE_OTHER);
         }
@@ -170,11 +166,13 @@ public class PageController {
             return redirect("/radon-credit-calculator?error=notfound", HttpStatus.SEE_OTHER);
         }
 
-        String transactionIntent = "selling".equalsIgnoreCase(intent) ? "selling" : "buying";
-        String resultBand = radonResultBand != null && !radonResultBand.isBlank() ? radonResultBand : "above_4";
-
-        return redirect("/radon-credit-calculator/" + county.getStateSlug() + "/" + county.getCountySlug()
-                        + "?intent=" + transactionIntent + "&radonResultBand=" + resultBand,
+        return redirect(buildCountyScenarioRedirect(
+                        "/radon-credit-calculator/{stateSlug}/{countySlug}",
+                        county,
+                        sanitizeCreditIntent(intent, role),
+                        sanitizeRadonResultBand(radonResultBand, "above_4"),
+                        normalizedZip,
+                        sanitizeFoundation(firstPresent(foundationType, foundation))),
                 HttpStatus.SEE_OTHER);
     }
 
@@ -448,6 +446,104 @@ public class PageController {
                 .sorted()
                 .limit(10)
                 .toList();
+    }
+
+    private String buildCountyScenarioRedirect(
+            String pathTemplate,
+            County county,
+            String intent,
+            String radonResultBand,
+            String zipCode,
+            String foundation) {
+        UriComponentsBuilder builder = UriComponentsBuilder.fromPath(pathTemplate);
+        addQueryParam(builder, "intent", intent);
+        addQueryParam(builder, "radonResultBand", radonResultBand);
+        if (zipCode != null && zipCode.matches("\\d{5}")) {
+            addQueryParam(builder, "zipCode", zipCode);
+        }
+        addQueryParam(builder, "foundation", foundation);
+
+        return builder
+                .buildAndExpand(county.getStateSlug(), county.getCountySlug())
+                .encode()
+                .toUriString();
+    }
+
+    private void addQueryParam(UriComponentsBuilder builder, String key, String value) {
+        if (value != null && !value.isBlank()) {
+            builder.queryParam(key, value);
+        }
+    }
+
+    private String sanitizeCreditIntent(String intent, String role) {
+        String sanitizedIntent = sanitizeIntent(intent, null);
+        if ("buying".equals(sanitizedIntent) || "selling".equals(sanitizedIntent)) {
+            return sanitizedIntent;
+        }
+
+        String sanitizedRole = sanitizeIntent(role, null);
+        if ("buying".equals(sanitizedRole) || "selling".equals(sanitizedRole)) {
+            return sanitizedRole;
+        }
+
+        return "buying";
+    }
+
+    private String sanitizeIntent(String value, String fallback) {
+        String normalized = normalizeToken(value);
+        if (normalized == null) {
+            return fallback;
+        }
+
+        return switch (normalized) {
+            case "buying", "buyer" -> "buying";
+            case "selling", "seller" -> "selling";
+            case "homeowner", "owner", "living_here" -> "homeowner";
+            default -> fallback;
+        };
+    }
+
+    private String sanitizeRadonResultBand(String value, String fallback) {
+        String normalized = normalizeToken(value);
+        if (normalized == null) {
+            return fallback;
+        }
+
+        return switch (normalized) {
+            case "not_tested", "under_2", "between_2_and_4", "above_4" -> normalized;
+            default -> fallback;
+        };
+    }
+
+    private String sanitizeFoundation(String value) {
+        String normalized = normalizeToken(value);
+        if (normalized == null) {
+            return null;
+        }
+
+        return switch (normalized) {
+            case "basement", "slab", "other" -> normalized;
+            case "crawlspace", "crawl_space" -> "crawlspace";
+            default -> null;
+        };
+    }
+
+    private String normalizeToken(String value) {
+        if (value == null || value.isBlank()) {
+            return null;
+        }
+
+        return value.trim()
+                .toLowerCase(Locale.ROOT)
+                .replace('-', '_')
+                .replace(' ', '_');
+    }
+
+    private String firstPresent(String first, String second) {
+        if (first != null && !first.isBlank()) {
+            return first;
+        }
+        return second;
     }
 
     private RedirectView redirect(String path, HttpStatus status) {
