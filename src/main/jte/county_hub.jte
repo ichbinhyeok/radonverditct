@@ -153,6 +153,8 @@
             </section>
             @endif
 
+            @template.components.quote_coach(county = county, page = page)
+
             <!-- 2. Grid Layout for Simulator and Receipt -->
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 mt-16 mb-20">
                 

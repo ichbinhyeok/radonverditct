@@ -425,6 +425,20 @@ class SeoBehaviorIntegrationTest {
     }
 
     @Test
+    void countyHubTurnsCostPageIntoPracticalQuoteCoach() throws Exception {
+        mockMvc.perform(get("/radon-mitigation-cost/virginia/loudoun-county"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("Use this page like a quote coach, not just a calculator.")))
+                .andExpect(content().string(containsString("No test yet")))
+                .andExpect(content().string(containsString("2.0-3.9 pCi/L")))
+                .andExpect(content().string(containsString("4.0+ pCi/L")))
+                .andExpect(content().string(containsString("Copy this call script")))
+                .andExpect(content().string(containsString("My lowest-level radon test was ___ pCi/L in Loudoun County, VA.")))
+                .andExpect(content().string(containsString("Ask these six questions")))
+                .andExpect(content().string(containsString("Red flags")));
+    }
+
+    @Test
     void countyHubUsesCountySpecificDefaultScenarioInsteadOfFixedBasementBuying() throws Exception {
         mockMvc.perform(get("/radon-mitigation-cost/california/los-angeles-county"))
                 .andExpect(status().isOk())

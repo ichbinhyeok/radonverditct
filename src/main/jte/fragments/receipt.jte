@@ -34,7 +34,7 @@
     (() => {
         const setupCostStickyCta = () => {
             const stickyCta = document.querySelector('.cost-mobile-sticky-cta');
-            const hideTargets = Array.from(document.querySelectorAll('.cost-hero-section, .receipt-card'));
+            const hideTargets = Array.from(document.querySelectorAll('.cost-hero-section, .receipt-card, #quote-coach'));
             if (!stickyCta || hideTargets.length === 0 || !('IntersectionObserver' in window)) {
                 return;
             }
