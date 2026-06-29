@@ -11,7 +11,7 @@
     @template.components.negotiation_box(page = page)
 
     <!-- Component 3: Mobile Sticky Floating Action Bar (Updated via HTMX) -->
-    <div class="mobile-sticky-cta fixed bottom-3 left-3 right-3 z-50 lg:hidden" data-nosnippet>
+    <div class="mobile-sticky-cta cost-mobile-sticky-cta fixed bottom-3 left-3 right-3 z-50 lg:hidden" data-nosnippet>
         <div class="flex items-center justify-between gap-4 px-1">
             <div class="flex flex-col">
                 <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest leading-none mb-1.5">Est. Total</p>
@@ -29,6 +29,48 @@
     </div>
 
 </div>
+
+<script>
+    (() => {
+        const setupCostStickyCta = () => {
+            const stickyCta = document.querySelector('.cost-mobile-sticky-cta');
+            const hideTargets = Array.from(document.querySelectorAll('.cost-hero-section, .receipt-card'));
+            if (!stickyCta || hideTargets.length === 0 || !('IntersectionObserver' in window)) {
+                return;
+            }
+            if (stickyCta.dataset.rvStickyObserverReady === 'true') {
+                return;
+            }
+            stickyCta.dataset.rvStickyObserverReady = 'true';
+
+            const visibleTargets = new Set();
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting && entry.intersectionRatio > 0.08) {
+                        visibleTargets.add(entry.target);
+                    } else {
+                        visibleTargets.delete(entry.target);
+                    }
+                });
+                stickyCta.classList.toggle('cost-mobile-sticky-cta--hidden', visibleTargets.size > 0);
+            }, {
+                threshold: [0, 0.08],
+                rootMargin: '0px 0px -96px 0px'
+            });
+
+            hideTargets.forEach((target) => observer.observe(target));
+        };
+
+        setupCostStickyCta();
+        document.addEventListener('DOMContentLoaded', setupCostStickyCta);
+        document.body.addEventListener('htmx:afterSettle', () => {
+            document.querySelectorAll('.cost-mobile-sticky-cta').forEach((stickyCta) => {
+                stickyCta.dataset.rvStickyObserverReady = 'false';
+            });
+            setupCostStickyCta();
+        });
+    })();
+</script>
 
 <style>
 @keyframes fadeIn {

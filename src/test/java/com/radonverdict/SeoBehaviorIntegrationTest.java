@@ -156,6 +156,17 @@ class SeoBehaviorIntegrationTest {
     }
 
     @Test
+    void searchZipRecognizesLoudounRecoveryZip() throws Exception {
+        mockMvc.perform(post("/search-zip")
+                        .param("zipCode", "20147")
+                        .param("intent", "homeowner")
+                        .param("radonResultBand", "above_4"))
+                .andExpect(status().isSeeOther())
+                .andExpect(header().string("Location",
+                        "/radon-mitigation-cost/virginia/loudoun-county?intent=homeowner&radonResultBand=above_4&zipCode=20147"));
+    }
+
+    @Test
     void searchZipCreditRedirectsIntoCountyCreditCalculator() throws Exception {
         mockMvc.perform(post("/search-zip-credit")
                         .param("zipCode", "90210")
@@ -439,6 +450,7 @@ class SeoBehaviorIntegrationTest {
                         .param("radonResultBand", "above_4")
                         .param("intent", "homeowner"))
                 .andExpect(status().isOk())
+                .andExpect(content().string(containsString("4.0+ Radon Result in Los Angeles County, CA: Cost and Next Step")))
                 .andExpect(content().string(containsString("High Reading Budget Snapshot")))
                 .andExpect(content().string(containsString("Open 4.0+ Worksheet")))
                 .andExpect(content().string(containsString("Send My 4.0+ Action Plan")));
@@ -557,6 +569,26 @@ class SeoBehaviorIntegrationTest {
                 .andExpect(content().string(containsString("High-risk intent answer")))
                 .andExpect(content().string(containsString("Is radon bad in Boulder County?")))
                 .andExpect(content().string(containsString("Nearby comparison:")));
+    }
+
+    @Test
+    void highSignalRecoveryCountiesDoNotLeadWithWeakZoneCopy() throws Exception {
+        mockMvc.perform(get("/radon-levels/virginia/loudoun-county"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("Loudoun County is stronger than the EPA zone label suggests.")))
+                .andExpect(content().string(containsString("Official county data shows 4.1 pCi/L as the primary measured signal.")))
+                .andExpect(content().string(not(containsString("Loudoun County sits in the gray zone."))));
+
+        mockMvc.perform(get("/radon-levels/florida/marion-county"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("Marion County is stronger than the EPA zone label suggests.")))
+                .andExpect(content().string(containsString("Official county data shows 6.4 pCi/L and 42.9% at or above 4.0.")))
+                .andExpect(content().string(not(containsString("Marion County sits in the gray zone."))));
+
+        mockMvc.perform(get("/radon-levels/new-jersey/gloucester-county"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("NJ DEP tier table makes this a testing-priority county")))
+                .andExpect(content().string(not(containsString("Gloucester County sits in the gray zone."))));
     }
 
     @Test
@@ -759,7 +791,8 @@ class SeoBehaviorIntegrationTest {
                 .andExpect(content().string(containsString("/radon-cost-calculator")))
                 .andExpect(content().string(containsString("/radon-credit-calculator")))
                 .andExpect(content().string(containsString("Official County Data")))
-                .andExpect(content().string(containsString("753 of 753 listed county pages use official radon support")))
+                .andExpect(content().string(containsString("Every listed county page is tied to an official radon source")))
+                .andExpect(content().string(containsString("Coverage currently spans 753 listed county pages")))
                 .andExpect(content().string(containsString("National Data Guide")))
                 .andExpect(content().string(containsString("Open these state hubs first")))
                 .andExpect(content().string(containsString("States with the strongest county evidence")))
@@ -1029,7 +1062,7 @@ class SeoBehaviorIntegrationTest {
                 .andExpect(content().string(containsString("Osceola County, IA shows an 11.4 pCi/L median")))
                 .andExpect(content().string(containsString("Rutherford County, NC shows 681 pCi/L as a high-end county signal")))
                 .andExpect(content().string(containsString("Measured counties use official state tables or CDC Tracking summaries")))
-                .andExpect(content().string(containsString("Map-classified counties use official radon-potential categories")))
+                .andExpect(content().string(containsString("map-classified counties use official radon-potential categories")))
                 .andReturn()
                 .getResponse()
                 .getContentAsString(StandardCharsets.UTF_8);

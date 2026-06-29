@@ -3,7 +3,7 @@
 @param ItemizedReceipt receipt
 
 <!-- The Receipt Card: Pure Silicon Valley Fintech Aesthetic -->
-<div class="bg-white rounded-[2rem] shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-100/50 overflow-hidden relative group">
+<div class="receipt-card bg-white rounded-[2rem] shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-100/50 overflow-hidden relative group">
     
     <!-- Top Decorative Line (Minimalist) -->
     <div class="h-1.5 w-full bg-slate-900"></div>

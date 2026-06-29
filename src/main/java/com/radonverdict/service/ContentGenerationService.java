@@ -393,11 +393,11 @@ public class ContentGenerationService {
         private String buildHeroTitle(String areaName, String stateAbbr, String radonResultBand) {
                 return switch (radonResultBand) {
                         case "under_2" ->
-                                "What Should You Do With a Low Radon Result in " + areaName + ", " + stateAbbr + "?";
+                                "Low Radon Result in " + areaName + ", " + stateAbbr + ": What to Do Next";
                         case "between_2_and_4" ->
-                                "What Should You Do With a 2.0-3.9 Radon Result in " + areaName + ", " + stateAbbr + "?";
+                                "2.0-3.9 Radon Result in " + areaName + ", " + stateAbbr + ": Retest or Plan?";
                         case "above_4" ->
-                                "What Should You Do With a 4.0+ Radon Result in " + areaName + ", " + stateAbbr + "?";
+                                "4.0+ Radon Result in " + areaName + ", " + stateAbbr + ": Cost and Next Step";
                         default ->
                                 "Radon Test Plan + Cost Context in " + areaName + ", " + stateAbbr;
                 };

@@ -89,6 +89,33 @@
     final boolean tierBackedRadonEvidence = radonEvidence != null
             && !radonEvidence.isMeasurementBacked()
             && "NJ municipal radon-potential table".equals(radonEvidence.getSourceProfileLabel());
+    final String evidenceRiskTone = radonEvidence != null && radonEvidence.getRiskTone() != null
+            ? radonEvidence.getRiskTone()
+            : "";
+    final boolean highOfficialEvidence = "high".equals(evidenceRiskTone);
+    final boolean elevatedOfficialEvidence = "elevated".equals(evidenceRiskTone);
+    final boolean evidencePrimaryAvailable = radonEvidence != null
+            && radonEvidence.getPrimaryAverageDisplay() != null
+            && !radonEvidence.getPrimaryAverageDisplay().isBlank()
+            && !"Not available".equals(radonEvidence.getPrimaryAverageDisplay())
+            && !"n/a".equalsIgnoreCase(radonEvidence.getPrimaryAverageDisplay());
+    final boolean evidenceAbove4Available = radonEvidence != null
+            && radonEvidence.getAbove4Display() != null
+            && !radonEvidence.getAbove4Display().isBlank()
+            && !"Not available".equals(radonEvidence.getAbove4Display())
+            && !"n/a".equalsIgnoreCase(radonEvidence.getAbove4Display());
+    final String evidenceMetricBrief = tierBackedRadonEvidence
+            ? " The NJ DEP tier table makes this a testing-priority county; use the tier signal to prioritize a home test, not as a home reading."
+            : evidencePrimaryAvailable && evidenceAbove4Available
+            ? " Official county data shows " + radonEvidence.getPrimaryAverageDisplay()
+                    + " and " + radonEvidence.getAbove4Display() + " at or above 4.0."
+            : evidencePrimaryAvailable
+            ? " Official county data shows " + radonEvidence.getPrimaryAverageDisplay()
+                    + " as the primary measured signal."
+            : " Official source context is strong enough to prioritize testing before dismissing the county.";
+    final String officialSignalPosition = county.getEpaZone() == 1
+            ? "backs up the EPA high-zone warning"
+            : "is stronger than the EPA zone label suggests";
     final String measuredAverageDisplay = hasRadonMeasurement && radonMeasurement.getMetrics().getAverageTestResultPciL() != null
             ? String.format(java.util.Locale.US, "%.1f pCi/L", radonMeasurement.getMetrics().getAverageTestResultPciL())
             : "Not available";
@@ -384,6 +411,15 @@
     final String heroQuickEvidenceRead = phaseOneCtrLiftCounty
             ? county.getAreaDisplayName()
             + " searchers usually need the practical next move fast. The first useful split is simple: no test yet, 2.0-3.9, or 4.0+."
+            : !nextStepCtrLiftCounty && highOfficialEvidence
+            ? county.getAreaDisplayName() + " " + officialSignalPosition + "."
+                    + evidenceMetricBrief
+                    + " Do the home test, and treat a confirmed 4.0+ result as mitigation-planning territory."
+            : !nextStepCtrLiftCounty && elevatedOfficialEvidence
+            ? county.getAreaDisplayName()
+                    + " has enough official radon signal that the practical answer is not just map-reading."
+                    + evidenceMetricBrief
+                    + " Start with a real home test, then retest or price only from the result."
             : schenectadyZoneCounty
             ? county.getAreaDisplayName()
             + " is EPA Zone 2, which means a predicted indoor screening range between 2.0 and 4.0 pCi/L. Individual basements can still test above 4.0, so your own reading decides the next move."
@@ -406,6 +442,10 @@
 
     final String quickDecisionHeading = phaseOneCtrLiftCounty
             ? "Pick the lane fast"
+            : !nextStepCtrLiftCounty && highOfficialEvidence
+            ? "Treat this as a test-now county"
+            : !nextStepCtrLiftCounty && elevatedOfficialEvidence
+            ? "Do not stop at the map label"
             : phaseTwoCtrLiftCounty
             ? "Use the reading to choose the lane"
             : phaseThreeCtrLiftCounty
@@ -420,6 +460,10 @@
 
     final String quickDecisionBody = phaseOneCtrLiftCounty
             ? "No test yet, 2.0-3.9, and 4.0+ each point to a different next move. This page is built to get you there without extra reading."
+            : !nextStepCtrLiftCounty && highOfficialEvidence
+            ? "The official source signal is strong enough that a first test is the minimum; a confirmed 4.0+ result should move into cost or credit planning."
+            : !nextStepCtrLiftCounty && elevatedOfficialEvidence
+            ? "The official data is not a clear dismissal. Use it to justify testing or retesting, then let the home result decide whether pricing makes sense."
             : phaseTwoCtrLiftCounty
             ? "The county signal matters less than the result in your home. Use the number to decide whether you test, retest, or price mitigation."
             : phaseThreeCtrLiftCounty
@@ -438,6 +482,10 @@
             ? "Official tier data shows local radon potential, not a county pCi/L average."
             : historicalSurveyRadonMeasurement
             ? "Older survey data is context for testing, not a current county prediction."
+            : !nextStepCtrLiftCounty && highOfficialEvidence
+            ? "Official measured data puts this county in a high-priority testing lane."
+            : !nextStepCtrLiftCounty && elevatedOfficialEvidence
+            ? "Official measured data is elevated enough to justify testing or retesting."
             : nextStepCtrLiftCounty
             ? "County map context helps, but your own result is what changes the decision."
             : county.getEpaZone() == 1

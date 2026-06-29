@@ -122,10 +122,10 @@
                         <div>
                             <p class="text-xs font-bold uppercase tracking-wider text-slate-500">Official County Data</p>
                             <h2 class="mt-2 font-display text-2xl font-black text-slate-900">
-                                ${evidenceCoverage.getOfficialEvidenceCount()} of ${evidenceCoverage.getTotalCount()} listed county pages use official radon support
+                                Every listed county page is tied to an official radon source
                             </h2>
                             <p class="mt-2 max-w-3xl text-sm leading-relaxed text-slate-600">
-                                Measured counties use official state tables or CDC Tracking summaries. Map-classified counties use official radon-potential categories when a county pCi/L table is not published.
+                                Coverage currently spans ${evidenceCoverage.getTotalCount()} listed county pages. Measured counties use official state tables or CDC Tracking summaries; map-classified counties use official radon-potential categories when a county pCi/L table is not published.
                             </p>
                         </div>
                         <div class="rounded-2xl border border-emerald-100 bg-emerald-50 px-5 py-4 text-center">
