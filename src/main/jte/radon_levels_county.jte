@@ -1016,6 +1016,13 @@
                         </div>
                     @endif
 
+                    @template.components.radon_result_translator(
+                        county = county,
+                        countySignalSummary = countySignalSummary,
+                        measuredPrimaryResultDisplay = measuredPrimaryResultDisplay,
+                        measuredPercentAbove4Display = measuredPercentAbove4Display
+                    )
+
                     <div id="situation-picker" class="mt-8 rounded-[1.75rem] bg-white p-5 sm:p-6 shadow-2xl border border-white/10">
                         <div class="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between mb-5">
                             <div>
@@ -1138,7 +1145,7 @@
                 document.addEventListener('DOMContentLoaded', () => {
                     const stickyCta = document.querySelector('.levels-mobile-sticky-cta');
                     const evidenceBlocks = Array.from(document.querySelectorAll(
-                        '.levels-county-hero-quick-read, .levels-evidence-reading-block'));
+                        '.levels-county-hero-quick-read, .levels-evidence-reading-block, .levels-result-tool'));
                     if (!stickyCta || evidenceBlocks.length === 0 || !('IntersectionObserver' in window)) {
                         return;
                     }

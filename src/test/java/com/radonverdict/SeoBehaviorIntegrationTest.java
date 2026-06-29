@@ -435,7 +435,13 @@ class SeoBehaviorIntegrationTest {
                 .andExpect(content().string(containsString("Copy this call script")))
                 .andExpect(content().string(containsString("My lowest-level radon test was ___ pCi/L in Loudoun County, VA.")))
                 .andExpect(content().string(containsString("Ask these six questions")))
-                .andExpect(content().string(containsString("Red flags")));
+                .andExpect(content().string(containsString("Red flags")))
+                .andExpect(content().string(containsString("Copy script")))
+                .andExpect(content().string(containsString("Print worksheet")))
+                .andExpect(content().string(containsString("Bid checker")))
+                .andExpect(content().string(containsString("Contractor quote")))
+                .andExpect(content().string(containsString("Above $3640")))
+                .andExpect(content().string(containsString("above the hard ceiling")));
     }
 
     @Test
@@ -526,6 +532,11 @@ class SeoBehaviorIntegrationTest {
                 .andExpect(content().string(containsString("Official Data &amp; Testing Guide")))
                 .andExpect(content().string(containsString("data-nosnippet")))
                 .andExpect(content().string(containsString("Official local answer:")))
+                .andExpect(content().string(containsString("Home result translator")))
+                .andExpect(content().string(containsString("Enter your radon number. Get the next move.")))
+                .andExpect(content().string(containsString("Check my result")))
+                .andExpect(content().string(containsString("Copy next-step note")))
+                .andExpect(content().string(containsString("Open local cost plan")))
                 .andExpect(content().string(containsString("Pick the situation that matches you")))
                 .andExpect(content().string(containsString("Pick My Next Step")))
                 .andExpect(content().string(containsString("I have not tested yet")))
@@ -1210,6 +1221,8 @@ class SeoBehaviorIntegrationTest {
 
         assertTrue(html.contains("data-track-event=\"levels_mobile_jump_click\""));
         assertTrue(html.indexOf("id=\"county-evidence-first\"") < html.indexOf("id=\"situation-picker\""));
+        assertTrue(html.indexOf("id=\"county-evidence-first\"") < html.indexOf("id=\"result-translator\""));
+        assertTrue(html.indexOf("id=\"result-translator\"") < html.indexOf("id=\"situation-picker\""));
         assertFalse(html.contains("data-rv-affiliate-link=\"true\""));
         assertTrue(html.indexOf("Measured Radon Data") < html.indexOf("Check your state radon program"));
         assertTrue(html.indexOf("id=\"situation-picker\"") < html.indexOf("Your Radon Reading"));

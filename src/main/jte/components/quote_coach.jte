@@ -84,13 +84,25 @@
                     <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-400">Copy this call script</p>
                     <h3 class="mt-2 font-display text-2xl font-black tracking-tight">Sound like you already know the job.</h3>
                 </div>
-                <a href="#estimate-form" class="inline-flex shrink-0 items-center justify-center rounded-xl bg-white px-4 py-2 text-sm font-bold text-slate-950 transition-colors hover:bg-slate-100">
-                    Get my plan
-                </a>
+                <div class="flex flex-col gap-2 sm:min-w-[160px]">
+                    <button type="button"
+                            data-rv-copy-script
+                            data-rv-copy-target="quote-call-script"
+                            class="inline-flex shrink-0 items-center justify-center rounded-xl bg-white px-4 py-2 text-sm font-bold text-slate-950 transition-colors hover:bg-slate-100">
+                        Copy script
+                    </button>
+                    <button type="button"
+                            data-rv-print-quote-coach
+                            class="inline-flex shrink-0 items-center justify-center rounded-xl border border-white/15 px-4 py-2 text-sm font-bold text-white transition-colors hover:bg-white/10">
+                        Print worksheet
+                    </button>
+                </div>
             </div>
-            <p class="mt-5 rounded-xl border border-white/10 bg-white/5 p-4 text-sm leading-relaxed text-slate-100">
-                My lowest-level radon test was ___ pCi/L in ${countyLabel}. Before you give me a number, can you tell me whether this needs sub-slab suction, crawl space membrane work, sump sealing, or a combination system?
-            </p>
+            <div id="quote-call-script" class="mt-5 rounded-xl border border-white/10 bg-white/5 p-4 text-sm leading-relaxed text-slate-100">
+                <p>My lowest-level radon test was ___ pCi/L in ${countyLabel}. Before you give me a number, can you tell me whether this needs sub-slab suction, crawl space membrane work, sump sealing, or a combination system?</p>
+                <p class="mt-3">I am comparing the quote against a local planning range of $${low}-$${high}, with $${avg} as the target. Please break out anything that pushes the price above that target.</p>
+            </div>
+            <p data-rv-copy-status class="mt-3 min-h-[20px] text-xs font-semibold text-emerald-300" aria-live="polite"></p>
             <div class="mt-5">
                 <p class="text-sm font-bold text-white">Ask these six questions:</p>
                 <ol class="mt-3 grid gap-3 text-sm leading-relaxed text-slate-200 sm:grid-cols-2">
@@ -127,4 +139,156 @@
             </ul>
         </div>
     </div>
+
+    <div id="quote-bid-checker"
+         class="mt-8 rounded-2xl border border-slate-200 bg-white p-6 sm:p-7"
+         data-rv-quote-checker
+         data-low="${low}"
+         data-avg="${avg}"
+         data-high="${high}">
+        <div class="grid gap-6 lg:grid-cols-[0.85fr_1.15fr] lg:items-start">
+            <div>
+                <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500">Bid checker</p>
+                <h3 class="mt-2 font-display text-2xl font-black tracking-tight text-slate-900">
+                    Check a contractor quote against the local range.
+                </h3>
+                <p class="mt-3 text-sm leading-relaxed text-slate-600">
+                    Enter the number you were quoted. The point is not to reject every high bid; it is to know when the scope needs a real explanation.
+                </p>
+            </div>
+
+            <div class="grid gap-4">
+                <div class="grid gap-3 sm:grid-cols-[1fr_auto] sm:items-end">
+                    <label for="quote-check-amount" class="block">
+                        <span class="text-xs font-bold uppercase tracking-wider text-slate-500">Contractor quote</span>
+                        <span class="mt-2 flex items-center rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 focus-within:border-slate-900 focus-within:bg-white">
+                            <span class="mr-2 text-lg font-black text-slate-400">$</span>
+                            <input id="quote-check-amount"
+                                   data-rv-quote-input
+                                   inputmode="numeric"
+                                   autocomplete="off"
+                                   placeholder="${avg}"
+                                   class="w-full bg-transparent text-2xl font-black tabular-nums text-slate-900 outline-none placeholder:text-slate-300">
+                        </span>
+                    </label>
+                    <button type="button"
+                            data-rv-check-quote
+                            class="inline-flex min-h-[52px] items-center justify-center rounded-xl bg-slate-900 px-5 text-sm font-bold text-white transition-colors hover:bg-slate-800">
+                        Check quote
+                    </button>
+                </div>
+
+                <div data-rv-quote-result
+                     class="rounded-xl border border-slate-200 bg-slate-50 p-4 text-sm leading-relaxed text-slate-700"
+                     aria-live="polite">
+                    Enter a quote above to compare it with the $${low} low anchor, $${avg} target, and $${high} hard ceiling.
+                </div>
+
+                <div class="grid gap-3 text-sm sm:grid-cols-3">
+                    <div class="border-l-4 border-emerald-500 bg-emerald-50 px-4 py-3">
+                        <p class="font-bold text-slate-900">Below $${low}</p>
+                        <p class="mt-1 text-xs leading-relaxed text-slate-600">Only good if scope, retest, and warranty are still complete.</p>
+                    </div>
+                    <div class="border-l-4 border-slate-900 bg-slate-50 px-4 py-3">
+                        <p class="font-bold text-slate-900">$${low}-$${high}</p>
+                        <p class="mt-1 text-xs leading-relaxed text-slate-600">Normal zone. Compare inclusions, not just price.</p>
+                    </div>
+                    <div class="border-l-4 border-rose-500 bg-rose-50 px-4 py-3">
+                        <p class="font-bold text-slate-900">Above $${high}</p>
+                        <p class="mt-1 text-xs leading-relaxed text-slate-600">Ask for the scope reason before accepting.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </section>
+
+<script>
+    (() => {
+        const fallbackCopy = (text) => {
+            const textarea = document.createElement('textarea');
+            textarea.value = text;
+            textarea.setAttribute('readonly', '');
+            textarea.style.position = 'fixed';
+            textarea.style.left = '-9999px';
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand('copy');
+            textarea.remove();
+            return Promise.resolve();
+        };
+
+        const copyText = (text) => {
+            if (navigator.clipboard && window.isSecureContext) {
+                return navigator.clipboard.writeText(text).catch(() => fallbackCopy(text));
+            }
+            return fallbackCopy(text);
+        };
+
+        document.querySelectorAll('[data-rv-copy-script]').forEach((button) => {
+            button.addEventListener('click', () => {
+                const target = document.getElementById(button.dataset.rvCopyTarget);
+                const status = document.querySelector('[data-rv-copy-status]');
+                if (!target) {
+                    return;
+                }
+                copyText(target.innerText.trim())
+                    .then(() => {
+                        if (status) {
+                            status.textContent = 'Copied. Paste it into a contractor call, text, or email.';
+                        }
+                    })
+                    .catch(() => {
+                        if (status) {
+                            status.textContent = 'Select the script text and copy it manually.';
+                        }
+                    });
+            });
+        });
+
+        document.querySelectorAll('[data-rv-print-quote-coach]').forEach((button) => {
+            button.addEventListener('click', () => window.print());
+        });
+
+        document.querySelectorAll('[data-rv-quote-checker]').forEach((checker) => {
+            const input = checker.querySelector('[data-rv-quote-input]');
+            const result = checker.querySelector('[data-rv-quote-result]');
+            const lowValue = Number(checker.dataset.low);
+            const avgValue = Number(checker.dataset.avg);
+            const highValue = Number(checker.dataset.high);
+
+            const update = () => {
+                const quoteValue = Number(String(input.value || '').replace(/[^0-9.]/g, ''));
+                if (!quoteValue) {
+                    result.textContent = 'Enter a quote above to compare it with the $' + lowValue + ' low anchor, $' + avgValue + ' target, and $' + highValue + ' hard ceiling.';
+                    result.className = 'rounded-xl border border-slate-200 bg-slate-50 p-4 text-sm leading-relaxed text-slate-700';
+                    return;
+                }
+
+                if (quoteValue < lowValue) {
+                    result.textContent = '$' + quoteValue + ' is below the local low anchor. Treat it as attractive only if the bid still includes sealing, fan, pipe route, electrical, post-mitigation retest, and warranty.';
+                    result.className = 'rounded-xl border border-emerald-200 bg-emerald-50 p-4 text-sm font-semibold leading-relaxed text-emerald-900';
+                    return;
+                }
+
+                if (quoteValue <= Math.round(avgValue * 1.08)) {
+                    result.textContent = '$' + quoteValue + ' is near the local quote target. Compare warranty, retest plan, routing, and sealing details before you choose.';
+                    result.className = 'rounded-xl border border-slate-300 bg-slate-50 p-4 text-sm font-semibold leading-relaxed text-slate-900';
+                    return;
+                }
+
+                if (quoteValue <= highValue) {
+                    result.textContent = '$' + quoteValue + ' is above the target but still inside the local range. Ask what specific scope pushes it higher: crawl membrane, sump sealing, difficult route, electrical, or finish repair.';
+                    result.className = 'rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm font-semibold leading-relaxed text-amber-900';
+                    return;
+                }
+
+                result.textContent = '$' + quoteValue + ' is above the hard ceiling. Get another bid unless the contractor can show a clear scope reason and a post-mitigation retest plan.';
+                result.className = 'rounded-xl border border-rose-200 bg-rose-50 p-4 text-sm font-semibold leading-relaxed text-rose-900';
+            };
+
+            input.addEventListener('input', update);
+            checker.querySelector('[data-rv-check-quote]').addEventListener('click', update);
+        });
+    })();
+</script>
