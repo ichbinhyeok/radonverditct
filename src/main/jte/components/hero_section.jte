@@ -3,8 +3,10 @@
 @param CountyPageContent page
 
 !{
-    final boolean notTested = "not_tested".equals(page.getSelectedRadonResultBand());
-    final String budgetLabel = notTested ? "Future Cost Context:" : "Budget Context:";
+    final boolean costOverview = page.isCostOverviewMode();
+    final boolean notTested = !costOverview && "not_tested".equals(page.getSelectedRadonResultBand());
+    final String budgetLabel = costOverview ? "Local Cost Range:" : notTested ? "Future Cost Context:" : "Budget Context:";
+    final String scenarioLabel = costOverview ? "Cost overview" : page.getSelectedRadonResultBandLabel();
 }
 
 <div class="cost-hero-section mb-12 relative overflow-hidden rounded-[1.75rem] bg-slate-900 border border-slate-800 p-6 sm:rounded-[2.5rem] sm:p-12 shadow-2xl">
@@ -19,12 +21,12 @@
             <span class="w-2 h-2 rounded-full shadow-sm shadow-current 
                 @if("red".equals(page.getBadgeColor())) bg-rose-400 @elseif("yellow".equals(page.getBadgeColor())) bg-amber-400 @else bg-emerald-400 @endif
             "></span>
-            EPA Zone ${page.getRiskLevel()} Risk
+            @if(costOverview) County Cost Estimate @else EPA Zone ${page.getRiskLevel()} Risk @endif
         </span>
         <div class="mb-4">
             <span class="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-[11px] font-bold uppercase tracking-wider text-slate-200 border border-white/10">
-                Scenario
-                <span class="text-white">${page.getSelectedRadonResultBandLabel()}</span>
+                @if(costOverview) Search intent @else Scenario @endif
+                <span class="text-white">${scenarioLabel}</span>
             </span>
         </div>
 

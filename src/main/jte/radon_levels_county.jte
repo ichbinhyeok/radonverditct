@@ -290,8 +290,43 @@
             fallsChurchDecisionCounty || dupageCtrCounty;
     final boolean epaZoneCtrPriorityCounty =
             fremontZoneCounty || schenectadyZoneCounty;
+    final boolean searchedOfficialEvidenceCounty =
+            ("virginia".equals(county.getStateSlug()) && "loudoun-county".equals(county.getCountySlug()))
+                    || ("florida".equals(county.getStateSlug()) && "marion-county".equals(county.getCountySlug()))
+                    || ("new-jersey".equals(county.getStateSlug()) && "gloucester-county".equals(county.getCountySlug()));
+    final boolean officialEvidenceSerpCounty =
+            searchedOfficialEvidenceCounty
+                    && !nextStepCtrLiftCounty
+                    && (highOfficialEvidence || elevatedOfficialEvidence || tierBackedRadonEvidence);
+    final String evidenceSerpTitleMetric = tierBackedRadonEvidence
+            ? "NJ DEP Tier Signal"
+            : evidencePrimaryAvailable && evidenceAbove4Available
+            ? radonEvidence.getPrimaryAverageDisplay() + " & " + radonEvidence.getAbove4Display() + " 4.0+"
+            : evidencePrimaryAvailable
+            ? radonEvidence.getPrimaryAverageDisplay() + " Official Data"
+            : "Official Data";
+    final String evidenceSerpDescription = tierBackedRadonEvidence
+            ? "NJ DEP tier data makes " + seoPlaceLabel
+                    + " a testing-priority county. See what the tier signal means before you test, retest, or price mitigation."
+            : evidencePrimaryAvailable && evidenceAbove4Available
+            ? "Official data shows " + radonEvidence.getPrimaryAverageDisplay()
+                    + " and " + radonEvidence.getAbove4Display() + " at or above 4.0 in " + seoPlaceLabel
+                    + ". See whether to test, retest, or budget mitigation."
+            : evidencePrimaryAvailable
+            ? "Official data shows " + radonEvidence.getPrimaryAverageDisplay()
+                    + " as the primary signal in " + seoPlaceLabel
+                    + ". See whether to test, retest, or budget mitigation."
+            : "Official source evidence makes " + seoPlaceLabel
+                    + " a testing-priority county. See whether to test, retest, or budget mitigation.";
+    final String evidenceBadgeLabel = tierBackedRadonEvidence
+            ? "NJ DEP Tier Signal"
+            : evidencePrimaryAvailable
+            ? "Official Signal " + radonEvidence.getPrimaryAverageDisplay()
+            : "Official County Evidence";
 
-    final String seoTitle = epaZoneCtrPriorityCounty
+    final String seoTitle = officialEvidenceSerpCounty
+            ? seoPlaceLabel + " Radon Levels: " + evidenceSerpTitleMetric
+            : epaZoneCtrPriorityCounty
             ? seoPlaceLabel + " EPA Radon Zone | Basement Levels & 4.0 Guide"
             : basementCtrPriorityCounty
             ? seoPlaceLabel + " Basement Radon Levels | EPA Zone & 4.0 Guide"
@@ -305,7 +340,9 @@
             ? "Radon Levels in " + seoPlaceLabel + " | Official Data & Testing Guide"
             : seoPlaceLabel + " Radon Levels, Zone Map & Home Testing Guide | EPA 4.0 pCi/L";
 
-    final String seoDescription = epaZoneCtrPriorityCounty
+    final String seoDescription = officialEvidenceSerpCounty
+            ? evidenceSerpDescription
+            : epaZoneCtrPriorityCounty
             ? "Check the EPA radon zone for " + seoPlaceLabel
             + ", see what that zone means for basement radon levels, and know when 2.0-3.9 versus 4.0+ changes the next step."
             : basementCtrPriorityCounty
@@ -653,25 +690,40 @@
                 <div class="absolute inset-0 opacity-5" style="background-image: url('data:image/svg+xml,%3Csvg width=&quot;60&quot; height=&quot;60&quot; viewBox=&quot;0 0 60 60&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot;%3E%3Cg fill=&quot;none&quot; fill-rule=&quot;evenodd&quot;%3E%3Cg fill=&quot;%23ffffff&quot; fill-opacity=&quot;1&quot;%3E%3Cpath d=&quot;M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z&quot;/%3E%3C/g%3E%3C/g%3E%3C/svg%3E');"></div>
 
                 <div class="relative z-10">
-                    <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider mb-6
-                        @if(county.getEpaZone() == 1) bg-red-500/20 text-red-300
-                        @elseif(county.getEpaZone() == 2) bg-amber-500/20 text-amber-300
-                        @elseif(county.getEpaZone() == 3) bg-emerald-500/20 text-emerald-300
-                        @else bg-slate-500/20 text-slate-200
-                        @endif
-                    ">
-                        <span class="w-2 h-2 rounded-full
-                            @if(county.getEpaZone() == 1) bg-red-400
-                            @elseif(county.getEpaZone() == 2) bg-amber-400
-                            @elseif(county.getEpaZone() == 3) bg-emerald-400
-                            @else bg-slate-300
+                    <div class="mb-6 flex flex-wrap gap-2">
+                        <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider
+                            @if(officialEvidenceSerpCounty && highOfficialEvidence) bg-red-500/20 text-red-300
+                            @elseif(officialEvidenceSerpCounty) bg-sky-500/20 text-sky-200
+                            @elseif(county.getEpaZone() == 1) bg-red-500/20 text-red-300
+                            @elseif(county.getEpaZone() == 2) bg-amber-500/20 text-amber-300
+                            @elseif(county.getEpaZone() == 3) bg-emerald-500/20 text-emerald-300
+                            @else bg-slate-500/20 text-slate-200
                             @endif
-                        "></span>
-                        EPA Zone ${county.getEpaZone() > 0 ? Integer.toString(county.getEpaZone()) : "Unclassified"} -
-                        @if(county.getEpaZone() == 1) High Risk
-                        @elseif(county.getEpaZone() == 2) Moderate Risk
-                        @elseif(county.getEpaZone() == 3) Low Risk
-                        @else Data Pending
+                        ">
+                            <span class="w-2 h-2 rounded-full
+                                @if(officialEvidenceSerpCounty && highOfficialEvidence) bg-red-400
+                                @elseif(officialEvidenceSerpCounty) bg-sky-300
+                                @elseif(county.getEpaZone() == 1) bg-red-400
+                                @elseif(county.getEpaZone() == 2) bg-amber-400
+                                @elseif(county.getEpaZone() == 3) bg-emerald-400
+                                @else bg-slate-300
+                                @endif
+                            "></span>
+                            @if(officialEvidenceSerpCounty)
+                                ${evidenceBadgeLabel}
+                            @else
+                                EPA Zone ${county.getEpaZone() > 0 ? Integer.toString(county.getEpaZone()) : "Unclassified"} -
+                                @if(county.getEpaZone() == 1) High Risk
+                                @elseif(county.getEpaZone() == 2) Moderate Risk
+                                @elseif(county.getEpaZone() == 3) Low Risk
+                                @else Data Pending
+                                @endif
+                            @endif
+                        </div>
+                        @if(officialEvidenceSerpCounty)
+                            <div class="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1.5 text-xs font-bold uppercase tracking-wider text-slate-200">
+                                EPA Zone ${county.getEpaZone() > 0 ? Integer.toString(county.getEpaZone()) : "Unclassified"} context
+                            </div>
                         @endif
                     </div>
 

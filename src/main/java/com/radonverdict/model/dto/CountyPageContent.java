@@ -65,6 +65,7 @@ public class CountyPageContent {
     private String selectedIntent;
     private String selectedSqftCategory;
     private String selectedRadonResultBand;
+    private boolean costOverviewMode;
 
     // SEO Silo: Neighboring Counties in the same state
     private List<com.radonverdict.model.County> nearbyCounties;

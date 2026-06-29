@@ -289,12 +289,13 @@
                 </div>
                 <span class="font-display font-bold text-xl tracking-tight text-slate-900">Radon<span class="text-slate-400">Verdict</span></span>
             </a>
-            <nav class="hidden md:flex gap-6 text-sm font-medium text-slate-500">
+            <nav class="hidden lg:flex gap-6 text-sm font-medium text-slate-500">
                 <a href="/radon-cost-calculator" class="tap-target-inline hover:text-slate-900 transition-colors">Action Plan</a>
                 <a href="/radon-mitigation-cost" class="tap-target-inline hover:text-slate-900 transition-colors">Costs</a>
                 <a href="/radon-levels" class="tap-target-inline hover:text-slate-900 transition-colors">Radon Levels</a>
                 <a href="/guides/how-to-test-for-radon" class="tap-target-inline hover:text-slate-900 transition-colors">Testing Guide</a>
                 <a href="/guides" class="tap-target-inline hover:text-slate-900 transition-colors">Guides</a>
+                <a href="/radon-data-sources" class="tap-target-inline hover:text-slate-900 transition-colors">Data</a>
                 <a href="/about" class="tap-target-inline hover:text-slate-900 transition-colors">About</a>
             </nav>
             <button type="button"
@@ -302,7 +303,7 @@
                     :aria-expanded="mobileNavOpen.toString()"
                     aria-controls="mobile-nav-panel"
                     aria-label="Toggle navigation"
-                    class="tap-target md:hidden inline-flex items-center justify-center rounded-xl border border-slate-200 bg-white/80 text-slate-700 shadow-sm transition-colors hover:bg-white hover:text-slate-900">
+                    class="tap-target lg:hidden inline-flex items-center justify-center rounded-xl border border-slate-200 bg-white/80 text-slate-700 shadow-sm transition-colors hover:bg-white hover:text-slate-900">
                 <svg x-show="!mobileNavOpen" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M4 7h16M4 12h16M4 17h16" />
                 </svg>
@@ -315,13 +316,14 @@
              x-show="mobileNavOpen"
              x-transition.opacity.duration.150ms
              x-cloak
-             class="md:hidden border-t border-slate-200/80 bg-white/95 backdrop-blur-sm">
+             class="lg:hidden border-t border-slate-200/80 bg-white/95 backdrop-blur-sm">
             <nav class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex flex-col">
                 <a href="/radon-cost-calculator" class="tap-target-inline rounded-xl px-3 text-slate-700 hover:bg-slate-100 hover:text-slate-900">Action Plan</a>
                 <a href="/radon-mitigation-cost" class="tap-target-inline rounded-xl px-3 text-slate-700 hover:bg-slate-100 hover:text-slate-900">Costs</a>
                 <a href="/radon-levels" class="tap-target-inline rounded-xl px-3 text-slate-700 hover:bg-slate-100 hover:text-slate-900">Radon Levels</a>
                 <a href="/guides/how-to-test-for-radon" class="tap-target-inline rounded-xl px-3 text-slate-700 hover:bg-slate-100 hover:text-slate-900">Testing Guide</a>
                 <a href="/guides" class="tap-target-inline rounded-xl px-3 text-slate-700 hover:bg-slate-100 hover:text-slate-900">Guides</a>
+                <a href="/radon-data-sources" class="tap-target-inline rounded-xl px-3 text-slate-700 hover:bg-slate-100 hover:text-slate-900">Data Sources</a>
                 <a href="/about" class="tap-target-inline rounded-xl px-3 text-slate-700 hover:bg-slate-100 hover:text-slate-900">About</a>
                 <a href="/contact" class="tap-target-inline rounded-xl px-3 text-slate-700 hover:bg-slate-100 hover:text-slate-900">Contact</a>
             </nav>
@@ -348,6 +350,7 @@
                     <ul class="space-y-3 text-sm font-medium text-slate-500">
                         <li><a href="/about" class="tap-target-inline hover:text-indigo-600 transition-colors">About Us</a></li>
                         <li><a href="/methodology" class="tap-target-inline hover:text-indigo-600 transition-colors">Methodology</a></li>
+                        <li><a href="/radon-data-sources" class="tap-target-inline hover:text-indigo-600 transition-colors">Data Sources</a></li>
                         <li><a href="/contact" class="tap-target-inline hover:text-indigo-600 transition-colors">Contact</a></li>
                         <li><a href="/radon-cost-calculator" class="tap-target-inline hover:text-indigo-600 transition-colors">Action Plan</a></li>
                         <li><a href="/radon-mitigation-cost" class="tap-target-inline hover:text-indigo-600 transition-colors">Mitigation Cost</a></li>

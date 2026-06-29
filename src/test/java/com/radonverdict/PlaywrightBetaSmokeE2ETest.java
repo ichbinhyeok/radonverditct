@@ -309,7 +309,10 @@ class PlaywrightBetaSmokeE2ETest {
             assertFalse(persona.page.content().toLowerCase(Locale.US).contains("official estimate"));
 
             persona.page.locator("text=Sources & Methodology").first().scrollIntoViewIfNeeded();
-            assertTrue(persona.page.locator("text=Data Sources").first().isVisible());
+            assertTrue(persona.page
+                    .locator("div:has(h3:has-text('Sources & Methodology')) h4:has-text('Data Sources')")
+                    .first()
+                    .isVisible());
 
             persona.screenshot("skeptical_user_honesty_signals");
             persona.assertNoFirstPartyFailures();

@@ -19,6 +19,7 @@
 @param boolean monetizationHooksEnabled = false
 @param boolean showSeoDebug = false
 @param String prefilledZip = null
+@param List<String> countyZipCodes = null
 
 !{
     final String countyDisplay = county.getSeoDisplayName() + ", " + county.getStateAbbr();
@@ -47,6 +48,10 @@
     final String seoDescription = page.getSeoDescription() != null && !page.getSeoDescription().isBlank()
             ? page.getSeoDescription()
             : "See the typical radon mitigation price range in " + countyDisplay + " for basement, slab, and crawl space homes. Built for homeowners who already have a radon test result and need local quote context.";
+    final boolean hasCountyZipCodes = countyZipCodes != null && !countyZipCodes.isEmpty();
+    final String countyZipDisplay = hasCountyZipCodes ? String.join(", ", countyZipCodes) : "";
+    final boolean loudounCostSearchCounty = "virginia".equals(county.getStateSlug())
+            && "loudoun-county".equals(county.getCountySlug());
 }
 
 @template.layout.main(
@@ -123,6 +128,30 @@
             <!-- 1. Above the Fold: Hero Section -->
             @template.components.hero_section(page = page)
             @template.components.negotiation_snapshot(county = county, page = page)
+
+            @if(hasCountyZipCodes)
+            <section class="mt-8 rounded-3xl border border-slate-200 bg-slate-50 p-5 sm:p-7">
+                <div class="grid gap-5 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-center">
+                    <div>
+                        <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500">ZIP cost search</p>
+                        <h2 class="mt-2 font-display text-2xl font-black tracking-tight text-slate-900">
+                            Searching by ZIP? Use the ${county.getAreaDisplayName()} range first.
+                        </h2>
+                        <p class="mt-3 text-sm leading-relaxed text-slate-600">
+                            @if(loudounCostSearchCounty)
+                                If you searched for <strong>20147 radon mitigation cost</strong>, this is the matching county page: ZIP 20147 maps to Loudoun County, VA. Start with the range above, then adjust the form for your foundation type and actual radon result.
+                            @else
+                                ZIP-level contractor quotes still depend on the property, but the county range is the cleanest first budget anchor before you request bids or negotiate a credit.
+                            @endif
+                        </p>
+                    </div>
+                    <div class="rounded-2xl border border-slate-200 bg-white p-4 lg:min-w-[260px]">
+                        <p class="text-[11px] font-bold uppercase tracking-widest text-slate-500">ZIP anchors on this page</p>
+                        <p class="mt-2 text-sm font-black leading-relaxed text-slate-900">${countyZipDisplay}</p>
+                    </div>
+                </div>
+            </section>
+            @endif
 
             <!-- 2. Grid Layout for Simulator and Receipt -->
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 mt-16 mb-20">

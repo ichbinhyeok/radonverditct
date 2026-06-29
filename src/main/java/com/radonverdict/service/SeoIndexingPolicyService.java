@@ -193,6 +193,10 @@ public class SeoIndexingPolicyService {
         return !priorityCountyIndexing || isPriorityCountyCandidate(county);
     }
 
+    public boolean isCostPageIndexableCandidate(County county) {
+        return isCountyIndexableCandidate(county) && isSearchTrafficCandidate(county);
+    }
+
     public boolean includeZoneLowSitemap() {
         return indexZone3Pages;
     }

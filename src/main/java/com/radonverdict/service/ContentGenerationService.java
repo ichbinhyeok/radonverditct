@@ -55,6 +55,20 @@ public class ContentGenerationService {
                                 scenario.radonResultBand());
         }
 
+        public CountyPageContent buildCostLandingPageContent(County county) {
+                DefaultScenario scenario = chooseDefaultScenario(county);
+                CountyPageContent page = buildPageContent(
+                                county,
+                                scenario.foundationType(),
+                                scenario.userIntent(),
+                                scenario.sqftCategory(),
+                                scenario.radonResultBand());
+
+                page.setCostOverviewMode(true);
+                applyCostOverviewCopy(county, page);
+                return page;
+        }
+
         public CountyPageContent buildPageContent(County county, String foundationType, String userIntent,
                         String sqftCategory) {
                 return buildPageContent(county, foundationType, userIntent, sqftCategory, "not_tested");
@@ -378,6 +392,31 @@ public class ContentGenerationService {
                                 + receipt.getTotalAvg()
                                 + " (common range $" + receipt.getTotalLow() + "-$" + receipt.getTotalHigh() + "). "
                                 + rationale;
+        }
+
+        private void applyCostOverviewCopy(County county, CountyPageContent page) {
+                if (county == null || page == null || page.getReceipt() == null) {
+                        return;
+                }
+
+                String areaName = county.getAreaDisplayName();
+                String stateAbbr = county.getStateAbbr();
+                ItemizedReceipt receipt = page.getReceipt();
+                String range = "$" + receipt.getTotalLow() + "-$" + receipt.getTotalHigh();
+                String average = "$" + receipt.getTotalAvg();
+
+                page.setHeroTitle("Radon Mitigation Cost in " + areaName + ", " + stateAbbr
+                                + ": " + range + " Range");
+                page.setHeroSummary("The local planning range for radon mitigation in " + areaName + ", "
+                                + stateAbbr + " is " + range + ", with a modeled midpoint near " + average
+                                + ". Use this as the county budget anchor first, then adjust the form for your foundation, result, and transaction goal.");
+                page.setSeoDescription("Radon mitigation in " + areaName + ", " + stateAbbr
+                                + " averages " + average + " with a common range of " + range
+                                + ". See local cost drivers, foundation factors, and next steps after 2.0-3.9 or 4.0+ pCi/L.");
+                page.setIntentSectionTitle("Local Cost Plan for " + areaName + " Homes");
+                page.setIntentIntro("Start with the local cost range, then only move into quote comparison after a real test result supports it. "
+                                + areaName + " estimates center near " + average
+                                + ", but foundation type, routing, and whether this is a buyer/seller timeline can move the final quote.");
         }
 
         private String normalizeRadonResultBand(String radonResultBand) {

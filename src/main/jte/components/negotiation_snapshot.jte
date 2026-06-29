@@ -11,41 +11,56 @@
     final boolean isSelling = "selling".equals(intent);
     final boolean isHighReading = "above_4".equals(resultBand);
     final boolean isBorderline = "between_2_and_4".equals(resultBand);
-    final boolean showSnapshot = isBuying || isSelling || isHighReading || isBorderline;
+    final boolean costOverview = page.isCostOverviewMode();
+    final boolean showSnapshot = costOverview || isBuying || isSelling || isHighReading || isBorderline;
 
     final int startAnchor = page.getReceipt().getTotalAvg();
+    final int floorAnchor = page.getReceipt().getTotalLow();
     final int ceilingAnchor = page.getReceipt().getTotalHigh();
-    final String label = isBuying || isSelling ? "Negotiation Snapshot"
+    final String label = costOverview ? "Local Cost Snapshot"
+            : isBuying || isSelling ? "Negotiation Snapshot"
             : isHighReading ? "4.0+ Fast Path"
             : "Borderline Result Playbook";
-    final String title = isBuying
+    final String title = costOverview
+            ? county.getAreaDisplayName() + " Cost Range First"
+            : isBuying
             ? "Seller Credit Starting Point"
             : isSelling
                     ? "Closing-Credit Reserve"
                     : isHighReading
                             ? "High Reading Budget Snapshot"
                             : "2.0-3.9 Result Decision Snapshot";
-    final String primaryValueLabel = isBuying
+    final String primaryValueLabel = costOverview
+            ? "Modeled midpoint"
+            : isBuying
             ? "Start ask"
             : isSelling
                     ? "Reserve target"
                     : isHighReading
                             ? "Likely center"
                             : "Retest or act?";
-    final String primaryValue = isBorderline
+    final String primaryValue = costOverview
+            ? "$" + startAnchor
+            : isBorderline
             ? "Retest first"
             : "$" + startAnchor;
-    final String secondaryValueLabel = isBuying
+    final String secondaryValueLabel = costOverview
+            ? "Common range"
+            : isBuying
             ? "Ceiling ask"
             : isSelling
                     ? "Safe ceiling"
                     : isHighReading
                             ? "No-surprise ceiling"
                             : "Escalate when";
-    final String secondaryValue = isBorderline
+    final String secondaryValue = costOverview
+            ? "$" + floorAnchor + "-$" + ceilingAnchor
+            : isBorderline
             ? "4.0+ or rising"
             : "$" + ceilingAnchor;
-    final String description = isBuying
+    final String description = costOverview
+            ? "You searched for cost, so start with the local price range before the scenario details. Use this as the first budget anchor, then tune the form below for foundation type, reading, and whether this is a buyer, seller, or homeowner decision."
+            : isBuying
             ? "If you want a clean close in " + county.getAreaDisplayName() + ", start the repair-or-credit conversation around the local average and keep the local high range as your defensible ceiling."
             : isSelling
                     ? "If you prefer a faster closing, budget the local average first and treat the county high range as your reserve so you are not negotiating off a vague national number."
@@ -55,12 +70,16 @@
     final String creditCalculatorUrl = "/radon-credit-calculator/" + county.getStateSlug() + "/" + county.getCountySlug()
             + "?intent=" + page.getSelectedIntent()
             + "&radonResultBand=" + page.getSelectedRadonResultBand();
-    final String primaryCtaHref = (isBuying || isSelling)
+    final String primaryCtaHref = costOverview
+            ? "#estimate-form"
+            : (isBuying || isSelling)
             ? creditCalculatorUrl
             : isHighReading
                     ? "/guides/radon-seller-credit-worksheet"
             : "#estimate-form";
-    final String primaryCtaLabel = (isBuying || isSelling)
+    final String primaryCtaLabel = costOverview
+            ? "Get Local Next Step"
+            : (isBuying || isSelling)
             ? "Open Credit Calculator"
             : isHighReading
                     ? "Open 4.0+ Worksheet"
@@ -96,7 +115,9 @@
         <div class="rounded-2xl border border-slate-200 p-4">
             <p class="text-xs font-bold uppercase tracking-widest text-slate-500">Use when</p>
             <p class="mt-2 text-sm leading-relaxed text-slate-700">
-                @if(isBuying)
+                @if(costOverview)
+                    You need a county price anchor before deciding whether quotes make sense.
+                @elseif(isBuying)
                     You want a seller-paid repair or a cleaner closing credit.
                 @elseif(isSelling)
                     You want to cap the surprise before the buyer starts naming numbers.
@@ -116,7 +137,11 @@
         <div class="rounded-2xl border border-slate-200 p-4">
             <p class="text-xs font-bold uppercase tracking-widest text-slate-500">Next move</p>
             <p class="mt-2 text-sm leading-relaxed text-slate-700">
-                Use the worksheet if this is a deal conversation. Use the full action plan if you still need the quote path, timing, and next-step logic.
+                @if(costOverview)
+                    Adjust the form for your result and foundation before requesting quotes.
+                @else
+                    Use the worksheet if this is a deal conversation. Use the full action plan if you still need the quote path, timing, and next-step logic.
+                @endif
             </p>
         </div>
     </div>

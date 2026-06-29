@@ -32,6 +32,9 @@ public class SitemapController {
     @Value("${app.site.include-broad-zone-sitemap:false}")
     private boolean includeBroadZoneSitemap;
 
+    @Value("${app.site.index-county-cost-pages:true}")
+    private boolean indexCountyCostPages;
+
     @GetMapping(value = "/sitemap.xml", produces = MediaType.APPLICATION_XML_VALUE)
     @ResponseBody
     public String generateSitemapIndex() {
@@ -76,10 +79,18 @@ public class SitemapController {
                 .sorted((left, right) -> Integer.compare(
                         seoIndexingPolicyService.recoveryTrafficRank(left),
                         seoIndexingPolicyService.recoveryTrafficRank(right)))
-                .forEach(county -> addUrl(xml,
-                        "/radon-levels/" + county.getStateSlug() + "/" + county.getCountySlug(),
-                        "0.9",
-                        resolveCountyLastmod(county)));
+                .forEach(county -> {
+                    addUrl(xml,
+                            "/radon-levels/" + county.getStateSlug() + "/" + county.getCountySlug(),
+                            "0.9",
+                            resolveCountyLastmod(county));
+                    if (indexCountyCostPages && seoIndexingPolicyService.isCostPageIndexableCandidate(county)) {
+                        addUrl(xml,
+                                "/radon-mitigation-cost/" + county.getStateSlug() + "/" + county.getCountySlug(),
+                                "0.8",
+                                resolveCountyLastmod(county));
+                    }
+                });
 
         xml.append("</urlset>");
         return xml.toString();
@@ -99,10 +110,18 @@ public class SitemapController {
                 .sorted((left, right) -> Integer.compare(
                         seoIndexingPolicyService.growthTrafficRank(left),
                         seoIndexingPolicyService.growthTrafficRank(right)))
-                .forEach(county -> addUrl(xml,
-                        "/radon-levels/" + county.getStateSlug() + "/" + county.getCountySlug(),
-                        "0.85",
-                        resolveCountyLastmod(county)));
+                .forEach(county -> {
+                    addUrl(xml,
+                            "/radon-levels/" + county.getStateSlug() + "/" + county.getCountySlug(),
+                            "0.85",
+                            resolveCountyLastmod(county));
+                    if (indexCountyCostPages && seoIndexingPolicyService.isCostPageIndexableCandidate(county)) {
+                        addUrl(xml,
+                                "/radon-mitigation-cost/" + county.getStateSlug() + "/" + county.getCountySlug(),
+                                "0.75",
+                                resolveCountyLastmod(county));
+                    }
+                });
 
         xml.append("</urlset>");
         return xml.toString();
@@ -121,6 +140,7 @@ public class SitemapController {
         addUrl(xml, "/radon-levels", "0.9");
         addUrl(xml, "/about", "0.8");
         addUrl(xml, "/methodology", "0.8");
+        addUrl(xml, "/radon-data-sources", "0.8");
         addUrl(xml, "/contact", "0.8");
         addUrl(xml, "/guides", "0.8");
 

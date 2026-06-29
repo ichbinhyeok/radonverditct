@@ -50,7 +50,7 @@ public class PageController {
     @Value("${app.feature.monetization-hooks.enabled:false}")
     private boolean monetizationHooksEnabled;
 
-    @Value("${app.site.index-county-cost-pages:false}")
+    @Value("${app.site.index-county-cost-pages:true}")
     private boolean indexCountyCostPages;
 
     @Value("${app.site.base-url:https://radonverdict.com}")
@@ -241,11 +241,11 @@ public class PageController {
                         intent != null ? intent : "homeowner",
                         sqftCategory != null ? sqftCategory : "under_2000",
                         radonResultBand != null ? radonResultBand : "not_tested")
-                : contentService.buildDefaultPageContent(county);
+                : contentService.buildCostLandingPageContent(county);
         PageQualityResult quality = pageQualityService.scoreMitigationCountyPage(county, pageContent);
         pageContent.setIndexable(indexCountyCostPages
                 && quality.isIndexable()
-                && seoIndexingPolicyService.isCountyIndexableCandidate(county));
+                && seoIndexingPolicyService.isCostPageIndexableCandidate(county));
 
         TrustMetadata trust = trustMetadataService.forCountyPage(county);
         AeoAnswerBlock aeo = buildMitigationAeoBlock(county, pageContent, trust);
@@ -256,6 +256,7 @@ public class PageController {
         model.addAttribute("trust", trust);
         model.addAttribute("aeo", aeo);
         model.addAttribute("relatedLinks", internalLinkService.buildMitigationCountyLinks(county, pageContent));
+        model.addAttribute("countyZipCodes", countyZipCodes(county));
         model.addAttribute("monetizationHooksEnabled", monetizationHooksEnabled);
         model.addAttribute("showSeoDebug", seoDebugVisible);
         model.addAttribute("canonicalUrl",
@@ -433,6 +434,20 @@ public class PageController {
 
     private boolean hasCostScenarioOverrides(String foundation, String intent, String sqftCategory, String radonResultBand) {
         return foundation != null || intent != null || sqftCategory != null || radonResultBand != null;
+    }
+
+    private List<String> countyZipCodes(County county) {
+        if (county == null || county.getFips() == null) {
+            return List.of();
+        }
+
+        return dataLoadService.getZipToFipsMap().entrySet().stream()
+                .filter(entry -> county.getFips().equals(entry.getValue()))
+                .map(Map.Entry::getKey)
+                .filter(zip -> zip != null && zip.matches("\\d{5}"))
+                .sorted()
+                .limit(10)
+                .toList();
     }
 
     private RedirectView redirect(String path, HttpStatus status) {
