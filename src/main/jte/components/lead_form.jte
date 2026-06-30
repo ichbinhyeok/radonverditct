@@ -19,36 +19,36 @@
             ? page.getSelectedFoundationType()
             : "other";
     final String actionBadge = transactionIntent
-            ? "Saved credit plan"
+            ? "Credit follow-up"
             : highReading
-                    ? "Saved 4.0+ plan"
+                    ? "Quote-ready follow-up"
                     : notTested
                             ? "Saved test-first plan"
                             : "Saved local plan";
     final String actionHeadline = transactionIntent
-            ? "Save the local credit plan for " + county.getAreaDisplayName()
+            ? "Request a quote-ready credit follow-up for " + county.getAreaDisplayName()
             : highReading
-                    ? "Save the 4.0+ plan for " + county.getAreaDisplayName()
+                    ? "Request quote-ready next steps for " + county.getAreaDisplayName()
                     : notTested
                             ? "Save the test-first plan for " + county.getAreaDisplayName()
                             : "Save this local plan for " + county.getAreaDisplayName();
     final String actionIntro = transactionIntent
-            ? "We package the opening ask, ceiling, fallback range, and county context so you can use it in the next deal conversation."
+            ? "Send the opening ask, ceiling, fallback range, and county context so follow-up can focus on the deal number instead of rebuilding the situation."
             : highReading
-                    ? "We package the local price anchor, immediate next move, quote script, and bid checks so you can compare contractors without rebuilding context."
+                    ? "Send the local price anchor, immediate next move, quote script, and bid checks so follow-up can focus on the scope and timing."
                     : notTested
                             ? "We package the testing path, what to ignore for now, and when it is actually time to price mitigation."
                             : "We package the selected result, county range, and next move so you can decide whether to retest, hold, or plan quotes.";
     final String submitLabel = transactionIntent
-            ? "Save My Credit Plan"
+            ? "Request Credit Follow-Up"
             : highReading
-                    ? "Save My 4.0+ Plan"
+                    ? "Request Quote Follow-Up"
                     : notTested
                             ? "Save My Test Plan"
                             : "Save My Local Plan";
     final String footerCopy = transactionIntent
-            ? "We contact only about this saved credit plan and relevant local follow-up options."
-            : "We contact only about this saved plan and relevant local follow-up options.";
+            ? "We contact only about this credit plan and relevant local follow-up options."
+            : "We contact only about this plan and relevant local follow-up options.";
 }
 
 <div class="bg-slate-900 rounded-3xl p-8 shadow-2xl mt-12 mb-12" id="estimate-form" data-nosnippet>
@@ -74,7 +74,7 @@
                 </li>
                 <li class="flex items-center text-slate-300">
                     <svg class="h-5 w-5 text-indigo-400 mr-3 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path></svg>
-                    Optional local availability context only when it fits the scenario
+                    Priority and availability context only when it fits the scenario
                 </li>
             </ul>
         </div>
@@ -126,15 +126,15 @@
                 </div>
             @else
                 <div class="mb-5 grid grid-cols-1 sm:grid-cols-3 gap-2">
-                    <div class="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-xs text-slate-600 font-medium">Reply window: typically within 24 hours</div>
+                    <div class="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-xs text-slate-600 font-medium">Priority captured for follow-up</div>
                     <div class="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-xs text-slate-600 font-medium">No obligation to hire anyone</div>
                     <div class="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-xs text-slate-600 font-medium">No call blasts or list selling</div>
                 </div>
                 <p class="mb-4 text-xs text-slate-500 font-semibold">
                     @if(hasPrefilledZip)
-                        Required now: Email. ZIP is already locked from your county lookup. Phone is optional.
+                        Required now: Email. ZIP is already locked from your county lookup. Phone and priority help if timing matters.
                     @else
-                        Required now: Email + ZIP. Phone is optional.
+                        Required now: Email + ZIP. Phone and priority help if timing matters.
                     @endif
                 </p>
                 <form action="/submit-lead" method="POST" class="space-y-4"
@@ -217,6 +217,38 @@
                             <span class="inline-flex items-center rounded-full bg-white px-3 py-1 text-xs font-semibold text-slate-700 ring-1 ring-inset ring-slate-200">${page.getSelectedFoundationLabel()}</span>
                         </div>
                     </div>
+
+                    <fieldset class="rounded-xl border border-slate-200 bg-white p-4">
+                        <legend class="px-1 text-sm font-bold text-slate-800">Follow-up priority</legend>
+                        <div class="mt-3 grid grid-cols-1 gap-2">
+                            <label class="cursor-pointer">
+                                @if(transactionIntent || highReading)
+                                    <input type="radio" name="preferredContactTime" value="urgent_24h" checked required class="peer sr-only" @change="if(typeof rvTrack === 'function') rvTrack('lead_priority_selected', { event_category: 'engagement', lead_source: 'county_action_plan_form', priority: 'urgent_24h' });">
+                                @else
+                                    <input type="radio" name="preferredContactTime" value="urgent_24h" required class="peer sr-only" @change="if(typeof rvTrack === 'function') rvTrack('lead_priority_selected', { event_category: 'engagement', lead_source: 'county_action_plan_form', priority: 'urgent_24h' });">
+                                @endif
+                                <span class="block rounded-lg border border-slate-200 px-3 py-2 text-xs font-semibold text-slate-600 transition-colors peer-checked:border-indigo-500 peer-checked:bg-indigo-50 peer-checked:text-indigo-800">
+                                    Inspection deadline or quote needed in 24 hours
+                                </span>
+                            </label>
+                            <label class="cursor-pointer">
+                                <input type="radio" name="preferredContactTime" value="this_week" class="peer sr-only" @change="if(typeof rvTrack === 'function') rvTrack('lead_priority_selected', { event_category: 'engagement', lead_source: 'county_action_plan_form', priority: 'this_week' });">
+                                <span class="block rounded-lg border border-slate-200 px-3 py-2 text-xs font-semibold text-slate-600 transition-colors peer-checked:border-indigo-500 peer-checked:bg-indigo-50 peer-checked:text-indigo-800">
+                                    This week is fine
+                                </span>
+                            </label>
+                            <label class="cursor-pointer">
+                                @if(transactionIntent || highReading)
+                                    <input type="radio" name="preferredContactTime" value="email_only" class="peer sr-only" @change="if(typeof rvTrack === 'function') rvTrack('lead_priority_selected', { event_category: 'engagement', lead_source: 'county_action_plan_form', priority: 'email_only' });">
+                                @else
+                                    <input type="radio" name="preferredContactTime" value="email_only" checked class="peer sr-only" @change="if(typeof rvTrack === 'function') rvTrack('lead_priority_selected', { event_category: 'engagement', lead_source: 'county_action_plan_form', priority: 'email_only' });">
+                                @endif
+                                <span class="block rounded-lg border border-slate-200 px-3 py-2 text-xs font-semibold text-slate-600 transition-colors peer-checked:border-indigo-500 peer-checked:bg-indigo-50 peer-checked:text-indigo-800">
+                                    Email only for now
+                                </span>
+                            </label>
+                        </div>
+                    </fieldset>
 
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         @if(hasPrefilledZip)

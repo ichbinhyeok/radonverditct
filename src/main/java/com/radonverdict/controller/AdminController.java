@@ -1,6 +1,7 @@
 package com.radonverdict.controller;
 
 import com.radonverdict.model.entity.Lead;
+import com.radonverdict.service.LeadScoringService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -80,6 +81,22 @@ public class AdminController {
             }
         }
 
+        String intent = cols.size() > 9 ? cols.get(9) : "";
+        String resultBand = cols.size() > 10 ? cols.get(10) : "";
+        String contactPriority = cols.size() > 11 ? cols.get(11) : "";
+        String phone = cols.get(2);
+        Boolean hasTested = cols.get(8).isBlank() ? null : Boolean.parseBoolean(cols.get(8));
+        LeadScoringService.LeadScore fallbackScore = LeadScoringService.score(
+                intent,
+                resultBand,
+                contactPriority,
+                phone,
+                hasTested);
+
+        Integer leadScore = parseLeadScore(cols.size() > 12 ? cols.get(12) : null, fallbackScore.score());
+        String leadTier = cols.size() > 13 && !cols.get(13).isBlank() ? cols.get(13) : fallbackScore.tier();
+        String nextAction = cols.size() > 14 && !cols.get(14).isBlank() ? cols.get(14) : fallbackScore.nextAction();
+
         return Lead.builder()
                 .submittedAt(submittedAt)
                 .customerName(cols.get(1))
@@ -89,8 +106,25 @@ public class AdminController {
                 .stateAbbr(cols.get(5))
                 .countySlug(cols.get(6))
                 .foundationType(cols.get(7).isBlank() ? null : cols.get(7))
-                .isTested(cols.get(8).isBlank() ? null : Boolean.parseBoolean(cols.get(8)))
+                .isTested(hasTested)
+                .selectedIntent(intent.isBlank() ? null : intent)
+                .selectedRadonResultBand(resultBand.isBlank() ? null : resultBand)
+                .preferredContactTime(contactPriority.isBlank() ? null : contactPriority)
+                .leadScore(leadScore)
+                .leadTier(leadTier)
+                .nextAction(nextAction)
                 .build();
+    }
+
+    private Integer parseLeadScore(String raw, int fallback) {
+        if (raw == null || raw.isBlank()) {
+            return fallback;
+        }
+        try {
+            return Integer.parseInt(raw);
+        } catch (NumberFormatException e) {
+            return fallback;
+        }
     }
 
     static List<String> parseCsvColumns(String line) {

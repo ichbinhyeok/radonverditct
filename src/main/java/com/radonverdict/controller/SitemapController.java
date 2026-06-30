@@ -150,11 +150,12 @@ public class SitemapController {
         addUrl(xml, "/privacy", "0.5");
         addUrl(xml, "/terms", "0.5");
 
-        // 2. All 11 Guides
+        // 2. Core Guides
         addUrl(xml, "/guides/diy-vs-professional-radon-mitigation", "0.7");
         addUrl(xml, "/guides/radon-mitigation-timeline-how-long-does-it-take", "0.7");
         addUrl(xml, "/guides/how-to-test-for-radon", "0.7");
         addUrl(xml, "/guides/who-pays-radon-mitigation-buyer-or-seller", "0.7");
+        addUrl(xml, "/guides/radon-failed-inspection", "0.8");
         addUrl(xml, "/guides/radon-exposure-symptoms", "0.7");
         addUrl(xml, "/guides/active-vs-passive-radon-system", "0.7");
         addUrl(xml, "/guides/radon-fan-noise-troubleshooting", "0.7");

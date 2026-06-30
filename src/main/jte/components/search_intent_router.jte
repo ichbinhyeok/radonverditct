@@ -23,7 +23,7 @@
             : "/radon-cost-calculator";
     final String failedInspectionPath = hasCounty
             ? creditPath + "?intent=buying&radonResultBand=above_4&foundation=basement"
-            : "/radon-credit-calculator";
+            : "/guides/radon-failed-inspection";
     final String sellerResponsePath = hasCounty
             ? creditPath + "?intent=selling&radonResultBand=above_4&foundation=basement"
             : "/radon-credit-calculator";

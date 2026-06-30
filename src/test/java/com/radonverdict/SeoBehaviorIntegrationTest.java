@@ -60,6 +60,7 @@ class SeoBehaviorIntegrationTest {
                 .andExpect(content().string(containsString("Search intent router")))
                 .andExpect(content().string(containsString("Start from the exact job, not another generic radon article.")))
                 .andExpect(content().string(containsString("I need a repair or seller credit number")))
+                .andExpect(content().string(containsString("href=\"/guides/radon-failed-inspection\"")))
                 .andExpect(content().string(containsString("Foundation fast lanes")))
                 .andExpect(content().string(containsString("Not another radon article.")));
     }
@@ -126,6 +127,7 @@ class SeoBehaviorIntegrationTest {
                 .andExpect(content().string(containsString("Radon mitigation cost after failed inspection")))
                 .andExpect(content().string(containsString("Search intent router")))
                 .andExpect(content().string(containsString("I need a repair or seller credit number")))
+                .andExpect(content().string(containsString("href=\"/guides/radon-failed-inspection\"")))
                 .andExpect(content().string(containsString("href=\"/radon-cost-calculator?foundation=basement\"")))
                 .andExpect(content().string(containsString("Basement, slab, and crawl-space cost ranges")))
                 .andExpect(content().string(containsString("When the cost question becomes urgent")))
@@ -313,6 +315,7 @@ class SeoBehaviorIntegrationTest {
                 .andExpect(content().string(containsString("<loc>https://radonverdict.com/</loc>")))
                 .andExpect(content().string(containsString("/radon-data-sources")))
                 .andExpect(content().string(containsString("/radon-credit-calculator")))
+                .andExpect(content().string(containsString("/guides/radon-failed-inspection")))
                 .andExpect(content().string(containsString("/guides/radon-seller-credit-worksheet")));
 
         mockMvc.perform(get("/sitemap-zone-high.xml"))
@@ -586,7 +589,8 @@ class SeoBehaviorIntegrationTest {
                 .andExpect(content().string(containsString("Seller Credit Starting Point")))
                 .andExpect(content().string(containsString("Open Credit Calculator")))
                 .andExpect(content().string(containsString("/radon-credit-calculator/california/los-angeles-county?intent=buying&amp;radonResultBand=above_4")))
-                .andExpect(content().string(containsString("Save My Credit Plan")));
+                .andExpect(content().string(containsString("Request Credit Follow-Up")))
+                .andExpect(content().string(containsString("Follow-up priority")));
     }
 
     @Test
@@ -598,7 +602,8 @@ class SeoBehaviorIntegrationTest {
                 .andExpect(content().string(containsString("4.0+ Radon Result in Los Angeles County, CA: Cost and Next Step")))
                 .andExpect(content().string(containsString("High Reading Budget Snapshot")))
                 .andExpect(content().string(containsString("Open 4.0+ Worksheet")))
-                .andExpect(content().string(containsString("Save My 4.0+ Plan")));
+                .andExpect(content().string(containsString("Request Quote Follow-Up")))
+                .andExpect(content().string(containsString("Inspection deadline or quote needed in 24 hours")));
     }
 
     @Test
@@ -1534,6 +1539,30 @@ class SeoBehaviorIntegrationTest {
                 .getContentAsString();
 
         assertJsonLdBlocksAreValid(html);
+    }
+
+    @Test
+    void failedInspectionGuideLoadsAsHighIntentDecisionHub() throws Exception {
+        String html = mockMvc.perform(get("/guides/radon-failed-inspection"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(not(containsString("<meta name=\"robots\" content=\"noindex, follow\">"))))
+                .andExpect(content().string(containsString("<title>Radon Failed Inspection: Seller Credit, Cost, and Retest Plan | RadonVerdict</title>")))
+                .andExpect(content().string(containsString("<link rel=\"canonical\" href=\"https://radonverdict.com/guides/radon-failed-inspection\">")))
+                .andExpect(content().string(containsString("Radon failed inspection: credit, repair, or retest?")))
+                .andExpect(content().string(containsString("Calculate seller credit")))
+                .andExpect(content().string(containsString("Open local cost path")))
+                .andExpect(content().string(containsString("Do these in the right order.")))
+                .andExpect(content().string(containsString("Who pays after a failed radon inspection?")))
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+
+        assertJsonLdBlocksAreValid(html);
+
+        mockMvc.perform(get("/guides"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("High-intent guide")))
+                .andExpect(content().string(containsString("href=\"/guides/radon-failed-inspection\"")));
     }
 
     @Test

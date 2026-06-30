@@ -36,6 +36,12 @@ public class LeadService {
 
         // This simulates retrieving the actual consent text associated with a version
         String consentTextSnapshot = getConsentSnapshot(request.getConsentVersion());
+        LeadScoringService.LeadScore leadScore = LeadScoringService.score(
+                request.getSelectedIntent(),
+                request.getSelectedRadonResultBand(),
+                request.getPreferredContactTime(),
+                request.getCustomerPhone(),
+                request.getHasTested());
 
         Lead lead = Lead.builder()
                 .customerName(request.getCustomerName())
@@ -47,6 +53,11 @@ public class LeadService {
                 .preferredContactTime(request.getPreferredContactTime())
                 .stateAbbr(request.getStateAbbr())
                 .countySlug(request.getCountySlug())
+                .selectedIntent(request.getSelectedIntent())
+                .selectedRadonResultBand(request.getSelectedRadonResultBand())
+                .leadScore(leadScore.score())
+                .leadTier(leadScore.tier())
+                .nextAction(leadScore.nextAction())
                 .consentVersion(request.getConsentVersion())
                 .consentTextSnapshot(consentTextSnapshot)
                 .ipAddress(ipAddress)
@@ -71,11 +82,11 @@ public class LeadService {
 
                 try (PrintWriter pw = new PrintWriter(new FileWriter(path.toFile(), true))) {
                     if (isNewFile) {
-                        pw.println("Date,Name,Phone,Email,Zip,State,County,Foundation,Tested,Intent,ResultBand");
+                        pw.println("Date,Name,Phone,Email,Zip,State,County,Foundation,Tested,Intent,ResultBand,ContactPriority,LeadScore,LeadTier,NextAction");
                     }
 
                     String date = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-                    pw.printf("\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\"%n",
+                    pw.printf("\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\"%n",
                             date,
                             escapeCsv(lead.getCustomerName()),
                             escapeCsv(lead.getCustomerPhone()),
@@ -86,7 +97,11 @@ public class LeadService {
                             escapeCsv(lead.getFoundationType() != null ? lead.getFoundationType() : ""),
                             lead.getIsTested() != null ? lead.getIsTested().toString() : "",
                             escapeCsv(request.getSelectedIntent() != null ? request.getSelectedIntent() : ""),
-                            escapeCsv(request.getSelectedRadonResultBand() != null ? request.getSelectedRadonResultBand() : ""));
+                            escapeCsv(request.getSelectedRadonResultBand() != null ? request.getSelectedRadonResultBand() : ""),
+                            escapeCsv(lead.getPreferredContactTime() != null ? lead.getPreferredContactTime() : ""),
+                            lead.getLeadScore() != null ? lead.getLeadScore().toString() : "",
+                            escapeCsv(lead.getLeadTier() != null ? lead.getLeadTier() : ""),
+                            escapeCsv(lead.getNextAction() != null ? lead.getNextAction() : ""));
                 }
             }
         } catch (IOException e) {

@@ -6,6 +6,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -47,6 +48,21 @@ public class Lead {
 
     @Column(name = "preferred_contact_time", length = 50)
     private String preferredContactTime;
+
+    @Transient
+    private String selectedIntent;
+
+    @Transient
+    private String selectedRadonResultBand;
+
+    @Transient
+    private Integer leadScore;
+
+    @Transient
+    private String leadTier;
+
+    @Transient
+    private String nextAction;
 
     @Column(name = "county_slug", length = 100)
     private String countySlug;

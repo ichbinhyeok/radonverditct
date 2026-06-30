@@ -11,6 +11,22 @@
                 Everything you need to know to lower your home's radon levels safely and cost-effectively. Read our expert resources before hiring a contractor.
             </p>
 
+            <a href="/guides/radon-failed-inspection"
+               class="group mb-16 grid gap-6 rounded-[1.75rem] border border-rose-200 bg-rose-50 p-5 transition-colors hover:border-rose-300 hover:bg-rose-100 md:grid-cols-[0.9fr_1.1fr] md:items-center">
+                <div>
+                    <span class="inline-block rounded-full bg-white px-3 py-1 text-xs font-bold uppercase tracking-wider text-rose-700 ring-1 ring-inset ring-rose-200">High-intent guide</span>
+                    <h2 class="mt-4 font-display text-3xl font-black tracking-tight text-slate-950">Radon failed inspection: credit, repair, or retest?</h2>
+                    <p class="mt-3 text-sm font-medium leading-relaxed text-slate-700">
+                        The page for buyers, sellers, and agents who need a number and a next move before the inspection deadline.
+                    </p>
+                </div>
+                <div class="grid gap-2 sm:grid-cols-3">
+                    <span class="rounded-xl border border-rose-200 bg-white px-3 py-3 text-xs font-black text-rose-800">Seller credit</span>
+                    <span class="rounded-xl border border-rose-200 bg-white px-3 py-3 text-xs font-black text-rose-800">Local cost</span>
+                    <span class="rounded-xl border border-rose-200 bg-white px-3 py-3 text-xs font-black text-rose-800">Retest plan</span>
+                </div>
+            </a>
+
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8 border-t border-slate-200 pt-16">
                 <!-- Article 1 -->
                 <a href="/guides/diy-vs-professional-radon-mitigation" class="group block">

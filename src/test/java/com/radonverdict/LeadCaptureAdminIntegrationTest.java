@@ -56,6 +56,7 @@ class LeadCaptureAdminIntegrationTest {
                         .param("stateSlug", "virginia")
                         .param("stateAbbr", "VA")
                         .param("consentVersion", "v1.0")
+                        .param("preferredContactTime", "urgent_24h")
                         .param("selectedIntent", "homeowner")
                         .param("selectedRadonResultBand", "above_4"))
                 .andExpect(status().is3xxRedirection())
@@ -64,11 +65,20 @@ class LeadCaptureAdminIntegrationTest {
 
         assertTrue(Files.exists(LEADS_CSV_PATH), "Lead CSV should exist after a successful submission.");
         assertTrue(Files.readString(LEADS_CSV_PATH).contains(email), "Lead CSV should contain the submitted email.");
+        assertTrue(Files.readString(LEADS_CSV_PATH).contains("urgent_24h"), "Lead CSV should contain contact priority.");
+        assertTrue(Files.readString(LEADS_CSV_PATH).contains("LeadScore"), "Lead CSV should contain lead score header.");
+        assertTrue(Files.readString(LEADS_CSV_PATH).contains("HOT"), "High-intent lead should be scored hot.");
 
         mockMvc.perform(get("/admin/leads")
                         .header("Authorization", basicAuth("admin", "tlsgur3108")))
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("Leads Dashboard")))
+                .andExpect(content().string(containsString("Call first")))
+                .andExpect(content().string(containsString("Score")))
+                .andExpect(content().string(containsString("Next Action")))
+                .andExpect(content().string(containsString("HOT")))
+                .andExpect(content().string(containsString("Priority")))
+                .andExpect(content().string(containsString("urgent_24h")))
                 .andExpect(content().string(containsString(email)))
                 .andExpect(content().string(containsString("fairfax-city")));
     }

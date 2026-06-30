@@ -58,6 +58,12 @@ public class GuideController {
         return "pages/guide_real_estate";
     }
 
+    @GetMapping("/guides/radon-failed-inspection")
+    public String guideFailedInspection(Model model) {
+        model.addAttribute("title", "Radon Failed Inspection: Credit, Cost, and Retest Plan | RadonVerdict");
+        return "pages/guide_failed_inspection";
+    }
+
     @GetMapping("/guides/radon-seller-credit-worksheet")
     public String guideSellerCreditWorksheet(Model model) {
         model.addAttribute("title", "Radon Seller Credit Worksheet | RadonVerdict");
