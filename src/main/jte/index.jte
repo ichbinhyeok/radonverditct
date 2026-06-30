@@ -184,6 +184,12 @@
 
         <section class="bg-white py-14 sm:py-16">
             <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+                @template.components.search_intent_router(className = "mt-0")
+            </div>
+        </section>
+
+        <section class="bg-white py-14 sm:py-16">
+            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:items-start">
                     <div>
                         <p class="text-xs font-bold uppercase tracking-[0.25em] text-slate-500">Pick the job</p>

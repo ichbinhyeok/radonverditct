@@ -128,6 +128,12 @@
             <!-- 1. Above the Fold: Hero Section -->
             @template.components.hero_section(page = page)
             @template.components.negotiation_snapshot(county = county, page = page)
+            @template.components.radon_result_translator(
+                county = county,
+                page = page,
+                countySignalSummary = "Use this as the local decision console: set the reading, deal side, and foundation clue before you compare quotes or seller-credit numbers."
+            )
+            @template.components.search_intent_router(county = county, className = "mt-8")
 
             @if(hasCountyZipCodes)
             <section class="mt-8 rounded-3xl border border-slate-200 bg-slate-50 p-5 sm:p-7">

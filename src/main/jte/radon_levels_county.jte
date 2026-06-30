@@ -1022,6 +1022,7 @@
                         measuredPrimaryResultDisplay = measuredPrimaryResultDisplay,
                         measuredPercentAbove4Display = measuredPercentAbove4Display
                     )
+                    @template.components.search_intent_router(county = county, className = "mt-8")
 
                     <div id="situation-picker" class="mt-8 rounded-[1.75rem] bg-white p-5 sm:p-6 shadow-2xl border border-white/10">
                         <div class="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between mb-5">

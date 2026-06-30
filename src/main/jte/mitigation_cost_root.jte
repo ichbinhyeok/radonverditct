@@ -178,6 +178,8 @@
                 </div>
             </section>
 
+            @template.components.search_intent_router(className = "mb-14")
+
             <section id="foundation-cost-ranges">
                 <div class="flex flex-col gap-3 md:flex-row md:items-end md:justify-between mb-6">
                     <div>

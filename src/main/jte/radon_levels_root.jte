@@ -187,6 +187,8 @@
                 </div>
             </section>
 
+            @template.components.search_intent_router(className = "mb-14")
+
             @if(evidenceCoverage != null && evidenceCoverage.getTotalCount() > 0)
                 <section class="mb-14 rounded-2xl border border-slate-200 bg-white p-5 sm:p-6 shadow-sm">
                     <div class="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">

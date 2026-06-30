@@ -57,6 +57,10 @@ class SeoBehaviorIntegrationTest {
                 .andExpect(content().string(containsString(":action=\"targetAction\"")))
                 .andExpect(content().string(containsString("name=\"foundationType\"")))
                 .andExpect(content().string(containsString("situation_decoder_submit")))
+                .andExpect(content().string(containsString("Search intent router")))
+                .andExpect(content().string(containsString("Start from the exact job, not another generic radon article.")))
+                .andExpect(content().string(containsString("I need a repair or seller credit number")))
+                .andExpect(content().string(containsString("Foundation fast lanes")))
                 .andExpect(content().string(containsString("Not another radon article.")));
     }
 
@@ -120,6 +124,9 @@ class SeoBehaviorIntegrationTest {
                 .andExpect(content().string(containsString("Basement vs slab vs crawl-space radon system cost")))
                 .andExpect(content().string(containsString("Radon mitigation cost for 4.0+ pCi/L")))
                 .andExpect(content().string(containsString("Radon mitigation cost after failed inspection")))
+                .andExpect(content().string(containsString("Search intent router")))
+                .andExpect(content().string(containsString("I need a repair or seller credit number")))
+                .andExpect(content().string(containsString("href=\"/radon-cost-calculator?foundation=basement\"")))
                 .andExpect(content().string(containsString("Basement, slab, and crawl-space cost ranges")))
                 .andExpect(content().string(containsString("When the cost question becomes urgent")))
                 .andExpect(content().string(containsString("Browse radon mitigation cost by state")))
@@ -515,6 +522,14 @@ class SeoBehaviorIntegrationTest {
     void countyHubUsesActionPlanInputsInsteadOfCostOnlyFraming() throws Exception {
         mockMvc.perform(get("/radon-mitigation-cost/california/los-angeles-county"))
                 .andExpect(status().isOk())
+                .andExpect(content().string(containsString("Enter the result. Pick the deal side. Get the route.")))
+                .andExpect(content().string(containsString("Decision side")))
+                .andExpect(content().string(containsString("Foundation clue")))
+                .andExpect(content().string(containsString("data-base-credit-url=\"/radon-credit-calculator/california/los-angeles-county\"")))
+                .andExpect(content().string(containsString("Search intent router")))
+                .andExpect(content().string(containsString("Pick the situation that matches Los Angeles County, CA")))
+                .andExpect(content().string(containsString("href=\"/radon-credit-calculator/california/los-angeles-county?intent=buying&amp;radonResultBand=above_4&amp;foundation=basement\"")))
+                .andExpect(content().string(containsString("href=\"/radon-mitigation-cost/california/los-angeles-county?foundation=crawlspace&amp;radonResultBand=above_4&amp;intent=homeowner#estimate-form\"")))
                 .andExpect(content().string(containsString("Build Your Local Action Plan")))
                 .andExpect(content().string(containsString("Current Result")))
                 .andExpect(content().string(containsString("Not tested")))
@@ -545,6 +560,9 @@ class SeoBehaviorIntegrationTest {
                 .getResponse()
                 .getContentAsString();
 
+        assertTrue(html.indexOf("id=\"result-translator\"") < html.indexOf("id=\"estimate-form\""));
+        assertTrue(html.indexOf("id=\"result-translator\"") < html.indexOf("id=\"search-intent-router\""));
+        assertTrue(html.indexOf("id=\"search-intent-router\"") < html.indexOf("id=\"estimate-form\""));
         assertTrue(html.indexOf("id=\"estimate-form\"") < html.indexOf("Your 30-second local estimate snapshot"));
     }
 
@@ -592,7 +610,7 @@ class SeoBehaviorIntegrationTest {
                 .andExpect(content().string(containsString("data-nosnippet")))
                 .andExpect(content().string(containsString("Official local answer:")))
                 .andExpect(content().string(containsString("Home result translator")))
-                .andExpect(content().string(containsString("Enter your radon number. Get the next move.")))
+                .andExpect(content().string(containsString("Enter the result. Pick the deal side. Get the route.")))
                 .andExpect(content().string(containsString("Check my result")))
                 .andExpect(content().string(containsString("Copy next-step note")))
                 .andExpect(content().string(containsString("Open local cost plan")))
@@ -943,6 +961,9 @@ class SeoBehaviorIntegrationTest {
                 .andExpect(content().string(containsString("<title>Radon Levels: What 2.0, 4.0, and 8.0 pCi/L Mean | EPA Guide</title>")))
                 .andExpect(content().string(containsString("Radon Levels: What 2.0, 4.0, and 8.0 pCi/L Mean")))
                 .andExpect(content().string(containsString("Popular radon level searches")))
+                .andExpect(content().string(containsString("Search intent router")))
+                .andExpect(content().string(containsString("I need to know if this number is bad")))
+                .andExpect(content().string(containsString("href=\"/radon-levels#level-meaning\"")))
                 .andExpect(content().string(containsString("What does 4.0 pCi/L radon mean?")))
                 .andExpect(content().string(containsString("Is 2.5 pCi/L radon bad?")))
                 .andExpect(content().string(containsString("What does 8.0 pCi/L radon mean?")))
@@ -1284,9 +1305,16 @@ class SeoBehaviorIntegrationTest {
                 .getContentAsString();
 
         assertTrue(html.contains("data-track-event=\"levels_mobile_jump_click\""));
+        assertTrue(html.contains("Decision side"));
+        assertTrue(html.contains("Foundation clue"));
+        assertTrue(html.contains("data-rv-intent=\"buying\""));
+        assertTrue(html.contains("data-rv-foundation=\"crawlspace\""));
+        assertTrue(html.contains("href=\"/radon-credit-calculator/california/los-angeles-county?intent=buying&amp;radonResultBand=above_4&amp;foundation=basement\""));
         assertTrue(html.indexOf("id=\"county-evidence-first\"") < html.indexOf("id=\"situation-picker\""));
         assertTrue(html.indexOf("id=\"county-evidence-first\"") < html.indexOf("id=\"result-translator\""));
         assertTrue(html.indexOf("id=\"result-translator\"") < html.indexOf("id=\"situation-picker\""));
+        assertTrue(html.indexOf("id=\"result-translator\"") < html.indexOf("id=\"search-intent-router\""));
+        assertTrue(html.indexOf("id=\"search-intent-router\"") < html.indexOf("id=\"situation-picker\""));
         assertFalse(html.contains("data-rv-affiliate-link=\"true\""));
         assertTrue(html.indexOf("Measured Radon Data") < html.indexOf("Check your state radon program"));
         assertTrue(html.indexOf("id=\"situation-picker\"") < html.indexOf("Your Radon Reading"));
