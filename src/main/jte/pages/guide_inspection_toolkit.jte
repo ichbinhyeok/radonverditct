@@ -30,6 +30,27 @@
                 }]
             }
         </script>
+        <script type="application/ld+json">
+            {
+                "@context": "https://schema.org",
+                "@type": "HowTo",
+                "name": "Radon failed inspection decision path",
+                "description": "A practical sequence for explaining a radon failed inspection, pricing the local fix, choosing repair or credit, and adding an anonymized quote signal.",
+                "step": [{
+                    "@type": "HowToStep",
+                    "name": "Confirm the result and test setup"
+                },{
+                    "@type": "HowToStep",
+                    "name": "Open the local cost or seller-credit path"
+                },{
+                    "@type": "HowToStep",
+                    "name": "Choose repair, credit, retest, or buyer-managed mitigation"
+                },{
+                    "@type": "HowToStep",
+                    "name": "Add an anonymized quote or credit signal"
+                }]
+            }
+        </script>
     `,
     content = @`
         <section class="bg-white">
@@ -131,6 +152,60 @@
                            class="inline-flex min-h-[48px] items-center justify-center rounded-xl border border-slate-200 px-4 text-sm font-black text-slate-800 transition-colors hover:bg-slate-50">
                             Open worksheet
                         </a>
+                    </div>
+                </div>
+            </section>
+
+            <section class="mt-16 border-y border-slate-200 py-10">
+                <div class="grid gap-8 lg:grid-cols-[0.82fr_1.18fr] lg:items-start">
+                    <div>
+                        <p class="text-xs font-bold uppercase tracking-[0.22em] text-slate-500">Copy/paste packet</p>
+                        <h2 class="mt-3 font-display text-3xl font-black tracking-tight text-slate-950">Send one clean radon note, then collect one quote signal.</h2>
+                        <p class="mt-3 text-sm leading-relaxed text-slate-600">
+                            This is the resource-page version: short enough for an agent email, specific enough for a buyer or seller to choose the next step, and connected to local cost data.
+                        </p>
+                    </div>
+
+                    <div class="rounded-[1.75rem] border border-slate-200 bg-white p-5 sm:p-6">
+                        <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500">Client-ready language</p>
+                        <p class="mt-3 text-sm leading-relaxed text-slate-700">
+                            The radon result is a decision item, not a panic item. First confirm the test setup and result band. If the reading is 4.0+ pCi/L, use the local cost path before asking for repair or credit. If the quote comes back, remove personal details and add the ZIP, foundation, result band, quote status, and price to the quote ledger so future local estimates get sharper.
+                        </p>
+                        <div class="mt-5 grid gap-3 sm:grid-cols-3">
+                            <a href="/radon-cost-calculator"
+                               data-track-event="inspection_packet_click"
+                               data-track-label="cost_calculator"
+                               class="inline-flex min-h-[48px] items-center justify-center rounded-xl bg-slate-950 px-4 text-sm font-black text-white transition-colors hover:bg-slate-800">
+                                Local cost
+                            </a>
+                            <a href="/radon-credit-calculator"
+                               data-track-event="inspection_packet_click"
+                               data-track-label="credit_calculator"
+                               class="inline-flex min-h-[48px] items-center justify-center rounded-xl border border-slate-200 px-4 text-sm font-black text-slate-800 transition-colors hover:bg-slate-50">
+                                Seller credit
+                            </a>
+                            <a href="/radon-quote-ledger"
+                               data-track-event="inspection_packet_click"
+                               data-track-label="quote_ledger"
+                               class="inline-flex min-h-[48px] items-center justify-center rounded-xl border border-slate-200 px-4 text-sm font-black text-slate-800 transition-colors hover:bg-slate-50">
+                                Add quote
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-8 divide-y divide-slate-200 rounded-[1.75rem] border border-slate-200 bg-slate-50">
+                    <div class="grid gap-3 p-5 md:grid-cols-[0.26fr_0.74fr]">
+                        <p class="font-display text-xl font-black text-indigo-700">Before call</p>
+                        <p class="text-sm leading-relaxed text-slate-700">Collect the reading, test duration, test location, ZIP, foundation clue, and deadline.</p>
+                    </div>
+                    <div class="grid gap-3 p-5 md:grid-cols-[0.26fr_0.74fr]">
+                        <p class="font-display text-xl font-black text-indigo-700">During call</p>
+                        <p class="text-sm leading-relaxed text-slate-700">Ask whether the quote is sub-slab, sump seal, crawl-space, fan replacement, commercial, or inspection-deadline driven.</p>
+                    </div>
+                    <div class="grid gap-3 p-5 md:grid-cols-[0.26fr_0.74fr]">
+                        <p class="font-display text-xl font-black text-indigo-700">After call</p>
+                        <p class="text-sm leading-relaxed text-slate-700">Add one quote signal after the contractor call: ZIP, result band, foundation, quote status, price, and scope clue only.</p>
                     </div>
                 </div>
             </section>

@@ -32,6 +32,38 @@
                 }]
             }
         </script>
+        <script type="application/ld+json">
+            {
+                "@context": "https://schema.org",
+                "@type": "Dataset",
+                "name": "RadonVerdict observed radon quote ledger",
+                "url": "https://radonverdict.com/radon-quote-ledger",
+                "description": "An anonymized intake ledger for radon mitigation quotes, seller credits, result bands, foundation types, and ZIP-routed county benchmarks.",
+                "creator": {
+                    "@type": "Organization",
+                    "name": "RadonVerdict",
+                    "url": "https://radonverdict.com/"
+                },
+                "isAccessibleForFree": true,
+                "measurementTechnique": "User-submitted anonymized quote and credit signals validated against ZIP-to-county routing.",
+                "variableMeasured": [{
+                    "@type": "PropertyValue",
+                    "name": "ZIP code"
+                },{
+                    "@type": "PropertyValue",
+                    "name": "Radon reading pCi/L"
+                },{
+                    "@type": "PropertyValue",
+                    "name": "Foundation type"
+                },{
+                    "@type": "PropertyValue",
+                    "name": "Quote status"
+                },{
+                    "@type": "PropertyValue",
+                    "name": "Quoted or final price"
+                }]
+            }
+        </script>
     `,
     content = @`
         <section class="bg-slate-950 text-white">
@@ -255,6 +287,58 @@
                             <p class="mt-1 text-sm leading-relaxed text-slate-600">A failed inspection quote, a seller credit, and a planned homeowner install are different decisions. The ledger keeps that difference visible.</p>
                         </div>
                     </div>
+                </div>
+            </section>
+
+            <section class="mt-16 border-y border-slate-200 py-10">
+                <div class="grid gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
+                    <div>
+                        <p class="text-xs font-bold uppercase tracking-[0.22em] text-slate-500">Shareable benchmark packet</p>
+                        <h2 class="mt-3 font-display text-3xl font-black tracking-tight text-slate-950">The best signal is one real local quote.</h2>
+                        <p class="mt-3 text-sm leading-relaxed text-slate-600">
+                            Agents, inspectors, and homeowners can use this packet after a failed inspection or contractor call. No address is needed; the useful parts are ZIP, result band, foundation, status, price, and scope.
+                        </p>
+                        <div class="mt-5 flex flex-col gap-3 sm:flex-row">
+                            <a href="/guides/radon-inspection-toolkit"
+                               data-track-event="quote_ledger_packet_click"
+                               data-track-label="inspection_toolkit"
+                               class="inline-flex min-h-[48px] items-center justify-center rounded-xl bg-slate-950 px-4 text-sm font-black text-white transition-colors hover:bg-slate-800">
+                                Open inspection toolkit
+                            </a>
+                            <a href="/guides/radon-failed-inspection"
+                               data-track-event="quote_ledger_packet_click"
+                               data-track-label="failed_inspection_guide"
+                               class="inline-flex min-h-[48px] items-center justify-center rounded-xl border border-slate-200 px-4 text-sm font-black text-slate-800 transition-colors hover:bg-slate-50">
+                                Failed inspection path
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="divide-y divide-slate-200 rounded-[1.75rem] border border-slate-200 bg-white">
+                        <div class="grid gap-3 p-5 sm:grid-cols-[0.32fr_0.68fr]">
+                            <p class="text-sm font-black text-slate-950">Failed inspection quote</p>
+                            <p class="text-sm leading-relaxed text-slate-600">4.0+ result, inspection deadline, quoted price, final price if installed, and whether the ask became repair or credit.</p>
+                        </div>
+                        <div class="grid gap-3 p-5 sm:grid-cols-[0.32fr_0.68fr]">
+                            <p class="text-sm font-black text-slate-950">Seller credit signal</p>
+                            <p class="text-sm leading-relaxed text-slate-600">Credit amount, quote basis, foundation clue, and whether the deal used concession, escrow, repair, or price reduction.</p>
+                        </div>
+                        <div class="grid gap-3 p-5 sm:grid-cols-[0.32fr_0.68fr]">
+                            <p class="text-sm font-black text-slate-950">Paid install quote</p>
+                            <p class="text-sm leading-relaxed text-slate-600">Final price, system scope, sump seal or fan replacement, slab or crawl-space complexity, and timeline.</p>
+                        </div>
+                        <div class="grid gap-3 p-5 sm:grid-cols-[0.32fr_0.68fr]">
+                            <p class="text-sm font-black text-slate-950">Commercial or multifamily quote</p>
+                            <p class="text-sm leading-relaxed text-slate-600">Building type, result band, testing status, quote status, and any scope clue without business contact details.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-8 rounded-[1.5rem] border border-slate-200 bg-slate-50 p-5">
+                    <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500">Copy/paste request</p>
+                    <p class="mt-2 text-sm leading-relaxed text-slate-700">
+                        If you received a radon quote, add the ZIP, reading, foundation type, quoted price, final price if paid, and whether it was a failed inspection, seller credit, or planned install. Remove names, phone numbers, exact addresses, and contractor contact details.
+                    </p>
                 </div>
             </section>
 

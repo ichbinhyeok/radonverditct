@@ -153,7 +153,7 @@ class PlaywrightResponsiveLayoutE2ETest {
             Map<String, Object> report = viewportReport(page);
             assertFalse((Boolean) report.get("documentOverflow"), "Desktop horizontal overflow detected: " + report);
             assertTrue(page.locator("text=Pick the situation that matches you").first().isVisible());
-            assertTrue(page.locator("text=Treat the map as a hint, not the answer").first().isVisible());
+            assertTrue(page.locator("text=Do not hire from a blind reading").first().isVisible());
         }
     }
 

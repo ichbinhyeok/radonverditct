@@ -251,6 +251,19 @@
             chesterDecisionCounty
                     || kaneDecisionCounty
                     || madisonAlabamaDecisionCounty;
+    final boolean gscServiceIntentCounty =
+            ("new-york".equals(county.getStateSlug()) && "ulster-county".equals(county.getCountySlug()))
+                    || ("california".equals(county.getStateSlug()) && "los-angeles-county".equals(county.getCountySlug()))
+                    || ("colorado".equals(county.getStateSlug()) && "boulder-county".equals(county.getCountySlug()))
+                    || ("colorado".equals(county.getStateSlug()) && "broomfield-county".equals(county.getCountySlug()));
+    final boolean gscSurvivorNearMissCounty =
+            ("new-york".equals(county.getStateSlug()) && "monroe-county".equals(county.getCountySlug()))
+                    || ("tennessee".equals(county.getStateSlug()) && "sevier-county".equals(county.getCountySlug()))
+                    || ("new-jersey".equals(county.getStateSlug()) && "warren-county".equals(county.getCountySlug()))
+                    || ("vermont".equals(county.getStateSlug()) && "rutland-county".equals(county.getCountySlug()))
+                    || ("virginia".equals(county.getStateSlug()) && "loudoun-county".equals(county.getCountySlug()))
+                    || ("maryland".equals(county.getStateSlug()) && "prince-georges-county".equals(county.getCountySlug()))
+                    || ("pennsylvania".equals(county.getStateSlug()) && "northampton-county".equals(county.getCountySlug()));
     final boolean nextStepCtrLiftCounty =
             phaseOneCtrLiftCounty || phaseTwoCtrLiftCounty || phaseThreeCtrLiftCounty;
     final String countyEvidenceSummary = !nextStepCtrLiftCounty && highOfficialEvidence
@@ -298,6 +311,8 @@
             searchedOfficialEvidenceCounty
                     && !nextStepCtrLiftCounty
                     && (highOfficialEvidence || elevatedOfficialEvidence || tierBackedRadonEvidence);
+    final boolean gscSurvivorIntentCopyCounty =
+            gscSurvivorNearMissCounty && !officialEvidenceSerpCounty;
     final String evidenceSerpTitleMetric = tierBackedRadonEvidence
             ? "NJ DEP Tier Signal"
             : evidencePrimaryAvailable && evidenceAbove4Available
@@ -326,6 +341,10 @@
 
     final String seoTitle = officialEvidenceSerpCounty
             ? seoPlaceLabel + " Radon Levels: " + evidenceSerpTitleMetric
+            : gscServiceIntentCounty
+            ? seoPlaceLabel + " Radon Levels & Testing | 4.0+ Next Step"
+            : gscSurvivorIntentCopyCounty
+            ? seoPlaceLabel + " Radon Levels | Test, Retest, or Cost Path"
             : epaZoneCtrPriorityCounty
             ? seoPlaceLabel + " EPA Radon Zone | Basement Levels & 4.0 Guide"
             : basementCtrPriorityCounty
@@ -342,6 +361,12 @@
 
     final String seoDescription = officialEvidenceSerpCounty
             ? evidenceSerpDescription
+            : gscServiceIntentCounty
+            ? "Searching for radon testing, mitigation services, commercial radon, or a 4.0+ next step in "
+            + seoPlaceLabel + "? Confirm the reading, check county evidence, and open the local cost or quote path."
+            : gscSurvivorIntentCopyCounty
+            ? "Check radon levels in " + seoPlaceLabel
+            + ", see the official county signal, and choose the fast path from first test to retest, cost, or seller-credit planning."
             : epaZoneCtrPriorityCounty
             ? "Check the EPA radon zone for " + seoPlaceLabel
             + ", see what that zone means for basement radon levels, and know when 2.0-3.9 versus 4.0+ changes the next step."
@@ -364,6 +389,10 @@
 
     final String heroTitle = epaZoneCtrPriorityCounty
             ? "EPA Radon Zone & Basement Testing in " + seoPlaceLabel
+            : gscServiceIntentCounty
+            ? "Radon testing, levels & next step in " + seoPlaceLabel
+            : gscSurvivorIntentCopyCounty
+            ? seoPlaceLabel + " radon levels: test-to-decision path"
             : basementCtrPriorityCounty
             ? "Basement Radon Levels, EPA Zone & Test Meaning in " + seoPlaceLabel
             : nextStepCtrLiftCounty
@@ -378,6 +407,10 @@
 
     final String directAnswerLead = epaZoneCtrPriorityCounty
             ? "EPA zone answer first: "
+            : gscServiceIntentCounty
+            ? "Local service search answer: "
+            : gscSurvivorIntentCopyCounty
+            ? "Fast county answer: "
             : basementCtrPriorityCounty
             ? "Basement test answer: "
             : nextStepCtrLiftCounty
@@ -390,7 +423,14 @@
             ? "Official local answer: "
             : "Direct Answer for basement and lowest-level tests: ";
 
-    final String introIntentLead = fallsChurchDecisionCounty
+    final String introIntentLead = gscServiceIntentCounty
+            ? "If you searched for radon gas testing, mitigation services, commercial radon, or a local contractor in "
+                    + county.getAreaDisplayName()
+                    + ", use this page to separate the reading from the hiring decision. Confirm the result first, then open the local cost or quote path."
+            : gscSurvivorIntentCopyCounty
+            ? "If you landed here from a " + county.getAreaDisplayName()
+                    + " radon-level search, start with the short lane: no reading yet, borderline result, or 4.0+ result."
+            : fallsChurchDecisionCounty
             ? "If you are checking radon levels in a " + county.getAreaDisplayName()
                     + " basement, use the EPA zone as context first, then decide whether a 2.0-3.9 result needs a retest or a 4.0+ result needs mitigation planning."
             : schenectadyZoneCounty
@@ -413,7 +453,13 @@
                     + ", use this page for the quick zone answer first, then map that zone to what a basement or lowest-level test result actually means."
             : null;
 
-    final String decisionFlowIntro = fallsChurchDecisionCounty
+    final String decisionFlowIntro = gscServiceIntentCounty
+            ? "Use this as the pre-contractor triage for " + county.getAreaDisplayName()
+                    + ": test first, price after 4.0+, and add any real quote to the ledger."
+            : gscSurvivorIntentCopyCounty
+            ? "Use the " + county.getAreaDisplayName()
+                    + " short path first; the deeper source detail is below if you need it."
+            : fallsChurchDecisionCounty
             ? "Open the " + county.getAreaDisplayName()
                     + " action plan from the basement result you already have, instead of starting from a generic cost page."
             : phaseOneCtrLiftCounty
@@ -431,7 +477,11 @@
             : "Jump into a prefilled " + county.getAreaDisplayName()
                     + " action plan based on the result you already have, instead of starting from a generic cost page.";
 
-    final String borderlineResultCta = fallsChurchDecisionCounty
+    final String borderlineResultCta = gscServiceIntentCounty
+            ? "Confirm the reading before quotes"
+            : gscSurvivorIntentCopyCounty
+            ? "Confirm the " + county.getAreaDisplayName() + " borderline result"
+            : fallsChurchDecisionCounty
             ? "Plan a confirmatory basement test"
             : fremontZoneCounty
             ? "Plan a confirmatory zone test"
@@ -439,7 +489,11 @@
             ? "Confirm the " + county.getAreaDisplayName() + " 2.0-3.9 result"
             : "Plan the confirmatory test";
 
-    final String highResultCta = fallsChurchDecisionCounty
+    final String highResultCta = gscServiceIntentCounty
+            ? "Open the " + county.getAreaDisplayName() + " 4.0+ cost path before calling contractors"
+            : gscSurvivorIntentCopyCounty
+            ? "Open the " + county.getAreaDisplayName() + " local cost path"
+            : fallsChurchDecisionCounty
             ? "See " + county.getAreaDisplayName() + " mitigation cost before calling contractors"
             : fremontZoneCounty
             ? "Open the " + county.getAreaDisplayName() + " 4.0+ mitigation plan"
@@ -447,13 +501,23 @@
             ? "Open the " + county.getAreaDisplayName() + " 4.0+ action plan"
             : "Budget mitigation before you call contractors";
 
-    final String buyerSellerResultCta = fallsChurchDecisionCounty || fremontZoneCounty
+    final String buyerSellerResultCta = gscServiceIntentCounty
+            ? "Convert the " + county.getAreaDisplayName() + " quote into a credit plan"
+            : gscSurvivorIntentCopyCounty
+            ? "Turn the " + county.getAreaDisplayName() + " result into a credit plan"
+            : fallsChurchDecisionCounty || fremontZoneCounty
             ? "Turn a " + county.getAreaDisplayName() + " result into seller-credit numbers"
             : nextStepCtrLiftCounty
             ? "Turn a " + county.getAreaDisplayName() + " result into a credit plan"
             : "Turn the result into a seller-credit plan";
 
-    final String heroQuickEvidenceRead = phaseOneCtrLiftCounty
+    final String heroQuickEvidenceRead = gscServiceIntentCounty
+            ? county.getAreaDisplayName()
+            + " searchers are often looking for testing, mitigation services, or a commercial radon answer. The useful sequence is still the same: confirm the reading, then decide cost, credit, or quote."
+            : gscSurvivorIntentCopyCounty
+            ? county.getAreaDisplayName()
+            + " is a near-miss county from the search data. Keep the path short: first test, retest a borderline result, or price a confirmed 4.0+ result."
+            : phaseOneCtrLiftCounty
             ? county.getAreaDisplayName()
             + " searchers usually need the practical next move fast. The first useful split is simple: no test yet, 2.0-3.9, or 4.0+."
             : !nextStepCtrLiftCounty && highOfficialEvidence
@@ -485,7 +549,11 @@
             ? county.getAreaDisplayName() + " has a lower countywide signal, but that does not clear an individual home. A real test still beats the map."
             : county.getAreaDisplayName() + " has no published county zone in our dataset, so the useful answer starts with a direct home test.";
 
-    final String quickDecisionHeading = phaseOneCtrLiftCounty
+    final String quickDecisionHeading = gscServiceIntentCounty
+            ? "Do not hire from a blind reading"
+            : gscSurvivorIntentCopyCounty
+            ? "Keep the county path short"
+            : phaseOneCtrLiftCounty
             ? "Pick the lane fast"
             : !nextStepCtrLiftCounty && highOfficialEvidence
             ? "Treat this as a test-now county"
@@ -503,7 +571,11 @@
             ? "Low county risk is not a home-level clear signal"
             : "No map answer here";
 
-    final String quickDecisionBody = phaseOneCtrLiftCounty
+    final String quickDecisionBody = gscServiceIntentCounty
+            ? "A service search is only useful after the number is real. Use this page to verify the result band, open the cost path, and capture the quote signal if you talk to a contractor."
+            : gscSurvivorIntentCopyCounty
+            ? "These counties already showed search traction. The page now removes the extra step between county evidence and the next action."
+            : phaseOneCtrLiftCounty
             ? "No test yet, 2.0-3.9, and 4.0+ each point to a different next move. This page is built to get you there without extra reading."
             : !nextStepCtrLiftCounty && highOfficialEvidence
             ? "The official source signal is strong enough that a first test is the minimum; a confirmed 4.0+ result should move into cost or credit planning."
@@ -521,7 +593,11 @@
             ? "Do not let a Zone 3 label talk you out of the first test. House-by-house differences still matter."
             : "With no county signal, direct testing is the first decision that matters.";
 
-    final String countySignalSummary = highEndOnlyRadonMeasurement
+    final String countySignalSummary = gscServiceIntentCounty
+            ? "Service intent detected: testing, mitigation, or commercial radon searches need a result-to-cost path."
+            : gscSurvivorIntentCopyCounty
+            ? "Near-miss search signal: keep the page focused on the next practical decision."
+            : highEndOnlyRadonMeasurement
             ? "Official source shows a highest reported county value, not a county average."
             : tierBackedRadonEvidence
             ? "Official tier data shows local radon potential, not a county pCi/L average."
@@ -541,11 +617,19 @@
             ? "Lower countywide map signal, but house-by-house spikes still happen."
             : "No county signal published. Treat direct testing as the only reliable input.";
 
-    final String thresholdSummary = nextStepCtrLiftCounty
+    final String thresholdSummary = gscServiceIntentCounty
+            ? "No reading yet means test first. 4.0+ means pricing and quote comparison become relevant."
+            : gscSurvivorIntentCopyCounty
+            ? "No reading yet means test first. Borderline means retest. 4.0+ means cost or credit planning."
+            : nextStepCtrLiftCounty
             ? "No reading yet means test first. 2.0-3.9 usually means retest or track. 4.0+ means local budget planning starts."
             : "2.0-3.9 pCi/L usually means retest or track. 4.0+ is where EPA action and quote planning start to matter.";
 
-    final String fastMoveSummary = nextStepCtrLiftCounty
+    final String fastMoveSummary = gscServiceIntentCounty
+            ? "Test result -> county cost path -> quote ledger if a contractor gives a number."
+            : gscSurvivorIntentCopyCounty
+            ? "Pick one route now: test, retest, local cost, or seller-credit math."
+            : nextStepCtrLiftCounty
             ? "No reading: test first. 2.0-3.9: retest or track. 4.0+: budget local mitigation."
             : county.getEpaZone() == 1
             ? "No reading: test now. Reading at 4.0+: move into mitigation planning."
@@ -1130,6 +1214,66 @@
                     </div>
                 </div>
             </div>
+
+            @if(gscServiceIntentCounty || gscSurvivorNearMissCounty)
+                <section id="search-intent-bridge" class="mb-10 rounded-[1.75rem] border border-slate-200 bg-white p-5 sm:p-6 shadow-sm">
+                    <div class="grid gap-6 lg:grid-cols-[0.78fr_1.22fr] lg:items-start">
+                        <div>
+                            <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500">
+                                @if(gscServiceIntentCounty) Local Service Search Bridge
+                                @else Near-Miss County Playbook
+                                @endif
+                            </p>
+                            <h2 class="mt-2 font-display text-2xl font-black tracking-tight text-slate-950">
+                                @if(gscServiceIntentCounty)
+                                    Searched for testing, mitigation services, or commercial radon?
+                                @else
+                                    This county gets the short route first.
+                                @endif
+                            </h2>
+                            <p class="mt-3 text-sm leading-relaxed text-slate-600">
+                                @if(gscServiceIntentCounty)
+                                    RadonVerdict is not a contractor directory. It turns the search into a decision: get or confirm the reading, open the local cost path after 4.0+, then record any real quote so the benchmark gets less generic.
+                                @else
+                                    Search Console already showed enough signal to keep this page focused. The fastest useful answer is whether the visitor needs a first test, a retest, a local cost range, or seller-credit math.
+                                @endif
+                            </p>
+                        </div>
+                        <div class="divide-y divide-slate-200 rounded-2xl border border-slate-200 bg-slate-50">
+                            <a href="/guides/how-to-test-for-radon"
+                               data-track-event="levels_intent_bridge_click"
+                               data-track-label="testing_guide"
+                               class="grid gap-2 p-4 transition-colors hover:bg-white sm:grid-cols-[0.24fr_0.76fr]">
+                                <span class="text-xs font-black uppercase tracking-wider text-emerald-700">Test</span>
+                                <span>
+                                    <span class="block text-sm font-black text-slate-950">Confirm the reading before the money step</span>
+                                    <span class="mt-1 block text-sm leading-relaxed text-slate-600">Use the testing guide if there is no valid short-term, long-term, or continuous monitor result yet.</span>
+                                </span>
+                            </a>
+                            <a href="/radon-mitigation-cost/${county.getStateSlug()}/${county.getCountySlug()}?radonResultBand=above_4&intent=homeowner#estimate-form"
+                               data-track-event="levels_intent_bridge_click"
+                               data-track-label="cost_path"
+                               class="grid gap-2 p-4 transition-colors hover:bg-white sm:grid-cols-[0.24fr_0.76fr]">
+                                <span class="text-xs font-black uppercase tracking-wider text-red-700">4.0+</span>
+                                <span>
+                                    <span class="block text-sm font-black text-slate-950">Open the local cost path before calling contractors</span>
+                                    <span class="mt-1 block text-sm leading-relaxed text-slate-600">This keeps the conversation anchored to county evidence, foundation type, and actual result band.</span>
+                                </span>
+                            </a>
+                            <a href="/radon-quote-ledger"
+                               data-track-event="levels_intent_bridge_click"
+                               data-track-label="quote_ledger"
+                               class="grid gap-2 p-4 transition-colors hover:bg-white sm:grid-cols-[0.24fr_0.76fr]">
+                                <span class="text-xs font-black uppercase tracking-wider text-indigo-700">Quote</span>
+                                <span>
+                                    <span class="block text-sm font-black text-slate-950">Add one anonymized quote or credit signal</span>
+                                    <span class="mt-1 block text-sm leading-relaxed text-slate-600">Real ZIP, result band, foundation, and quote status make future local ranges more useful.</span>
+                                </span>
+                            </a>
+                        </div>
+                    </div>
+                </section>
+            @endif
 
             <div class="mobile-sticky-cta levels-mobile-sticky-cta fixed bottom-4 right-4 z-40 lg:hidden" data-nosnippet>
                 <a href="#situation-picker"

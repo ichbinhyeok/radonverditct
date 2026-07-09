@@ -621,10 +621,9 @@ class SeoBehaviorIntegrationTest {
     void radonLevelsCountyUsesTestingGuideSeoAndFrontloadsSituationPicker() throws Exception {
         mockMvc.perform(get("/radon-levels/california/los-angeles-county"))
                 .andExpect(status().isOk())
-                .andExpect(content().string(containsString("Radon Levels in Los Angeles County, CA")))
-                .andExpect(content().string(containsString("Official Data &amp; Testing Guide")))
+                .andExpect(content().string(containsString("Los Angeles County, CA Radon Levels &amp; Testing | 4.0+ Next Step")))
                 .andExpect(content().string(containsString("data-nosnippet")))
-                .andExpect(content().string(containsString("Official local answer:")))
+                .andExpect(content().string(containsString("Local service search answer:")))
                 .andExpect(content().string(containsString("Home result translator")))
                 .andExpect(content().string(containsString("Enter the result. Pick the deal side. Get the route.")))
                 .andExpect(content().string(containsString("Check my result")))
@@ -639,8 +638,46 @@ class SeoBehaviorIntegrationTest {
                 .andExpect(content().string(containsString("/radon-credit-calculator/california/los-angeles-county?radonResultBand=above_4&intent=buying")))
                 .andExpect(content().string(not(containsString("At <strong x-text=\"parseFloat(level).toFixed(1)\"></strong> pCi/L"))))
                 .andExpect(content().string(containsString("Review retesting steps")))
+                .andExpect(content().string(containsString("Local Service Search Bridge")))
+                .andExpect(content().string(containsString("Searched for testing, mitigation services, or commercial radon?")))
+                .andExpect(content().string(containsString("href=\"/radon-quote-ledger\"")))
                 .andExpect(content().string(not(containsString("Start with a Short-Term Test Kit"))))
                 .andExpect(content().string(not(containsString("data-rv-affiliate-link=\"true\""))));
+    }
+
+    @Test
+    void gscServiceIntentCountyPagesBridgeServiceQueriesToDecisionPaths() throws Exception {
+        mockMvc.perform(get("/radon-levels/new-york/ulster-county"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("<title>Ulster County, NY Radon Levels &amp; Testing | 4.0+ Next Step</title>")))
+                .andExpect(content().string(containsString("Local service search answer:")))
+                .andExpect(content().string(containsString("radon gas testing, mitigation services, commercial radon")))
+                .andExpect(content().string(containsString("Local Service Search Bridge")))
+                .andExpect(content().string(containsString("Open the local cost path before calling contractors")))
+                .andExpect(content().string(containsString("href=\"/radon-quote-ledger\"")));
+
+        mockMvc.perform(get("/radon-levels/colorado/boulder-county"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("<title>Boulder County, CO Radon Levels &amp; Testing | 4.0+ Next Step</title>")))
+                .andExpect(content().string(containsString("Service intent detected: testing, mitigation, or commercial radon searches need a result-to-cost path.")))
+                .andExpect(content().string(containsString("Test result -&gt; county cost path -&gt; quote ledger if a contractor gives a number.")));
+    }
+
+    @Test
+    void gscSurvivorCountyPagesKeepNearMissDecisionPathVisible() throws Exception {
+        mockMvc.perform(get("/radon-levels/new-york/monroe-county"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("<title>Monroe County, NY Radon Levels | Test, Retest, or Cost Path</title>")))
+                .andExpect(content().string(containsString("Fast county answer:")))
+                .andExpect(content().string(containsString("Near-Miss County Playbook")))
+                .andExpect(content().string(containsString("This county gets the short route first.")))
+                .andExpect(content().string(containsString("href=\"/radon-quote-ledger\"")));
+
+        mockMvc.perform(get("/radon-levels/tennessee/sevier-county"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("Sevier County, TN radon levels: test-to-decision path")))
+                .andExpect(content().string(containsString("Near-miss search signal: keep the page focused on the next practical decision.")))
+                .andExpect(content().string(containsString("Pick one route now: test, retest, local cost, or seller-credit math.")));
     }
 
     @Test
@@ -1586,6 +1623,10 @@ class SeoBehaviorIntegrationTest {
                 .andExpect(content().string(containsString("<title>Observed Radon Quote Ledger | RadonVerdict</title>")))
                 .andExpect(content().string(containsString("<link rel=\"canonical\" href=\"https://radonverdict.com/radon-quote-ledger\">")))
                 .andExpect(content().string(containsString("Real radon quotes beat generic averages.")))
+                .andExpect(content().string(containsString("RadonVerdict observed radon quote ledger")))
+                .andExpect(content().string(containsString("Shareable benchmark packet")))
+                .andExpect(content().string(containsString("Commercial or multifamily quote")))
+                .andExpect(content().string(containsString("Copy/paste request")))
                 .andExpect(content().string(containsString("name=\"zipCode\"")))
                 .andExpect(content().string(containsString("name=\"quotedPrice\"")))
                 .andExpect(content().string(containsString("name=\"consentAccepted\"")))
@@ -1601,6 +1642,10 @@ class SeoBehaviorIntegrationTest {
                 .andExpect(content().string(containsString("<title>Radon Failed Inspection Toolkit for Agents and Home Inspectors | RadonVerdict</title>")))
                 .andExpect(content().string(containsString("<link rel=\"canonical\" href=\"https://radonverdict.com/guides/radon-inspection-toolkit\">")))
                 .andExpect(content().string(containsString("A radon failed inspection needs a decision path, not panic.")))
+                .andExpect(content().string(containsString("Radon failed inspection decision path")))
+                .andExpect(content().string(containsString("Copy/paste packet")))
+                .andExpect(content().string(containsString("Client-ready language")))
+                .andExpect(content().string(containsString("Add one quote signal after the contractor call")))
                 .andExpect(content().string(containsString("href=\"/radon-quote-ledger\"")))
                 .andExpect(content().string(containsString("href=\"/radon-credit-calculator\"")))
                 .andReturn()
