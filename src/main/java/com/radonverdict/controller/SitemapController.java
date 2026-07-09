@@ -159,6 +159,7 @@ public class SitemapController {
         addUrl(xml, "/guides/who-pays-radon-mitigation-buyer-or-seller", "0.7");
         addUrl(xml, "/guides/radon-failed-inspection", "0.8");
         addUrl(xml, "/guides/radon-inspection-toolkit", "0.8");
+        addUrl(xml, "/guides/radon-mitigation-quote-checklist", "0.8");
         addUrl(xml, "/guides/radon-exposure-symptoms", "0.7");
         addUrl(xml, "/guides/active-vs-passive-radon-system", "0.7");
         addUrl(xml, "/guides/radon-fan-noise-troubleshooting", "0.7");

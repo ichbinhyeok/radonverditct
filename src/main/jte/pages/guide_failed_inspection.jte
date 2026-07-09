@@ -220,6 +220,10 @@
                         <h3 class="font-black text-slate-950">How much does radon mitigation cost?</h3>
                         <p class="mt-1 text-sm leading-relaxed text-slate-600">Use this when the contractor budget is the missing piece.</p>
                     </a>
+                    <a href="/guides/radon-mitigation-quote-checklist" class="rounded-2xl border border-slate-200 bg-white p-4 transition-colors hover:border-slate-400 hover:bg-slate-50">
+                        <h3 class="font-black text-slate-950">What should I ask a radon contractor?</h3>
+                        <p class="mt-1 text-sm leading-relaxed text-slate-600">Use this before comparing quotes, especially when scope and retest proof matter.</p>
+                    </a>
                     <a href="/radon-levels" class="rounded-2xl border border-slate-200 bg-white p-4 transition-colors hover:border-slate-400 hover:bg-slate-50">
                         <h3 class="font-black text-slate-950">What does the radon number mean?</h3>
                         <p class="mt-1 text-sm leading-relaxed text-slate-600">Use this when the buyer, seller, or agent does not understand 2.0 vs 4.0+.</p>

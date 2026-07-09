@@ -180,6 +180,7 @@ class PlaywrightResponsiveLayoutE2ETest {
                 new LayoutRoute("cost-county", "/radon-mitigation-cost/california/los-angeles-county"),
                 new LayoutRoute("credit-county", "/radon-credit-calculator/california/los-angeles-county?intent=buying&radonResultBand=above_4"),
                 new LayoutRoute("testing-guide", "/guides/how-to-test-for-radon"),
+                new LayoutRoute("quote-checklist-guide", "/guides/radon-mitigation-quote-checklist"),
                 new LayoutRoute("seller-credit-guide", "/guides/radon-seller-credit-worksheet"));
 
         List<ViewportCase> viewports = List.of(

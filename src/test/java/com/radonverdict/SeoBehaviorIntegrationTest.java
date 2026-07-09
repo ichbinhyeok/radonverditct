@@ -319,6 +319,7 @@ class SeoBehaviorIntegrationTest {
                 .andExpect(content().string(containsString("/radon-credit-calculator")))
                 .andExpect(content().string(containsString("/guides/radon-failed-inspection")))
                 .andExpect(content().string(containsString("/guides/radon-inspection-toolkit")))
+                .andExpect(content().string(containsString("/guides/radon-mitigation-quote-checklist")))
                 .andExpect(content().string(containsString("/guides/radon-seller-credit-worksheet")));
 
         mockMvc.perform(get("/sitemap-levels-evidence.xml"))
@@ -640,6 +641,8 @@ class SeoBehaviorIntegrationTest {
                 .andExpect(content().string(containsString("Review retesting steps")))
                 .andExpect(content().string(containsString("Local Service Search Bridge")))
                 .andExpect(content().string(containsString("Searched for testing, mitigation services, or commercial radon?")))
+                .andExpect(content().string(containsString("Local call script")))
+                .andExpect(content().string(containsString("href=\"/guides/radon-mitigation-quote-checklist\"")))
                 .andExpect(content().string(containsString("href=\"/radon-quote-ledger\"")))
                 .andExpect(content().string(not(containsString("Start with a Short-Term Test Kit"))))
                 .andExpect(content().string(not(containsString("data-rv-affiliate-link=\"true\""))));
@@ -653,6 +656,8 @@ class SeoBehaviorIntegrationTest {
                 .andExpect(content().string(containsString("Local service search answer:")))
                 .andExpect(content().string(containsString("radon gas testing, mitigation services, commercial radon")))
                 .andExpect(content().string(containsString("Local Service Search Bridge")))
+                .andExpect(content().string(containsString("I have a radon result of ___ pCi/L in Ulster County, NY.")))
+                .andExpect(content().string(containsString("Use the contractor quote checklist before the call")))
                 .andExpect(content().string(containsString("Open the local cost path before calling contractors")))
                 .andExpect(content().string(containsString("href=\"/radon-quote-ledger\"")));
 
@@ -1601,6 +1606,7 @@ class SeoBehaviorIntegrationTest {
                 .andExpect(content().string(containsString("Open local cost path")))
                 .andExpect(content().string(containsString("Do these in the right order.")))
                 .andExpect(content().string(containsString("Who pays after a failed radon inspection?")))
+                .andExpect(content().string(containsString("href=\"/guides/radon-mitigation-quote-checklist\"")))
                 .andReturn()
                 .getResponse()
                 .getContentAsString();
@@ -1616,6 +1622,32 @@ class SeoBehaviorIntegrationTest {
     }
 
     @Test
+    void quoteChecklistGuideLoadsAsContractorCallAsset() throws Exception {
+        String html = mockMvc.perform(get("/guides/radon-mitigation-quote-checklist"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(not(containsString("<meta name=\"robots\" content=\"noindex, follow\">"))))
+                .andExpect(content().string(containsString("<title>Radon Mitigation Quote Checklist: Questions Before You Hire | RadonVerdict</title>")))
+                .andExpect(content().string(containsString("<link rel=\"canonical\" href=\"https://radonverdict.com/guides/radon-mitigation-quote-checklist\">")))
+                .andExpect(content().string(containsString("Ask better radon quote questions before you hire.")))
+                .andExpect(content().string(containsString("How to compare radon mitigation quotes")))
+                .andExpect(content().string(containsString("Phone script")))
+                .andExpect(content().string(containsString("Result and test type")))
+                .andExpect(content().string(containsString("Do not compare quotes that describe different jobs.")))
+                .andExpect(content().string(containsString("href=\"/radon-quote-ledger\"")))
+                .andExpect(content().string(containsString("href=\"/guides/radon-inspection-toolkit\"")))
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+
+        assertJsonLdBlocksAreValid(html);
+
+        mockMvc.perform(get("/guides"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("href=\"/guides/radon-mitigation-quote-checklist\"")))
+                .andExpect(content().string(containsString("Radon mitigation quote checklist")));
+    }
+
+    @Test
     void quoteLedgerAndInspectionToolkitLoadAsDataMoatAssets() throws Exception {
         String ledgerHtml = mockMvc.perform(get("/radon-quote-ledger"))
                 .andExpect(status().isOk())
@@ -1627,6 +1659,7 @@ class SeoBehaviorIntegrationTest {
                 .andExpect(content().string(containsString("Shareable benchmark packet")))
                 .andExpect(content().string(containsString("Commercial or multifamily quote")))
                 .andExpect(content().string(containsString("Copy/paste request")))
+                .andExpect(content().string(containsString("href=\"/guides/radon-mitigation-quote-checklist\"")))
                 .andExpect(content().string(containsString("name=\"zipCode\"")))
                 .andExpect(content().string(containsString("name=\"quotedPrice\"")))
                 .andExpect(content().string(containsString("name=\"consentAccepted\"")))
@@ -1646,6 +1679,7 @@ class SeoBehaviorIntegrationTest {
                 .andExpect(content().string(containsString("Copy/paste packet")))
                 .andExpect(content().string(containsString("Client-ready language")))
                 .andExpect(content().string(containsString("Add one quote signal after the contractor call")))
+                .andExpect(content().string(containsString("href=\"/guides/radon-mitigation-quote-checklist\"")))
                 .andExpect(content().string(containsString("href=\"/radon-quote-ledger\"")))
                 .andExpect(content().string(containsString("href=\"/radon-credit-calculator\"")))
                 .andReturn()

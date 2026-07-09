@@ -27,13 +27,21 @@
                 </div>
             </a>
 
-            <div class="mb-16 grid gap-4 border-t border-slate-200 pt-8 md:grid-cols-2">
+            <div class="mb-16 grid gap-4 border-t border-slate-200 pt-8 md:grid-cols-3">
                 <a href="/guides/radon-inspection-toolkit"
                    class="group rounded-2xl border border-indigo-200 bg-indigo-50 p-5 transition-colors hover:border-indigo-300 hover:bg-indigo-100">
                     <span class="inline-block rounded-full bg-white px-3 py-1 text-xs font-bold uppercase tracking-wider text-indigo-700 ring-1 ring-inset ring-indigo-200">Distribution asset</span>
                     <h2 class="mt-4 font-display text-2xl font-black tracking-tight text-slate-950">Radon failed inspection toolkit for agents and inspectors</h2>
                     <p class="mt-3 text-sm font-medium leading-relaxed text-slate-700">
                         A shareable sequence for explaining results, opening local cost, and turning the decision into a credit or repair path.
+                    </p>
+                </a>
+                <a href="/guides/radon-mitigation-quote-checklist"
+                   class="group rounded-2xl border border-slate-300 bg-white p-5 transition-colors hover:border-slate-500 hover:bg-slate-50">
+                    <span class="inline-block rounded-full bg-slate-100 px-3 py-1 text-xs font-bold uppercase tracking-wider text-slate-700 ring-1 ring-inset ring-slate-200">Contractor checklist</span>
+                    <h2 class="mt-4 font-display text-2xl font-black tracking-tight text-slate-950">Radon mitigation quote checklist</h2>
+                    <p class="mt-3 text-sm font-medium leading-relaxed text-slate-700">
+                        A call script for comparing contractor quotes by result, foundation, scope, fan, permit, warranty, and retest plan.
                     </p>
                 </a>
                 <a href="/radon-quote-ledger"

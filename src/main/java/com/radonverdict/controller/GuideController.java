@@ -70,6 +70,12 @@ public class GuideController {
         return "pages/guide_inspection_toolkit";
     }
 
+    @GetMapping("/guides/radon-mitigation-quote-checklist")
+    public String guideQuoteChecklist(Model model) {
+        model.addAttribute("title", "Radon Mitigation Quote Checklist: Questions Before You Hire | RadonVerdict");
+        return "pages/guide_quote_checklist";
+    }
+
     @GetMapping("/guides/radon-seller-credit-worksheet")
     public String guideSellerCreditWorksheet(Model model) {
         model.addAttribute("title", "Radon Seller Credit Worksheet | RadonVerdict");

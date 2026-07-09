@@ -1238,6 +1238,14 @@
                                     Search Console already showed enough signal to keep this page focused. The fastest useful answer is whether the visitor needs a first test, a retest, a local cost range, or seller-credit math.
                                 @endif
                             </p>
+                            @if(gscServiceIntentCounty)
+                                <div class="mt-4 rounded-2xl border border-slate-200 bg-slate-50 p-4">
+                                    <p class="text-xs font-bold uppercase tracking-[0.16em] text-slate-500">Local call script</p>
+                                    <p class="mt-2 text-sm font-semibold leading-relaxed text-slate-800">
+                                        I have a radon result of ___ pCi/L in ${county.getAreaDisplayName()}, ${county.getStateAbbr()}. Before I compare quotes, can you confirm what foundation and suction method your price assumes, whether sump or crawl-space work is included, and how the post-mitigation retest will be documented?
+                                    </p>
+                                </div>
+                            @endif
                         </div>
                         <div class="divide-y divide-slate-200 rounded-2xl border border-slate-200 bg-slate-50">
                             <a href="/guides/how-to-test-for-radon"
@@ -1258,6 +1266,16 @@
                                 <span>
                                     <span class="block text-sm font-black text-slate-950">Open the local cost path before calling contractors</span>
                                     <span class="mt-1 block text-sm leading-relaxed text-slate-600">This keeps the conversation anchored to county evidence, foundation type, and actual result band.</span>
+                                </span>
+                            </a>
+                            <a href="/guides/radon-mitigation-quote-checklist"
+                               data-track-event="levels_intent_bridge_click"
+                               data-track-label="quote_checklist"
+                               class="grid gap-2 p-4 transition-colors hover:bg-white sm:grid-cols-[0.24fr_0.76fr]">
+                                <span class="text-xs font-black uppercase tracking-wider text-slate-700">Call</span>
+                                <span>
+                                    <span class="block text-sm font-black text-slate-950">Use the contractor quote checklist before the call</span>
+                                    <span class="mt-1 block text-sm leading-relaxed text-slate-600">Ask about foundation, suction method, fan, permit, warranty, retest, and exclusions before comparing prices.</span>
                                 </span>
                             </a>
                             <a href="/radon-quote-ledger"

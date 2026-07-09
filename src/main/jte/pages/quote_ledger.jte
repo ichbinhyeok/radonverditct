@@ -299,10 +299,16 @@
                             Agents, inspectors, and homeowners can use this packet after a failed inspection or contractor call. No address is needed; the useful parts are ZIP, result band, foundation, status, price, and scope.
                         </p>
                         <div class="mt-5 flex flex-col gap-3 sm:flex-row">
+                            <a href="/guides/radon-mitigation-quote-checklist"
+                               data-track-event="quote_ledger_packet_click"
+                               data-track-label="quote_checklist"
+                               class="inline-flex min-h-[48px] items-center justify-center rounded-xl bg-slate-950 px-4 text-sm font-black text-white transition-colors hover:bg-slate-800">
+                                Open quote checklist
+                            </a>
                             <a href="/guides/radon-inspection-toolkit"
                                data-track-event="quote_ledger_packet_click"
                                data-track-label="inspection_toolkit"
-                               class="inline-flex min-h-[48px] items-center justify-center rounded-xl bg-slate-950 px-4 text-sm font-black text-white transition-colors hover:bg-slate-800">
+                               class="inline-flex min-h-[48px] items-center justify-center rounded-xl border border-slate-200 px-4 text-sm font-black text-slate-800 transition-colors hover:bg-slate-50">
                                 Open inspection toolkit
                             </a>
                             <a href="/guides/radon-failed-inspection"
@@ -342,7 +348,7 @@
                 </div>
             </section>
 
-            <section class="mt-16 grid gap-4 md:grid-cols-3">
+            <section class="mt-16 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
                 <a href="/radon-cost-calculator" class="rounded-2xl border border-slate-200 bg-white p-5 transition-colors hover:border-slate-400 hover:bg-slate-50">
                     <p class="text-xs font-black uppercase tracking-wider text-slate-500">Need your estimate?</p>
                     <h3 class="mt-3 text-xl font-black text-slate-950">Open the ZIP cost path</h3>
@@ -352,6 +358,11 @@
                     <p class="text-xs font-black uppercase tracking-wider text-slate-500">Agent or inspector?</p>
                     <h3 class="mt-3 text-xl font-black text-slate-950">Use the failed inspection toolkit</h3>
                     <p class="mt-2 text-sm leading-relaxed text-slate-600">Share a clean decision path with buyers and sellers.</p>
+                </a>
+                <a href="/guides/radon-mitigation-quote-checklist" class="rounded-2xl border border-slate-200 bg-white p-5 transition-colors hover:border-slate-400 hover:bg-slate-50">
+                    <p class="text-xs font-black uppercase tracking-wider text-slate-500">Before the call?</p>
+                    <h3 class="mt-3 text-xl font-black text-slate-950">Use the quote checklist</h3>
+                    <p class="mt-2 text-sm leading-relaxed text-slate-600">Ask the contractor for scope, fan, permit, warranty, and retest details.</p>
                 </a>
                 <a href="/radon-data-sources" class="rounded-2xl border border-slate-200 bg-white p-5 transition-colors hover:border-slate-400 hover:bg-slate-50">
                     <p class="text-xs font-black uppercase tracking-wider text-slate-500">Source policy</p>

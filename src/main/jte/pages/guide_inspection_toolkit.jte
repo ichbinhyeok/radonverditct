@@ -129,6 +129,11 @@
                     <h2 class="mt-3 text-xl font-black text-slate-950">Quote ledger</h2>
                     <p class="mt-2 text-sm leading-relaxed text-slate-600">Add one anonymized quote or seller-credit signal.</p>
                 </a>
+                <a href="/guides/radon-mitigation-quote-checklist" class="rounded-2xl border border-slate-200 bg-white p-5 transition-colors hover:border-slate-400 hover:bg-slate-50">
+                    <p class="text-xs font-black uppercase tracking-wider text-slate-500">Ask</p>
+                    <h2 class="mt-3 text-xl font-black text-slate-950">Quote checklist</h2>
+                    <p class="mt-2 text-sm leading-relaxed text-slate-600">Use the contractor questions before comparing quotes.</p>
+                </a>
             </section>
 
             <section class="mt-16 grid gap-10 lg:grid-cols-[0.8fr_1.2fr]">
@@ -171,7 +176,7 @@
                         <p class="mt-3 text-sm leading-relaxed text-slate-700">
                             The radon result is a decision item, not a panic item. First confirm the test setup and result band. If the reading is 4.0+ pCi/L, use the local cost path before asking for repair or credit. If the quote comes back, remove personal details and add the ZIP, foundation, result band, quote status, and price to the quote ledger so future local estimates get sharper.
                         </p>
-                        <div class="mt-5 grid gap-3 sm:grid-cols-3">
+                        <div class="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
                             <a href="/radon-cost-calculator"
                                data-track-event="inspection_packet_click"
                                data-track-label="cost_calculator"
@@ -189,6 +194,12 @@
                                data-track-label="quote_ledger"
                                class="inline-flex min-h-[48px] items-center justify-center rounded-xl border border-slate-200 px-4 text-sm font-black text-slate-800 transition-colors hover:bg-slate-50">
                                 Add quote
+                            </a>
+                            <a href="/guides/radon-mitigation-quote-checklist"
+                               data-track-event="inspection_packet_click"
+                               data-track-label="quote_checklist"
+                               class="inline-flex min-h-[48px] items-center justify-center rounded-xl border border-slate-200 px-4 text-sm font-black text-slate-800 transition-colors hover:bg-slate-50">
+                                Quote checklist
                             </a>
                         </div>
                     </div>
