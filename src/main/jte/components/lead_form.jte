@@ -138,6 +138,8 @@
                     @endif
                 </p>
                 <form action="/submit-lead" method="POST" class="space-y-4"
+                      data-track-impression="lead_form_view"
+                      data-track-label="county_action_plan_form"
                       x-data="{
                           hasStartedForm: false,
                           isSubmitting: false,

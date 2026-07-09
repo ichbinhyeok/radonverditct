@@ -3,12 +3,20 @@
 
 @param County county
 @param CountyPageContent page
+@param String defaultZip = ""
 
 !{
     final int low = page.getReceipt().getTotalLow();
     final int avg = page.getReceipt().getTotalAvg();
     final int high = page.getReceipt().getTotalHigh();
     final String countyLabel = county.getAreaDisplayName() + ", " + county.getStateAbbr();
+    final String selectedFoundation = page.getSelectedFoundationType() != null && !page.getSelectedFoundationType().isBlank()
+            ? page.getSelectedFoundationType()
+            : "unknown";
+    final String selectedResultBand = page.getSelectedRadonResultBand() != null && !page.getSelectedRadonResultBand().isBlank()
+            ? page.getSelectedRadonResultBand()
+            : "above_4";
+    final String defaultZipValue = defaultZip == null ? "" : defaultZip;
 }
 
 <section id="quote-coach" class="mt-10 scroll-mt-28 border-y border-slate-200 py-10">
@@ -145,20 +153,29 @@
          data-rv-quote-checker
          data-low="${low}"
          data-avg="${avg}"
-         data-high="${high}">
+         data-high="${high}"
+         data-county-label="${countyLabel}"
+         data-default-zip="${defaultZipValue}"
+         data-default-foundation="${selectedFoundation}"
+         data-default-result="${selectedResultBand}"
+         data-ledger-base="/radon-quote-ledger">
         <div class="grid gap-6 lg:grid-cols-[0.85fr_1.15fr] lg:items-start">
             <div>
                 <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500">Bid checker</p>
                 <h3 class="mt-2 font-display text-2xl font-black tracking-tight text-slate-900">
-                    Check a contractor quote against the local range.
+                    Is this quote fair enough to trust?
                 </h3>
                 <p class="mt-3 text-sm leading-relaxed text-slate-600">
-                    Enter the number you were quoted. The point is not to reject every high bid; it is to know when the scope needs a real explanation.
+                    Enter the number you were quoted, mark what the written bid includes, then send the anonymized signal into the ledger without retyping it.
                 </p>
+                <div class="mt-5 grid gap-2 text-xs font-bold uppercase tracking-wider text-slate-500 sm:grid-cols-2">
+                    <p class="border-l-4 border-slate-300 bg-slate-50 px-3 py-2">Foundation: <span class="text-slate-900">${page.getFoundationLabel()}</span></p>
+                    <p class="border-l-4 border-slate-300 bg-slate-50 px-3 py-2">Result: <span class="text-slate-900">${page.getSelectedRadonResultBandLabel()}</span></p>
+                </div>
             </div>
 
             <div class="grid gap-4">
-                <div class="grid gap-3 sm:grid-cols-[1fr_auto] sm:items-end">
+                <div class="grid gap-3 sm:grid-cols-[1fr_0.75fr_auto] sm:items-end">
                     <label for="quote-check-amount" class="block">
                         <span class="text-xs font-bold uppercase tracking-wider text-slate-500">Contractor quote</span>
                         <span class="mt-2 flex items-center rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 focus-within:border-slate-900 focus-within:bg-white">
@@ -171,6 +188,18 @@
                                    class="w-full bg-transparent text-2xl font-black tabular-nums text-slate-900 outline-none placeholder:text-slate-300">
                         </span>
                     </label>
+                    <label for="quote-check-zip" class="block">
+                        <span class="text-xs font-bold uppercase tracking-wider text-slate-500">Property ZIP</span>
+                        <input id="quote-check-zip"
+                               name="quoteZip"
+                               data-rv-quote-zip
+                               pattern="[0-9]{5}"
+                               inputmode="numeric"
+                               autocomplete="postal-code"
+                               placeholder="ZIP"
+                               value="${defaultZipValue}"
+                               class="mt-2 block min-h-[52px] w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-base font-black tabular-nums text-slate-900 outline-none focus:border-slate-900 focus:bg-white">
+                    </label>
                     <button type="button"
                             data-rv-check-quote
                             class="inline-flex min-h-[52px] items-center justify-center rounded-xl bg-slate-900 px-5 text-sm font-bold text-white transition-colors hover:bg-slate-800">
@@ -178,10 +207,49 @@
                     </button>
                 </div>
 
+                <fieldset>
+                    <legend class="text-xs font-bold uppercase tracking-wider text-slate-500">Written quote includes</legend>
+                    <div class="mt-2 grid gap-2 sm:grid-cols-2">
+                        <label class="flex min-h-[48px] cursor-pointer items-center gap-3 rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-sm font-bold text-slate-700 has-[:checked]:border-emerald-500 has-[:checked]:bg-emerald-50 has-[:checked]:text-emerald-900">
+                            <input type="checkbox" data-rv-quote-scope="retest" data-scope-label="post-mitigation retest" class="rounded border-slate-300 text-emerald-600 focus:ring-emerald-500"> Post-mitigation retest
+                        </label>
+                        <label class="flex min-h-[48px] cursor-pointer items-center gap-3 rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-sm font-bold text-slate-700 has-[:checked]:border-emerald-500 has-[:checked]:bg-emerald-50 has-[:checked]:text-emerald-900">
+                            <input type="checkbox" data-rv-quote-scope="warranty" data-scope-label="fan model and warranty" class="rounded border-slate-300 text-emerald-600 focus:ring-emerald-500"> Fan model and warranty
+                        </label>
+                        <label class="flex min-h-[48px] cursor-pointer items-center gap-3 rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-sm font-bold text-slate-700 has-[:checked]:border-emerald-500 has-[:checked]:bg-emerald-50 has-[:checked]:text-emerald-900">
+                            <input type="checkbox" data-rv-quote-scope="permit" data-scope-label="permit or electrical scope" class="rounded border-slate-300 text-emerald-600 focus:ring-emerald-500"> Permit or electrical scope
+                        </label>
+                        <label class="flex min-h-[48px] cursor-pointer items-center gap-3 rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-sm font-bold text-slate-700 has-[:checked]:border-emerald-500 has-[:checked]:bg-emerald-50 has-[:checked]:text-emerald-900">
+                            <input type="checkbox" data-rv-quote-scope="seal" data-scope-label="sump, slab, or crawl-space sealing" class="rounded border-slate-300 text-emerald-600 focus:ring-emerald-500"> Sump, slab, or crawl-space sealing
+                        </label>
+                    </div>
+                </fieldset>
+
                 <div data-rv-quote-result
                      class="rounded-xl border border-slate-200 bg-slate-50 p-4 text-sm leading-relaxed text-slate-700"
                      aria-live="polite">
                     Enter a quote above to compare it with the $${low} low anchor, $${avg} target, and $${high} hard ceiling.
+                </div>
+
+                <div class="border-t border-slate-200 pt-4">
+                    <div class="flex flex-col gap-3 sm:flex-row">
+                        <a data-rv-quote-ledger-link
+                           href="/radon-quote-ledger#quoteLedgerForm"
+                           data-track-event="quote_ledger_cta_click"
+                           data-track-label="county_cost_bid_checker"
+                           class="inline-flex min-h-[48px] items-center justify-center rounded-xl bg-slate-950 px-4 text-sm font-black text-white transition-colors hover:bg-slate-800">
+                            Add to quote ledger
+                        </a>
+                        <button type="button"
+                                data-rv-copy-quote-verdict
+                                class="inline-flex min-h-[48px] items-center justify-center rounded-xl border border-slate-300 px-4 text-sm font-black text-slate-800 transition-colors hover:bg-slate-50">
+                            Copy verdict
+                        </button>
+                    </div>
+                    <p data-rv-quote-handoff-status class="mt-2 min-h-[20px] text-xs font-semibold text-slate-500" aria-live="polite">
+                        The ledger handoff will carry ZIP, price, scope, foundation, and result band.
+                    </p>
+                    <p data-rv-quote-copy-status class="min-h-[20px] text-xs font-semibold text-emerald-700" aria-live="polite"></p>
                 </div>
 
                 <div class="grid gap-3 text-sm sm:grid-cols-3">
@@ -252,43 +320,148 @@
 
         document.querySelectorAll('[data-rv-quote-checker]').forEach((checker) => {
             const input = checker.querySelector('[data-rv-quote-input]');
+            const zipInput = checker.querySelector('[data-rv-quote-zip]');
             const result = checker.querySelector('[data-rv-quote-result]');
+            const ledgerLink = checker.querySelector('[data-rv-quote-ledger-link]');
+            const handoffStatus = checker.querySelector('[data-rv-quote-handoff-status]');
+            const copyButton = checker.querySelector('[data-rv-copy-quote-verdict]');
+            const copyStatus = checker.querySelector('[data-rv-quote-copy-status]');
+            const scopeFields = Array.from(checker.querySelectorAll('[data-rv-quote-scope]'));
             const lowValue = Number(checker.dataset.low);
             const avgValue = Number(checker.dataset.avg);
             const highValue = Number(checker.dataset.high);
+            const countyLabel = checker.dataset.countyLabel || 'this county';
+            const defaultFoundation = checker.dataset.defaultFoundation || 'unknown';
+            const defaultResult = checker.dataset.defaultResult || 'above_4';
+
+            const formatDollars = (amount) => '$' + Math.round(amount).toLocaleString('en-US');
+
+            const scopeChecked = (name) => {
+                const field = checker.querySelector('[data-rv-quote-scope="' + name + '"]');
+                return field && field.checked;
+            };
+
+            const selectedScopeLabels = () => scopeFields
+                .filter((field) => field.checked)
+                .map((field) => field.dataset.scopeLabel || field.value || 'included scope');
+
+            const missingScopeMessages = () => {
+                const messages = [];
+                if (!scopeChecked('retest')) {
+                    messages.push('Missing retest language.');
+                }
+                if (!scopeChecked('warranty')) {
+                    messages.push('Missing fan model or warranty detail.');
+                }
+                if (!scopeChecked('permit')) {
+                    messages.push('Missing permit or electrical responsibility.');
+                }
+                if (!scopeChecked('seal')) {
+                    messages.push('Missing sealing detail for sump, slab, or crawl-space openings.');
+                }
+                return messages;
+            };
+
+            const buildLedgerUrl = (quoteValue, verdictText) => {
+                const url = new URL(checker.dataset.ledgerBase || '/radon-quote-ledger', window.location.origin);
+                const zip = String(zipInput && zipInput.value ? zipInput.value : '').replace(/[^0-9]/g, '').slice(0, 5);
+                const scopes = selectedScopeLabels();
+                if (/^[0-9]{5}$/.test(zip)) {
+                    url.searchParams.set('zipCode', zip);
+                }
+                if (quoteValue) {
+                    url.searchParams.set('quotedPrice', String(Math.round(quoteValue)));
+                }
+                url.searchParams.set('role', 'homeowner');
+                url.searchParams.set('foundationType', defaultFoundation);
+                url.searchParams.set('resultBand', defaultResult);
+                url.searchParams.set('quoteStatus', 'quoted');
+                url.searchParams.set('systemScope', (scopes.length ? scopes.join(', ') : 'scope details not written yet').slice(0, 80));
+                url.searchParams.set('timeline', 'county cost page quote check');
+                if (verdictText) {
+                    url.searchParams.set('notes', (countyLabel + ' bid checker: ' + verdictText).slice(0, 1200));
+                }
+                return url.pathname + url.search + '#quoteLedgerForm';
+            };
+
+            const setHandoff = (quoteValue, verdictText) => {
+                if (!ledgerLink) {
+                    return;
+                }
+                ledgerLink.href = buildLedgerUrl(quoteValue, verdictText);
+                if (handoffStatus) {
+                    const hasZip = zipInput && /^[0-9]{5}$/.test(String(zipInput.value || '').replace(/[^0-9]/g, ''));
+                    handoffStatus.textContent = hasZip
+                        ? 'Ready: ledger form will open with ZIP, price, scope, foundation, and result band prefilled.'
+                        : 'Add the property ZIP if you want the ledger form prefilled with the local market.';
+                }
+            };
 
             const update = () => {
                 const quoteValue = Number(String(input.value || '').replace(/[^0-9.]/g, ''));
+                const missing = missingScopeMessages();
+                let verdictText;
+                let className;
+
                 if (!quoteValue) {
-                    result.textContent = 'Enter a quote above to compare it with the $' + lowValue + ' low anchor, $' + avgValue + ' target, and $' + highValue + ' hard ceiling.';
-                    result.className = 'rounded-xl border border-slate-200 bg-slate-50 p-4 text-sm leading-relaxed text-slate-700';
+                    verdictText = 'Enter a quote above to compare it with the ' + formatDollars(lowValue) + ' low anchor, ' + formatDollars(avgValue) + ' target, and ' + formatDollars(highValue) + ' hard ceiling.';
+                    className = 'rounded-xl border border-slate-200 bg-slate-50 p-4 text-sm leading-relaxed text-slate-700';
+                    result.textContent = verdictText;
+                    result.className = className;
+                    result.dataset.copyText = verdictText;
+                    setHandoff(null, '');
                     return;
                 }
 
                 if (quoteValue < lowValue) {
-                    result.textContent = '$' + quoteValue + ' is below the local low anchor. Treat it as attractive only if the bid still includes sealing, fan, pipe route, electrical, post-mitigation retest, and warranty.';
-                    result.className = 'rounded-xl border border-emerald-200 bg-emerald-50 p-4 text-sm font-semibold leading-relaxed text-emerald-900';
-                    return;
+                    verdictText = formatDollars(quoteValue) + ' is below the local low anchor. Treat it as attractive only if the bid still includes sealing, fan, pipe route, electrical, post-mitigation retest, and warranty.';
+                    className = 'rounded-xl border border-emerald-200 bg-emerald-50 p-4 text-sm font-semibold leading-relaxed text-emerald-900';
+                } else if (quoteValue <= Math.round(avgValue * 1.08)) {
+                    verdictText = formatDollars(quoteValue) + ' is near the local quote target. Compare warranty, retest plan, routing, and sealing details before you choose.';
+                    className = 'rounded-xl border border-slate-300 bg-slate-50 p-4 text-sm font-semibold leading-relaxed text-slate-900';
+                } else if (quoteValue <= highValue) {
+                    verdictText = formatDollars(quoteValue) + ' is above the target but still inside the local range. Ask what specific scope pushes it higher: crawl membrane, sump sealing, difficult route, electrical, or finish repair.';
+                    className = 'rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm font-semibold leading-relaxed text-amber-900';
+                } else {
+                    verdictText = formatDollars(quoteValue) + ' is above the hard ceiling. Get another bid unless the contractor can show a clear scope reason and a post-mitigation retest plan.';
+                    className = 'rounded-xl border border-rose-200 bg-rose-50 p-4 text-sm font-semibold leading-relaxed text-rose-900';
                 }
 
-                if (quoteValue <= Math.round(avgValue * 1.08)) {
-                    result.textContent = '$' + quoteValue + ' is near the local quote target. Compare warranty, retest plan, routing, and sealing details before you choose.';
-                    result.className = 'rounded-xl border border-slate-300 bg-slate-50 p-4 text-sm font-semibold leading-relaxed text-slate-900';
-                    return;
+                if (missing.length) {
+                    verdictText += ' Before trusting it: ' + missing.join(' ');
+                } else {
+                    verdictText += ' Scope looks complete enough to compare against another bid.';
                 }
 
-                if (quoteValue <= highValue) {
-                    result.textContent = '$' + quoteValue + ' is above the target but still inside the local range. Ask what specific scope pushes it higher: crawl membrane, sump sealing, difficult route, electrical, or finish repair.';
-                    result.className = 'rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm font-semibold leading-relaxed text-amber-900';
-                    return;
-                }
-
-                result.textContent = '$' + quoteValue + ' is above the hard ceiling. Get another bid unless the contractor can show a clear scope reason and a post-mitigation retest plan.';
-                result.className = 'rounded-xl border border-rose-200 bg-rose-50 p-4 text-sm font-semibold leading-relaxed text-rose-900';
+                result.textContent = verdictText;
+                result.className = className;
+                result.dataset.copyText = verdictText;
+                setHandoff(quoteValue, verdictText);
             };
 
             input.addEventListener('input', update);
+            if (zipInput) {
+                zipInput.addEventListener('input', update);
+            }
+            scopeFields.forEach((field) => field.addEventListener('change', update));
             checker.querySelector('[data-rv-check-quote]').addEventListener('click', update);
+            if (copyButton) {
+                copyButton.addEventListener('click', () => {
+                    const text = result.dataset.copyText || result.textContent.trim();
+                    copyText(text)
+                        .then(() => {
+                            if (copyStatus) {
+                                copyStatus.textContent = 'Copied. Paste this verdict into a note, email, or contractor follow-up.';
+                            }
+                        })
+                        .catch(() => {
+                            if (copyStatus) {
+                                copyStatus.textContent = 'Select the verdict text and copy it manually.';
+                            }
+                        });
+                });
+            }
+            update();
         });
     })();
 </script>

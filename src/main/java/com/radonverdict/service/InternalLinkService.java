@@ -61,7 +61,7 @@ public class InternalLinkService {
         List<County> sameZoneNearby = dataLoadService.getCountyBySlugMap().values().stream()
                 .filter(c -> c.getStateAbbr().equalsIgnoreCase(county.getStateAbbr()))
                 .filter(c -> !c.getCountySlug().equalsIgnoreCase(county.getCountySlug()))
-                .filter(seoIndexingPolicyService::isCountyIndexableCandidate)
+                .filter(seoIndexingPolicyService::isCostPageIndexableCandidate)
                 .filter(c -> c.getEpaZone() == county.getEpaZone())
                 .sorted((left, right) -> left.getCountyName().compareToIgnoreCase(right.getCountyName()))
                 .limit(3)
@@ -85,12 +85,7 @@ public class InternalLinkService {
             return List.of();
         }
 
-        add(links, InternalLinkItem.builder()
-                .title("Action Plan + Cost in " + county.getAreaDisplayName())
-                .description("Use your test result to compare local next steps and budget.")
-                .url("/radon-mitigation-cost/" + county.getStateSlug() + "/" + county.getCountySlug())
-                .bucket("cost")
-                .build());
+        add(links, costPathLink(county));
 
         add(links, InternalLinkItem.builder()
                 .title("Radon Levels: 2.0 vs 4.0 vs 8.0")
@@ -121,13 +116,7 @@ public class InternalLinkService {
                 .bucket("intent")
                 .build());
 
-        add(links, InternalLinkItem.builder()
-                .title("Local Seller Credit Calculator")
-                .description("Turn this county's mitigation range into a repair or credit ask.")
-                .url("/radon-credit-calculator/" + county.getStateSlug() + "/" + county.getCountySlug()
-                        + "?intent=buying&radonResultBand=above_4")
-                .bucket("intent")
-                .build());
+        add(links, creditPathLink(county, "buying", "above_4"));
 
         buildMeasuredRiskPeerLinks(county).forEach(link -> add(links, link));
 
@@ -301,14 +290,9 @@ public class InternalLinkService {
                 : "";
 
         if (intent.contains("buy") || intent.contains("seller")) {
-            return InternalLinkItem.builder()
-                    .title("Local Seller Credit Calculator")
-                    .description("Turn a local quote range into a cleaner repair or credit ask.")
-                    .url("/radon-credit-calculator/" + county.getStateSlug() + "/" + county.getCountySlug()
-                            + "?intent=" + page.getSelectedIntent()
-                            + "&radonResultBand=" + page.getSelectedRadonResultBand())
-                    .bucket("intent")
-                    .build();
+            String selectedIntent = page != null ? page.getSelectedIntent() : "buying";
+            String selectedResultBand = page != null ? page.getSelectedRadonResultBand() : "above_4";
+            return creditPathLink(county, selectedIntent, selectedResultBand);
         }
 
         if (intent.contains("homeowner") || intent.contains("living")) {
@@ -326,6 +310,51 @@ public class InternalLinkService {
                 .url("/guides/how-to-test-for-radon")
                 .bucket("intent")
                 .build();
+    }
+
+    private InternalLinkItem costPathLink(County county) {
+        if (seoIndexingPolicyService.isCostPageIndexableCandidate(county)) {
+            return InternalLinkItem.builder()
+                    .title("Action Plan + Cost in " + county.getAreaDisplayName())
+                    .description("Use your test result to compare local next steps and budget.")
+                    .url("/radon-mitigation-cost/" + county.getStateSlug() + "/" + county.getCountySlug())
+                    .bucket("cost")
+                    .build();
+        }
+
+        return InternalLinkItem.builder()
+                .title("Radon Mitigation Cost Guide")
+                .description("Use the national cost model before the county cost page is submitted for indexing.")
+                .url("/radon-mitigation-cost")
+                .bucket("cost")
+                .build();
+    }
+
+    private InternalLinkItem creditPathLink(County county, String intent, String resultBand) {
+        if (seoIndexingPolicyService.isCostPageIndexableCandidate(county)) {
+            return InternalLinkItem.builder()
+                    .title("Local Seller Credit Calculator")
+                    .description("Turn this county's mitigation range into a repair or credit ask.")
+                    .url("/radon-credit-calculator/" + county.getStateSlug() + "/" + county.getCountySlug()
+                            + "?intent=" + safeQueryToken(intent, "buying")
+                            + "&radonResultBand=" + safeQueryToken(resultBand, "above_4"))
+                    .bucket("intent")
+                    .build();
+        }
+
+        return InternalLinkItem.builder()
+                .title("Seller Credit Calculator")
+                .description("Estimate a repair or credit ask without sending crawlers to a noindex county calculator.")
+                .url("/radon-credit-calculator")
+                .bucket("intent")
+                .build();
+    }
+
+    private String safeQueryToken(String value, String fallback) {
+        if (value == null || !value.matches("^[a-z0-9_\\-]{2,40}$")) {
+            return fallback;
+        }
+        return value;
     }
 
     private void add(Map<String, InternalLinkItem> links, InternalLinkItem item) {

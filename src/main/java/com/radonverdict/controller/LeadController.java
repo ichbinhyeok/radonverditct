@@ -1,7 +1,9 @@
 package com.radonverdict.controller;
 
 import com.radonverdict.model.dto.LeadSubmissionRequest;
+import com.radonverdict.service.LeadScoringService;
 import com.radonverdict.service.LeadService;
+import com.radonverdict.service.TelemetryEventService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +18,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 
 import java.util.Locale;
+import java.util.Map;
 
 @Slf4j
 @Controller
@@ -23,6 +26,7 @@ import java.util.Locale;
 public class LeadController {
 
     private final LeadService leadService;
+    private final TelemetryEventService telemetryEventService;
 
     @PostMapping("/submit-lead")
     public RedirectView submitLead(@Valid @ModelAttribute LeadSubmissionRequest request, BindingResult bindingResult,
@@ -50,7 +54,18 @@ public class LeadController {
         }
 
         try {
-            leadService.submitLead(request, ipAddress, userAgent);
+            LeadScoringService.LeadScore leadScore = leadService.submitLead(request, ipAddress, userAgent);
+            telemetryEventService.persistEvent("lead_submit_success", "/submit-lead", ipAddress, userAgent, Map.of(
+                    "event", "lead_submit_success",
+                    "lead_source", "county_action_plan_form",
+                    "state", safeTelemetryValue(request.getStateSlug()),
+                    "state_abbr", safeTelemetryValue(request.getStateAbbr()),
+                    "county", safeTelemetryValue(request.getCountySlug()),
+                    "intent", safeTelemetryValue(request.getSelectedIntent()),
+                    "result_band", safeTelemetryValue(request.getSelectedRadonResultBand()),
+                    "foundation", safeTelemetryValue(request.getFoundationType()),
+                    "lead_tier", safeTelemetryValue(leadScore.tier()),
+                    "lead_score", leadScore.score()));
             log.info("Successfully received lead for {}, {}", request.getCountySlug(), request.getStateAbbr());
 
             // Add flash attribute to show a thank you message on redirect
@@ -110,6 +125,13 @@ public class LeadController {
             return null;
         }
         return normalized;
+    }
+
+    private String safeTelemetryValue(String value) {
+        if (value == null || value.isBlank()) {
+            return "";
+        }
+        return value.trim().replaceAll("[^A-Za-z0-9_\\- ]", "").toLowerCase(Locale.US);
     }
 
     private String normalizeQueryValue(String raw) {

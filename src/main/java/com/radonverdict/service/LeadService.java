@@ -32,7 +32,7 @@ public class LeadService {
     /**
      * Safely stores a new lead into a CSV file
      */
-    public void submitLead(LeadSubmissionRequest request, String ipAddress, String userAgent) {
+    public LeadScoringService.LeadScore submitLead(LeadSubmissionRequest request, String ipAddress, String userAgent) {
 
         // This simulates retrieving the actual consent text associated with a version
         String consentTextSnapshot = getConsentSnapshot(request.getConsentVersion());
@@ -69,6 +69,7 @@ public class LeadService {
 
         log.info("New lead captured and saved into CSV for county: {}, State: {}", request.getCountySlug(),
                 request.getStateAbbr());
+        return leadScore;
     }
 
     private void saveToCsv(Lead lead, LeadSubmissionRequest request) {

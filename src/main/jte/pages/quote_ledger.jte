@@ -12,6 +12,19 @@
     final String seoTitle = "Observed Radon Quote Ledger";
     final String seoDescription = "Share an anonymized radon mitigation quote, seller credit, or test-result signal so RadonVerdict can benchmark real local pricing against public data.";
     final boolean hasQuoteBenchmark = quoteBenchmark != null && quoteBenchmark.hasRows();
+    final QuoteLedgerSubmissionRequest form = quoteLedgerForm == null ? new QuoteLedgerSubmissionRequest() : quoteLedgerForm;
+    final String formZipCode = form.getZipCode() == null ? "" : form.getZipCode();
+    final String formRadonReadingPciL = form.getRadonReadingPciL() == null ? "" : form.getRadonReadingPciL();
+    final String formRole = form.getRole() == null || form.getRole().isBlank() ? "homeowner" : form.getRole();
+    final String formResultBand = form.getResultBand() == null || form.getResultBand().isBlank() ? "above_4" : form.getResultBand();
+    final String formFoundationType = form.getFoundationType() == null || form.getFoundationType().isBlank() ? "basement" : form.getFoundationType();
+    final String formQuoteStatus = form.getQuoteStatus() == null || form.getQuoteStatus().isBlank() ? "quoted" : form.getQuoteStatus();
+    final String formQuotedPrice = form.getQuotedPrice() == null ? "" : form.getQuotedPrice();
+    final String formFinalPrice = form.getFinalPrice() == null ? "" : form.getFinalPrice();
+    final String formSystemScope = form.getSystemScope() == null ? "" : form.getSystemScope();
+    final String formTimeline = form.getTimeline() == null ? "" : form.getTimeline();
+    final String formEmail = form.getEmail() == null ? "" : form.getEmail();
+    final String formNotes = form.getNotes() == null ? "" : form.getNotes();
 }
 
 @template.layout.main(
@@ -112,7 +125,7 @@
 
                     <form id="quoteLedgerForm" action="/radon-quote-ledger" method="POST"
                           class="rounded-[1.75rem] border border-white/10 bg-white p-5 text-slate-950 shadow-2xl sm:p-6"
-                          data-track-event="quote_ledger_form_view"
+                          data-track-impression="quote_ledger_form_view"
                           data-track-label="observed_quote_ledger">
                         <div class="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
                             <div>
@@ -138,12 +151,14 @@
                                 <label for="ledgerZipCode" class="block text-sm font-black text-slate-800">Property ZIP</label>
                                 <input id="ledgerZipCode" name="zipCode" required pattern="[0-9]{5}" inputmode="numeric" autocomplete="postal-code"
                                        placeholder="22030"
+                                       value="${formZipCode}"
                                        class="mt-2 block w-full rounded-xl border border-slate-300 px-4 py-3 text-base font-semibold text-slate-950 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
                             </div>
                             <div>
                                 <label for="ledgerRadonReading" class="block text-sm font-black text-slate-800">Reading, if known</label>
                                 <input id="ledgerRadonReading" name="radonReadingPciL" inputmode="decimal" pattern="[0-9]{1,2}(\\.[0-9]{1,2})?"
                                        placeholder="4.2"
+                                       value="${formRadonReadingPciL}"
                                        class="mt-2 block w-full rounded-xl border border-slate-300 px-4 py-3 text-base font-semibold text-slate-950 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
                             </div>
                         </div>
@@ -152,22 +167,25 @@
                             <legend class="text-sm font-black text-slate-800">Your role</legend>
                             <div class="mt-2 grid gap-2 sm:grid-cols-3">
                                 <label class="cursor-pointer rounded-xl border border-slate-200 bg-slate-50 px-3 py-3 text-sm font-bold text-slate-700 has-[:checked]:border-indigo-500 has-[:checked]:bg-indigo-50 has-[:checked]:text-indigo-800">
-                                    <input type="radio" name="role" value="homeowner" checked class="sr-only"> Homeowner
+                                    <input type="radio" name="role" value="homeowner" checked="${"homeowner".equals(formRole)}" class="sr-only"> Homeowner
                                 </label>
                                 <label class="cursor-pointer rounded-xl border border-slate-200 bg-slate-50 px-3 py-3 text-sm font-bold text-slate-700 has-[:checked]:border-indigo-500 has-[:checked]:bg-indigo-50 has-[:checked]:text-indigo-800">
-                                    <input type="radio" name="role" value="buyer" class="sr-only"> Buyer
+                                    <input type="radio" name="role" value="buyer" checked="${"buyer".equals(formRole)}" class="sr-only"> Buyer
                                 </label>
                                 <label class="cursor-pointer rounded-xl border border-slate-200 bg-slate-50 px-3 py-3 text-sm font-bold text-slate-700 has-[:checked]:border-indigo-500 has-[:checked]:bg-indigo-50 has-[:checked]:text-indigo-800">
-                                    <input type="radio" name="role" value="seller" class="sr-only"> Seller
+                                    <input type="radio" name="role" value="seller" checked="${"seller".equals(formRole)}" class="sr-only"> Seller
                                 </label>
                                 <label class="cursor-pointer rounded-xl border border-slate-200 bg-slate-50 px-3 py-3 text-sm font-bold text-slate-700 has-[:checked]:border-indigo-500 has-[:checked]:bg-indigo-50 has-[:checked]:text-indigo-800">
-                                    <input type="radio" name="role" value="agent" class="sr-only"> Agent
+                                    <input type="radio" name="role" value="agent" checked="${"agent".equals(formRole)}" class="sr-only"> Agent
                                 </label>
                                 <label class="cursor-pointer rounded-xl border border-slate-200 bg-slate-50 px-3 py-3 text-sm font-bold text-slate-700 has-[:checked]:border-indigo-500 has-[:checked]:bg-indigo-50 has-[:checked]:text-indigo-800">
-                                    <input type="radio" name="role" value="inspector" class="sr-only"> Inspector
+                                    <input type="radio" name="role" value="inspector" checked="${"inspector".equals(formRole)}" class="sr-only"> Inspector
                                 </label>
                                 <label class="cursor-pointer rounded-xl border border-slate-200 bg-slate-50 px-3 py-3 text-sm font-bold text-slate-700 has-[:checked]:border-indigo-500 has-[:checked]:bg-indigo-50 has-[:checked]:text-indigo-800">
-                                    <input type="radio" name="role" value="other" class="sr-only"> Other
+                                    <input type="radio" name="role" value="mitigator" checked="${"mitigator".equals(formRole)}" class="sr-only"> Mitigator
+                                </label>
+                                <label class="cursor-pointer rounded-xl border border-slate-200 bg-slate-50 px-3 py-3 text-sm font-bold text-slate-700 has-[:checked]:border-indigo-500 has-[:checked]:bg-indigo-50 has-[:checked]:text-indigo-800">
+                                    <input type="radio" name="role" value="other" checked="${"other".equals(formRole)}" class="sr-only"> Other
                                 </label>
                             </div>
                         </fieldset>
@@ -176,22 +194,22 @@
                             <div>
                                 <label for="ledgerResultBand" class="block text-sm font-black text-slate-800">Result band</label>
                                 <select id="ledgerResultBand" name="resultBand" required class="mt-2 block w-full rounded-xl border border-slate-300 px-4 py-3 text-base font-semibold text-slate-950 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
-                                    <option value="above_4" selected>4.0+ pCi/L</option>
-                                    <option value="above_8">8.0+ pCi/L</option>
-                                    <option value="between_2_and_4">2.0-3.9 pCi/L</option>
-                                    <option value="under_2">Under 2.0 pCi/L</option>
-                                    <option value="not_tested">Not tested yet</option>
-                                    <option value="unknown">Unknown</option>
+                                    <option value="above_4" selected="${"above_4".equals(formResultBand)}">4.0+ pCi/L</option>
+                                    <option value="above_8" selected="${"above_8".equals(formResultBand)}">8.0+ pCi/L</option>
+                                    <option value="between_2_and_4" selected="${"between_2_and_4".equals(formResultBand)}">2.0-3.9 pCi/L</option>
+                                    <option value="under_2" selected="${"under_2".equals(formResultBand)}">Under 2.0 pCi/L</option>
+                                    <option value="not_tested" selected="${"not_tested".equals(formResultBand)}">Not tested yet</option>
+                                    <option value="unknown" selected="${"unknown".equals(formResultBand)}">Unknown</option>
                                 </select>
                             </div>
                             <div>
                                 <label for="ledgerFoundation" class="block text-sm font-black text-slate-800">Foundation</label>
                                 <select id="ledgerFoundation" name="foundationType" required class="mt-2 block w-full rounded-xl border border-slate-300 px-4 py-3 text-base font-semibold text-slate-950 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
-                                    <option value="basement" selected>Basement</option>
-                                    <option value="slab">Slab</option>
-                                    <option value="crawlspace">Crawl space</option>
-                                    <option value="mixed">Mixed</option>
-                                    <option value="unknown">Unknown</option>
+                                    <option value="basement" selected="${"basement".equals(formFoundationType)}">Basement</option>
+                                    <option value="slab" selected="${"slab".equals(formFoundationType)}">Slab</option>
+                                    <option value="crawlspace" selected="${"crawlspace".equals(formFoundationType)}">Crawl space</option>
+                                    <option value="mixed" selected="${"mixed".equals(formFoundationType)}">Mixed</option>
+                                    <option value="unknown" selected="${"unknown".equals(formFoundationType)}">Unknown</option>
                                 </select>
                             </div>
                         </div>
@@ -200,21 +218,23 @@
                             <div>
                                 <label for="ledgerQuoteStatus" class="block text-sm font-black text-slate-800">Status</label>
                                 <select id="ledgerQuoteStatus" name="quoteStatus" required class="mt-2 block w-full rounded-xl border border-slate-300 px-4 py-3 text-base font-semibold text-slate-950 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
-                                    <option value="quoted" selected>Quoted</option>
-                                    <option value="paid">Paid install</option>
-                                    <option value="seller_credit">Seller credit</option>
-                                    <option value="declined">Declined quote</option>
-                                    <option value="planning">Planning only</option>
+                                    <option value="quoted" selected="${"quoted".equals(formQuoteStatus)}">Quoted</option>
+                                    <option value="paid" selected="${"paid".equals(formQuoteStatus)}">Paid install</option>
+                                    <option value="seller_credit" selected="${"seller_credit".equals(formQuoteStatus)}">Seller credit</option>
+                                    <option value="declined" selected="${"declined".equals(formQuoteStatus)}">Declined quote</option>
+                                    <option value="planning" selected="${"planning".equals(formQuoteStatus)}">Planning only</option>
                                 </select>
                             </div>
                             <div>
                                 <label for="ledgerQuotedPrice" class="block text-sm font-black text-slate-800">Quoted price</label>
                                 <input id="ledgerQuotedPrice" name="quotedPrice" inputmode="numeric" pattern="[0-9]{2,6}" placeholder="1800"
+                                       value="${formQuotedPrice}"
                                        class="mt-2 block w-full rounded-xl border border-slate-300 px-4 py-3 text-base font-semibold text-slate-950 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
                             </div>
                             <div>
                                 <label for="ledgerFinalPrice" class="block text-sm font-black text-slate-800">Final price</label>
                                 <input id="ledgerFinalPrice" name="finalPrice" inputmode="numeric" pattern="[0-9]{2,6}" placeholder="2000"
+                                       value="${formFinalPrice}"
                                        class="mt-2 block w-full rounded-xl border border-slate-300 px-4 py-3 text-base font-semibold text-slate-950 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
                             </div>
                         </div>
@@ -223,11 +243,13 @@
                             <div>
                                 <label for="ledgerScope" class="block text-sm font-black text-slate-800">Scope clue</label>
                                 <input id="ledgerScope" name="systemScope" maxlength="80" placeholder="sub-slab, sump seal, fan replacement"
+                                       value="${formSystemScope}"
                                        class="mt-2 block w-full rounded-xl border border-slate-300 px-4 py-3 text-base font-semibold text-slate-950 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
                             </div>
                             <div>
                                 <label for="ledgerTimeline" class="block text-sm font-black text-slate-800">Timeline clue</label>
                                 <input id="ledgerTimeline" name="timeline" maxlength="80" placeholder="inspection deadline, pre-listing, urgent"
+                                       value="${formTimeline}"
                                        class="mt-2 block w-full rounded-xl border border-slate-300 px-4 py-3 text-base font-semibold text-slate-950 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
                             </div>
                         </div>
@@ -235,12 +257,13 @@
                         <div class="mt-5">
                             <label for="ledgerNotes" class="block text-sm font-black text-slate-800">Optional notes</label>
                             <textarea id="ledgerNotes" name="notes" maxlength="1200" rows="3" placeholder="Anything that changed the quote: crawl-space access, finished basement, long pipe run, roofline, permit, seller credit, retest result."
-                                      class="mt-2 block w-full rounded-xl border border-slate-300 px-4 py-3 text-base font-semibold text-slate-950 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"></textarea>
+                                      class="mt-2 block w-full rounded-xl border border-slate-300 px-4 py-3 text-base font-semibold text-slate-950 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">${formNotes}</textarea>
                         </div>
 
                         <div class="mt-5">
                             <label for="ledgerEmail" class="block text-sm font-black text-slate-800">Email, optional</label>
                             <input id="ledgerEmail" name="email" type="email" autocomplete="email" placeholder="Only if you want follow-up"
+                                   value="${formEmail}"
                                    class="mt-2 block w-full rounded-xl border border-slate-300 px-4 py-3 text-base font-semibold text-slate-950 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
                         </div>
 
@@ -266,7 +289,10 @@
         </section>
 
         <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-14 sm:py-16">
-            <section id="quote-checker" class="grid gap-8 lg:grid-cols-[0.92fr_1.08fr] lg:items-start">
+            <section id="quote-checker"
+                     class="grid gap-8 lg:grid-cols-[0.92fr_1.08fr] lg:items-start"
+                     data-track-impression="quote_checker_view"
+                     data-track-label="quote_screening_tool">
                 <div>
                     <p class="text-xs font-bold uppercase tracking-[0.22em] text-slate-500">Quote screening tool</p>
                     <h2 class="mt-3 font-display text-3xl font-black tracking-tight text-slate-950">Is this radon quote fair?</h2>

@@ -3,6 +3,7 @@
 @import com.radonverdict.model.dto.AeoAnswerBlock
 @import com.radonverdict.model.dto.InternalLinkItem
 @import com.radonverdict.model.dto.PageQualityResult
+@import com.radonverdict.model.dto.QuoteLedgerBenchmarkSnapshot
 @import com.radonverdict.model.dto.TrustMetadata
 @import com.radonverdict.util.JsonLdUtils
 @import java.util.List
@@ -20,6 +21,7 @@
 @param boolean showSeoDebug = false
 @param String prefilledZip = null
 @param List<String> countyZipCodes = null
+@param QuoteLedgerBenchmarkSnapshot quoteBenchmark = null
 
 !{
     final String countyDisplay = county.getSeoDisplayName() + ", " + county.getStateAbbr();
@@ -50,6 +52,7 @@
             : "See the typical radon mitigation price range in " + countyDisplay + " for basement, slab, and crawl space homes. Built for homeowners who already have a radon test result and need local quote context.";
     final boolean hasCountyZipCodes = countyZipCodes != null && !countyZipCodes.isEmpty();
     final String countyZipDisplay = hasCountyZipCodes ? String.join(", ", countyZipCodes) : "";
+    final String primaryCountyZip = prefilledZip != null && prefilledZip.matches("\\d{5}") ? prefilledZip : (hasCountyZipCodes ? countyZipCodes.get(0) : "");
     final boolean loudounCostSearchCounty = "virginia".equals(county.getStateSlug())
             && "loudoun-county".equals(county.getCountySlug());
 }
@@ -159,7 +162,7 @@
             </section>
             @endif
 
-            @template.components.quote_coach(county = county, page = page)
+            @template.components.quote_coach(county = county, page = page, defaultZip = primaryCountyZip)
 
             <section class="mt-8 rounded-3xl border border-cyan-200 bg-cyan-50 p-5 sm:p-7">
                 <div class="grid gap-5 lg:grid-cols-[1fr_0.5fr] lg:items-center">
@@ -242,7 +245,7 @@
             @endif
             @template.components.quick_trust_summary(county = county, page = page, trust = trust)
             @template.components.why_price_breakdown(page = page)
-            @template.components.cost_benchmark_compare(county = county, page = page)
+            @template.components.cost_benchmark_compare(county = county, page = page, quoteBenchmark = quoteBenchmark)
             @template.components.decision_worksheet_cta(county = county, page = page)
 
             <!-- Local housing context -->

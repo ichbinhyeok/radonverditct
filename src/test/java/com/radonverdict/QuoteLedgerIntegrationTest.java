@@ -24,13 +24,15 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(properties = {
         "app.site.enforce-canonical-host=false",
         "app.storage.quote-ledger-csv-path=build/tmp/quote-ledger/quote_ledger.csv",
-        "app.storage.leads-csv-path=build/tmp/quote-ledger/leads.csv"
+        "app.storage.leads-csv-path=build/tmp/quote-ledger/leads.csv",
+        "app.storage.telemetry-csv-path=build/tmp/quote-ledger/telemetry_events.csv"
 })
 @AutoConfigureMockMvc
 class QuoteLedgerIntegrationTest {
 
     private static final Path QUOTE_LEDGER_CSV_PATH = Paths.get("build", "tmp", "quote-ledger", "quote_ledger.csv");
     private static final Path LEADS_CSV_PATH = Paths.get("build", "tmp", "quote-ledger", "leads.csv");
+    private static final Path TELEMETRY_CSV_PATH = Paths.get("build", "tmp", "quote-ledger", "telemetry_events.csv");
 
     @Autowired
     private MockMvc mockMvc;
@@ -40,6 +42,7 @@ class QuoteLedgerIntegrationTest {
         Files.createDirectories(QUOTE_LEDGER_CSV_PATH.getParent());
         Files.deleteIfExists(QUOTE_LEDGER_CSV_PATH);
         Files.deleteIfExists(LEADS_CSV_PATH);
+        Files.deleteIfExists(TELEMETRY_CSV_PATH);
     }
 
     @Test
@@ -70,6 +73,8 @@ class QuoteLedgerIntegrationTest {
         assertTrue(csv.contains("fairfax-city"), "CSV should contain the resolved county slug.");
         assertTrue(csv.contains("2100"), "CSV should contain the submitted quote.");
         assertTrue(csv.contains("quote-ledger@example.com"), "CSV should contain optional follow-up email.");
+        assertTrue(Files.readString(TELEMETRY_CSV_PATH).contains("quote_ledger_submit_success"),
+                "Server telemetry should record successful quote ledger submissions.");
     }
 
     @Test
@@ -110,6 +115,38 @@ class QuoteLedgerIntegrationTest {
     }
 
     @Test
+    void quoteLedgerPrefillsSafeQueryParamsFromCountyBidChecker() throws Exception {
+        String html = mockMvc.perform(get("/radon-quote-ledger")
+                        .param("zipCode", "22030")
+                        .param("role", "buyer")
+                        .param("resultBand", "above_8")
+                        .param("radonReadingPciL", "8.4")
+                        .param("foundationType", "crawlspace")
+                        .param("quoteStatus", "quoted")
+                        .param("quotedPrice", "2600")
+                        .param("finalPrice", "2500")
+                        .param("systemScope", "fan warranty retest")
+                        .param("timeline", "county cost page quote check")
+                        .param("notes", "Bid checker says above target.")
+                        .param("consentAccepted", "true"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("value=\"22030\"")))
+                .andExpect(content().string(containsString("value=\"8.4\"")))
+                .andExpect(content().string(containsString("value=\"buyer\" checked")))
+                .andExpect(content().string(containsString("value=\"above_8\" selected")))
+                .andExpect(content().string(containsString("value=\"crawlspace\" selected")))
+                .andExpect(content().string(containsString("value=\"2600\"")))
+                .andExpect(content().string(containsString("fan warranty retest")))
+                .andExpect(content().string(containsString("Bid checker says above target.")))
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+
+        assertFalse(html.contains("name=\"consentAccepted\" value=\"true\" checked"),
+                "URL prefill must not pre-check consent.");
+    }
+
+    @Test
     void quoteLedgerPublishesAggregateBenchmarksWithoutPrivateColumns() throws Exception {
         Files.writeString(QUOTE_LEDGER_CSV_PATH, String.join(System.lineSeparator(),
                 "Date,Zip,State,County,Role,ResultBand,RadonReadingPciL,Foundation,QuoteStatus,QuotedPrice,FinalPrice,SystemScope,Timeline,Email,Notes,IpAddress,UserAgent",
@@ -137,6 +174,13 @@ class QuoteLedgerIntegrationTest {
         assertFalse(publicCsv.contains("127.0.0.1"), "Public CSV should not expose IP addresses.");
         assertFalse(publicCsv.contains("private note"), "Public CSV should not expose freeform notes.");
         assertFalse(publicCsv.contains("JUnit"), "Public CSV should not expose user agents.");
+
+        mockMvc.perform(get("/radon-mitigation-cost/virginia/fairfax-city"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("Observed local signals")))
+                .andExpect(content().string(containsString("Quote ledger context for Fairfax")))
+                .andExpect(content().string(containsString("$1,900-$2,300")))
+                .andExpect(content().string(containsString("3 total, 3 priced")));
     }
 
     @Test

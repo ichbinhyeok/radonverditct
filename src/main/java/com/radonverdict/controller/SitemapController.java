@@ -44,6 +44,7 @@ public class SitemapController {
 
         addSitemapUrl(xml, "/sitemap-recovery.xml");
         addSitemapUrl(xml, "/sitemap-growth.xml");
+        addSitemapUrl(xml, "/sitemap-cost-evidence.xml");
         addSitemapUrl(xml, "/sitemap-levels-evidence.xml");
         addSitemapUrl(xml, "/sitemap-core.xml");
         if (includeBroadZoneSitemap) {
@@ -123,6 +124,40 @@ public class SitemapController {
                                 resolveCountyLastmod(county));
                     }
                 });
+
+        xml.append("</urlset>");
+        return xml.toString();
+    }
+
+    @GetMapping(value = "/sitemap-cost-evidence.xml", produces = MediaType.APPLICATION_XML_VALUE)
+    @ResponseBody
+    public String generateCostEvidenceSitemap() {
+        StringBuilder xml = new StringBuilder();
+        xml.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
+        xml.append("<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">");
+
+        if (indexCountyCostPages) {
+            dataLoadService.getCountyBySlugMap().values().stream()
+                    .filter(seoIndexingPolicyService::isEvidenceRichCostPageCandidate)
+                    .filter(county -> !seoIndexingPolicyService.isSearchTrafficCandidate(county))
+                    .sorted((left, right) -> {
+                        int scoreCompare = Integer.compare(
+                                seoIndexingPolicyService.countyIndexingScore(right),
+                                seoIndexingPolicyService.countyIndexingScore(left));
+                        if (scoreCompare != 0) {
+                            return scoreCompare;
+                        }
+                        int stateCompare = left.getStateSlug().compareTo(right.getStateSlug());
+                        if (stateCompare != 0) {
+                            return stateCompare;
+                        }
+                        return left.getCountySlug().compareTo(right.getCountySlug());
+                    })
+                    .forEach(county -> addUrl(xml,
+                            "/radon-mitigation-cost/" + county.getStateSlug() + "/" + county.getCountySlug(),
+                            "0.65",
+                            resolveCountyLastmod(county)));
+        }
 
         xml.append("</urlset>");
         return xml.toString();

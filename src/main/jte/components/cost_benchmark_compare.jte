@@ -1,8 +1,23 @@
 @import com.radonverdict.model.County
 @import com.radonverdict.model.dto.CountyPageContent
+@import com.radonverdict.model.dto.QuoteLedgerBenchmarkRow
+@import com.radonverdict.model.dto.QuoteLedgerBenchmarkSnapshot
 
 @param County county
 @param CountyPageContent page
+@param QuoteLedgerBenchmarkSnapshot quoteBenchmark = null
+
+!{
+    final boolean hasQuoteBenchmark = quoteBenchmark != null && quoteBenchmark.hasRows();
+    final String localSignalSummary = hasQuoteBenchmark
+            ? quoteBenchmark.getTotalSignalCount() + (quoteBenchmark.getTotalSignalCount() == 1 ? " local signal" : " local signals")
+                    + ", " + quoteBenchmark.getPricedSignalCount() + " with a price"
+                    + (quoteBenchmark.getLeadDerivedSignalCount() > 0
+                            ? ", including " + quoteBenchmark.getLeadDerivedSignalCount()
+                                    + (quoteBenchmark.getLeadDerivedSignalCount() == 1 ? " planning signal" : " planning signals")
+                            : "")
+            : "";
+}
 
 <section class="mt-12 mb-12 rounded-2xl border border-slate-200 bg-white p-6 sm:p-8">
     <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-6">
@@ -33,6 +48,35 @@
             </p>
         </div>
     </div>
+
+    @if(hasQuoteBenchmark)
+        <div class="mb-6 rounded-xl border border-emerald-200 bg-emerald-50 p-4">
+            <div class="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
+                <div>
+                    <p class="text-xs font-bold uppercase tracking-wider text-emerald-700">Observed local signals</p>
+                    <h4 class="mt-1 text-base font-black text-slate-950">Quote ledger context for ${county.getAreaDisplayName()}</h4>
+                    <p class="mt-1 text-sm leading-relaxed text-slate-700">
+                        ${localSignalSummary}.
+                    </p>
+                </div>
+                <a href="/radon-quote-ledger"
+                   class="inline-flex min-h-10 items-center justify-center rounded-lg bg-emerald-700 px-4 text-sm font-black text-white hover:bg-emerald-800"
+                   data-track-event="quote_benchmark_local_click"
+                   data-track-label="${county.getCountySlug()}">
+                    Add a quote
+                </a>
+            </div>
+            <div class="mt-4 grid gap-3 sm:grid-cols-2">
+                @for(QuoteLedgerBenchmarkRow row : quoteBenchmark.getRows())
+                    <div class="rounded-lg border border-emerald-200 bg-white px-4 py-3">
+                        <p class="text-sm font-black text-slate-950">${row.getFoundationLabel()} / ${row.getResultBandLabel()}</p>
+                        <p class="mt-1 text-sm font-semibold text-slate-700">${row.getPriceRangeDisplay()} · median ${row.getMedianPriceDisplay()}</p>
+                        <p class="mt-1 text-xs font-bold uppercase tracking-wider text-emerald-700">${row.getSignalCount()} total, ${row.getPricedSignalCount()} priced · ${row.getConfidenceLabel()}</p>
+                    </div>
+                @endfor
+            </div>
+        </div>
+    @endif
 
     <div class="space-y-4">
         <div>

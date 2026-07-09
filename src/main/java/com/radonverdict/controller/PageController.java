@@ -12,6 +12,7 @@ import com.radonverdict.service.DataLoadService;
 import com.radonverdict.service.InternalLinkService;
 import com.radonverdict.service.PageQualityService;
 import com.radonverdict.service.PricingCalculatorService;
+import com.radonverdict.service.QuoteLedgerService;
 import com.radonverdict.service.SeoIndexingPolicyService;
 import com.radonverdict.service.TrustMetadataService;
 import jakarta.servlet.http.HttpServletResponse;
@@ -47,6 +48,7 @@ public class PageController {
     private final SeoIndexingPolicyService seoIndexingPolicyService;
     private final TrustMetadataService trustMetadataService;
     private final InternalLinkService internalLinkService;
+    private final QuoteLedgerService quoteLedgerService;
 
     @Value("${app.feature.monetization-hooks.enabled:false}")
     private boolean monetizationHooksEnabled;
@@ -255,6 +257,7 @@ public class PageController {
         model.addAttribute("aeo", aeo);
         model.addAttribute("relatedLinks", internalLinkService.buildMitigationCountyLinks(county, pageContent));
         model.addAttribute("countyZipCodes", countyZipCodes(county));
+        model.addAttribute("quoteBenchmark", quoteLedgerService.getCountyBenchmarkSnapshot(county));
         model.addAttribute("monetizationHooksEnabled", monetizationHooksEnabled);
         model.addAttribute("showSeoDebug", seoDebugVisible);
         model.addAttribute("canonicalUrl",

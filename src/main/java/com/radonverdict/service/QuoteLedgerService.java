@@ -14,6 +14,8 @@ import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.Duration;
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -29,6 +31,7 @@ import java.util.Set;
 public class QuoteLedgerService {
 
     private static final int PUBLIC_PRICE_THRESHOLD = 3;
+    private static final Duration BENCHMARK_CACHE_TTL = Duration.ofSeconds(30);
 
     @Value("${app.storage.quote-ledger-csv-path:data/quote_ledger.csv}")
     private String quoteLedgerCsvPath;
@@ -37,6 +40,7 @@ public class QuoteLedgerService {
     private String leadsCsvPath;
 
     private final Object writeLock = new Object();
+    private volatile BenchmarkRowsCache benchmarkRowsCache;
 
     public void submit(QuoteLedgerSubmissionRequest request, County county, String ipAddress, String userAgent) {
         try {
@@ -72,6 +76,7 @@ public class QuoteLedgerService {
                             escapeCsv(ipAddress),
                             escapeCsv(userAgent));
                 }
+                benchmarkRowsCache = null;
             }
         } catch (IOException e) {
             log.error("Failed to write quote ledger row", e);
@@ -80,7 +85,24 @@ public class QuoteLedgerService {
     }
 
     public QuoteLedgerBenchmarkSnapshot getBenchmarkSnapshot() {
-        List<LedgerRow> rows = readAllBenchmarkRows();
+        return buildBenchmarkSnapshot(readAllBenchmarkRows(), 12);
+    }
+
+    public QuoteLedgerBenchmarkSnapshot getCountyBenchmarkSnapshot(County county) {
+        if (county == null || county.getStateAbbr() == null || county.getCountySlug() == null) {
+            return buildBenchmarkSnapshot(List.of(), 4);
+        }
+
+        String stateAbbr = county.getStateAbbr();
+        String countySlug = county.getCountySlug();
+        List<LedgerRow> rows = readAllBenchmarkRows().stream()
+                .filter(row -> stateAbbr.equalsIgnoreCase(row.stateAbbr()))
+                .filter(row -> countySlug.equalsIgnoreCase(row.countySlug()))
+                .toList();
+        return buildBenchmarkSnapshot(rows, 4);
+    }
+
+    private QuoteLedgerBenchmarkSnapshot buildBenchmarkSnapshot(List<LedgerRow> rows, int rowLimit) {
         Map<String, SegmentAccumulator> segments = new LinkedHashMap<>();
         Set<String> states = new HashSet<>();
         Set<String> counties = new HashSet<>();
@@ -111,7 +133,7 @@ public class QuoteLedgerService {
                         .comparingInt(SegmentAccumulator::pricedSignalCount).reversed()
                         .thenComparingInt(SegmentAccumulator::signalCount).reversed()
                         .thenComparing(SegmentAccumulator::marketLabel))
-                .limit(12)
+                .limit(rowLimit)
                 .map(SegmentAccumulator::toPublicRow)
                 .toList();
 
@@ -164,9 +186,33 @@ public class QuoteLedgerService {
     }
 
     private List<LedgerRow> readAllBenchmarkRows() {
+        String signature = fileSignature(quoteLedgerCsvPath) + "|" + fileSignature(leadsCsvPath);
+        Instant now = Instant.now();
+        BenchmarkRowsCache cache = benchmarkRowsCache;
+        if (cache != null && cache.signature().equals(signature) && cache.expiresAt().isAfter(now)) {
+            return cache.rows();
+        }
+
         List<LedgerRow> rows = new ArrayList<>(readLedgerRows());
         rows.addAll(readLeadDerivedRows());
-        return rows;
+        List<LedgerRow> immutableRows = List.copyOf(rows);
+        benchmarkRowsCache = new BenchmarkRowsCache(signature, now.plus(BENCHMARK_CACHE_TTL), immutableRows);
+        return immutableRows;
+    }
+
+    private String fileSignature(String csvPath) {
+        if (csvPath == null || csvPath.isBlank()) {
+            return "blank";
+        }
+        Path path = Paths.get(csvPath);
+        try {
+            if (!Files.exists(path)) {
+                return path + ":missing";
+            }
+            return path + ":" + Files.getLastModifiedTime(path).toMillis() + ":" + Files.size(path);
+        } catch (IOException e) {
+            return path + ":unreadable";
+        }
     }
 
     private List<LedgerRow> readLedgerRows() {
@@ -420,6 +466,9 @@ public class QuoteLedgerService {
             }
             return quotedPrice;
         }
+    }
+
+    private record BenchmarkRowsCache(String signature, Instant expiresAt, List<LedgerRow> rows) {
     }
 
     private class SegmentAccumulator {

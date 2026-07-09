@@ -31,6 +31,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class LeadCaptureAdminIntegrationTest {
 
     private static final Path LEADS_CSV_PATH = Paths.get("build", "tmp", "lead-capture-admin", "leads.csv");
+    private static final Path TELEMETRY_CSV_PATH = Paths.get("build", "tmp", "lead-capture-admin", "telemetry_events.csv");
 
     @Autowired
     private MockMvc mockMvc;
@@ -39,6 +40,7 @@ class LeadCaptureAdminIntegrationTest {
     void beforeEach() throws Exception {
         Files.createDirectories(LEADS_CSV_PATH.getParent());
         Files.deleteIfExists(LEADS_CSV_PATH);
+        Files.deleteIfExists(TELEMETRY_CSV_PATH);
     }
 
     @Test
@@ -68,6 +70,8 @@ class LeadCaptureAdminIntegrationTest {
         assertTrue(Files.readString(LEADS_CSV_PATH).contains("urgent_24h"), "Lead CSV should contain contact priority.");
         assertTrue(Files.readString(LEADS_CSV_PATH).contains("LeadScore"), "Lead CSV should contain lead score header.");
         assertTrue(Files.readString(LEADS_CSV_PATH).contains("HOT"), "High-intent lead should be scored hot.");
+        assertTrue(Files.readString(TELEMETRY_CSV_PATH).contains("lead_submit_success"),
+                "Server telemetry should record the saved lead, not only the client click.");
 
         mockMvc.perform(get("/admin/leads")
                         .header("Authorization", basicAuth("admin", "tlsgur3108")))

@@ -291,6 +291,7 @@ class SeoBehaviorIntegrationTest {
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("/sitemap-recovery.xml")))
                 .andExpect(content().string(containsString("/sitemap-growth.xml")))
+                .andExpect(content().string(containsString("/sitemap-cost-evidence.xml")))
                 .andExpect(content().string(containsString("/sitemap-levels-evidence.xml")))
                 .andExpect(content().string(not(containsString("/sitemap-zone-high.xml"))))
                 .andExpect(content().string(not(containsString("/sitemap-zone-low.xml"))))
@@ -310,6 +311,12 @@ class SeoBehaviorIntegrationTest {
                 .andExpect(content().string(containsString("/radon-levels/iowa/story-county")))
                 .andExpect(content().string(not(containsString("/radon-levels/virginia/loudoun-county"))))
                 .andExpect(content().string(containsString("/radon-mitigation-cost/new-jersey/gloucester-county")));
+
+        mockMvc.perform(get("/sitemap-cost-evidence.xml"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("/radon-mitigation-cost/pennsylvania/montgomery-county")))
+                .andExpect(content().string(not(containsString("/radon-mitigation-cost/virginia/loudoun-county"))))
+                .andExpect(content().string(not(containsString("/radon-levels/pennsylvania/montgomery-county"))));
 
         mockMvc.perform(get("/sitemap-core.xml"))
                 .andExpect(status().isOk())
@@ -521,6 +528,12 @@ class SeoBehaviorIntegrationTest {
                 .andExpect(content().string(containsString("Print worksheet")))
                 .andExpect(content().string(containsString("Bid checker")))
                 .andExpect(content().string(containsString("Contractor quote")))
+                .andExpect(content().string(containsString("Is this quote fair enough to trust?")))
+                .andExpect(content().string(containsString("Written quote includes")))
+                .andExpect(content().string(containsString("data-rv-quote-ledger-link")))
+                .andExpect(content().string(containsString("Add to quote ledger")))
+                .andExpect(content().string(containsString("Copy verdict")))
+                .andExpect(content().string(containsString("The ledger handoff will carry ZIP, price, scope, foundation, and result band.")))
                 .andExpect(content().string(containsString("Above $3640")))
                 .andExpect(content().string(containsString("above the hard ceiling")));
     }
@@ -1666,6 +1679,8 @@ class SeoBehaviorIntegrationTest {
                 .andExpect(content().string(containsString("name=\"zipCode\"")))
                 .andExpect(content().string(containsString("name=\"quotedPrice\"")))
                 .andExpect(content().string(containsString("name=\"consentAccepted\"")))
+                .andExpect(content().string(containsString("data-track-impression=\"quote_ledger_form_view\"")))
+                .andExpect(content().string(containsString("data-track-impression=\"quote_checker_view\"")))
                 .andReturn()
                 .getResponse()
                 .getContentAsString();
