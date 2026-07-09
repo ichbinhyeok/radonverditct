@@ -296,6 +296,7 @@
                 <a href="/guides/how-to-test-for-radon" class="tap-target-inline hover:text-slate-900 transition-colors">Testing Guide</a>
                 <a href="/guides" class="tap-target-inline hover:text-slate-900 transition-colors">Guides</a>
                 <a href="/radon-data-sources" class="tap-target-inline hover:text-slate-900 transition-colors">Data</a>
+                <a href="/radon-quote-ledger" class="tap-target-inline hover:text-slate-900 transition-colors">Quote Ledger</a>
                 <a href="/about" class="tap-target-inline hover:text-slate-900 transition-colors">About</a>
             </nav>
             <button type="button"
@@ -324,6 +325,7 @@
                 <a href="/guides/how-to-test-for-radon" class="tap-target-inline rounded-xl px-3 text-slate-700 hover:bg-slate-100 hover:text-slate-900">Testing Guide</a>
                 <a href="/guides" class="tap-target-inline rounded-xl px-3 text-slate-700 hover:bg-slate-100 hover:text-slate-900">Guides</a>
                 <a href="/radon-data-sources" class="tap-target-inline rounded-xl px-3 text-slate-700 hover:bg-slate-100 hover:text-slate-900">Data Sources</a>
+                <a href="/radon-quote-ledger" class="tap-target-inline rounded-xl px-3 text-slate-700 hover:bg-slate-100 hover:text-slate-900">Quote Ledger</a>
                 <a href="/about" class="tap-target-inline rounded-xl px-3 text-slate-700 hover:bg-slate-100 hover:text-slate-900">About</a>
                 <a href="/contact" class="tap-target-inline rounded-xl px-3 text-slate-700 hover:bg-slate-100 hover:text-slate-900">Contact</a>
             </nav>
@@ -351,6 +353,7 @@
                         <li><a href="/about" class="tap-target-inline hover:text-indigo-600 transition-colors">About Us</a></li>
                         <li><a href="/methodology" class="tap-target-inline hover:text-indigo-600 transition-colors">Methodology</a></li>
                         <li><a href="/radon-data-sources" class="tap-target-inline hover:text-indigo-600 transition-colors">Data Sources</a></li>
+                        <li><a href="/radon-quote-ledger" class="tap-target-inline hover:text-indigo-600 transition-colors">Quote Ledger</a></li>
                         <li><a href="/contact" class="tap-target-inline hover:text-indigo-600 transition-colors">Contact</a></li>
                         <li><a href="/radon-cost-calculator" class="tap-target-inline hover:text-indigo-600 transition-colors">Action Plan</a></li>
                         <li><a href="/radon-mitigation-cost" class="tap-target-inline hover:text-indigo-600 transition-colors">Mitigation Cost</a></li>

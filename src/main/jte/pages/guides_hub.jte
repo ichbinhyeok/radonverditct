@@ -27,6 +27,25 @@
                 </div>
             </a>
 
+            <div class="mb-16 grid gap-4 border-t border-slate-200 pt-8 md:grid-cols-2">
+                <a href="/guides/radon-inspection-toolkit"
+                   class="group rounded-2xl border border-indigo-200 bg-indigo-50 p-5 transition-colors hover:border-indigo-300 hover:bg-indigo-100">
+                    <span class="inline-block rounded-full bg-white px-3 py-1 text-xs font-bold uppercase tracking-wider text-indigo-700 ring-1 ring-inset ring-indigo-200">Distribution asset</span>
+                    <h2 class="mt-4 font-display text-2xl font-black tracking-tight text-slate-950">Radon failed inspection toolkit for agents and inspectors</h2>
+                    <p class="mt-3 text-sm font-medium leading-relaxed text-slate-700">
+                        A shareable sequence for explaining results, opening local cost, and turning the decision into a credit or repair path.
+                    </p>
+                </a>
+                <a href="/radon-quote-ledger"
+                   class="group rounded-2xl border border-cyan-200 bg-cyan-50 p-5 transition-colors hover:border-cyan-300 hover:bg-cyan-100">
+                    <span class="inline-block rounded-full bg-white px-3 py-1 text-xs font-bold uppercase tracking-wider text-cyan-700 ring-1 ring-inset ring-cyan-200">Data moat</span>
+                    <h2 class="mt-4 font-display text-2xl font-black tracking-tight text-slate-950">Observed radon quote ledger</h2>
+                    <p class="mt-3 text-sm font-medium leading-relaxed text-slate-700">
+                        Add anonymized quote, credit, and result signals so the cost model can learn from real projects.
+                    </p>
+                </a>
+            </div>
+
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8 border-t border-slate-200 pt-16">
                 <!-- Article 1 -->
                 <a href="/guides/diy-vs-professional-radon-mitigation" class="group block">

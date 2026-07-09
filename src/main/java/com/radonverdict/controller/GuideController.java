@@ -64,6 +64,12 @@ public class GuideController {
         return "pages/guide_failed_inspection";
     }
 
+    @GetMapping("/guides/radon-inspection-toolkit")
+    public String guideInspectionToolkit(Model model) {
+        model.addAttribute("title", "Radon Failed Inspection Toolkit for Agents and Home Inspectors | RadonVerdict");
+        return "pages/guide_inspection_toolkit";
+    }
+
     @GetMapping("/guides/radon-seller-credit-worksheet")
     public String guideSellerCreditWorksheet(Model model) {
         model.addAttribute("title", "Radon Seller Credit Worksheet | RadonVerdict");

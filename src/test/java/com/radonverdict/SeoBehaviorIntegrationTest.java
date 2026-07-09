@@ -291,6 +291,7 @@ class SeoBehaviorIntegrationTest {
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("/sitemap-recovery.xml")))
                 .andExpect(content().string(containsString("/sitemap-growth.xml")))
+                .andExpect(content().string(containsString("/sitemap-levels-evidence.xml")))
                 .andExpect(content().string(not(containsString("/sitemap-zone-high.xml"))))
                 .andExpect(content().string(not(containsString("/sitemap-zone-low.xml"))))
                 .andExpect(content().string(not(containsString("/sitemap-zone-unknown.xml"))));
@@ -314,9 +315,19 @@ class SeoBehaviorIntegrationTest {
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("<loc>https://radonverdict.com/</loc>")))
                 .andExpect(content().string(containsString("/radon-data-sources")))
+                .andExpect(content().string(containsString("/radon-quote-ledger")))
                 .andExpect(content().string(containsString("/radon-credit-calculator")))
                 .andExpect(content().string(containsString("/guides/radon-failed-inspection")))
+                .andExpect(content().string(containsString("/guides/radon-inspection-toolkit")))
                 .andExpect(content().string(containsString("/guides/radon-seller-credit-worksheet")));
+
+        mockMvc.perform(get("/sitemap-levels-evidence.xml"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("/radon-levels/california/alameda-county")))
+                .andExpect(content().string(not(containsString("/radon-levels/virginia/loudoun-county"))))
+                .andExpect(content().string(not(containsString("/radon-levels/colorado/broomfield-county"))))
+                .andExpect(content().string(not(containsString("/radon-mitigation-cost/california/alameda-county"))))
+                .andExpect(content().string(containsString("<lastmod>" + today + "</lastmod>")));
 
         mockMvc.perform(get("/sitemap-zone-high.xml"))
                 .andExpect(status().isOk())
@@ -1562,7 +1573,41 @@ class SeoBehaviorIntegrationTest {
         mockMvc.perform(get("/guides"))
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("High-intent guide")))
-                .andExpect(content().string(containsString("href=\"/guides/radon-failed-inspection\"")));
+                .andExpect(content().string(containsString("href=\"/guides/radon-failed-inspection\"")))
+                .andExpect(content().string(containsString("href=\"/guides/radon-inspection-toolkit\"")))
+                .andExpect(content().string(containsString("href=\"/radon-quote-ledger\"")));
+    }
+
+    @Test
+    void quoteLedgerAndInspectionToolkitLoadAsDataMoatAssets() throws Exception {
+        String ledgerHtml = mockMvc.perform(get("/radon-quote-ledger"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(not(containsString("<meta name=\"robots\" content=\"noindex, follow\">"))))
+                .andExpect(content().string(containsString("<title>Observed Radon Quote Ledger | RadonVerdict</title>")))
+                .andExpect(content().string(containsString("<link rel=\"canonical\" href=\"https://radonverdict.com/radon-quote-ledger\">")))
+                .andExpect(content().string(containsString("Real radon quotes beat generic averages.")))
+                .andExpect(content().string(containsString("name=\"zipCode\"")))
+                .andExpect(content().string(containsString("name=\"quotedPrice\"")))
+                .andExpect(content().string(containsString("name=\"consentAccepted\"")))
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+
+        assertJsonLdBlocksAreValid(ledgerHtml);
+
+        String toolkitHtml = mockMvc.perform(get("/guides/radon-inspection-toolkit"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(not(containsString("<meta name=\"robots\" content=\"noindex, follow\">"))))
+                .andExpect(content().string(containsString("<title>Radon Failed Inspection Toolkit for Agents and Home Inspectors | RadonVerdict</title>")))
+                .andExpect(content().string(containsString("<link rel=\"canonical\" href=\"https://radonverdict.com/guides/radon-inspection-toolkit\">")))
+                .andExpect(content().string(containsString("A radon failed inspection needs a decision path, not panic.")))
+                .andExpect(content().string(containsString("href=\"/radon-quote-ledger\"")))
+                .andExpect(content().string(containsString("href=\"/radon-credit-calculator\"")))
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+
+        assertJsonLdBlocksAreValid(toolkitHtml);
     }
 
     @Test

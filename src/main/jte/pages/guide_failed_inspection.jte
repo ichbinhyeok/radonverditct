@@ -224,6 +224,14 @@
                         <h3 class="font-black text-slate-950">What does the radon number mean?</h3>
                         <p class="mt-1 text-sm leading-relaxed text-slate-600">Use this when the buyer, seller, or agent does not understand 2.0 vs 4.0+.</p>
                     </a>
+                    <a href="/guides/radon-inspection-toolkit" class="rounded-2xl border border-indigo-200 bg-indigo-50 p-4 transition-colors hover:border-indigo-300 hover:bg-indigo-100">
+                        <h3 class="font-black text-slate-950">Need a client-sendable inspection packet?</h3>
+                        <p class="mt-1 text-sm leading-relaxed text-slate-600">Use the agent and inspector toolkit when this decision needs to be shared cleanly.</p>
+                    </a>
+                    <a href="/radon-quote-ledger" class="rounded-2xl border border-cyan-200 bg-cyan-50 p-4 transition-colors hover:border-cyan-300 hover:bg-cyan-100">
+                        <h3 class="font-black text-slate-950">Have a real quote or credit number?</h3>
+                        <p class="mt-1 text-sm leading-relaxed text-slate-600">Add an anonymized signal to improve future county cost benchmarks.</p>
+                    </a>
                 </div>
             </section>
         </main>

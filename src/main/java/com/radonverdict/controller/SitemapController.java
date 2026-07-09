@@ -44,6 +44,7 @@ public class SitemapController {
 
         addSitemapUrl(xml, "/sitemap-recovery.xml");
         addSitemapUrl(xml, "/sitemap-growth.xml");
+        addSitemapUrl(xml, "/sitemap-levels-evidence.xml");
         addSitemapUrl(xml, "/sitemap-core.xml");
         if (includeBroadZoneSitemap) {
             addSitemapUrl(xml, "/sitemap-zone-high.xml");
@@ -143,6 +144,7 @@ public class SitemapController {
         addUrl(xml, "/about", "0.8");
         addUrl(xml, "/methodology", "0.8");
         addUrl(xml, "/radon-data-sources", "0.8");
+        addUrl(xml, "/radon-quote-ledger", "0.8");
         addUrl(xml, "/contact", "0.8");
         addUrl(xml, "/guides", "0.8");
 
@@ -156,6 +158,7 @@ public class SitemapController {
         addUrl(xml, "/guides/how-to-test-for-radon", "0.7");
         addUrl(xml, "/guides/who-pays-radon-mitigation-buyer-or-seller", "0.7");
         addUrl(xml, "/guides/radon-failed-inspection", "0.8");
+        addUrl(xml, "/guides/radon-inspection-toolkit", "0.8");
         addUrl(xml, "/guides/radon-exposure-symptoms", "0.7");
         addUrl(xml, "/guides/active-vs-passive-radon-system", "0.7");
         addUrl(xml, "/guides/radon-fan-noise-troubleshooting", "0.7");
@@ -175,6 +178,32 @@ public class SitemapController {
             addUrl(xml, "/radon-mitigation-cost/" + stateSlug, "0.6");
             addUrl(xml, "/radon-levels/" + stateSlug, "0.6");
         });
+
+        xml.append("</urlset>");
+        return xml.toString();
+    }
+
+    @GetMapping(value = "/sitemap-levels-evidence.xml", produces = MediaType.APPLICATION_XML_VALUE)
+    @ResponseBody
+    public String generateLevelsEvidenceSitemap() {
+        StringBuilder xml = new StringBuilder();
+        xml.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
+        xml.append("<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">");
+
+        dataLoadService.getCountyBySlugMap().values().stream()
+                .filter(seoIndexingPolicyService::isCountyIndexableCandidate)
+                .filter(county -> !seoIndexingPolicyService.isSearchTrafficCandidate(county))
+                .sorted((left, right) -> {
+                    int stateCompare = left.getStateSlug().compareTo(right.getStateSlug());
+                    if (stateCompare != 0) {
+                        return stateCompare;
+                    }
+                    return left.getCountySlug().compareTo(right.getCountySlug());
+                })
+                .forEach(county -> addUrl(xml,
+                        "/radon-levels/" + county.getStateSlug() + "/" + county.getCountySlug(),
+                        "0.7",
+                        resolveCountyLastmod(county)));
 
         xml.append("</urlset>");
         return xml.toString();

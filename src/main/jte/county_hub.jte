@@ -161,6 +161,24 @@
 
             @template.components.quote_coach(county = county, page = page)
 
+            <section class="mt-8 rounded-3xl border border-cyan-200 bg-cyan-50 p-5 sm:p-7">
+                <div class="grid gap-5 lg:grid-cols-[1fr_0.5fr] lg:items-center">
+                    <div>
+                        <p class="text-xs font-bold uppercase tracking-wider text-cyan-700">Observed quote layer</p>
+                        <h2 class="mt-2 font-display text-2xl font-black tracking-tight text-slate-950">Already have a ${county.getAreaDisplayName()} quote?</h2>
+                        <p class="mt-2 text-sm leading-relaxed text-slate-700">
+                            Add one anonymized quote, paid install, or seller-credit number. It helps compare the model range against real local pricing without exposing a street address.
+                        </p>
+                    </div>
+                    <a href="/radon-quote-ledger"
+                       data-track-event="quote_ledger_cta_click"
+                       data-track-label="county_cost_page"
+                       class="inline-flex min-h-[52px] items-center justify-center rounded-xl bg-slate-950 px-5 text-sm font-black text-white transition-colors hover:bg-slate-800">
+                        Add quote signal
+                    </a>
+                </div>
+            </section>
+
             <!-- 2. Grid Layout for Simulator and Receipt -->
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 mt-16 mb-20">
                 

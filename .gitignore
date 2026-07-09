@@ -45,6 +45,10 @@ package-lock.json
 ### Build logs ###
 *.log
 
+### Local QA artifacts ###
+.playwright-mcp/
+/output/
+
 ### Local data collection/cache ###
 /data/
 

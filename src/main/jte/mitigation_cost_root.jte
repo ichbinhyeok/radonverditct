@@ -263,6 +263,24 @@
                 </a>
             </section>
 
+            <section class="mt-16 rounded-2xl border border-cyan-200 bg-cyan-50 p-6">
+                <div class="grid gap-5 lg:grid-cols-[1fr_0.55fr] lg:items-center">
+                    <div>
+                        <p class="text-xs font-bold uppercase tracking-wider text-cyan-700">Observed pricing layer</p>
+                        <h2 class="mt-2 font-display text-2xl font-black tracking-tight text-slate-950">Got a real quote, paid install, or seller credit?</h2>
+                        <p class="mt-2 text-sm leading-relaxed text-slate-700">
+                            Add one anonymized quote signal. Public data explains risk; observed quotes help RadonVerdict sharpen real county pricing.
+                        </p>
+                    </div>
+                    <a href="/radon-quote-ledger"
+                       data-track-event="quote_ledger_cta_click"
+                       data-track-label="cost_root"
+                       class="inline-flex min-h-[52px] items-center justify-center rounded-xl bg-slate-950 px-5 text-sm font-black text-white transition-colors hover:bg-slate-800">
+                        Add quote signal
+                    </a>
+                </div>
+            </section>
+
             <section id="state-directory" class="mt-16">
                 <div class="flex flex-col gap-3 md:flex-row md:items-end md:justify-between mb-6">
                     <div>
