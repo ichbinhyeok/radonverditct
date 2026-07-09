@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -58,6 +59,15 @@ public class LeadService {
                 .leadScore(leadScore.score())
                 .leadTier(leadScore.tier())
                 .nextAction(leadScore.nextAction())
+                .status("PENDING")
+                .lifecycleStatus("SUBMITTED")
+                .leadDisposition("UNREVIEWED")
+                .leadChannel("ORGANIC_COUNTY_ACTION_PLAN")
+                .exclusiveRouting(false)
+                .responseSlaMinutes(responseSlaMinutes(leadScore))
+                .revenueExpected(expectedLeadValue(leadScore))
+                .revenueActual(BigDecimal.ZERO)
+                .partnerNotes("Initial capture. Update lifecycle after first contact, contractor feedback, or sale.")
                 .consentVersion(request.getConsentVersion())
                 .consentTextSnapshot(consentTextSnapshot)
                 .ipAddress(ipAddress)
@@ -83,11 +93,11 @@ public class LeadService {
 
                 try (PrintWriter pw = new PrintWriter(new FileWriter(path.toFile(), true))) {
                     if (isNewFile) {
-                        pw.println("Date,Name,Phone,Email,Zip,State,County,Foundation,Tested,Intent,ResultBand,ContactPriority,LeadScore,LeadTier,NextAction");
+                        pw.println("Date,Name,Phone,Email,Zip,State,County,Foundation,Tested,Intent,ResultBand,ContactPriority,LeadScore,LeadTier,NextAction,Status,LifecycleStatus,LeadDisposition,LeadChannel,ExclusiveRouting,ResponseSlaMinutes,RevenueExpected,RevenueActual,RefundReason,PartnerNotes");
                     }
 
                     String date = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-                    pw.printf("\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\"%n",
+                    pw.printf("\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\"%n",
                             date,
                             escapeCsv(lead.getCustomerName()),
                             escapeCsv(lead.getCustomerPhone()),
@@ -102,7 +112,17 @@ public class LeadService {
                             escapeCsv(lead.getPreferredContactTime() != null ? lead.getPreferredContactTime() : ""),
                             lead.getLeadScore() != null ? lead.getLeadScore().toString() : "",
                             escapeCsv(lead.getLeadTier() != null ? lead.getLeadTier() : ""),
-                            escapeCsv(lead.getNextAction() != null ? lead.getNextAction() : ""));
+                            escapeCsv(lead.getNextAction() != null ? lead.getNextAction() : ""),
+                            escapeCsv(lead.getStatus() != null ? lead.getStatus() : "PENDING"),
+                            escapeCsv(lead.getLifecycleStatus() != null ? lead.getLifecycleStatus() : "SUBMITTED"),
+                            escapeCsv(lead.getLeadDisposition() != null ? lead.getLeadDisposition() : "UNREVIEWED"),
+                            escapeCsv(lead.getLeadChannel() != null ? lead.getLeadChannel() : "ORGANIC_COUNTY_ACTION_PLAN"),
+                            lead.getExclusiveRouting() != null ? lead.getExclusiveRouting().toString() : "false",
+                            lead.getResponseSlaMinutes() != null ? lead.getResponseSlaMinutes().toString() : "",
+                            lead.getRevenueExpected() != null ? lead.getRevenueExpected().toPlainString() : "",
+                            lead.getRevenueActual() != null ? lead.getRevenueActual().toPlainString() : "",
+                            escapeCsv(lead.getRefundReason() != null ? lead.getRefundReason() : ""),
+                            escapeCsv(lead.getPartnerNotes() != null ? lead.getPartnerNotes() : ""));
                 }
             }
         } catch (IOException e) {
@@ -115,6 +135,28 @@ public class LeadService {
         if (val == null)
             return "";
         return val.replace("\"", "\"\"");
+    }
+
+    private int responseSlaMinutes(LeadScoringService.LeadScore leadScore) {
+        if (leadScore == null || leadScore.tier() == null) {
+            return 240;
+        }
+        return switch (leadScore.tier()) {
+            case "HOT" -> 15;
+            case "WARM" -> 60;
+            default -> 240;
+        };
+    }
+
+    private BigDecimal expectedLeadValue(LeadScoringService.LeadScore leadScore) {
+        if (leadScore == null || leadScore.tier() == null) {
+            return BigDecimal.ZERO;
+        }
+        return switch (leadScore.tier()) {
+            case "HOT" -> BigDecimal.valueOf(85);
+            case "WARM" -> BigDecimal.valueOf(35);
+            default -> BigDecimal.valueOf(10);
+        };
     }
 
     private String getConsentSnapshot(String version) {

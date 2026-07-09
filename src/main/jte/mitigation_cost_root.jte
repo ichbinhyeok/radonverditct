@@ -1,4 +1,5 @@
 @import com.radonverdict.model.County
+@import com.radonverdict.model.dto.CostEvidenceHubInsight
 @import com.radonverdict.model.dto.ItemizedReceipt
 @import com.radonverdict.model.dto.TrustMetadata
 @import com.radonverdict.util.JsonLdUtils
@@ -11,6 +12,7 @@
 @param ItemizedReceipt crawlspaceReceipt
 @param Map<String, List<County>> stateMap
 @param TrustMetadata trust = null
+@param CostEvidenceHubInsight costEvidenceInsight = null
 
 !{
     final String seoTitle = "Radon Mitigation Cost by State, Foundation Type, and Result";
@@ -179,6 +181,90 @@
             </section>
 
             @template.components.search_intent_router(className = "mb-14")
+
+            @if(costEvidenceInsight != null)
+                <section id="official-cost-evidence-index" class="mb-16 rounded-2xl border border-emerald-200 bg-emerald-50 p-5 sm:p-6">
+                    <div class="flex flex-col gap-5 lg:flex-row lg:items-start lg:justify-between">
+                        <div class="max-w-3xl">
+                            <p class="text-xs font-bold uppercase tracking-wider text-emerald-700">Official cost evidence index</p>
+                            <h2 class="mt-2 font-display text-3xl font-black tracking-tight text-slate-950">Evidence-backed radon mitigation cost pages</h2>
+                            <p class="mt-3 text-sm leading-relaxed text-emerald-950">
+                                ${costEvidenceInsight.getDecisionHeadline()}
+                            </p>
+                            <p class="mt-2 text-sm leading-relaxed text-emerald-900">
+                                ${costEvidenceInsight.getDiscoverySummary()}
+                            </p>
+                        </div>
+                        <div class="grid grid-cols-2 gap-3 text-center sm:grid-cols-4 lg:min-w-[430px]">
+                            <div class="rounded-xl border border-emerald-200 bg-white p-4">
+                                <p class="font-display text-2xl font-black text-slate-950">${costEvidenceInsight.getIndexableCostCountyCount()}</p>
+                                <p class="mt-1 text-xs font-bold uppercase tracking-wider text-slate-500">Cost pages</p>
+                            </div>
+                            <div class="rounded-xl border border-emerald-200 bg-white p-4">
+                                <p class="font-display text-2xl font-black text-emerald-700">${costEvidenceInsight.getEvidenceBackedCostCountyCount()}</p>
+                                <p class="mt-1 text-xs font-bold uppercase tracking-wider text-slate-500">Evidence backed</p>
+                            </div>
+                            <div class="rounded-xl border border-emerald-200 bg-white p-4">
+                                <p class="font-display text-2xl font-black text-indigo-700">${costEvidenceInsight.getMeasuredCostCountyCount()}</p>
+                                <p class="mt-1 text-xs font-bold uppercase tracking-wider text-slate-500">Measured</p>
+                            </div>
+                            <div class="rounded-xl border border-emerald-200 bg-white p-4">
+                                <p class="font-display text-2xl font-black text-amber-700">${costEvidenceInsight.getSearchCohortCostCountyCount()}</p>
+                                <p class="mt-1 text-xs font-bold uppercase tracking-wider text-slate-500">Demand cohort</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-6 grid grid-cols-1 gap-4 lg:grid-cols-[0.95fr_1.05fr]">
+                        @if(costEvidenceInsight.getPriorityStateRows() != null && !costEvidenceInsight.getPriorityStateRows().isEmpty())
+                            <div class="rounded-2xl border border-emerald-200 bg-white p-5">
+                                <p class="text-xs font-bold uppercase tracking-wider text-slate-500">State crawl routes</p>
+                                <h3 class="mt-1 font-display text-xl font-black text-slate-950">Open these state cost hubs first</h3>
+                                <div class="mt-4 divide-y divide-slate-100">
+                                    @for(var row : costEvidenceInsight.getPriorityStateRows())
+                                        <a href="${row.getStatePath()}" class="block py-3 transition-colors hover:bg-emerald-50">
+                                            <div class="flex items-start justify-between gap-3">
+                                                <div>
+                                                    <p class="font-black text-slate-950">${row.getStateAbbr()} <span class="ml-2 rounded-md bg-emerald-100 px-2 py-1 text-xs font-black text-emerald-800">${row.getPriorityLabel()}</span></p>
+                                                    <p class="mt-1 text-sm leading-relaxed text-slate-600">${row.getDecisionDisplay()}</p>
+                                                    <p class="mt-1 text-xs font-bold text-slate-500">${row.getEvidenceCountyCount()} evidence-backed, ${row.getMeasuredCountyCount()} measured</p>
+                                                </div>
+                                                <span class="shrink-0 text-xs font-black uppercase tracking-wider text-emerald-700">State &rarr;</span>
+                                            </div>
+                                        </a>
+                                    @endfor
+                                </div>
+                            </div>
+                        @endif
+
+                        @if(costEvidenceInsight.getPriorityCountyRows() != null && !costEvidenceInsight.getPriorityCountyRows().isEmpty())
+                            <div class="rounded-2xl border border-emerald-200 bg-white p-5">
+                                <p class="text-xs font-bold uppercase tracking-wider text-slate-500">County first clicks</p>
+                                <h3 class="mt-1 font-display text-xl font-black text-slate-950">Highest-signal cost pages</h3>
+                                <div class="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
+                                    @for(var row : costEvidenceInsight.getPriorityCountyRows())
+                                        <a href="${row.getCountyPath()}" class="block rounded-xl border border-slate-200 bg-slate-50 p-4 transition-all hover:border-emerald-300 hover:bg-white hover:shadow-sm">
+                                            <div class="flex items-start justify-between gap-2">
+                                                <div>
+                                                    <p class="text-sm font-black text-slate-950">${row.getCountyName()}, ${row.getStateAbbr()}</p>
+                                                    <p class="mt-1 text-xs font-black uppercase tracking-wider text-emerald-700">${row.getPriorityLabel()} - score ${row.getIndexingScore()}</p>
+                                                </div>
+                                                <p class="shrink-0 font-display text-lg font-black text-slate-950">${row.getCostRangeDisplay()}</p>
+                                            </div>
+                                            <p class="mt-3 text-xs leading-relaxed text-slate-600">${row.getEvidenceDisplay()}</p>
+                                            <p class="mt-1 text-xs leading-relaxed text-slate-500">${row.getSupportDisplay()}</p>
+                                        </a>
+                                    @endfor
+                                </div>
+                            </div>
+                        @endif
+                    </div>
+
+                    <div class="mt-5 rounded-xl border border-emerald-200 bg-white p-4 text-sm leading-relaxed text-slate-700">
+                        <strong class="text-slate-950">How to use it:</strong> ${costEvidenceInsight.getRoutingSummary()} ${costEvidenceInsight.getSourceSummary()}
+                    </div>
+                </section>
+            @endif
 
             <section id="foundation-cost-ranges">
                 <div class="flex flex-col gap-3 md:flex-row md:items-end md:justify-between mb-6">

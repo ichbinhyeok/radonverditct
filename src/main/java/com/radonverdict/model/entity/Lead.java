@@ -64,6 +64,34 @@ public class Lead {
     @Transient
     private String nextAction;
 
+    @Column(name = "lifecycle_status", length = 30)
+    @Builder.Default
+    private String lifecycleStatus = "SUBMITTED"; // SUBMITTED, VALID, CONTACTED, APPOINTMENT, SOLD, REJECTED
+
+    @Column(name = "lead_disposition", length = 40)
+    @Builder.Default
+    private String leadDisposition = "UNREVIEWED"; // UNREVIEWED, QUALIFIED, BAD_FIT, DUPLICATE, UNREACHABLE
+
+    @Column(name = "lead_channel", length = 60)
+    @Builder.Default
+    private String leadChannel = "ORGANIC_COUNTY_ACTION_PLAN";
+
+    @Column(name = "exclusive_routing")
+    @Builder.Default
+    private Boolean exclusiveRouting = false;
+
+    @Column(name = "response_sla_minutes")
+    private Integer responseSlaMinutes;
+
+    @Column(name = "revenue_actual", precision = 10, scale = 2)
+    private BigDecimal revenueActual;
+
+    @Column(name = "refund_reason", length = 120)
+    private String refundReason;
+
+    @Column(name = "partner_notes", columnDefinition = "TEXT")
+    private String partnerNotes;
+
     @Column(name = "county_slug", length = 100)
     private String countySlug;
 

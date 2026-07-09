@@ -1,8 +1,11 @@
 package com.radonverdict.controller;
 
 import com.radonverdict.model.County;
+import com.radonverdict.model.CountyRadonMeasurement;
+import com.radonverdict.model.CountyRadonTier;
 import com.radonverdict.model.StateRegulations;
 import com.radonverdict.model.dto.AeoAnswerBlock;
+import com.radonverdict.model.dto.CostEvidenceHubInsight;
 import com.radonverdict.model.dto.CountyPageContent;
 import com.radonverdict.model.dto.ItemizedReceipt;
 import com.radonverdict.model.dto.PageQualityResult;
@@ -95,10 +98,13 @@ public class PageController {
         model.addAttribute("defaultReceipt", calcService.calculate("US", "National Average", "other", "homeowner"));
         model.addAttribute("trust", trustMetadataService.forGuidePage());
 
-        Map<String, List<County>> stateMap = dataLoadService.getCountyBySlugMap().values().stream()
-                .filter(seoIndexingPolicyService::isCountyIndexableCandidate)
+        List<County> costCounties = costIndexableCounties(dataLoadService.getCountyBySlugMap().values().stream()
+                .sorted(Comparator.comparing(County::getStateAbbr).thenComparing(County::getCountyName))
+                .toList());
+        Map<String, List<County>> stateMap = costCounties.stream()
                 .collect(Collectors.groupingBy(County::getStateAbbr, TreeMap::new, Collectors.toList()));
         model.addAttribute("stateMap", stateMap);
+        model.addAttribute("costEvidenceInsight", buildCostEvidenceHubInsight(stateMap, costCounties));
 
         return "mitigation_cost_root";
     }
@@ -193,9 +199,7 @@ public class PageController {
             return permanentRedirect("/radon-mitigation-cost/" + canonicalStateSlug);
         }
 
-        List<County> visibleCounties = stateCounties.stream()
-                .filter(seoIndexingPolicyService::isCountyIndexableCandidate)
-                .toList();
+        List<County> visibleCounties = costIndexableCounties(stateCounties);
         String stateName = humanizeStateSlug(canonicalStateSlug, stateCounties.get(0).getStateAbbr());
         String stateAbbr = stateCounties.get(0).getStateAbbr();
 
@@ -209,6 +213,9 @@ public class PageController {
         model.addAttribute("zone1Count", stateCounties.stream().filter(c -> c.getEpaZone() == 1).count());
         model.addAttribute("zone2Count", stateCounties.stream().filter(c -> c.getEpaZone() == 2).count());
         model.addAttribute("zone3Count", stateCounties.stream().filter(c -> c.getEpaZone() == 3).count());
+        model.addAttribute("costEvidenceInsight", buildCostEvidenceHubInsight(
+                Map.of(stateAbbr, visibleCounties),
+                visibleCounties));
         model.addAttribute("noindex", visibleCounties.isEmpty());
         return "state_hub";
     }
@@ -382,6 +389,252 @@ public class PageController {
                                 .build()))
                 .sources(trust != null ? trust.getSources() : List.of())
                 .build();
+    }
+
+    private List<County> costIndexableCounties(List<County> counties) {
+        if (counties == null || !indexCountyCostPages) {
+            return List.of();
+        }
+        return counties.stream()
+                .filter(seoIndexingPolicyService::isCostPageIndexableCandidate)
+                .sorted(Comparator
+                        .comparing(County::getStateAbbr)
+                        .thenComparing(County::getCountyName))
+                .toList();
+    }
+
+    private CostEvidenceHubInsight buildCostEvidenceHubInsight(Map<String, List<County>> stateMap,
+            List<County> costCounties) {
+        if (costCounties == null || costCounties.isEmpty()) {
+            return null;
+        }
+
+        int evidenceCount = (int) costCounties.stream()
+                .filter(this::hasOfficialRadonEvidence)
+                .count();
+        int measuredCount = (int) costCounties.stream()
+                .filter(county -> dataLoadService.getRadonMeasurementByFipsMap().containsKey(county.getFips()))
+                .count();
+        int tierCount = (int) costCounties.stream()
+                .filter(county -> dataLoadService.getRadonTierByFipsMap().containsKey(county.getFips()))
+                .count();
+        int searchCohortCount = (int) costCounties.stream()
+                .filter(seoIndexingPolicyService::isSearchTrafficCandidate)
+                .count();
+
+        List<CostEvidenceHubInsight.StateCostRow> priorityStateRows = stateMap.entrySet().stream()
+                .map(entry -> buildStateCostRow(entry.getKey(), entry.getValue()))
+                .filter(row -> row != null)
+                .sorted((left, right) -> Double.compare(
+                        stateCostPriorityScore(right),
+                        stateCostPriorityScore(left)))
+                .limit(8)
+                .toList();
+        List<CostEvidenceHubInsight.CountyCostRow> priorityCountyRows = costCounties.stream()
+                .sorted((left, right) -> {
+                    int scoreCompare = Integer.compare(
+                            seoIndexingPolicyService.countyIndexingScore(right),
+                            seoIndexingPolicyService.countyIndexingScore(left));
+                    if (scoreCompare != 0) {
+                        return scoreCompare;
+                    }
+                    int housingCompare = Integer.compare(housingUnits(right), housingUnits(left));
+                    if (housingCompare != 0) {
+                        return housingCompare;
+                    }
+                    return (left.getStateSlug() + left.getCountySlug())
+                            .compareTo(right.getStateSlug() + right.getCountySlug());
+                })
+                .limit(12)
+                .map(this::buildCountyCostRow)
+                .toList();
+
+        return CostEvidenceHubInsight.builder()
+                .indexableCostCountyCount(costCounties.size())
+                .evidenceBackedCostCountyCount(evidenceCount)
+                .measuredCostCountyCount(measuredCount)
+                .tierBackedCostCountyCount(tierCount)
+                .searchCohortCostCountyCount(searchCohortCount)
+                .decisionHeadline("Open cost pages that have a real reason to exist: demand, official radon evidence, or both.")
+                .discoverySummary("The cost directory now follows the same eligibility rule as the county cost pages themselves. That keeps state hubs, sitemap candidates, and internal links pointed at pages Google can actually index.")
+                .sourceSummary("Evidence-backed cost pages combine the local price model with official radon measurements or official map tiers before asking users to compare contractors.")
+                .routingSummary("Use the state rows for crawl discovery, then use the county rows for the highest-signal first clicks from the cost pillar.")
+                .priorityStateRows(priorityStateRows)
+                .priorityCountyRows(priorityCountyRows)
+                .build();
+    }
+
+    private CostEvidenceHubInsight.StateCostRow buildStateCostRow(String stateAbbr, List<County> counties) {
+        if (counties == null || counties.isEmpty()) {
+            return null;
+        }
+        County topCounty = counties.stream()
+                .max(Comparator
+                        .comparingInt(seoIndexingPolicyService::countyIndexingScore)
+                        .thenComparingInt(this::housingUnits))
+                .orElse(counties.get(0));
+        int evidenceCount = (int) counties.stream().filter(this::hasOfficialRadonEvidence).count();
+        int measuredCount = (int) counties.stream()
+                .filter(county -> dataLoadService.getRadonMeasurementByFipsMap().containsKey(county.getFips()))
+                .count();
+
+        return CostEvidenceHubInsight.StateCostRow.builder()
+                .stateAbbr(stateAbbr)
+                .statePath("/radon-mitigation-cost/" + counties.get(0).getStateSlug())
+                .priorityLabel(stateCostPriorityLabel(counties.size(), evidenceCount, measuredCount))
+                .costCountyCount(counties.size())
+                .evidenceCountyCount(evidenceCount)
+                .measuredCountyCount(measuredCount)
+                .topCountyName(topCounty.getAreaDisplayName())
+                .topCountyPath("/radon-mitigation-cost/" + topCounty.getStateSlug() + "/" + topCounty.getCountySlug())
+                .decisionDisplay(stateCostDecisionDisplay(stateAbbr, counties.size(), evidenceCount, measuredCount))
+                .build();
+    }
+
+    private CostEvidenceHubInsight.CountyCostRow buildCountyCostRow(County county) {
+        ItemizedReceipt receipt = calcService.calculate(
+                county.getStateAbbr(),
+                county.getCountyName(),
+                county.getAreaDisplayName(),
+                "basement",
+                "homeowner",
+                "under_2000");
+        return CostEvidenceHubInsight.CountyCostRow.builder()
+                .countyName(county.getAreaDisplayName())
+                .countyPath("/radon-mitigation-cost/" + county.getStateSlug() + "/" + county.getCountySlug())
+                .stateAbbr(county.getStateAbbr())
+                .indexingScore(seoIndexingPolicyService.countyIndexingScore(county))
+                .priorityLabel(countyCostPriorityLabel(county))
+                .costRangeDisplay("$" + receipt.getTotalLow() + "-$" + receipt.getTotalHigh())
+                .evidenceDisplay(countyEvidenceDisplay(county))
+                .supportDisplay(countySupportDisplay(county))
+                .build();
+    }
+
+    private double stateCostPriorityScore(CostEvidenceHubInsight.StateCostRow row) {
+        if (row == null) {
+            return 0.0;
+        }
+        double score = row.getCostCountyCount() * 2.0 + row.getEvidenceCountyCount() * 3.0
+                + row.getMeasuredCountyCount() * 5.0;
+        if ("Start here".equals(row.getPriorityLabel())) {
+            score += 35.0;
+        } else if ("Evidence dense".equals(row.getPriorityLabel())) {
+            score += 20.0;
+        }
+        return score;
+    }
+
+    private String stateCostPriorityLabel(int costCount, int evidenceCount, int measuredCount) {
+        if (measuredCount >= 8 || (measuredCount >= 3 && costCount >= 10)) {
+            return "Start here";
+        }
+        if (evidenceCount >= Math.max(3, costCount / 2)) {
+            return "Evidence dense";
+        }
+        if (costCount >= 5) {
+            return "Cost coverage";
+        }
+        return "Focused set";
+    }
+
+    private String stateCostDecisionDisplay(String stateAbbr, int costCount, int evidenceCount, int measuredCount) {
+        if (measuredCount > 0) {
+            return stateAbbr + " has " + costCount + " indexable cost counties, including " + measuredCount
+                    + " with measured radon evidence behind the cost path.";
+        }
+        if (evidenceCount > 0) {
+            return stateAbbr + " has " + evidenceCount
+                    + " official evidence-backed cost pages, so users can move from risk context into budget planning.";
+        }
+        return stateAbbr + " is shown only where the cost page has enough demand or local data to deserve a first click.";
+    }
+
+    private String countyCostPriorityLabel(County county) {
+        if (seoIndexingPolicyService.isSearchTrafficCandidate(county)) {
+            return "Demand cohort";
+        }
+        if (seoIndexingPolicyService.isEvidenceRichCostPageCandidate(county)) {
+            return "Evidence-backed";
+        }
+        return "Cost eligible";
+    }
+
+    private String countyEvidenceDisplay(County county) {
+        CountyRadonMeasurement measurement = dataLoadService.getRadonMeasurementByFipsMap().get(county.getFips());
+        if (measurement != null) {
+            String source = shortSourceName(measurement.getSourceName());
+            String metric = measurementMetricDisplay(measurement);
+            return source + (metric.isBlank() ? "" : ": " + metric);
+        }
+        CountyRadonTier tier = dataLoadService.getRadonTierByFipsMap().get(county.getFips());
+        if (tier != null) {
+            String source = shortSourceName(tier.getSourceName());
+            return source + ": " + tier.getTier1Or2Pct() + "% Zone 1/2 municipalities";
+        }
+        return "EPA zone and local housing support";
+    }
+
+    private String countySupportDisplay(County county) {
+        int housing = housingUnits(county);
+        String zone = county.getEpaZone() > 0 ? "EPA Zone " + county.getEpaZone() : "EPA zone pending";
+        return zone + " - " + String.format(Locale.US, "%,d", housing) + " housing units - score "
+                + seoIndexingPolicyService.countyIndexingScore(county);
+    }
+
+    private String measurementMetricDisplay(CountyRadonMeasurement measurement) {
+        if (measurement == null || measurement.getMetrics() == null) {
+            return "";
+        }
+        CountyRadonMeasurement.Metrics metrics = measurement.getMetrics();
+        if (metrics.getPercentTestsAtOrAbove4PciL() != null) {
+            return formatDecimal(metrics.getPercentTestsAtOrAbove4PciL()) + "% 4.0+";
+        }
+        if (metrics.getAverageTestResultPciL() != null) {
+            return formatDecimal(metrics.getAverageTestResultPciL()) + " pCi/L average";
+        }
+        if (metrics.getBasementAverageTestResultPciL() != null) {
+            return formatDecimal(metrics.getBasementAverageTestResultPciL()) + " pCi/L basement average";
+        }
+        if (metrics.getMedianRadonValuePciL() != null) {
+            return formatDecimal(metrics.getMedianRadonValuePciL()) + " pCi/L median";
+        }
+        if (metrics.getMaximumTestResultPciL() != null) {
+            return formatDecimal(metrics.getMaximumTestResultPciL()) + " pCi/L high-end";
+        }
+        return "";
+    }
+
+    private String shortSourceName(String sourceName) {
+        if (sourceName == null || sourceName.isBlank()) {
+            return "Official radon source";
+        }
+        return sourceName
+                .replace("Department of Health", "Health Dept.")
+                .replace("Environmental Public Health Tracking", "EPHT")
+                .replace("Pre-Mitigation Radon Test Results", "radon tests");
+    }
+
+    private String formatDecimal(double value) {
+        if (Math.abs(value - Math.rint(value)) < 0.05) {
+            return String.format(Locale.US, "%.0f", value);
+        }
+        return String.format(Locale.US, "%.1f", value);
+    }
+
+    private boolean hasOfficialRadonEvidence(County county) {
+        if (county == null) {
+            return false;
+        }
+        return dataLoadService.getRadonMeasurementByFipsMap().containsKey(county.getFips())
+                || dataLoadService.getRadonTierByFipsMap().containsKey(county.getFips());
+    }
+
+    private int housingUnits(County county) {
+        if (county == null || county.getStats() == null || county.getStats().getMetrics() == null) {
+            return 0;
+        }
+        return county.getStats().getMetrics().getTotalHousingUnits();
     }
 
     private String normalizedBaseUrl() {

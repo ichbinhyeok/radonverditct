@@ -27,7 +27,7 @@ class AdminControllerTest {
     @Test
     void parseLeadPreservesCommaSeparatedValues() {
         AdminController controller = new AdminController();
-        String line = "\"2026-04-08 10:00:00\",\"Doe, Jane\",\"\",\"jane@example.com\",\"22046\",\"VA\",\"falls-church-city\",\"other, hybrid\",\"true\",\"homeowner\",\"not_tested\",\"this_week\",\"41\",\"NURTURE\",\"Send test-first guide and follow up after results.\"";
+        String line = "\"2026-04-08 10:00:00\",\"Doe, Jane\",\"\",\"jane@example.com\",\"22046\",\"VA\",\"falls-church-city\",\"other, hybrid\",\"true\",\"homeowner\",\"not_tested\",\"this_week\",\"41\",\"NURTURE\",\"Send test-first guide and follow up after results.\",\"PENDING\",\"CONTACTED\",\"QUALIFIED\",\"ORGANIC_COUNTY_ACTION_PLAN\",\"true\",\"60\",\"35\",\"15\",\"\",\"Left voicemail and sent cost packet.\"";
 
         Lead lead = ReflectionTestUtils.invokeMethod(controller, "parseLead", line);
 
@@ -42,5 +42,27 @@ class AdminControllerTest {
         assertThat(lead.getLeadScore()).isEqualTo(41);
         assertThat(lead.getLeadTier()).isEqualTo("NURTURE");
         assertThat(lead.getNextAction()).isEqualTo("Send test-first guide and follow up after results.");
+        assertThat(lead.getLifecycleStatus()).isEqualTo("CONTACTED");
+        assertThat(lead.getLeadDisposition()).isEqualTo("QUALIFIED");
+        assertThat(lead.getExclusiveRouting()).isTrue();
+        assertThat(lead.getResponseSlaMinutes()).isEqualTo(60);
+        assertThat(lead.getRevenueExpected()).isEqualByComparingTo("35");
+        assertThat(lead.getRevenueActual()).isEqualByComparingTo("15");
+        assertThat(lead.getPartnerNotes()).isEqualTo("Left voicemail and sent cost packet.");
+    }
+
+    @Test
+    void parseLeadKeepsBackwardCompatibilityForOldCsvRows() {
+        AdminController controller = new AdminController();
+        String line = "\"2026-04-08 10:00:00\",\"Old Lead\",\"555-1212\",\"old@example.com\",\"22046\",\"VA\",\"falls-church-city\",\"basement\",\"true\",\"homeowner\",\"above_4\",\"urgent_24h\",\"87\",\"HOT\",\"Call first.\"";
+
+        Lead lead = ReflectionTestUtils.invokeMethod(controller, "parseLead", line);
+
+        assertThat(lead).isNotNull();
+        assertThat(lead.getStatus()).isEqualTo("PENDING");
+        assertThat(lead.getLifecycleStatus()).isEqualTo("SUBMITTED");
+        assertThat(lead.getLeadDisposition()).isEqualTo("UNREVIEWED");
+        assertThat(lead.getLeadChannel()).isEqualTo("ORGANIC_COUNTY_ACTION_PLAN");
+        assertThat(lead.getRevenueExpected()).isEqualByComparingTo("0");
     }
 }

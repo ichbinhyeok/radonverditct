@@ -204,14 +204,20 @@ public class SitemapController {
         addUrl(xml, "/guides/radon-myths-granite-countertops", "0.7");
         addUrl(xml, "/guides/radon-seller-credit-worksheet", "0.7");
 
-        // 3. State Hubs (indexable candidates only)
+        // 3. State Hubs (match each vertical's own indexability policy)
         Collection<County> counties = dataLoadService.getCountyBySlugMap().values();
+        counties.stream()
+                .filter(seoIndexingPolicyService::isCostPageIndexableCandidate)
+                .map(County::getStateSlug)
+                .distinct()
+                .forEach(stateSlug -> {
+            addUrl(xml, "/radon-mitigation-cost/" + stateSlug, "0.6");
+        });
         counties.stream()
                 .filter(seoIndexingPolicyService::isCountyIndexableCandidate)
                 .map(County::getStateSlug)
                 .distinct()
                 .forEach(stateSlug -> {
-            addUrl(xml, "/radon-mitigation-cost/" + stateSlug, "0.6");
             addUrl(xml, "/radon-levels/" + stateSlug, "0.6");
         });
 

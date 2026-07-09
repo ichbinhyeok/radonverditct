@@ -129,6 +129,9 @@ class SeoBehaviorIntegrationTest {
                 .andExpect(content().string(containsString("I need a repair or seller credit number")))
                 .andExpect(content().string(containsString("href=\"/guides/radon-failed-inspection\"")))
                 .andExpect(content().string(containsString("href=\"/radon-cost-calculator?foundation=basement\"")))
+                .andExpect(content().string(containsString("Official cost evidence index")))
+                .andExpect(content().string(containsString("Evidence-backed radon mitigation cost pages")))
+                .andExpect(content().string(containsString("Highest-signal cost pages")))
                 .andExpect(content().string(containsString("Basement, slab, and crawl-space cost ranges")))
                 .andExpect(content().string(containsString("When the cost question becomes urgent")))
                 .andExpect(content().string(containsString("Browse radon mitigation cost by state")))
@@ -153,6 +156,8 @@ class SeoBehaviorIntegrationTest {
                 .andExpect(content().string(containsString("California cost range by foundation")))
                 .andExpect(content().string(containsString("State rules that can change the quote")))
                 .andExpect(content().string(containsString("EPA zone mix in California")))
+                .andExpect(content().string(containsString("Cost pages eligible for Google")))
+                .andExpect(content().string(containsString("Best county pages to open first")))
                 .andExpect(content().string(containsString("Slab-on-Grade")));
 
         mockMvc.perform(get("/radon-mitigation-cost/california/los-angeles-county"))
@@ -362,7 +367,7 @@ class SeoBehaviorIntegrationTest {
         mockMvc.perform(get("/radon-mitigation-cost/california"))
                 .andExpect(status().isOk())
                 .andExpect(content().string(not(containsString("/radon-mitigation-cost/california/butte-county"))))
-                .andExpect(content().string(containsString("/radon-mitigation-cost/california/alameda-county")));
+                .andExpect(content().string(containsString("/radon-mitigation-cost/california/los-angeles-county")));
 
         mockMvc.perform(get("/radon-levels/california"))
                 .andExpect(status().isOk())

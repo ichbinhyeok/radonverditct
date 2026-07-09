@@ -25,13 +25,15 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(properties = {
         "app.site.enforce-canonical-host=false",
         "app.storage.leads-csv-path=build/tmp/lead-capture-admin/leads.csv",
-        "app.storage.telemetry-csv-path=build/tmp/lead-capture-admin/telemetry_events.csv"
+        "app.storage.telemetry-csv-path=build/tmp/lead-capture-admin/telemetry_events.csv",
+        "app.storage.search-console-indexing-csv-path=build/tmp/lead-capture-admin/search-console-indexing.csv"
 })
 @AutoConfigureMockMvc
 class LeadCaptureAdminIntegrationTest {
 
     private static final Path LEADS_CSV_PATH = Paths.get("build", "tmp", "lead-capture-admin", "leads.csv");
     private static final Path TELEMETRY_CSV_PATH = Paths.get("build", "tmp", "lead-capture-admin", "telemetry_events.csv");
+    private static final Path SEARCH_CONSOLE_CSV_PATH = Paths.get("build", "tmp", "lead-capture-admin", "search-console-indexing.csv");
 
     @Autowired
     private MockMvc mockMvc;
@@ -41,6 +43,7 @@ class LeadCaptureAdminIntegrationTest {
         Files.createDirectories(LEADS_CSV_PATH.getParent());
         Files.deleteIfExists(LEADS_CSV_PATH);
         Files.deleteIfExists(TELEMETRY_CSV_PATH);
+        Files.deleteIfExists(SEARCH_CONSOLE_CSV_PATH);
     }
 
     @Test
@@ -69,6 +72,9 @@ class LeadCaptureAdminIntegrationTest {
         assertTrue(Files.readString(LEADS_CSV_PATH).contains(email), "Lead CSV should contain the submitted email.");
         assertTrue(Files.readString(LEADS_CSV_PATH).contains("urgent_24h"), "Lead CSV should contain contact priority.");
         assertTrue(Files.readString(LEADS_CSV_PATH).contains("LeadScore"), "Lead CSV should contain lead score header.");
+        assertTrue(Files.readString(LEADS_CSV_PATH).contains("LifecycleStatus"), "Lead CSV should contain lifecycle tracking.");
+        assertTrue(Files.readString(LEADS_CSV_PATH).contains("ResponseSlaMinutes"), "Lead CSV should contain speed-to-lead SLA.");
+        assertTrue(Files.readString(LEADS_CSV_PATH).contains("RevenueExpected"), "Lead CSV should contain revenue tracking.");
         assertTrue(Files.readString(LEADS_CSV_PATH).contains("HOT"), "High-intent lead should be scored hot.");
         assertTrue(Files.readString(TELEMETRY_CSV_PATH).contains("lead_submit_success"),
                 "Server telemetry should record the saved lead, not only the client click.");
@@ -77,14 +83,37 @@ class LeadCaptureAdminIntegrationTest {
                         .header("Authorization", basicAuth("admin", "tlsgur3108")))
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("Leads Dashboard")))
+                .andExpect(content().string(containsString("Revenue operations")))
+                .andExpect(content().string(containsString("Submitted")))
+                .andExpect(content().string(containsString("SLA risk")))
                 .andExpect(content().string(containsString("Call first")))
                 .andExpect(content().string(containsString("Score")))
                 .andExpect(content().string(containsString("Next Action")))
+                .andExpect(content().string(containsString("SUBMITTED")))
+                .andExpect(content().string(containsString("UNREVIEWED")))
                 .andExpect(content().string(containsString("HOT")))
                 .andExpect(content().string(containsString("Priority")))
                 .andExpect(content().string(containsString("urgent_24h")))
                 .andExpect(content().string(containsString(email)))
                 .andExpect(content().string(containsString("fairfax-city")));
+    }
+
+    @Test
+    void searchConsoleCohortDashboardLoadsWithExportedStatuses() throws Exception {
+        Files.writeString(SEARCH_CONSOLE_CSV_PATH, String.join(System.lineSeparator(),
+                "URL,Page indexing",
+                "https://radonverdict.com/radon-levels/virginia/loudoun-county,Submitted and indexed",
+                "https://radonverdict.com/radon-mitigation-cost/pennsylvania/montgomery-county,Crawled - currently not indexed",
+                "https://radonverdict.com/radon-levels/new-jersey/gloucester-county,Discovered - currently not indexed"));
+
+        mockMvc.perform(get("/admin/search-console")
+                        .header("Authorization", basicAuth("admin", "tlsgur3108")))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("Search Console Cohorts")))
+                .andExpect(content().string(containsString("GSC export loaded")))
+                .andExpect(content().string(containsString("sitemap-cost-evidence.xml")))
+                .andExpect(content().string(containsString("Crawled not indexed")))
+                .andExpect(content().string(containsString("Manual URL inspection queue")));
     }
 
     private String basicAuth(String username, String password) {
