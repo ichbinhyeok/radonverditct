@@ -39,6 +39,7 @@
     final String crawlspacePath = hasCounty
             ? costPath + "?foundation=crawlspace&radonResultBand=above_4&intent=homeowner#estimate-form"
             : "/radon-cost-calculator?foundation=crawlspace";
+    final String quoteCheckerPath = "/radon-quote-ledger#quote-checker";
 }
 
 <section id="${sectionId}" class="${className} rounded-[1.75rem] border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
@@ -97,7 +98,7 @@
             </div>
 
             <div class="rounded-2xl border border-slate-200 bg-slate-950 p-4 text-white">
-                <div class="grid gap-4 lg:grid-cols-[1fr_1fr]">
+                <div class="grid gap-4 lg:grid-cols-3">
                     <div>
                         <p class="text-xs font-bold uppercase tracking-[0.2em] text-slate-400">Foundation fast lanes</p>
                         <div class="mt-3 grid grid-cols-3 gap-2">
@@ -112,6 +113,15 @@
                             <a href="${failedInspectionPath}" class="rounded-xl border border-white/10 bg-white px-3 py-2 text-center text-xs font-black text-slate-950 transition-colors hover:bg-slate-100">Buyer ask</a>
                             <a href="${sellerResponsePath}" class="rounded-xl border border-white/10 bg-white/10 px-3 py-2 text-center text-xs font-black text-white transition-colors hover:bg-white/15">Seller response</a>
                         </div>
+                    </div>
+                    <div>
+                        <p class="text-xs font-bold uppercase tracking-[0.2em] text-slate-400">Already got a bid?</p>
+                        <a href="${quoteCheckerPath}"
+                           data-track-event="search_intent_router_click"
+                           data-track-label="quote_checker"
+                           class="mt-3 flex min-h-[40px] items-center justify-center rounded-xl border border-cyan-200 bg-cyan-50 px-3 py-2 text-center text-xs font-black text-slate-950 transition-colors hover:bg-white">
+                            Check quote fairness
+                        </a>
                     </div>
                 </div>
             </div>

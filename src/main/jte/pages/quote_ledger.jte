@@ -92,7 +92,7 @@
                             Real radon quotes beat generic averages.
                         </h1>
                         <p class="mt-5 max-w-2xl text-lg font-semibold leading-relaxed text-slate-300">
-                            Add an anonymized quote, seller credit, or test-result signal. RadonVerdict uses these signals to compare model ranges against real county pricing.
+                            Add an anonymized quote, seller credit, or test-result signal. RadonVerdict also folds in anonymized lead-planning signals without exposing contact details.
                         </p>
                         <div class="mt-8 grid gap-3 sm:grid-cols-3">
                             <div class="border-t border-cyan-300 pt-3">
@@ -365,8 +365,8 @@
                     <div>
                         <p class="text-xs font-bold uppercase tracking-[0.22em] text-slate-500">Radon Quote Index</p>
                         <h2 class="mt-3 font-display text-3xl font-black tracking-tight text-slate-950">Public aggregate ranges, not private submissions.</h2>
-                        <p class="mt-3 max-w-3xl text-sm leading-relaxed text-slate-600">
-                            The index groups anonymized signals by county, state, foundation, and result band. Exact ZIPs, emails, notes, IP addresses, and user agents stay out of the public export.
+                            <p class="mt-3 max-w-3xl text-sm leading-relaxed text-slate-600">
+                            The index groups quote submissions and lead-derived planning signals by county, state, foundation, and result band. Exact ZIPs, names, emails, phones, notes, IP addresses, and user agents stay out of the public export.
                         </p>
                     </div>
                     <a href="/radon-quote-ledger/benchmark.csv"
@@ -387,8 +387,8 @@
                         <p class="mt-1 text-xs font-bold uppercase tracking-wider text-slate-500">Counties</p>
                     </div>
                     <div class="rounded-2xl border border-slate-200 bg-white p-4">
-                        <p class="text-2xl font-black text-slate-950">3</p>
-                        <p class="mt-1 text-xs font-bold uppercase tracking-wider text-slate-500">Minimum priced signals</p>
+                        <p class="text-2xl font-black text-slate-950">@if(quoteBenchmark != null)${quoteBenchmark.getLeadDerivedSignalCount()}@else 0@endif</p>
+                        <p class="mt-1 text-xs font-bold uppercase tracking-wider text-slate-500">Lead-derived signals</p>
                     </div>
                     <div class="rounded-2xl border border-slate-200 bg-white p-4">
                         <p class="text-base font-black text-slate-950">@if(quoteBenchmark != null)${quoteBenchmark.getFreshnessLabel()}@else No public signals yet@endif</p>

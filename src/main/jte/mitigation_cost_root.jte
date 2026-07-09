@@ -272,11 +272,11 @@
                             Add one anonymized quote signal. Public data explains risk; observed quotes help RadonVerdict sharpen real county pricing.
                         </p>
                     </div>
-                    <a href="/radon-quote-ledger"
+                    <a href="/radon-quote-ledger#quote-checker"
                        data-track-event="quote_ledger_cta_click"
                        data-track-label="cost_root"
                        class="inline-flex min-h-[52px] items-center justify-center rounded-xl bg-slate-950 px-5 text-sm font-black text-white transition-colors hover:bg-slate-800">
-                        Add quote signal
+                        Check my quote
                     </a>
                 </div>
             </section>

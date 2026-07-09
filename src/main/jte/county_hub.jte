@@ -170,11 +170,11 @@
                             Add one anonymized quote, paid install, or seller-credit number. It helps compare the model range against real local pricing without exposing a street address.
                         </p>
                     </div>
-                    <a href="/radon-quote-ledger"
+                    <a href="/radon-quote-ledger#quote-checker"
                        data-track-event="quote_ledger_cta_click"
                        data-track-label="county_cost_page"
                        class="inline-flex min-h-[52px] items-center justify-center rounded-xl bg-slate-950 px-5 text-sm font-black text-white transition-colors hover:bg-slate-800">
-                        Add quote signal
+                        Check my quote
                     </a>
                 </div>
             </section>

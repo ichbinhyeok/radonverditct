@@ -1278,14 +1278,14 @@
                                     <span class="mt-1 block text-sm leading-relaxed text-slate-600">Ask about foundation, suction method, fan, permit, warranty, retest, and exclusions before comparing prices.</span>
                                 </span>
                             </a>
-                            <a href="/radon-quote-ledger"
+                            <a href="/radon-quote-ledger#quote-checker"
                                data-track-event="levels_intent_bridge_click"
-                               data-track-label="quote_ledger"
+                               data-track-label="quote_checker"
                                class="grid gap-2 p-4 transition-colors hover:bg-white sm:grid-cols-[0.24fr_0.76fr]">
                                 <span class="text-xs font-black uppercase tracking-wider text-indigo-700">Quote</span>
                                 <span>
-                                    <span class="block text-sm font-black text-slate-950">Add one anonymized quote or credit signal</span>
-                                    <span class="mt-1 block text-sm leading-relaxed text-slate-600">Real ZIP, result band, foundation, and quote status make future local ranges more useful.</span>
+                                    <span class="block text-sm font-black text-slate-950">Check if the contractor quote is fair</span>
+                                    <span class="mt-1 block text-sm leading-relaxed text-slate-600">Screen price, foundation scope, fan, warranty, permit, sealing, and retest before adding an anonymized signal.</span>
                                 </span>
                             </a>
                         </div>

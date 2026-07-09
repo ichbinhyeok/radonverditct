@@ -33,6 +33,9 @@ public class QuoteLedgerService {
     @Value("${app.storage.quote-ledger-csv-path:data/quote_ledger.csv}")
     private String quoteLedgerCsvPath;
 
+    @Value("${app.storage.leads-csv-path:data/leads.csv}")
+    private String leadsCsvPath;
+
     private final Object writeLock = new Object();
 
     public void submit(QuoteLedgerSubmissionRequest request, County county, String ipAddress, String userAgent) {
@@ -77,13 +80,17 @@ public class QuoteLedgerService {
     }
 
     public QuoteLedgerBenchmarkSnapshot getBenchmarkSnapshot() {
-        List<LedgerRow> rows = readLedgerRows();
+        List<LedgerRow> rows = readAllBenchmarkRows();
         Map<String, SegmentAccumulator> segments = new LinkedHashMap<>();
         Set<String> states = new HashSet<>();
         Set<String> counties = new HashSet<>();
         int pricedCount = 0;
+        int leadDerivedSignalCount = 0;
 
         for (LedgerRow row : rows) {
+            if (row.leadDerived()) {
+                leadDerivedSignalCount++;
+            }
             if (!row.stateAbbr().isBlank()) {
                 states.add(row.stateAbbr());
             }
@@ -115,10 +122,15 @@ public class QuoteLedgerService {
         return QuoteLedgerBenchmarkSnapshot.builder()
                 .totalSignalCount(rows.size())
                 .pricedSignalCount(pricedCount)
+                .leadDerivedSignalCount(leadDerivedSignalCount)
                 .publicBenchmarkCount(publicBenchmarkCount)
                 .stateCount(states.size())
                 .countyCount(counties.size())
-                .freshnessLabel(rows.isEmpty() ? "No public signals yet" : "Updated from anonymized submissions")
+                .freshnessLabel(rows.isEmpty()
+                        ? "No public signals yet"
+                        : leadDerivedSignalCount > 0
+                                ? "Updated from quote submissions and anonymized lead intakes"
+                                : "Updated from anonymized submissions")
                 .rows(publicRows)
                 .build();
     }
@@ -151,6 +163,12 @@ public class QuoteLedgerService {
                 .replace("\"", "\"\"");
     }
 
+    private List<LedgerRow> readAllBenchmarkRows() {
+        List<LedgerRow> rows = new ArrayList<>(readLedgerRows());
+        rows.addAll(readLeadDerivedRows());
+        return rows;
+    }
+
     private List<LedgerRow> readLedgerRows() {
         Path path = Paths.get(quoteLedgerCsvPath);
         if (!Files.exists(path)) {
@@ -172,17 +190,131 @@ public class QuoteLedgerService {
                 rows.add(new LedgerRow(
                         get(columns, 2),
                         get(columns, 3),
+                        get(columns, 4),
                         get(columns, 5),
                         get(columns, 7),
                         get(columns, 8),
                         parsePrice(get(columns, 9)),
-                        parsePrice(get(columns, 10))));
+                        parsePrice(get(columns, 10)),
+                        false));
             }
             return rows;
         } catch (IOException e) {
             log.warn("Could not read quote ledger benchmark rows from {}", quoteLedgerCsvPath, e);
             return List.of();
         }
+    }
+
+    private List<LedgerRow> readLeadDerivedRows() {
+        Path path = Paths.get(leadsCsvPath);
+        if (!Files.exists(path)) {
+            return List.of();
+        }
+
+        try {
+            List<String> lines = Files.readAllLines(path);
+            if (lines.size() <= 1) {
+                return List.of();
+            }
+
+            Map<String, Integer> header = csvHeaderIndex(parseCsvLine(lines.get(0)));
+            Set<String> seen = new HashSet<>();
+            List<LedgerRow> rows = new ArrayList<>();
+            for (int i = 1; i < lines.size(); i++) {
+                List<String> columns = parseCsvLine(lines.get(i));
+                String zipCode = get(columns, header.getOrDefault("zip", -1));
+                String stateAbbr = get(columns, header.getOrDefault("state", -1));
+                String countySlug = get(columns, header.getOrDefault("county", -1));
+                String foundation = normalizeLeadFoundation(get(columns, header.getOrDefault("foundation", -1)));
+                String tested = get(columns, header.getOrDefault("tested", -1));
+                String intent = get(columns, header.getOrDefault("intent", -1));
+                String resultBand = normalizeLeadResultBand(tested, get(columns, header.getOrDefault("resultband", -1)));
+                String date = get(columns, header.getOrDefault("date", -1));
+                String name = get(columns, header.getOrDefault("name", -1));
+                String phone = get(columns, header.getOrDefault("phone", -1));
+                String email = get(columns, header.getOrDefault("email", -1));
+
+                if (zipCode.isBlank() || stateAbbr.isBlank() || countySlug.isBlank()
+                        || looksSyntheticLead(name, phone, email)) {
+                    continue;
+                }
+
+                String role = mapLeadIntentToRole(intent);
+                String fingerprint = date + "|" + zipCode + "|" + stateAbbr + "|" + countySlug + "|"
+                        + role + "|" + resultBand + "|" + foundation;
+                if (!seen.add(fingerprint)) {
+                    continue;
+                }
+
+                rows.add(new LedgerRow(
+                        stateAbbr,
+                        countySlug,
+                        role,
+                        resultBand,
+                        foundation,
+                        "planning",
+                        null,
+                        null,
+                        true));
+            }
+            return rows;
+        } catch (IOException e) {
+            log.warn("Could not read lead-derived quote benchmark rows from {}", leadsCsvPath, e);
+            return List.of();
+        }
+    }
+
+    private Map<String, Integer> csvHeaderIndex(List<String> headerRow) {
+        Map<String, Integer> header = new LinkedHashMap<>();
+        for (int i = 0; i < headerRow.size(); i++) {
+            header.put(headerRow.get(i).replaceAll("[^A-Za-z0-9]", "").toLowerCase(java.util.Locale.ROOT), i);
+        }
+        return header;
+    }
+
+    private boolean looksSyntheticLead(String name, String phone, String email) {
+        String joined = ((name == null ? "" : name) + " " + (email == null ? "" : email))
+                .toLowerCase(java.util.Locale.ROOT);
+        String normalizedPhone = phone == null ? "" : phone.replaceAll("[^0-9]", "");
+        return joined.contains("qa")
+                || joined.contains("test")
+                || joined.contains("example.com")
+                || normalizedPhone.startsWith("555")
+                || normalizedPhone.startsWith("000");
+    }
+
+    private String normalizeLeadFoundation(String value) {
+        return switch ((value == null ? "" : value).toLowerCase(java.util.Locale.ROOT)) {
+            case "basement" -> "basement";
+            case "slab" -> "slab";
+            case "crawlspace", "crawl_space", "crawl space" -> "crawlspace";
+            case "mixed" -> "mixed";
+            default -> "unknown";
+        };
+    }
+
+    private String normalizeLeadResultBand(String tested, String resultBand) {
+        String normalized = resultBand == null ? "" : resultBand.toLowerCase(java.util.Locale.ROOT);
+        if ("false".equalsIgnoreCase(tested) || "no".equalsIgnoreCase(tested)) {
+            return "not_tested";
+        }
+        return switch (normalized) {
+            case "above_8", "above8", "8_plus" -> "above_8";
+            case "above_4", "above4", "4_plus" -> "above_4";
+            case "between_2_and_4", "between2and4", "2_to_4" -> "between_2_and_4";
+            case "under_2", "under2" -> "under_2";
+            case "not_tested" -> "not_tested";
+            default -> "unknown";
+        };
+    }
+
+    private String mapLeadIntentToRole(String intent) {
+        return switch ((intent == null ? "" : intent).toLowerCase(java.util.Locale.ROOT)) {
+            case "buying", "buyer" -> "buyer";
+            case "selling", "seller" -> "seller";
+            case "agent" -> "agent";
+            default -> "homeowner";
+        };
     }
 
     private List<String> parseCsvLine(String line) {
@@ -274,11 +406,13 @@ public class QuoteLedgerService {
     private record LedgerRow(
             String stateAbbr,
             String countySlug,
+            String role,
             String resultBand,
             String foundationType,
             String quoteStatus,
             Integer quotedPrice,
-            Integer finalPrice) {
+            Integer finalPrice,
+            boolean leadDerived) {
 
         Integer publicPrice() {
             if (finalPrice != null) {

@@ -23,12 +23,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest(properties = {
         "app.site.enforce-canonical-host=false",
-        "app.storage.quote-ledger-csv-path=build/tmp/quote-ledger/quote_ledger.csv"
+        "app.storage.quote-ledger-csv-path=build/tmp/quote-ledger/quote_ledger.csv",
+        "app.storage.leads-csv-path=build/tmp/quote-ledger/leads.csv"
 })
 @AutoConfigureMockMvc
 class QuoteLedgerIntegrationTest {
 
     private static final Path QUOTE_LEDGER_CSV_PATH = Paths.get("build", "tmp", "quote-ledger", "quote_ledger.csv");
+    private static final Path LEADS_CSV_PATH = Paths.get("build", "tmp", "quote-ledger", "leads.csv");
 
     @Autowired
     private MockMvc mockMvc;
@@ -37,6 +39,7 @@ class QuoteLedgerIntegrationTest {
     void beforeEach() throws Exception {
         Files.createDirectories(QUOTE_LEDGER_CSV_PATH.getParent());
         Files.deleteIfExists(QUOTE_LEDGER_CSV_PATH);
+        Files.deleteIfExists(LEADS_CSV_PATH);
     }
 
     @Test
@@ -134,5 +137,34 @@ class QuoteLedgerIntegrationTest {
         assertFalse(publicCsv.contains("127.0.0.1"), "Public CSV should not expose IP addresses.");
         assertFalse(publicCsv.contains("private note"), "Public CSV should not expose freeform notes.");
         assertFalse(publicCsv.contains("JUnit"), "Public CSV should not expose user agents.");
+    }
+
+    @Test
+    void quoteLedgerMergesRealLeadPlanningSignalsAndFiltersQaLeads() throws Exception {
+        Files.writeString(LEADS_CSV_PATH, String.join(System.lineSeparator(),
+                "Date,Name,Phone,Email,Zip,State,County,Foundation,Tested,Intent,ResultBand,ContactPriority,LeadScore,LeadTier,NextAction",
+                "\"2026-07-09 09:00:00\",\"QA Radon\",\"5551234567\",\"qa+radon@example.com\",\"22030\",\"VA\",\"fairfax-city\",\"basement\",\"true\",\"buying\",\"above_4\",\"this_week\",\"80\",\"HOT\",\"Call\"",
+                "\"2026-07-09 09:05:00\",\"Real Intake\",\"2024440199\",\"owner@radonlead.invalid\",\"22030\",\"VA\",\"fairfax-city\",\"basement\",\"true\",\"buying\",\"above_4\",\"this_week\",\"80\",\"HOT\",\"Call\"",
+                ""));
+
+        mockMvc.perform(get("/radon-quote-ledger"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("Lead-derived signals")))
+                .andExpect(content().string(containsString("Fairfax City, VA")))
+                .andExpect(content().string(containsString("1 total, 0 priced")))
+                .andExpect(content().string(containsString("Hidden until 3 priced signals")));
+
+        String publicCsv = mockMvc.perform(get("/radon-quote-ledger/benchmark.csv"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("\"Fairfax City, VA\"")))
+                .andExpect(content().string(containsString("Need 3 more priced signals")))
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+
+        assertFalse(publicCsv.contains("Real Intake"), "Public CSV should not expose lead names.");
+        assertFalse(publicCsv.contains("2024440199"), "Public CSV should not expose lead phone numbers.");
+        assertFalse(publicCsv.contains("owner@radonlead.invalid"), "Public CSV should not expose lead emails.");
+        assertFalse(publicCsv.contains("qa+radon@example.com"), "QA leads should not be merged into the public benchmark.");
     }
 }

@@ -124,10 +124,10 @@
                     <h2 class="mt-3 text-xl font-black text-slate-950">Credit calculator</h2>
                     <p class="mt-2 text-sm leading-relaxed text-slate-600">Convert cost into opening ask, ceiling, or fallback.</p>
                 </a>
-                <a href="/radon-quote-ledger" class="rounded-2xl border border-slate-200 bg-white p-5 transition-colors hover:border-slate-400 hover:bg-slate-50">
+                <a href="/radon-quote-ledger#quote-checker" class="rounded-2xl border border-slate-200 bg-white p-5 transition-colors hover:border-slate-400 hover:bg-slate-50">
                     <p class="text-xs font-black uppercase tracking-wider text-slate-500">Improve</p>
-                    <h2 class="mt-3 text-xl font-black text-slate-950">Quote ledger</h2>
-                    <p class="mt-2 text-sm leading-relaxed text-slate-600">Add one anonymized quote or seller-credit signal.</p>
+                    <h2 class="mt-3 text-xl font-black text-slate-950">Quote checker</h2>
+                    <p class="mt-2 text-sm leading-relaxed text-slate-600">Check one quote, then add an anonymized quote or seller-credit signal.</p>
                 </a>
                 <a href="/guides/radon-mitigation-quote-checklist" class="rounded-2xl border border-slate-200 bg-white p-5 transition-colors hover:border-slate-400 hover:bg-slate-50">
                     <p class="text-xs font-black uppercase tracking-wider text-slate-500">Ask</p>
@@ -189,11 +189,11 @@
                                class="inline-flex min-h-[48px] items-center justify-center rounded-xl border border-slate-200 px-4 text-sm font-black text-slate-800 transition-colors hover:bg-slate-50">
                                 Seller credit
                             </a>
-                            <a href="/radon-quote-ledger"
+                            <a href="/radon-quote-ledger#quote-checker"
                                data-track-event="inspection_packet_click"
-                               data-track-label="quote_ledger"
+                               data-track-label="quote_checker"
                                class="inline-flex min-h-[48px] items-center justify-center rounded-xl border border-slate-200 px-4 text-sm font-black text-slate-800 transition-colors hover:bg-slate-50">
-                                Add quote
+                                Check quote
                             </a>
                             <a href="/guides/radon-mitigation-quote-checklist"
                                data-track-event="inspection_packet_click"

@@ -10,6 +10,7 @@ import java.util.List;
 public class QuoteLedgerBenchmarkSnapshot {
     private int totalSignalCount;
     private int pricedSignalCount;
+    private int leadDerivedSignalCount;
     private int publicBenchmarkCount;
     private int stateCount;
     private int countyCount;

@@ -105,11 +105,11 @@
                                class="inline-flex min-h-[52px] items-center justify-center rounded-xl bg-white px-5 text-sm font-black text-slate-950 transition-colors hover:bg-slate-100">
                                 Open local cost first
                             </a>
-                            <a href="/radon-quote-ledger"
+                            <a href="/radon-quote-ledger#quote-checker"
                                data-track-event="quote_checklist_cta_click"
-                               data-track-label="quote_ledger"
+                               data-track-label="quote_checker"
                                class="inline-flex min-h-[52px] items-center justify-center rounded-xl border border-white/20 px-5 text-sm font-black text-white transition-colors hover:bg-white/10">
-                                Add quote after the call
+                                Check quote after the call
                             </a>
                         </div>
                     </div>
@@ -199,11 +199,11 @@
                         </p>
                     </div>
                     <div class="grid gap-3 sm:grid-cols-2">
-                        <a href="/radon-quote-ledger"
+                        <a href="/radon-quote-ledger#quote-checker"
                            data-track-event="quote_checklist_after_call_click"
-                           data-track-label="quote_ledger"
+                           data-track-label="quote_checker"
                            class="inline-flex min-h-[52px] items-center justify-center rounded-xl bg-white px-5 text-sm font-black text-slate-950 transition-colors hover:bg-slate-100">
-                            Add anonymized quote
+                            Check and add quote
                         </a>
                         <a href="/guides/radon-inspection-toolkit"
                            data-track-event="quote_checklist_after_call_click"
