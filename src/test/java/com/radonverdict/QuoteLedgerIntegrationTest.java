@@ -89,4 +89,50 @@ class QuoteLedgerIntegrationTest {
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("Observed Radon Quote Ledger")));
     }
+
+    @Test
+    void quoteLedgerRendersCheckerAndEmptyPublicIndex() throws Exception {
+        mockMvc.perform(get("/radon-quote-ledger"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("Is this radon quote fair?")))
+                .andExpect(content().string(containsString("Enter a quote to compare the scope.")))
+                .andExpect(content().string(containsString("Radon Quote Index")))
+                .andExpect(content().string(containsString("Public aggregate ranges, not private submissions.")))
+                .andExpect(content().string(containsString("No public benchmark yet.")))
+                .andExpect(content().string(containsString("href=\"/radon-quote-ledger/benchmark.csv\"")));
+
+        mockMvc.perform(get("/radon-quote-ledger/benchmark.csv"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("Market,State,County,Foundation,ResultBand,SignalCount,PricedSignalCount,PriceRange,Median,Confidence")));
+    }
+
+    @Test
+    void quoteLedgerPublishesAggregateBenchmarksWithoutPrivateColumns() throws Exception {
+        Files.writeString(QUOTE_LEDGER_CSV_PATH, String.join(System.lineSeparator(),
+                "Date,Zip,State,County,Role,ResultBand,RadonReadingPciL,Foundation,QuoteStatus,QuotedPrice,FinalPrice,SystemScope,Timeline,Email,Notes,IpAddress,UserAgent",
+                "\"2026-07-09 10:00:00\",\"22030\",\"VA\",\"fairfax-city\",\"buyer\",\"above_4\",\"5.2\",\"basement\",\"quoted\",\"1900\",\"\",\"sub-slab\",\"inspection\",\"one@example.com\",\"private note\",\"127.0.0.1\",\"JUnit\"",
+                "\"2026-07-09 10:05:00\",\"22030\",\"VA\",\"fairfax-city\",\"seller\",\"above_4\",\"4.8\",\"basement\",\"paid\",\"2100\",\"2100\",\"sub-slab\",\"inspection\",\"two@example.com\",\"private note\",\"127.0.0.2\",\"JUnit\"",
+                "\"2026-07-09 10:10:00\",\"22030\",\"VA\",\"fairfax-city\",\"homeowner\",\"above_4\",\"6.1\",\"basement\",\"quoted\",\"2300\",\"\",\"sub-slab\",\"planning\",\"three@example.com\",\"private note\",\"127.0.0.3\",\"JUnit\"",
+                ""));
+
+        mockMvc.perform(get("/radon-quote-ledger"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("Fairfax City, VA")))
+                .andExpect(content().string(containsString("$1,900-$2,300")))
+                .andExpect(content().string(containsString("$2,100")))
+                .andExpect(content().string(containsString("Early benchmark")));
+
+        String publicCsv = mockMvc.perform(get("/radon-quote-ledger/benchmark.csv"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("\"Fairfax City, VA\"")))
+                .andExpect(content().string(containsString("\"$1,900-$2,300\"")))
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+
+        assertFalse(publicCsv.contains("one@example.com"), "Public CSV should not expose submitter emails.");
+        assertFalse(publicCsv.contains("127.0.0.1"), "Public CSV should not expose IP addresses.");
+        assertFalse(publicCsv.contains("private note"), "Public CSV should not expose freeform notes.");
+        assertFalse(publicCsv.contains("JUnit"), "Public CSV should not expose user agents.");
+    }
 }

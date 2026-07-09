@@ -1,13 +1,17 @@
 @import com.radonverdict.model.dto.QuoteLedgerSubmissionRequest
+@import com.radonverdict.model.dto.QuoteLedgerBenchmarkSnapshot
+@import com.radonverdict.model.dto.QuoteLedgerBenchmarkRow
 @import com.radonverdict.util.JsonLdUtils
 
 @param QuoteLedgerSubmissionRequest quoteLedgerForm = null
 @param String quoteLedgerSuccessMessage = null
 @param String quoteLedgerErrorMessage = null
+@param QuoteLedgerBenchmarkSnapshot quoteBenchmark = null
 
 !{
     final String seoTitle = "Observed Radon Quote Ledger";
     final String seoDescription = "Share an anonymized radon mitigation quote, seller credit, or test-result signal so RadonVerdict can benchmark real local pricing against public data.";
+    final boolean hasQuoteBenchmark = quoteBenchmark != null && quoteBenchmark.hasRows();
 }
 
 @template.layout.main(
@@ -46,6 +50,11 @@
                 },
                 "isAccessibleForFree": true,
                 "measurementTechnique": "User-submitted anonymized quote and credit signals validated against ZIP-to-county routing.",
+                "distribution": {
+                    "@type": "DataDownload",
+                    "encodingFormat": "text/csv",
+                    "contentUrl": "https://radonverdict.com/radon-quote-ledger/benchmark.csv"
+                },
                 "variableMeasured": [{
                     "@type": "PropertyValue",
                     "name": "ZIP code"
@@ -101,7 +110,7 @@
                         </div>
                     </div>
 
-                    <form action="/radon-quote-ledger" method="POST"
+                    <form id="quoteLedgerForm" action="/radon-quote-ledger" method="POST"
                           class="rounded-[1.75rem] border border-white/10 bg-white p-5 text-slate-950 shadow-2xl sm:p-6"
                           data-track-event="quote_ledger_form_view"
                           data-track-label="observed_quote_ledger">
@@ -257,6 +266,177 @@
         </section>
 
         <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-14 sm:py-16">
+            <section id="quote-checker" class="grid gap-8 lg:grid-cols-[0.92fr_1.08fr] lg:items-start">
+                <div>
+                    <p class="text-xs font-bold uppercase tracking-[0.22em] text-slate-500">Quote screening tool</p>
+                    <h2 class="mt-3 font-display text-3xl font-black tracking-tight text-slate-950">Is this radon quote fair?</h2>
+                    <p class="mt-3 text-sm leading-relaxed text-slate-600">
+                        Enter the number you were quoted and the scope details the contractor included. This does not replace a local bid review, but it catches the usual reasons a radon quote is hard to compare.
+                    </p>
+                    <div class="mt-6 grid gap-3 sm:grid-cols-3">
+                        <div class="border-l-4 border-slate-950 bg-slate-50 px-4 py-3">
+                            <p class="text-2xl font-black text-slate-950">@if(quoteBenchmark != null)${quoteBenchmark.getTotalSignalCount()}@else 0@endif</p>
+                            <p class="mt-1 text-xs font-bold uppercase tracking-wider text-slate-500">Total signals</p>
+                        </div>
+                        <div class="border-l-4 border-indigo-500 bg-indigo-50 px-4 py-3">
+                            <p class="text-2xl font-black text-slate-950">@if(quoteBenchmark != null)${quoteBenchmark.getPricedSignalCount()}@else 0@endif</p>
+                            <p class="mt-1 text-xs font-bold uppercase tracking-wider text-slate-500">Priced signals</p>
+                        </div>
+                        <div class="border-l-4 border-emerald-500 bg-emerald-50 px-4 py-3">
+                            <p class="text-2xl font-black text-slate-950">@if(quoteBenchmark != null)${quoteBenchmark.getPublicBenchmarkCount()}@else 0@endif</p>
+                            <p class="mt-1 text-xs font-bold uppercase tracking-wider text-slate-500">Public ranges</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div data-quote-checker class="rounded-[1.5rem] border border-slate-200 bg-white p-5 shadow-sm">
+                    <div class="grid gap-4 sm:grid-cols-3">
+                        <div>
+                            <label for="quoteCheckerPrice" class="block text-sm font-black text-slate-800">Quoted price</label>
+                            <input id="quoteCheckerPrice" type="number" min="0" step="50" inputmode="numeric" placeholder="2100"
+                                   class="mt-2 block w-full rounded-xl border border-slate-300 px-4 py-3 text-base font-semibold text-slate-950 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                        </div>
+                        <div>
+                            <label for="quoteCheckerFoundation" class="block text-sm font-black text-slate-800">Foundation</label>
+                            <select id="quoteCheckerFoundation" class="mt-2 block w-full rounded-xl border border-slate-300 px-4 py-3 text-base font-semibold text-slate-950 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                                <option value="basement" selected>Basement</option>
+                                <option value="slab">Slab</option>
+                                <option value="crawlspace">Crawl space</option>
+                                <option value="mixed">Mixed</option>
+                                <option value="unknown">Unknown</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="quoteCheckerResult" class="block text-sm font-black text-slate-800">Result band</label>
+                            <select id="quoteCheckerResult" class="mt-2 block w-full rounded-xl border border-slate-300 px-4 py-3 text-base font-semibold text-slate-950 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                                <option value="above_4" selected>4.0+ pCi/L</option>
+                                <option value="above_8">8.0+ pCi/L</option>
+                                <option value="between_2_and_4">2.0-3.9 pCi/L</option>
+                                <option value="not_tested">Not tested yet</option>
+                                <option value="unknown">Unknown</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <fieldset class="mt-5">
+                        <legend class="text-sm font-black text-slate-800">Included in the written quote</legend>
+                        <div class="mt-3 grid gap-2 sm:grid-cols-2">
+                            <label class="flex min-h-[52px] cursor-pointer items-center gap-3 rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-sm font-bold text-slate-700 has-[:checked]:border-emerald-500 has-[:checked]:bg-emerald-50 has-[:checked]:text-emerald-900">
+                                <input type="checkbox" data-quote-check="retest" class="rounded border-slate-300 text-emerald-600 focus:ring-emerald-500"> Post-mitigation retest
+                            </label>
+                            <label class="flex min-h-[52px] cursor-pointer items-center gap-3 rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-sm font-bold text-slate-700 has-[:checked]:border-emerald-500 has-[:checked]:bg-emerald-50 has-[:checked]:text-emerald-900">
+                                <input type="checkbox" data-quote-check="warranty" class="rounded border-slate-300 text-emerald-600 focus:ring-emerald-500"> Fan model and warranty
+                            </label>
+                            <label class="flex min-h-[52px] cursor-pointer items-center gap-3 rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-sm font-bold text-slate-700 has-[:checked]:border-emerald-500 has-[:checked]:bg-emerald-50 has-[:checked]:text-emerald-900">
+                                <input type="checkbox" data-quote-check="permit" class="rounded border-slate-300 text-emerald-600 focus:ring-emerald-500"> Permit or electrical scope
+                            </label>
+                            <label class="flex min-h-[52px] cursor-pointer items-center gap-3 rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-sm font-bold text-slate-700 has-[:checked]:border-emerald-500 has-[:checked]:bg-emerald-50 has-[:checked]:text-emerald-900">
+                                <input type="checkbox" data-quote-check="seal" class="rounded border-slate-300 text-emerald-600 focus:ring-emerald-500"> Sump, slab, or crawl-space sealing
+                            </label>
+                        </div>
+                    </fieldset>
+
+                    <div class="mt-5 rounded-2xl border border-slate-200 bg-slate-950 p-5 text-white">
+                        <p class="text-xs font-bold uppercase tracking-[0.18em] text-cyan-200">Screening verdict</p>
+                        <h3 data-quote-verdict-title class="mt-2 text-2xl font-black">Enter a quote to compare the scope.</h3>
+                        <ul data-quote-verdict-list class="mt-4 space-y-2 text-sm font-semibold leading-relaxed text-slate-200">
+                            <li>Use this to find missing scope before you submit the quote to the ledger.</li>
+                        </ul>
+                        <div class="mt-5 flex flex-col gap-3 sm:flex-row">
+                            <a href="#quoteLedgerForm"
+                               data-track-event="quote_checker_submit_signal_click"
+                               data-track-label="quote_checker"
+                               class="inline-flex min-h-[46px] items-center justify-center rounded-xl bg-white px-4 text-sm font-black text-slate-950 transition-colors hover:bg-slate-100">
+                                Add this quote signal
+                            </a>
+                            <a href="/guides/radon-mitigation-quote-checklist"
+                               data-track-event="quote_checker_checklist_click"
+                               data-track-label="quote_checker"
+                               class="inline-flex min-h-[46px] items-center justify-center rounded-xl border border-white/20 px-4 text-sm font-black text-white transition-colors hover:bg-white/10">
+                                Open quote checklist
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="quote-index" class="mt-16 border-y border-slate-200 py-10">
+                <div class="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
+                    <div>
+                        <p class="text-xs font-bold uppercase tracking-[0.22em] text-slate-500">Radon Quote Index</p>
+                        <h2 class="mt-3 font-display text-3xl font-black tracking-tight text-slate-950">Public aggregate ranges, not private submissions.</h2>
+                        <p class="mt-3 max-w-3xl text-sm leading-relaxed text-slate-600">
+                            The index groups anonymized signals by county, state, foundation, and result band. Exact ZIPs, emails, notes, IP addresses, and user agents stay out of the public export.
+                        </p>
+                    </div>
+                    <a href="/radon-quote-ledger/benchmark.csv"
+                       data-track-event="quote_index_csv_click"
+                       data-track-label="benchmark_csv"
+                       class="inline-flex min-h-[48px] items-center justify-center rounded-xl border border-slate-300 px-4 text-sm font-black text-slate-900 transition-colors hover:bg-slate-50">
+                        Download aggregate CSV
+                    </a>
+                </div>
+
+                <div class="mt-7 grid gap-3 sm:grid-cols-4">
+                    <div class="rounded-2xl border border-slate-200 bg-white p-4">
+                        <p class="text-2xl font-black text-slate-950">@if(quoteBenchmark != null)${quoteBenchmark.getStateCount()}@else 0@endif</p>
+                        <p class="mt-1 text-xs font-bold uppercase tracking-wider text-slate-500">States</p>
+                    </div>
+                    <div class="rounded-2xl border border-slate-200 bg-white p-4">
+                        <p class="text-2xl font-black text-slate-950">@if(quoteBenchmark != null)${quoteBenchmark.getCountyCount()}@else 0@endif</p>
+                        <p class="mt-1 text-xs font-bold uppercase tracking-wider text-slate-500">Counties</p>
+                    </div>
+                    <div class="rounded-2xl border border-slate-200 bg-white p-4">
+                        <p class="text-2xl font-black text-slate-950">3</p>
+                        <p class="mt-1 text-xs font-bold uppercase tracking-wider text-slate-500">Minimum priced signals</p>
+                    </div>
+                    <div class="rounded-2xl border border-slate-200 bg-white p-4">
+                        <p class="text-base font-black text-slate-950">@if(quoteBenchmark != null)${quoteBenchmark.getFreshnessLabel()}@else No public signals yet@endif</p>
+                        <p class="mt-1 text-xs font-bold uppercase tracking-wider text-slate-500">Freshness</p>
+                    </div>
+                </div>
+
+                @if(hasQuoteBenchmark)
+                    <div class="mt-7 overflow-hidden rounded-[1.25rem] border border-slate-200 bg-white">
+                        <div class="overflow-x-auto">
+                            <table class="min-w-full divide-y divide-slate-200 text-left text-sm">
+                                <thead class="bg-slate-50 text-xs font-black uppercase tracking-wider text-slate-500">
+                                    <tr>
+                                        <th scope="col" class="px-4 py-3">Market</th>
+                                        <th scope="col" class="px-4 py-3">Foundation</th>
+                                        <th scope="col" class="px-4 py-3">Result</th>
+                                        <th scope="col" class="px-4 py-3">Signals</th>
+                                        <th scope="col" class="px-4 py-3">Range</th>
+                                        <th scope="col" class="px-4 py-3">Median</th>
+                                        <th scope="col" class="px-4 py-3">Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-slate-100">
+                                    @for(QuoteLedgerBenchmarkRow row : quoteBenchmark.getRows())
+                                        <tr class="align-top">
+                                            <td class="px-4 py-4 font-black text-slate-950">${row.getMarketLabel()}</td>
+                                            <td class="px-4 py-4 font-semibold text-slate-700">${row.getFoundationLabel()}</td>
+                                            <td class="px-4 py-4 font-semibold text-slate-700">${row.getResultBandLabel()}</td>
+                                            <td class="px-4 py-4 font-semibold text-slate-700">${row.getSignalCount()} total, ${row.getPricedSignalCount()} priced</td>
+                                            <td class="px-4 py-4 font-black text-slate-950">${row.getPriceRangeDisplay()}</td>
+                                            <td class="px-4 py-4 font-black text-slate-950">${row.getMedianPriceDisplay()}</td>
+                                            <td class="px-4 py-4 font-semibold text-slate-600">${row.getConfidenceLabel()}</td>
+                                        </tr>
+                                    @endfor
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                @else
+                    <div class="mt-7 rounded-[1.25rem] border border-dashed border-slate-300 bg-slate-50 p-6">
+                        <h3 class="text-xl font-black text-slate-950">No public benchmark yet.</h3>
+                        <p class="mt-2 text-sm leading-relaxed text-slate-600">
+                            The first 3 priced signals in the same market segment unlock a public range. Until then, RadonVerdict stores the signal privately and shows only collection status.
+                        </p>
+                    </div>
+                @endif
+            </section>
+
             <section class="grid gap-8 lg:grid-cols-[0.8fr_1.2fr]">
                 <div>
                     <p class="text-xs font-bold uppercase tracking-[0.22em] text-slate-500">Why this matters</p>
@@ -371,5 +551,100 @@
                 </a>
             </section>
         </main>
+        <script>
+            (function () {
+                function onReady(callback) {
+                    if (document.readyState === 'loading') {
+                        document.addEventListener('DOMContentLoaded', callback);
+                    } else {
+                        callback();
+                    }
+                }
+
+                onReady(function () {
+                    var root = document.querySelector('[data-quote-checker]');
+                    if (!root) {
+                        return;
+                    }
+
+                    var priceField = root.querySelector('#quoteCheckerPrice');
+                    var foundationField = root.querySelector('#quoteCheckerFoundation');
+                    var resultField = root.querySelector('#quoteCheckerResult');
+                    var title = root.querySelector('[data-quote-verdict-title]');
+                    var list = root.querySelector('[data-quote-verdict-list]');
+
+                    function isChecked(name) {
+                        var input = root.querySelector('[data-quote-check="' + name + '"]');
+                        return input && input.checked;
+                    }
+
+                    function addMessage(messages, text) {
+                        messages.push(text);
+                    }
+
+                    function render() {
+                        var price = Number(priceField.value || 0);
+                        var foundation = foundationField.value;
+                        var result = resultField.value;
+                        var messages = [];
+
+                        if (!price) {
+                            title.textContent = 'Enter a quote to compare the scope.';
+                            list.innerHTML = '';
+                            addMessage(messages, 'Use this to find missing scope before you submit the quote to the ledger.');
+                        } else {
+                            if (price < 900) {
+                                addMessage(messages, 'Price is unusually low. Confirm the fan, pipe route, sealing work, electrical connection, and retest are actually included.');
+                            }
+                            if (price > 4500) {
+                                addMessage(messages, 'Price is high enough to demand a line-item explanation: access difficulty, multiple suction points, crawl-space membrane, or commercial scope.');
+                            }
+                            if (foundation === 'crawlspace' && price < 1800) {
+                                addMessage(messages, 'Crawl-space quotes below this level often omit membrane detail, sealing labor, or access constraints.');
+                            }
+                            if (foundation === 'mixed' && price < 1800) {
+                                addMessage(messages, 'Mixed foundations need more scope detail than a simple basement quote. Ask how each foundation area is handled.');
+                            }
+                            if (result === 'above_8' && price < 1600) {
+                                addMessage(messages, 'For an 8.0+ result, a very cheap quote should explain expected post-mitigation target, retest timing, and warranty path.');
+                            }
+                            if (!isChecked('retest')) {
+                                addMessage(messages, 'Missing retest language. Ask whether post-mitigation testing is included or separate.');
+                            }
+                            if (!isChecked('warranty')) {
+                                addMessage(messages, 'Missing fan or warranty detail. Ask for the fan model, warranty term, and service responsibility.');
+                            }
+                            if (!isChecked('permit')) {
+                                addMessage(messages, 'Missing permit or electrical scope. Ask who handles code, outlet, and permit requirements in your jurisdiction.');
+                            }
+                            if (!isChecked('seal')) {
+                                addMessage(messages, 'Missing sealing scope. Ask whether sump lids, slab cracks, crawl-space membrane, or penetrations are included.');
+                            }
+
+                            if (messages.length === 0) {
+                                title.textContent = 'Structured enough to compare.';
+                                addMessage(messages, 'The quote includes the main comparison fields. Submit it to the ledger so the local benchmark can improve.');
+                                addMessage(messages, 'Still compare at least one other bid if access, crawl-space work, or transaction deadlines are involved.');
+                            } else {
+                                title.textContent = messages.length === 1 ? 'One scope question before you trust it.' : messages.length + ' scope questions before you trust it.';
+                            }
+                        }
+
+                        list.innerHTML = '';
+                        messages.forEach(function (message) {
+                            var item = document.createElement('li');
+                            item.textContent = message;
+                            list.appendChild(item);
+                        });
+                    }
+
+                    root.querySelectorAll('input, select').forEach(function (field) {
+                        field.addEventListener('input', render);
+                        field.addEventListener('change', render);
+                    });
+                    render();
+                });
+            })();
+        </script>
     `
 )

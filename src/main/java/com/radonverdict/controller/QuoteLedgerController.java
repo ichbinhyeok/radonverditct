@@ -15,6 +15,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 
@@ -32,7 +33,14 @@ public class QuoteLedgerController {
         if (!model.containsAttribute("quoteLedgerForm")) {
             model.addAttribute("quoteLedgerForm", new QuoteLedgerSubmissionRequest());
         }
+        model.addAttribute("quoteBenchmark", quoteLedgerService.getBenchmarkSnapshot());
         return "pages/quote_ledger";
+    }
+
+    @GetMapping(value = "/radon-quote-ledger/benchmark.csv", produces = "text/csv")
+    @ResponseBody
+    public String quoteLedgerBenchmarkCsv() {
+        return quoteLedgerService.publicBenchmarkCsv();
     }
 
     @PostMapping("/radon-quote-ledger")
