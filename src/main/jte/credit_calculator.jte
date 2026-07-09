@@ -9,7 +9,7 @@
     final boolean isSelling = "selling".equals(page.getSelectedIntent());
     final String countyDisplay = county.getSeoDisplayName() + ", " + county.getStateAbbr();
     final String pageTitle = (isSelling ? "Seller" : "Buyer") + " Radon Credit Calculator for " + countyDisplay;
-    final String description = "Use local mitigation pricing in " + countyDisplay + " to set a repair request, closing credit, or compromise number for a radon negotiation.";
+    final String description = "Use local mitigation pricing in " + countyDisplay + " to set a repair request, closing credit, or compromise number after a failed radon inspection.";
     final int openingAsk = page.getReceipt().getTotalAvg();
     final int ceilingAsk = page.getReceipt().getTotalHigh();
     final int splitFallback = Math.max(100, ((page.getReceipt().getTotalAvg() / 2 + 25) / 50) * 50);
@@ -48,13 +48,16 @@
                 <div class="absolute inset-0 opacity-10 bg-[radial-gradient(circle_at_top_right,_rgba(96,165,250,0.45),_transparent_35%),radial-gradient(circle_at_bottom_left,_rgba(244,114,182,0.35),_transparent_30%)]"></div>
                 <div class="relative z-10 max-w-3xl">
                     <div class="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/10 px-3 py-1 text-[11px] font-bold uppercase tracking-widest text-slate-200">
-                        Local Transaction Calculator
+                        Failed inspection credit path
                     </div>
                     <h1 class="mt-4 font-display text-3xl font-black tracking-tight text-white sm:text-5xl">
                         ${pageTitle}
                     </h1>
                     <p class="mt-5 text-base leading-relaxed text-slate-300 sm:text-xl">
                         ${heroSummary}
+                    </p>
+                    <p class="mt-3 max-w-2xl text-sm font-semibold leading-relaxed text-slate-400">
+                        Use this page when a radon inspection, buyer test, or disclosure result has already created a credit, repair, or closing concession conversation.
                     </p>
                     <div class="mt-6 flex flex-wrap gap-3 text-xs font-bold uppercase tracking-wider text-slate-300">
                         <span class="rounded-full border border-white/10 bg-white/5 px-3 py-1">${page.getSelectedRadonResultBandLabel()}</span>

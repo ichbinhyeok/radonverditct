@@ -31,6 +31,7 @@
 
 .levels-mobile-sticky-cta--hidden {
   opacity: 0;
+  visibility: hidden;
   pointer-events: none;
   transform: translateY(12px);
 }
@@ -41,6 +42,7 @@
 
 .cost-mobile-sticky-cta--hidden {
   opacity: 0;
+  visibility: hidden;
   pointer-events: none;
   transform: translateY(14px);
 }
@@ -56,6 +58,10 @@ nav[aria-label="Breadcrumb"] a {
 
 nav[aria-label="Breadcrumb"] a:hover {
   background: rgba(255, 255, 255, 0.75);
+}
+
+a.not-prose.inline-flex[href="/guides"] {
+  min-height: 44px;
 }
 
 @media (max-width: 640px) {
@@ -76,6 +82,27 @@ nav[aria-label="Breadcrumb"] a:hover {
   button {
     max-width: 100%;
     min-width: 0;
+  }
+
+  input:not([type="checkbox"]):not([type="radio"]),
+  select,
+  textarea {
+    min-height: 44px;
+  }
+
+  input[type="checkbox"],
+  input[type="radio"] {
+    flex-shrink: 0;
+  }
+
+  input[type="checkbox"]:not(.sr-only),
+  input[type="radio"]:not(.sr-only) {
+    width: 20px;
+    height: 20px;
+  }
+
+  label.cursor-pointer > input.sr-only + div {
+    min-height: 44px;
   }
 
   nav[aria-label="Breadcrumb"] ol {

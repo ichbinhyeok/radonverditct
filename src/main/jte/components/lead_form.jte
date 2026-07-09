@@ -51,7 +51,7 @@
             : "We contact only about this plan and relevant local follow-up options.";
 }
 
-<div class="bg-slate-900 rounded-3xl p-8 shadow-2xl mt-12 mb-12" id="estimate-form" data-nosnippet>
+<div class="scroll-mt-24 bg-slate-900 rounded-3xl p-8 shadow-2xl mt-12 mb-12" id="estimate-form" data-nosnippet>
     <div class="flex flex-col md:flex-row gap-8 items-start">
         <div class="flex-1 text-white">
             <span class="inline-block py-1 px-3 rounded-full bg-indigo-500/20 text-indigo-300 text-xs font-bold tracking-wider uppercase mb-4">
@@ -324,3 +324,15 @@
         </div>
     </div>
 </div>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    if (window.location.hash === '#estimate-form') {
+      window.setTimeout(function () {
+        const estimateForm = document.getElementById('estimate-form');
+        if (estimateForm) {
+          estimateForm.scrollIntoView({ block: 'start' });
+        }
+      }, 80);
+    }
+  });
+</script>

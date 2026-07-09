@@ -342,7 +342,7 @@
                     :aria-expanded="mobileNavOpen.toString()"
                     aria-controls="mobile-nav-panel"
                     aria-label="Toggle navigation"
-                    class="tap-target lg:hidden inline-flex items-center justify-center rounded-xl border border-slate-200 bg-white/80 text-slate-700 shadow-sm transition-colors hover:bg-white hover:text-slate-900">
+                    class="tap-target lg:hidden inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border border-slate-200 bg-white/80 text-slate-700 shadow-sm transition-colors hover:bg-white hover:text-slate-900">
                 <svg x-show="!mobileNavOpen" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M4 7h16M4 12h16M4 17h16" />
                 </svg>

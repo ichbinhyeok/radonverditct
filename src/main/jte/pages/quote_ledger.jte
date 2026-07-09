@@ -156,7 +156,7 @@
                             </div>
                             <div>
                                 <label for="ledgerRadonReading" class="block text-sm font-black text-slate-800">Reading, if known</label>
-                                <input id="ledgerRadonReading" name="radonReadingPciL" inputmode="decimal" pattern="[0-9]{1,2}(\\.[0-9]{1,2})?"
+                                <input id="ledgerRadonReading" name="radonReadingPciL" inputmode="decimal" pattern="[0-9]{1,2}(\.[0-9]{1,2})?"
                                        placeholder="4.2"
                                        value="${formRadonReadingPciL}"
                                        class="mt-2 block w-full rounded-xl border border-slate-300 px-4 py-3 text-base font-semibold text-slate-950 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
@@ -273,7 +273,7 @@
                         </div>
 
                         <label class="mt-5 flex gap-3 rounded-xl border border-slate-200 bg-slate-50 p-4 text-sm leading-relaxed text-slate-700">
-                            <input type="checkbox" name="consentAccepted" value="true" required class="mt-1 rounded border-slate-300 text-indigo-600 focus:ring-indigo-500">
+                            <input type="checkbox" name="consentAccepted" value="true" required class="mt-1 h-5 w-5 shrink-0 rounded border-slate-300 text-indigo-600 focus:ring-indigo-500">
                             <span>I understand this is not medical, legal, or contractor advice. I am sharing anonymized pricing context so RadonVerdict can improve local benchmarks.</span>
                         </label>
 

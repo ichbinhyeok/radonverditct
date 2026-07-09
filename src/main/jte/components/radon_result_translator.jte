@@ -81,19 +81,19 @@
                 <div>
                     <p class="text-xs font-bold uppercase tracking-wider text-slate-500">Decision side</p>
                     <div class="mt-2 grid grid-cols-3 gap-2">
-                        <button type="button" data-rv-intent="homeowner" class="rounded-xl border border-slate-200 px-3 py-2 text-xs font-black text-slate-700 transition-colors hover:bg-slate-50">Living here</button>
-                        <button type="button" data-rv-intent="buying" class="rounded-xl border border-slate-200 px-3 py-2 text-xs font-black text-slate-700 transition-colors hover:bg-slate-50">Buying</button>
-                        <button type="button" data-rv-intent="selling" class="rounded-xl border border-slate-200 px-3 py-2 text-xs font-black text-slate-700 transition-colors hover:bg-slate-50">Selling</button>
+                        <button type="button" data-rv-intent="homeowner" class="min-h-[44px] rounded-xl border border-slate-200 px-3 py-2 text-xs font-black text-slate-700 transition-colors hover:bg-slate-50">Living here</button>
+                        <button type="button" data-rv-intent="buying" class="min-h-[44px] rounded-xl border border-slate-200 px-3 py-2 text-xs font-black text-slate-700 transition-colors hover:bg-slate-50">Buying</button>
+                        <button type="button" data-rv-intent="selling" class="min-h-[44px] rounded-xl border border-slate-200 px-3 py-2 text-xs font-black text-slate-700 transition-colors hover:bg-slate-50">Selling</button>
                     </div>
                 </div>
 
                 <div>
                     <p class="text-xs font-bold uppercase tracking-wider text-slate-500">Foundation clue</p>
                     <div class="mt-2 grid grid-cols-2 gap-2 sm:grid-cols-4">
-                        <button type="button" data-rv-foundation="basement" class="rounded-xl border border-slate-200 px-3 py-2 text-xs font-black text-slate-700 transition-colors hover:bg-slate-50">Basement</button>
-                        <button type="button" data-rv-foundation="slab" class="rounded-xl border border-slate-200 px-3 py-2 text-xs font-black text-slate-700 transition-colors hover:bg-slate-50">Slab</button>
-                        <button type="button" data-rv-foundation="crawlspace" class="rounded-xl border border-slate-200 px-3 py-2 text-xs font-black text-slate-700 transition-colors hover:bg-slate-50">Crawlspace</button>
-                        <button type="button" data-rv-foundation="other" class="rounded-xl border border-slate-200 px-3 py-2 text-xs font-black text-slate-700 transition-colors hover:bg-slate-50">Not sure</button>
+                        <button type="button" data-rv-foundation="basement" class="min-h-[44px] rounded-xl border border-slate-200 px-3 py-2 text-xs font-black text-slate-700 transition-colors hover:bg-slate-50">Basement</button>
+                        <button type="button" data-rv-foundation="slab" class="min-h-[44px] rounded-xl border border-slate-200 px-3 py-2 text-xs font-black text-slate-700 transition-colors hover:bg-slate-50">Slab</button>
+                        <button type="button" data-rv-foundation="crawlspace" class="min-h-[44px] rounded-xl border border-slate-200 px-3 py-2 text-xs font-black text-slate-700 transition-colors hover:bg-slate-50">Crawlspace</button>
+                        <button type="button" data-rv-foundation="other" class="min-h-[44px] rounded-xl border border-slate-200 px-3 py-2 text-xs font-black text-slate-700 transition-colors hover:bg-slate-50">Not sure</button>
                     </div>
                 </div>
             </div>
@@ -223,15 +223,15 @@
                     const active = button.dataset.rvIntent === intent;
                     button.setAttribute('aria-pressed', active ? 'true' : 'false');
                     button.className = active
-                        ? 'rounded-xl border border-slate-900 bg-slate-900 px-3 py-2 text-xs font-black text-white transition-colors'
-                        : 'rounded-xl border border-slate-200 px-3 py-2 text-xs font-black text-slate-700 transition-colors hover:bg-slate-50';
+                        ? 'min-h-[44px] rounded-xl border border-slate-900 bg-slate-900 px-3 py-2 text-xs font-black text-white transition-colors'
+                        : 'min-h-[44px] rounded-xl border border-slate-200 px-3 py-2 text-xs font-black text-slate-700 transition-colors hover:bg-slate-50';
                 });
                 tool.querySelectorAll('[data-rv-foundation]').forEach((button) => {
                     const active = button.dataset.rvFoundation === foundation;
                     button.setAttribute('aria-pressed', active ? 'true' : 'false');
                     button.className = active
-                        ? 'rounded-xl border border-indigo-900 bg-indigo-50 px-3 py-2 text-xs font-black text-indigo-950 transition-colors'
-                        : 'rounded-xl border border-slate-200 px-3 py-2 text-xs font-black text-slate-700 transition-colors hover:bg-slate-50';
+                        ? 'min-h-[44px] rounded-xl border border-indigo-900 bg-indigo-50 px-3 py-2 text-xs font-black text-indigo-950 transition-colors'
+                        : 'min-h-[44px] rounded-xl border border-slate-200 px-3 py-2 text-xs font-black text-slate-700 transition-colors hover:bg-slate-50';
                 });
             };
 

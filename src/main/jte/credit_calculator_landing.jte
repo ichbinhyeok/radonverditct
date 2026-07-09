@@ -103,6 +103,13 @@
                             <button type="submit" class="inline-flex items-center justify-center rounded-2xl bg-white px-6 py-4 text-sm font-black uppercase tracking-wider text-slate-950 transition-colors hover:bg-slate-100">
                                 Get My Local Credit Number
                             </button>
+
+                            <div class="rounded-2xl border border-white/10 bg-slate-900/70 p-4 text-sm leading-relaxed text-slate-300">
+                                <p class="font-black text-white">Use this after a real test result.</p>
+                                <p class="mt-2">
+                                    The local page turns the reading into three numbers: an opening ask, a defensible ceiling, and a quick-close fallback. If there is no reading yet, start with the test path before negotiating a credit.
+                                </p>
+                            </div>
                         </div>
                     </form>
 
