@@ -132,6 +132,7 @@ class SeoBehaviorIntegrationTest {
                 .andExpect(content().string(containsString("Official cost evidence index")))
                 .andExpect(content().string(containsString("Evidence-backed radon mitigation cost pages")))
                 .andExpect(content().string(containsString("Highest-signal cost pages")))
+                .andExpect(content().string(containsString("href=\"/radon-cost-data-report\"")))
                 .andExpect(content().string(containsString("Basement, slab, and crawl-space cost ranges")))
                 .andExpect(content().string(containsString("When the cost question becomes urgent")))
                 .andExpect(content().string(containsString("Browse radon mitigation cost by state")))
@@ -327,6 +328,7 @@ class SeoBehaviorIntegrationTest {
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("<loc>https://radonverdict.com/</loc>")))
                 .andExpect(content().string(containsString("/radon-data-sources")))
+                .andExpect(content().string(containsString("/radon-cost-data-report")))
                 .andExpect(content().string(containsString("/radon-quote-ledger")))
                 .andExpect(content().string(containsString("/radon-credit-calculator")))
                 .andExpect(content().string(containsString("/guides/radon-failed-inspection")))
@@ -469,6 +471,7 @@ class SeoBehaviorIntegrationTest {
                 .andExpect(content().string(containsString("Virginia Department of Health Radon Testing Results")))
                 .andExpect(content().string(containsString("Colorado Environmental Public Health Tracking Pre-Mitigation Radon Test Results")))
                 .andExpect(content().string(containsString("href=\"/methodology\"")))
+                .andExpect(content().string(containsString("href=\"/radon-cost-data-report\"")))
                 .andExpect(content().string(containsString("href=\"/radon-levels\"")))
                 .andReturn()
                 .getResponse()
@@ -479,6 +482,27 @@ class SeoBehaviorIntegrationTest {
         assertFalse(lowerHtml.contains("moat"), "Data sources page should not expose internal strategy language.");
         assertFalse(lowerHtml.contains("internal links"), "Data sources page should use user-facing language.");
         assertFalse(lowerHtml.contains("indexation"), "Data sources page should avoid internal SEO jargon.");
+    }
+
+    @Test
+    void radonCostDataReportLoadsAsLinkableCostAuthorityAsset() throws Exception {
+        String html = mockMvc.perform(get("/radon-cost-data-report"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(not(containsString("<meta name=\"robots\" content=\"noindex, follow\">"))))
+                .andExpect(content().string(containsString("<title>Radon Mitigation Cost Data Report | RadonVerdict</title>")))
+                .andExpect(content().string(containsString("Radon mitigation cost data report")))
+                .andExpect(content().string(containsString("source-backed cost index")))
+                .andExpect(content().string(containsString("Twenty county cost pages to inspect first")))
+                .andExpect(content().string(containsString("What the report proves")))
+                .andExpect(content().string(containsString("Best state hubs for discovery")))
+                .andExpect(content().string(containsString("Official evidence feeds behind the index")))
+                .andExpect(content().string(containsString("href=\"/radon-mitigation-cost\"")))
+                .andExpect(content().string(containsString("href=\"/radon-quote-ledger\"")))
+                .andReturn()
+                .getResponse()
+                .getContentAsString(StandardCharsets.UTF_8);
+
+        assertJsonLdBlocksAreValid(html);
     }
 
     @Test

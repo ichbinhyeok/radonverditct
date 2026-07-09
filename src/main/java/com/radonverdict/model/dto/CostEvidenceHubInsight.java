@@ -17,6 +17,9 @@ public class CostEvidenceHubInsight {
     private String discoverySummary;
     private String sourceSummary;
     private String routingSummary;
+    private String reportSummary;
+    private String nationalCostRangeDisplay;
+    private String quoteLedgerBridgeSummary;
     private List<StateCostRow> priorityStateRows;
     private List<CountyCostRow> priorityCountyRows;
 
@@ -45,5 +48,9 @@ public class CostEvidenceHubInsight {
         private String costRangeDisplay;
         private String evidenceDisplay;
         private String supportDisplay;
+        private String sourceUrl;
+        private String userQuestion;
+        private String whyThisCounty;
+        private String inspectionPriority;
     }
 }

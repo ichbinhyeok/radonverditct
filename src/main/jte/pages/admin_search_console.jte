@@ -83,6 +83,27 @@
                     </div>
                 </section>
 
+                <section class="mb-8 rounded-xl border border-indigo-200 bg-indigo-50 p-5">
+                    <div class="flex flex-col gap-2 md:flex-row md:items-end md:justify-between">
+                        <div>
+                            <p class="text-xs font-bold uppercase tracking-wider text-indigo-700">Submit or refresh in GSC</p>
+                            <h2 class="mt-1 font-display text-xl font-black text-slate-950">Use these sitemap URLs as the control panel</h2>
+                        </div>
+                        <p class="max-w-md text-sm leading-relaxed text-indigo-900">
+                            Submit the sitemap, wait for crawl data, export Page indexing URLs, then reload this dashboard.
+                        </p>
+                    </div>
+                    <div class="mt-5 grid gap-3 md:grid-cols-2">
+                        @for(var row : report.getCohortRows())
+                            <div class="rounded-xl border border-indigo-200 bg-white p-4">
+                                <p class="text-xs font-black uppercase tracking-wider text-slate-500">${row.getCohort()}</p>
+                                <p class="mt-2 break-all font-mono text-sm text-slate-900">${row.getSitemapUrl()}</p>
+                                <p class="mt-2 text-xs leading-relaxed text-slate-500">${row.getAction()}</p>
+                            </div>
+                        @endfor
+                    </div>
+                </section>
+
                 <section class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
                     <div class="flex flex-col gap-2 md:flex-row md:items-end md:justify-between">
                         <div>

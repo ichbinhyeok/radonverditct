@@ -216,6 +216,7 @@
                                                 <p class="shrink-0 font-display text-lg font-black text-slate-950">${row.getCostRangeDisplay()}</p>
                                             </div>
                                             <p class="mt-3 text-xs leading-relaxed text-slate-600">${row.getEvidenceDisplay()}</p>
+                                            <p class="mt-2 text-xs leading-relaxed text-slate-700">${row.getWhyThisCounty()}</p>
                                         </a>
                                     @endfor
                                 </div>

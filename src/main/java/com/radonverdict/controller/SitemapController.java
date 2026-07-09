@@ -179,6 +179,7 @@ public class SitemapController {
         addUrl(xml, "/about", "0.8");
         addUrl(xml, "/methodology", "0.8");
         addUrl(xml, "/radon-data-sources", "0.8");
+        addUrl(xml, "/radon-cost-data-report", "0.85");
         addUrl(xml, "/radon-quote-ledger", "0.8");
         addUrl(xml, "/contact", "0.8");
         addUrl(xml, "/guides", "0.8");

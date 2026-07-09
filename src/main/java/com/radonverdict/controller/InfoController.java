@@ -1,8 +1,11 @@
 package com.radonverdict.controller;
 
 import com.radonverdict.model.dto.ContactSubmissionRequest;
+import com.radonverdict.model.County;
+import com.radonverdict.model.dto.CostEvidenceHubInsight;
 import com.radonverdict.model.dto.EvidenceSourceRow;
 import com.radonverdict.service.ContactMessageService;
+import com.radonverdict.service.CostEvidenceHubService;
 import com.radonverdict.service.DataLoadService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
@@ -31,6 +34,7 @@ public class InfoController {
 
     private final ContactMessageService contactMessageService;
     private final DataLoadService dataLoadService;
+    private final CostEvidenceHubService costEvidenceHubService;
 
     @Value("${app.content.privacy-last-updated:February 1, 2026}")
     private String privacyLastUpdated;
@@ -57,6 +61,20 @@ public class InfoController {
                 dataLoadService.getReferenceSources() != null ? dataLoadService.getReferenceSources().size() : 0);
         model.addAttribute("sourceRows", buildEvidenceSourceRows());
         return "pages/radon_data_sources";
+    }
+
+    @GetMapping("/radon-cost-data-report")
+    public String radonCostDataReport(Model model) {
+        List<County> costCounties = costEvidenceHubService.costIndexableCounties(
+                dataLoadService.getCountyBySlugMap().values());
+        CostEvidenceHubInsight insight = costEvidenceHubService.buildInsight(
+                costEvidenceHubService.stateMap(costCounties),
+                costCounties);
+
+        model.addAttribute("title", "Radon Cost Data Report | RadonVerdict");
+        model.addAttribute("costEvidenceInsight", insight);
+        model.addAttribute("sourceRows", buildEvidenceSourceRows());
+        return "pages/radon_cost_data_report";
     }
 
     @GetMapping("/privacy")

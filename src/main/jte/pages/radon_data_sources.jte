@@ -63,6 +63,9 @@
                     <a href="/methodology" class="inline-flex items-center justify-center rounded-xl bg-slate-900 px-5 py-3 text-sm font-bold text-white transition-colors hover:bg-slate-800">
                         Read Methodology
                     </a>
+                    <a href="/radon-cost-data-report" class="inline-flex items-center justify-center rounded-xl border border-slate-200 bg-white px-5 py-3 text-sm font-bold text-slate-800 transition-colors hover:bg-slate-50">
+                        Open Cost Data Report
+                    </a>
                     <a href="/radon-levels" class="inline-flex items-center justify-center rounded-xl border border-slate-200 bg-white px-5 py-3 text-sm font-bold text-slate-800 transition-colors hover:bg-slate-50">
                         Open Radon Levels
                     </a>
