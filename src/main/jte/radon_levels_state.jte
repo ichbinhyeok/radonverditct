@@ -53,6 +53,7 @@
     final String heroIntro = priorityCtrState
             ? "Check the listed EPA radon zone pages across " + stateName + ". Start with a listed county if you want to know what a basement result means at 2.0 vs 4.0+ pCi/L before you price mitigation."
             : "Browse the " + listedCountyPhrase + " surfaced for " + stateName + ". Open a listed county to compare its EPA zone, source caveats, testing meaning, and when mitigation pricing becomes worth checking.";
+    final boolean newJerseyRadonMapState = "new-jersey".equals(stateSlug);
 }
 
 @template.layout.main(
@@ -102,6 +103,50 @@
                     <div class="text-xs font-bold text-emerald-500 uppercase tracking-wider mt-1">Zone 3<br>Low Risk</div>
                 </div>
             </div>
+
+            @if(newJerseyRadonMapState)
+                <section class="mb-10 rounded-[1.75rem] border border-indigo-200 bg-indigo-50 p-5 sm:p-6">
+                    <div class="grid gap-5 lg:grid-cols-[0.78fr_1.22fr] lg:items-start">
+                        <div>
+                            <p class="text-xs font-bold uppercase tracking-[0.18em] text-indigo-700">NJDEP Radon Potential Map</p>
+                            <h2 class="mt-2 font-display text-2xl font-black tracking-tight text-slate-950">
+                                Use the NJDEP tier first, then open the county page
+                            </h2>
+                            <p class="mt-3 text-sm leading-relaxed text-indigo-950">
+                                New Jersey searches are often map-first, not article-first. NJDEP assigns municipalities to radon-potential tiers, so this page should help a user understand whether a county contains Tier 1 or Tier 2 communities before they decide to test, retest, or price mitigation.
+                            </p>
+                            <a href="https://dep.nj.gov/rpp/radon/radon_map/"
+                               target="_blank"
+                               rel="noopener"
+                               data-track-event="state_levels_official_map_click"
+                               data-track-label="njdep_radon_map"
+                               class="mt-4 inline-flex items-center justify-center rounded-xl border border-indigo-300 bg-white px-4 py-3 text-sm font-black text-indigo-800 hover:bg-indigo-100 transition-colors">
+                                Open NJDEP radon map
+                            </a>
+                        </div>
+                        <div class="grid gap-3 sm:grid-cols-3">
+                            <div class="rounded-2xl border border-indigo-200 bg-white p-4">
+                                <p class="text-xs font-bold uppercase tracking-wider text-red-700">Tier 1</p>
+                                <p class="mt-2 text-sm font-semibold leading-relaxed text-slate-800">
+                                    High-potential municipalities: enough tested homes and a large enough share at or above 4.0 pCi/L to prioritize testing.
+                                </p>
+                            </div>
+                            <div class="rounded-2xl border border-indigo-200 bg-white p-4">
+                                <p class="text-xs font-bold uppercase tracking-wider text-amber-700">Tier 2</p>
+                                <p class="mt-2 text-sm font-semibold leading-relaxed text-slate-800">
+                                    Moderate-potential signal. Do not dismiss the home; use the map as context and still test the lowest livable level.
+                                </p>
+                            </div>
+                            <div class="rounded-2xl border border-indigo-200 bg-white p-4">
+                                <p class="text-xs font-bold uppercase tracking-wider text-slate-700">County path</p>
+                                <p class="mt-2 text-sm font-semibold leading-relaxed text-slate-800">
+                                    Open a county below for the local evidence read, then use the cost page only after a real result.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            @endif
 
             @if(evidenceCoverage != null && evidenceCoverage.getTotalCount() > 0)
                 <section class="mb-10 rounded-2xl border border-slate-200 bg-white p-5 sm:p-6 shadow-sm">

@@ -58,7 +58,8 @@
 }
 
 <!-- Radon Level Decision Advisor: Pure Alpine.js (no server calls) -->
-<div class="bg-white rounded-[2rem] p-6 sm:p-8 shadow-sm border border-slate-200 mb-6 max-w-2xl mx-auto"
+<div id="radon-level-advisor"
+     class="bg-white rounded-[2rem] p-6 sm:p-8 shadow-sm border border-slate-200 mb-6 max-w-2xl mx-auto"
      data-nosnippet
      x-data="{
         level: ${initialLevel},

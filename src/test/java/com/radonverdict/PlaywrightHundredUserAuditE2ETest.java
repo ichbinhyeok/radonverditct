@@ -418,6 +418,11 @@ class PlaywrightHundredUserAuditE2ETest {
                           if (element.classList.contains('sr-only')) {
                             return false;
                           }
+                          if ((element.type === 'checkbox' || element.type === 'radio')
+                              && rect.width >= 18
+                              && rect.height >= 18) {
+                            return false;
+                          }
                           return style.display !== 'none'
                             && style.visibility !== 'hidden'
                             && rect.width > 0

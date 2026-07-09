@@ -394,6 +394,17 @@
     final String providerSearchPackBody = losAngelesCommercialSearchCounty
             ? "Before contacting a commercial radon provider, write down building type, occupied areas, number of test locations, lowest occupied level, result band, deadline, and whether mitigation or testing documentation is the deliverable."
             : "Before contacting a radon provider, write down the test type, pCi/L result, lowest tested level, foundation type, deadline, and whether you need testing, mitigation, seller-credit support, or post-mitigation retest documentation.";
+    final String caRadonProgramUrl = "https://www.cdph.ca.gov/Programs/CEH/DRSEM/Pages/EMB/Radon.aspx";
+    final String caCertifiedProviderUrl = "https://www.cdph.ca.gov/Programs/CEH/DRSEM/Pages/EMB/Radon/Certified-Radon-Services-Providers.aspx";
+    final String laCountyRadonUrl = "https://publichealth.lacounty.gov/eh/safety/radon.htm";
+    final String boulderTestingUrl = "https://bouldercounty.gov/environment/healthy-home/radon/testing/";
+    final String boulderMitigationUrl = "https://bouldercounty.gov/environment/healthy-home/radon/mitigation/";
+    final String boulderGoldStarUrl = "https://bouldercounty.gov/environment/healthy-home/gold-star-radon-mitigators/";
+    final String missouriRadonUrl = "https://health.mo.gov/living/environment/radon/";
+    final String missouriTestingUrl = "https://health.mo.gov/living/environment/radon/testing.php";
+    final String missouriHomebuyersUrl = "https://health.mo.gov/living/environment/radon/homebuyers.php";
+    final String missouriMitigationUrl = "https://health.mo.gov/living/environment/radon/mitigation.php";
+    final String stLouisCityPath = "/radon-levels/missouri/st-louis-city";
 
     final String seoTitle = officialEvidenceSerpCounty
             ? seoPlaceLabel + " Radon Levels: " + evidenceSerpTitleMetric
@@ -1320,6 +1331,88 @@
                                         I have a radon result of ___ pCi/L in ${county.getAreaDisplayName()}, ${county.getStateAbbr()}. Before I compare quotes, can you confirm what foundation and suction method your price assumes, whether sump or crawl-space work is included, and how the post-mitigation retest will be documented?
                                     </p>
                                 </div>
+                                @if(losAngelesCommercialSearchCounty)
+                                    <div class="mt-4 rounded-2xl border border-cyan-200 bg-cyan-50 p-4">
+                                        <p class="text-xs font-bold uppercase tracking-[0.16em] text-cyan-700">Commercial and multifamily screen</p>
+                                        <h3 class="mt-2 font-display text-xl font-black text-slate-950">Los Angeles commercial radon is not the same job as a single-family basement quote.</h3>
+                                        <p class="mt-2 text-sm leading-relaxed text-cyan-950">
+                                            California's radon program points professionals to ANSI-AARST standards, including broader ground-contact testing for multifamily housing. For a Los Angeles apartment, office, school, warehouse, mixed-use, or retail property, ask for the testing protocol before you ask for a mitigation price.
+                                        </p>
+                                        <div class="mt-4 grid gap-3 sm:grid-cols-2">
+                                            <div class="rounded-xl border border-cyan-200 bg-white p-3">
+                                                <p class="text-xs font-black uppercase tracking-wider text-cyan-700">1. Building profile</p>
+                                                <p class="mt-1 text-sm leading-relaxed text-slate-700">Count ground-contact units, occupied lower levels, slab/crawl areas, mechanical rooms, and tenant access limits.</p>
+                                            </div>
+                                            <div class="rounded-xl border border-cyan-200 bg-white p-3">
+                                                <p class="text-xs font-black uppercase tracking-wider text-cyan-700">2. Measurement plan</p>
+                                                <p class="mt-1 text-sm leading-relaxed text-slate-700">Confirm short-term versus long-term devices, duplicate/blank controls if applicable, and whether documentation is transaction-grade.</p>
+                                            </div>
+                                            <div class="rounded-xl border border-cyan-200 bg-white p-3">
+                                                <p class="text-xs font-black uppercase tracking-wider text-cyan-700">3. Mitigation scope</p>
+                                                <p class="mt-1 text-sm leading-relaxed text-slate-700">Separate testing-only, design-only, sub-slab suction, sub-membrane, fan, electrical, roofline, and post-mitigation retest costs.</p>
+                                            </div>
+                                            <div class="rounded-xl border border-cyan-200 bg-white p-3">
+                                                <p class="text-xs font-black uppercase tracking-wider text-cyan-700">4. Provider proof</p>
+                                                <p class="mt-1 text-sm leading-relaxed text-slate-700">Verify California approval or national certification before relying on a commercial quote page.</p>
+                                            </div>
+                                        </div>
+                                        <div class="mt-4 flex flex-col gap-2 sm:flex-row">
+                                            <a href="${caRadonProgramUrl}" target="_blank" rel="noopener" class="inline-flex items-center justify-center rounded-xl bg-white px-4 py-3 text-xs font-black uppercase tracking-wider text-cyan-800 hover:bg-cyan-100">CDPH radon program</a>
+                                            <a href="${caCertifiedProviderUrl}" target="_blank" rel="noopener" class="inline-flex items-center justify-center rounded-xl bg-white px-4 py-3 text-xs font-black uppercase tracking-wider text-cyan-800 hover:bg-cyan-100">CA provider verification</a>
+                                            <a href="${laCountyRadonUrl}" target="_blank" rel="noopener" class="inline-flex items-center justify-center rounded-xl bg-white px-4 py-3 text-xs font-black uppercase tracking-wider text-cyan-800 hover:bg-cyan-100">LA County radon page</a>
+                                        </div>
+                                    </div>
+                                @endif
+                                @if(boulderServiceSearchCounty)
+                                    <div class="mt-4 rounded-2xl border border-emerald-200 bg-emerald-50 p-4">
+                                        <p class="text-xs font-bold uppercase tracking-[0.16em] text-emerald-700">Boulder official local path</p>
+                                        <h3 class="mt-2 font-display text-xl font-black text-slate-950">For Boulder, start with testing logistics, then use mitigation pricing as a scope check.</h3>
+                                        <p class="mt-2 text-sm leading-relaxed text-emerald-950">
+                                            Boulder County's own radon pages put testing first, point residents to local test-kit options, and publish local mitigation context. That means this page should answer a practical question: do I need a first test, a real-estate test, a mitigation quote, or a quote sanity check?
+                                        </p>
+                                        <div class="mt-4 grid gap-3 sm:grid-cols-3">
+                                            <a href="${boulderTestingUrl}" target="_blank" rel="noopener" class="rounded-xl border border-emerald-200 bg-white p-3 hover:bg-emerald-100 transition-colors">
+                                                <p class="text-xs font-black uppercase tracking-wider text-emerald-700">Test kit</p>
+                                                <p class="mt-1 text-sm leading-relaxed text-slate-700">Open Boulder County testing instructions and local kit guidance.</p>
+                                            </a>
+                                            <a href="${boulderMitigationUrl}" target="_blank" rel="noopener" class="rounded-xl border border-emerald-200 bg-white p-3 hover:bg-emerald-100 transition-colors">
+                                                <p class="text-xs font-black uppercase tracking-wider text-emerald-700">Mitigation</p>
+                                                <p class="mt-1 text-sm leading-relaxed text-slate-700">Compare your quote against Boulder County mitigation guidance.</p>
+                                            </a>
+                                            <a href="${boulderGoldStarUrl}" target="_blank" rel="noopener" class="rounded-xl border border-emerald-200 bg-white p-3 hover:bg-emerald-100 transition-colors">
+                                                <p class="text-xs font-black uppercase tracking-wider text-emerald-700">Provider list</p>
+                                                <p class="mt-1 text-sm leading-relaxed text-slate-700">Use Boulder County's Gold Star mitigator resource before hiring.</p>
+                                            </a>
+                                        </div>
+                                    </div>
+                                @endif
+                                @if(stLouisRadonSearchCounty)
+                                    <div class="mt-4 rounded-2xl border border-amber-200 bg-amber-50 p-4">
+                                        <p class="text-xs font-bold uppercase tracking-[0.16em] text-amber-700">St. Louis disambiguation</p>
+                                        <h3 class="mt-2 font-display text-xl font-black text-slate-950">St. Louis searchers may mean County, City, or the metro. Route them before the quote.</h3>
+                                        <p class="mt-2 text-sm leading-relaxed text-amber-950">
+                                            The safest answer is not a generic St. Louis article. Choose the right geography, get a valid result, then use Missouri DHSS testing, buyer/seller, and mitigation guidance before you compare contractor bids.
+                                        </p>
+                                        <div class="mt-4 grid gap-3 sm:grid-cols-2">
+                                            <a href="/radon-levels/missouri/st-louis-county" class="rounded-xl border border-amber-200 bg-white p-3 hover:bg-amber-100 transition-colors">
+                                                <p class="text-xs font-black uppercase tracking-wider text-amber-700">St. Louis County</p>
+                                                <p class="mt-1 text-sm leading-relaxed text-slate-700">Use this page for county municipalities and county-level evidence context.</p>
+                                            </a>
+                                            <a href="${stLouisCityPath}" class="rounded-xl border border-amber-200 bg-white p-3 hover:bg-amber-100 transition-colors">
+                                                <p class="text-xs font-black uppercase tracking-wider text-amber-700">St. Louis City</p>
+                                                <p class="mt-1 text-sm leading-relaxed text-slate-700">Open the separate city page if the property is inside the independent city boundary.</p>
+                                            </a>
+                                            <a href="${missouriTestingUrl}" target="_blank" rel="noopener" class="rounded-xl border border-amber-200 bg-white p-3 hover:bg-amber-100 transition-colors">
+                                                <p class="text-xs font-black uppercase tracking-wider text-amber-700">Missouri testing</p>
+                                                <p class="mt-1 text-sm leading-relaxed text-slate-700">Start with DHSS testing instructions and test-kit resources when there is no result.</p>
+                                            </a>
+                                            <a href="${missouriMitigationUrl}" target="_blank" rel="noopener" class="rounded-xl border border-amber-200 bg-white p-3 hover:bg-amber-100 transition-colors">
+                                                <p class="text-xs font-black uppercase tracking-wider text-amber-700">Missouri mitigation</p>
+                                                <p class="mt-1 text-sm leading-relaxed text-slate-700">Use DHSS contractor-selection guidance before treating a bid as fair.</p>
+                                            </a>
+                                        </div>
+                                    </div>
+                                @endif
                             @endif
                         </div>
                         <div class="divide-y divide-slate-200 rounded-2xl border border-slate-200 bg-slate-50">

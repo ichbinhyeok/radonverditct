@@ -106,6 +106,30 @@
             : stLouisCostDemandCounty
             ? "St. Louis users need Missouri evidence and pricing context together; the page should move them from a real reading to scope questions before the contractor call."
             : "This page is in a search-demand lane, so it should convert curiosity into a local result band, a cost range, and a quote comparison step.";
+    final boolean minnesotaOfficialCostCounty = "minnesota".equals(county.getStateSlug());
+    final boolean indianaOfficialCostCounty = "indiana".equals(county.getStateSlug());
+    final boolean officialStateCostCounty = minnesotaOfficialCostCounty || indianaOfficialCostCounty;
+    final String officialStateCostRange = minnesotaOfficialCostCounty
+            ? "$1,500-$3,000"
+            : indianaOfficialCostCounty
+            ? "$800-$1,200"
+            : "";
+    final String officialStateCostSource = minnesotaOfficialCostCounty
+            ? "Minnesota Department of Health"
+            : indianaOfficialCostCounty
+            ? "Indiana Department of Health radon fact sheet"
+            : "";
+    final String officialStateCostUrl = minnesotaOfficialCostCounty
+            ? "https://www.health.state.mn.us/communities/environment/air/radon/mitigationsystem.html"
+            : indianaOfficialCostCounty
+            ? "https://www.in.gov/health/files/RADON_FACT_SHEET_12-20-17_-_Indiana_focusedrevisedbyIB.pdf"
+            : "";
+    final String caRadonProgramUrl = "https://www.cdph.ca.gov/Programs/CEH/DRSEM/Pages/EMB/Radon.aspx";
+    final String caCertifiedProviderUrl = "https://www.cdph.ca.gov/Programs/CEH/DRSEM/Pages/EMB/Radon/Certified-Radon-Services-Providers.aspx";
+    final String boulderMitigationUrl = "https://bouldercounty.gov/environment/healthy-home/radon/mitigation/";
+    final String boulderTestingUrl = "https://bouldercounty.gov/environment/healthy-home/radon/testing/";
+    final String missouriTestingUrl = "https://health.mo.gov/living/environment/radon/testing.php";
+    final String missouriMitigationUrl = "https://health.mo.gov/living/environment/radon/mitigation.php";
 }
 
 @template.layout.main(
@@ -235,6 +259,122 @@
                     </div>
                 </div>
             </section>
+            @endif
+
+            @if(losAngelesCommercialCostDemandCounty)
+                <section class="mt-8 rounded-3xl border border-cyan-200 bg-cyan-50 p-5 sm:p-7">
+                    <div class="grid gap-5 lg:grid-cols-[0.78fr_1.22fr] lg:items-start">
+                        <div>
+                            <p class="text-xs font-bold uppercase tracking-[0.18em] text-cyan-700">Commercial radon quote screen</p>
+                            <h2 class="mt-2 font-display text-2xl font-black tracking-tight text-slate-950">
+                                Los Angeles commercial quotes need protocol first, price second.
+                            </h2>
+                            <p class="mt-3 text-sm leading-relaxed text-cyan-950">
+                                A commercial or multifamily quote should name the building type, test coverage, occupied lower levels, access constraints, mitigation method, fan/electrical scope, and post-mitigation retest. If the quote only gives a residential average, it is not enough for this search.
+                            </p>
+                            <div class="mt-4 flex flex-col gap-2 sm:flex-row">
+                                <a href="${caRadonProgramUrl}" target="_blank" rel="noopener" class="inline-flex items-center justify-center rounded-xl border border-cyan-300 bg-white px-4 py-3 text-xs font-black uppercase tracking-wider text-cyan-800 hover:bg-cyan-100">CDPH radon rules</a>
+                                <a href="${caCertifiedProviderUrl}" target="_blank" rel="noopener" class="inline-flex items-center justify-center rounded-xl border border-cyan-300 bg-white px-4 py-3 text-xs font-black uppercase tracking-wider text-cyan-800 hover:bg-cyan-100">Verify CA provider</a>
+                            </div>
+                        </div>
+                        <div class="grid gap-3 sm:grid-cols-2">
+                            <div class="rounded-2xl border border-cyan-200 bg-white p-4">
+                                <p class="text-xs font-black uppercase tracking-wider text-cyan-700">Testing deliverable</p>
+                                <p class="mt-2 text-sm leading-relaxed text-slate-700">Ask whether the scope is owner screening, transaction documentation, multifamily protocol testing, or post-mitigation clearance.</p>
+                            </div>
+                            <div class="rounded-2xl border border-cyan-200 bg-white p-4">
+                                <p class="text-xs font-black uppercase tracking-wider text-cyan-700">Mitigation deliverable</p>
+                                <p class="mt-2 text-sm leading-relaxed text-slate-700">Separate design, installation, electrical, roofline, tenant access, sealing, and retest costs before comparing totals.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            @endif
+
+            @if(boulderCostDemandCounty)
+                <section class="mt-8 rounded-3xl border border-emerald-200 bg-emerald-50 p-5 sm:p-7">
+                    <div class="grid gap-5 lg:grid-cols-[0.82fr_1.18fr] lg:items-start">
+                        <div>
+                            <p class="text-xs font-bold uppercase tracking-[0.18em] text-emerald-700">Boulder official calibration</p>
+                            <h2 class="mt-2 font-display text-2xl font-black tracking-tight text-slate-950">
+                                Compare the quote against Boulder County guidance.
+                            </h2>
+                            <p class="mt-3 text-sm leading-relaxed text-emerald-950">
+                                Boulder County publishes local testing and mitigation resources. Use the RadonVerdict range as a planning anchor, then check the official Boulder pages when a quote looks unusually high, unusually low, or vague about retesting.
+                            </p>
+                        </div>
+                        <div class="grid gap-3 sm:grid-cols-2">
+                            <a href="${boulderTestingUrl}" target="_blank" rel="noopener" class="rounded-2xl border border-emerald-200 bg-white p-4 hover:bg-emerald-100 transition-colors">
+                                <p class="text-xs font-black uppercase tracking-wider text-emerald-700">Testing first</p>
+                                <p class="mt-2 text-sm leading-relaxed text-slate-700">Open Boulder County testing instructions and local kit guidance.</p>
+                            </a>
+                            <a href="${boulderMitigationUrl}" target="_blank" rel="noopener" class="rounded-2xl border border-emerald-200 bg-white p-4 hover:bg-emerald-100 transition-colors">
+                                <p class="text-xs font-black uppercase tracking-wider text-emerald-700">Mitigation check</p>
+                                <p class="mt-2 text-sm leading-relaxed text-slate-700">Use Boulder County mitigation context before accepting the contractor's scope.</p>
+                            </a>
+                        </div>
+                    </div>
+                </section>
+            @endif
+
+            @if(stLouisCostDemandCounty)
+                <section class="mt-8 rounded-3xl border border-amber-200 bg-amber-50 p-5 sm:p-7">
+                    <div class="grid gap-5 lg:grid-cols-[0.78fr_1.22fr] lg:items-start">
+                        <div>
+                            <p class="text-xs font-bold uppercase tracking-[0.18em] text-amber-700">St. Louis route check</p>
+                            <h2 class="mt-2 font-display text-2xl font-black tracking-tight text-slate-950">
+                                Confirm County vs City before pricing a St. Louis quote.
+                            </h2>
+                            <p class="mt-3 text-sm leading-relaxed text-amber-950">
+                                St. Louis search intent is ambiguous. Use this page for St. Louis County; use the city page for the independent city boundary. Then check Missouri testing and mitigation guidance before comparing bids.
+                            </p>
+                        </div>
+                        <div class="grid gap-3 sm:grid-cols-2">
+                            <a href="/radon-levels/missouri/st-louis-city" class="rounded-2xl border border-amber-200 bg-white p-4 hover:bg-amber-100 transition-colors">
+                                <p class="text-xs font-black uppercase tracking-wider text-amber-700">City page</p>
+                                <p class="mt-2 text-sm leading-relaxed text-slate-700">Open St. Louis City if the property is inside the independent city.</p>
+                            </a>
+                            <a href="${missouriTestingUrl}" target="_blank" rel="noopener" class="rounded-2xl border border-amber-200 bg-white p-4 hover:bg-amber-100 transition-colors">
+                                <p class="text-xs font-black uppercase tracking-wider text-amber-700">DHSS testing</p>
+                                <p class="mt-2 text-sm leading-relaxed text-slate-700">Use Missouri DHSS testing guidance when there is no valid result yet.</p>
+                            </a>
+                            <a href="${missouriMitigationUrl}" target="_blank" rel="noopener" class="rounded-2xl border border-amber-200 bg-white p-4 hover:bg-amber-100 transition-colors sm:col-span-2">
+                                <p class="text-xs font-black uppercase tracking-wider text-amber-700">DHSS mitigation</p>
+                                <p class="mt-2 text-sm leading-relaxed text-slate-700">Ask more than one contractor for estimates and compare scope, references, warranty, and retest language.</p>
+                            </a>
+                        </div>
+                    </div>
+                </section>
+            @endif
+
+            @if(officialStateCostCounty)
+                <section class="mt-8 rounded-3xl border border-sky-200 bg-sky-50 p-5 sm:p-7">
+                    <div class="grid gap-5 lg:grid-cols-[0.82fr_1.18fr] lg:items-start">
+                        <div>
+                            <p class="text-xs font-bold uppercase tracking-[0.18em] text-sky-700">Official state cost anchor</p>
+                            <h2 class="mt-2 font-display text-2xl font-black tracking-tight text-slate-950">
+                                Compare ${county.getAreaDisplayName()} against ${officialStateCostSource}.
+                            </h2>
+                            <p class="mt-3 text-sm leading-relaxed text-sky-950">
+                                The county model is built for quote screening, but state guidance gives a useful public anchor. Use both before assuming a bid is fair.
+                            </p>
+                        </div>
+                        <div class="grid gap-3 sm:grid-cols-3">
+                            <div class="rounded-2xl border border-sky-200 bg-white p-4">
+                                <p class="text-xs font-black uppercase tracking-wider text-sky-700">Official range</p>
+                                <p class="mt-2 font-display text-3xl font-black text-slate-950">${officialStateCostRange}</p>
+                            </div>
+                            <div class="rounded-2xl border border-sky-200 bg-white p-4">
+                                <p class="text-xs font-black uppercase tracking-wider text-sky-700">County model</p>
+                                <p class="mt-2 font-display text-3xl font-black text-slate-950">$${page.getReceipt().getTotalLow()}-$${page.getReceipt().getTotalHigh()}</p>
+                            </div>
+                            <a href="${officialStateCostUrl}" target="_blank" rel="noopener" class="rounded-2xl border border-sky-200 bg-white p-4 hover:bg-sky-100 transition-colors">
+                                <p class="text-xs font-black uppercase tracking-wider text-sky-700">Source</p>
+                                <p class="mt-2 text-sm font-semibold leading-relaxed text-slate-800">Open the official state cost guidance.</p>
+                            </a>
+                        </div>
+                    </div>
+                </section>
             @endif
 
             @if(hasCountyZipCodes)
