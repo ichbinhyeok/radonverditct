@@ -138,6 +138,42 @@
                     </div>
                 </section>
 
+                <section class="mt-14 rounded-2xl border border-indigo-200 bg-indigo-50 p-5 sm:p-6">
+                    <div class="grid gap-6 lg:grid-cols-[0.78fr_1.22fr] lg:items-start">
+                        <div>
+                            <p class="text-xs font-black uppercase tracking-[0.18em] text-indigo-700">Current search-demand routes</p>
+                            <h2 class="mt-2 font-display text-3xl font-black tracking-tight text-slate-950">Do not send every query to the same page</h2>
+                            <p class="mt-3 text-sm leading-relaxed text-indigo-950">
+                                Testing, provider, commercial, map, and cost searches need different first answers. This report keeps those routes explicit so a local page can satisfy the query before asking for a lead, quote, or calculator action.
+                            </p>
+                        </div>
+                        <div class="overflow-hidden rounded-2xl border border-indigo-200 bg-white">
+                            <div class="grid gap-0 divide-y divide-slate-100">
+                                <a href="/radon-levels/new-york/ulster-county" class="grid gap-3 p-4 transition-colors hover:bg-indigo-50 sm:grid-cols-[0.34fr_0.66fr]">
+                                    <span class="text-sm font-black text-slate-950">Ulster County, NY</span>
+                                    <span class="text-sm leading-relaxed text-slate-600">radon gas testing and mitigation-services searches should land on the testing/levels decision path, then route 4.0+ users to cost.</span>
+                                </a>
+                                <a href="/radon-levels/california/los-angeles-county" class="grid gap-3 p-4 transition-colors hover:bg-indigo-50 sm:grid-cols-[0.34fr_0.66fr]">
+                                    <span class="text-sm font-black text-slate-950">Los Angeles County, CA</span>
+                                    <span class="text-sm leading-relaxed text-slate-600">commercial radon searches need testing protocol, building scope, and quote-screening language before a residential price anchor.</span>
+                                </a>
+                                <a href="/radon-levels/colorado/boulder-county" class="grid gap-3 p-4 transition-colors hover:bg-indigo-50 sm:grid-cols-[0.34fr_0.66fr]">
+                                    <span class="text-sm font-black text-slate-950">Boulder County, CO</span>
+                                    <span class="text-sm leading-relaxed text-slate-600">testing and mitigation queries should connect official county evidence to the local cost path and quote checklist.</span>
+                                </a>
+                                <a href="/radon-levels/virginia/loudoun-county" class="grid gap-3 p-4 transition-colors hover:bg-indigo-50 sm:grid-cols-[0.34fr_0.66fr]">
+                                    <span class="text-sm font-black text-slate-950">Loudoun County, VA</span>
+                                    <span class="text-sm leading-relaxed text-slate-600">testing and ZIP-cost demand should bridge from the official county signal into the local cost estimate and seller-credit path.</span>
+                                </a>
+                                <a href="/radon-levels/missouri/st-louis-county" class="grid gap-3 p-4 transition-colors hover:bg-indigo-50 sm:grid-cols-[0.34fr_0.66fr]">
+                                    <span class="text-sm font-black text-slate-950">St. Louis County, MO</span>
+                                    <span class="text-sm leading-relaxed text-slate-600">broad local radon searches need the Missouri evidence block, result-band explanation, and contractor quote route in one flow.</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
                 <section class="mt-14 rounded-2xl border border-slate-200 bg-slate-50 p-5 sm:p-6">
                     <div class="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
                         <div>

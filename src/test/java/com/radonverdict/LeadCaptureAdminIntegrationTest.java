@@ -113,6 +113,9 @@ class LeadCaptureAdminIntegrationTest {
                 .andExpect(content().string(containsString("GSC export loaded")))
                 .andExpect(content().string(containsString("sitemap-cost-evidence.xml")))
                 .andExpect(content().string(containsString("Submit or refresh in GSC")))
+                .andExpect(content().string(containsString("Query watchlist")))
+                .andExpect(content().string(containsString("radon gas testing Ulster County NY")))
+                .andExpect(content().string(containsString("commercial radon Los Angeles CA")))
                 .andExpect(content().string(containsString("Crawled not indexed")))
                 .andExpect(content().string(containsString("Manual URL inspection queue")));
     }

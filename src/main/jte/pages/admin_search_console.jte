@@ -104,6 +104,58 @@
                     </div>
                 </section>
 
+                <section class="mb-8 rounded-xl border border-emerald-200 bg-emerald-50 p-5">
+                    <div class="flex flex-col gap-2 md:flex-row md:items-end md:justify-between">
+                        <div>
+                            <p class="text-xs font-bold uppercase tracking-wider text-emerald-700">Query watchlist</p>
+                            <h2 class="mt-1 font-display text-xl font-black text-slate-950">Patch titles and inspect the page that matches the query</h2>
+                        </div>
+                        <p class="max-w-md text-sm leading-relaxed text-emerald-900">
+                            Use this after the sitemap check: query intent first, target URL second, cost or ledger action third.
+                        </p>
+                    </div>
+                    <div class="mt-5 overflow-hidden rounded-xl border border-emerald-200 bg-white">
+                        <div class="overflow-x-auto">
+                            <table class="min-w-full divide-y divide-slate-200 text-left text-sm">
+                                <thead class="bg-emerald-50 text-xs font-black uppercase tracking-wider text-emerald-700">
+                                    <tr>
+                                        <th class="px-4 py-3">Query family</th>
+                                        <th class="px-4 py-3">Target URL</th>
+                                        <th class="px-4 py-3">Page job</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-slate-100">
+                                    <tr>
+                                        <td class="px-4 py-4 font-black text-slate-950">radon gas testing Ulster County NY</td>
+                                        <td class="px-4 py-4"><a href="/radon-levels/new-york/ulster-county" class="font-bold text-indigo-700 hover:underline">/radon-levels/new-york/ulster-county</a></td>
+                                        <td class="px-4 py-4 text-slate-600">Testing answer first, then 4.0+ cost and quote ledger.</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="px-4 py-4 font-black text-slate-950">commercial radon Los Angeles CA</td>
+                                        <td class="px-4 py-4"><a href="/radon-levels/california/los-angeles-county" class="font-bold text-indigo-700 hover:underline">/radon-levels/california/los-angeles-county</a></td>
+                                        <td class="px-4 py-4 text-slate-600">Commercial scope, provider lookup, then cost/quote screen.</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="px-4 py-4 font-black text-slate-950">radon testing Boulder CO</td>
+                                        <td class="px-4 py-4"><a href="/radon-levels/colorado/boulder-county" class="font-bold text-indigo-700 hover:underline">/radon-levels/colorado/boulder-county</a></td>
+                                        <td class="px-4 py-4 text-slate-600">Testing-to-mitigation bridge and contractor quote checklist.</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="px-4 py-4 font-black text-slate-950">radon testing Loudoun County</td>
+                                        <td class="px-4 py-4"><a href="/radon-levels/virginia/loudoun-county" class="font-bold text-indigo-700 hover:underline">/radon-levels/virginia/loudoun-county</a></td>
+                                        <td class="px-4 py-4 text-slate-600">Official VA signal, testing answer, ZIP-cost bridge.</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="px-4 py-4 font-black text-slate-950">St Louis radon</td>
+                                        <td class="px-4 py-4"><a href="/radon-levels/missouri/st-louis-county" class="font-bold text-indigo-700 hover:underline">/radon-levels/missouri/st-louis-county</a></td>
+                                        <td class="px-4 py-4 text-slate-600">Missouri DHSS evidence, result-band explanation, cost path.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
                 <section class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
                     <div class="flex flex-col gap-2 md:flex-row md:items-end md:justify-between">
                         <div>

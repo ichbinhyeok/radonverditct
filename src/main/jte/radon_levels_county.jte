@@ -251,17 +251,30 @@
             chesterDecisionCounty
                     || kaneDecisionCounty
                     || madisonAlabamaDecisionCounty;
+    final boolean ulsterServiceSearchCounty =
+            "new-york".equals(county.getStateSlug()) && "ulster-county".equals(county.getCountySlug());
+    final boolean losAngelesCommercialSearchCounty =
+            "california".equals(county.getStateSlug()) && "los-angeles-county".equals(county.getCountySlug());
+    final boolean boulderServiceSearchCounty =
+            "colorado".equals(county.getStateSlug()) && "boulder-county".equals(county.getCountySlug());
+    final boolean broomfieldServiceSearchCounty =
+            "colorado".equals(county.getStateSlug()) && "broomfield-county".equals(county.getCountySlug());
+    final boolean loudounTestingSearchCounty =
+            "virginia".equals(county.getStateSlug()) && "loudoun-county".equals(county.getCountySlug());
+    final boolean stLouisRadonSearchCounty =
+            "missouri".equals(county.getStateSlug()) && "st-louis-county".equals(county.getCountySlug());
     final boolean gscServiceIntentCounty =
-            ("new-york".equals(county.getStateSlug()) && "ulster-county".equals(county.getCountySlug()))
-                    || ("california".equals(county.getStateSlug()) && "los-angeles-county".equals(county.getCountySlug()))
-                    || ("colorado".equals(county.getStateSlug()) && "boulder-county".equals(county.getCountySlug()))
-                    || ("colorado".equals(county.getStateSlug()) && "broomfield-county".equals(county.getCountySlug()));
+            ulsterServiceSearchCounty
+                    || losAngelesCommercialSearchCounty
+                    || boulderServiceSearchCounty
+                    || broomfieldServiceSearchCounty
+                    || loudounTestingSearchCounty
+                    || stLouisRadonSearchCounty;
     final boolean gscSurvivorNearMissCounty =
             ("new-york".equals(county.getStateSlug()) && "monroe-county".equals(county.getCountySlug()))
                     || ("tennessee".equals(county.getStateSlug()) && "sevier-county".equals(county.getCountySlug()))
                     || ("new-jersey".equals(county.getStateSlug()) && "warren-county".equals(county.getCountySlug()))
                     || ("vermont".equals(county.getStateSlug()) && "rutland-county".equals(county.getCountySlug()))
-                    || ("virginia".equals(county.getStateSlug()) && "loudoun-county".equals(county.getCountySlug()))
                     || ("maryland".equals(county.getStateSlug()) && "prince-georges-county".equals(county.getCountySlug()))
                     || ("pennsylvania".equals(county.getStateSlug()) && "northampton-county".equals(county.getCountySlug()));
     final boolean nextStepCtrLiftCounty =
@@ -338,11 +351,54 @@
             : evidencePrimaryAvailable
             ? "Official Signal " + radonEvidence.getPrimaryAverageDisplay()
             : "Official County Evidence";
+    final String gscQueryCluster = ulsterServiceSearchCounty
+            ? "radon gas testing Ulster County NY; radon mitigation services Ulster County NY"
+            : losAngelesCommercialSearchCounty
+            ? "commercial radon Los Angeles CA; radon testing Los Angeles"
+            : boulderServiceSearchCounty
+            ? "radon testing Boulder CO; Boulder radon mitigation"
+            : broomfieldServiceSearchCounty
+            ? "Broomfield radon mitigation"
+            : loudounTestingSearchCounty
+            ? "radon testing Loudoun County"
+            : stLouisRadonSearchCounty
+            ? "St Louis radon"
+            : "radon testing, mitigation services, and commercial radon";
+    final String serviceSearchTitle = ulsterServiceSearchCounty
+            ? seoPlaceLabel + " Radon Gas Testing & Mitigation Services"
+            : losAngelesCommercialSearchCounty
+            ? seoPlaceLabel + " Commercial Radon, Testing & Levels"
+            : boulderServiceSearchCounty
+            ? seoPlaceLabel + " Radon Testing & Mitigation Guide"
+            : broomfieldServiceSearchCounty
+            ? seoPlaceLabel + " Radon Mitigation & Testing Guide"
+            : loudounTestingSearchCounty
+            ? seoPlaceLabel + " Radon Testing, Levels & Cost Path"
+            : stLouisRadonSearchCounty
+            ? seoPlaceLabel + " Radon Levels, Testing & Mitigation"
+            : seoPlaceLabel + " Radon Levels & Testing | 4.0+ Next Step";
+    final String serviceBridgeSummary = losAngelesCommercialSearchCounty
+            ? "Commercial radon searches usually need a different call than a one-family home: building type, testing protocol, occupancy, access, scope, and whether the quote is for testing, mitigation, or both."
+            : ulsterServiceSearchCounty
+            ? "Ulster demand is mostly testing and mitigation-service language. The page has to answer the local testing question first, then move a confirmed 4.0+ result into cost and quote comparison."
+            : boulderServiceSearchCounty || broomfieldServiceSearchCounty
+            ? "Colorado service searches tend to jump straight to mitigation. The safer path is to confirm the reading, check the county evidence, and then compare the contractor scope against the local cost page."
+            : loudounTestingSearchCounty
+            ? "Loudoun searchers are already close to action. Keep the sequence tight: test result, official county signal, local cost range, then a quote or seller-credit decision."
+            : stLouisRadonSearchCounty
+            ? "St. Louis searches need the official Missouri test signal and the local contractor path in one place, because generic state guidance is too slow for a user with a real reading."
+            : "Service searches need a result-to-cost path, not a generic radon article.";
+    final String providerSearchPackHeading = losAngelesCommercialSearchCounty
+            ? "Commercial provider search pack"
+            : "Local provider search pack";
+    final String providerSearchPackBody = losAngelesCommercialSearchCounty
+            ? "Before contacting a commercial radon provider, write down building type, occupied areas, number of test locations, lowest occupied level, result band, deadline, and whether mitigation or testing documentation is the deliverable."
+            : "Before contacting a radon provider, write down the test type, pCi/L result, lowest tested level, foundation type, deadline, and whether you need testing, mitigation, seller-credit support, or post-mitigation retest documentation.";
 
     final String seoTitle = officialEvidenceSerpCounty
             ? seoPlaceLabel + " Radon Levels: " + evidenceSerpTitleMetric
             : gscServiceIntentCounty
-            ? seoPlaceLabel + " Radon Levels & Testing | 4.0+ Next Step"
+            ? serviceSearchTitle
             : gscSurvivorIntentCopyCounty
             ? seoPlaceLabel + " Radon Levels | Test, Retest, or Cost Path"
             : epaZoneCtrPriorityCounty
@@ -362,8 +418,8 @@
     final String seoDescription = officialEvidenceSerpCounty
             ? evidenceSerpDescription
             : gscServiceIntentCounty
-            ? "Searching for radon testing, mitigation services, commercial radon, or a 4.0+ next step in "
-            + seoPlaceLabel + "? Confirm the reading, check county evidence, and open the local cost or quote path."
+            ? "Searching for " + gscQueryCluster + "? Use the " + seoPlaceLabel
+            + " decision path: confirm the reading, check county evidence, and open the local cost or quote path."
             : gscSurvivorIntentCopyCounty
             ? "Check radon levels in " + seoPlaceLabel
             + ", see the official county signal, and choose the fast path from first test to retest, cost, or seller-credit planning."
@@ -1226,19 +1282,38 @@
                             </p>
                             <h2 class="mt-2 font-display text-2xl font-black tracking-tight text-slate-950">
                                 @if(gscServiceIntentCounty)
-                                    Searched for testing, mitigation services, or commercial radon?
+                                    Searched for ${gscQueryCluster}?
                                 @else
                                     This county gets the short route first.
                                 @endif
                             </h2>
                             <p class="mt-3 text-sm leading-relaxed text-slate-600">
                                 @if(gscServiceIntentCounty)
+                                    ${serviceBridgeSummary}
                                     RadonVerdict is not a contractor directory. It turns the search into a decision: get or confirm the reading, open the local cost path after 4.0+, then record any real quote so the benchmark gets less generic.
                                 @else
                                     Search Console already showed enough signal to keep this page focused. The fastest useful answer is whether the visitor needs a first test, a retest, a local cost range, or seller-credit math.
                                 @endif
                             </p>
                             @if(gscServiceIntentCounty)
+                                <div class="mt-4 grid gap-3">
+                                    <div class="rounded-2xl border border-emerald-200 bg-emerald-50 p-4">
+                                        <p class="text-xs font-bold uppercase tracking-[0.16em] text-emerald-700">${providerSearchPackHeading}</p>
+                                        <p class="mt-2 text-sm font-semibold leading-relaxed text-emerald-950">
+                                            ${providerSearchPackBody}
+                                        </p>
+                                    </div>
+                                    <div class="rounded-2xl border border-indigo-200 bg-indigo-50 p-4">
+                                        <p class="text-xs font-bold uppercase tracking-[0.16em] text-indigo-700">Provider lookup</p>
+                                        <p class="mt-2 text-sm leading-relaxed text-indigo-950">
+                                            Use the official state radon program and EPA provider guidance to verify licensing or certification before treating any local service listing as enough.
+                                        </p>
+                                        <div class="mt-3 flex flex-col gap-2 sm:flex-row">
+                                            <a href="${stateProgramUrl}" target="_blank" rel="noopener nofollow" class="inline-flex text-xs font-black uppercase tracking-wider text-indigo-700 hover:underline">State radon program</a>
+                                            <a href="${epaQualifiedProviderUrl}" target="_blank" rel="noopener nofollow" class="inline-flex text-xs font-black uppercase tracking-wider text-indigo-700 hover:underline">EPA provider guidance</a>
+                                        </div>
+                                    </div>
+                                </div>
                                 <div class="mt-4 rounded-2xl border border-slate-200 bg-slate-50 p-4">
                                     <p class="text-xs font-bold uppercase tracking-[0.16em] text-slate-500">Local call script</p>
                                     <p class="mt-2 text-sm font-semibold leading-relaxed text-slate-800">

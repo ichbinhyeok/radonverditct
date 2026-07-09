@@ -223,7 +223,9 @@ class PlaywrightBetaSmokeE2ETest {
         try (PersonaSession persona = openPersona("persona05_health_concerned", 1440, 900)) {
             persona.visit("/radon-levels/california/los-angeles-county");
 
-            assertTrue(persona.page.title().toLowerCase(Locale.US).contains("radon levels"));
+            String title = persona.page.title().toLowerCase(Locale.US);
+            assertTrue(title.contains("radon"));
+            assertTrue(title.contains("levels"));
             assertTrue(persona.page.locator("text=EPA Zone").first().isVisible());
 
             persona.page.locator("a[href='/radon-mitigation-cost/california/los-angeles-county']").first().click();

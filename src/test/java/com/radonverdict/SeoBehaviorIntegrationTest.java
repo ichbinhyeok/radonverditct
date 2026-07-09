@@ -492,6 +492,10 @@ class SeoBehaviorIntegrationTest {
                 .andExpect(content().string(containsString("<title>Radon Mitigation Cost Data Report | RadonVerdict</title>")))
                 .andExpect(content().string(containsString("Radon mitigation cost data report")))
                 .andExpect(content().string(containsString("source-backed cost index")))
+                .andExpect(content().string(containsString("Current search-demand routes")))
+                .andExpect(content().string(containsString("Do not send every query to the same page")))
+                .andExpect(content().string(containsString("Ulster County, NY")))
+                .andExpect(content().string(containsString("commercial radon searches need testing protocol")))
                 .andExpect(content().string(containsString("Twenty county cost pages to inspect first")))
                 .andExpect(content().string(containsString("What the report proves")))
                 .andExpect(content().string(containsString("Best state hubs for discovery")))
@@ -503,6 +507,22 @@ class SeoBehaviorIntegrationTest {
                 .getContentAsString(StandardCharsets.UTF_8);
 
         assertJsonLdBlocksAreValid(html);
+    }
+
+    @Test
+    void searchDemandCostPagesBridgeTestingQueriesToCostAndQuotePaths() throws Exception {
+        mockMvc.perform(get("/radon-mitigation-cost/new-york/ulster-county"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("Search demand cost bridge")))
+                .andExpect(content().string(containsString("radon gas testing Ulster County NY and radon mitigation services Ulster County NY")))
+                .andExpect(content().string(containsString("Check the county testing and levels page first")))
+                .andExpect(content().string(containsString("href=\"/radon-levels/new-york/ulster-county\"")))
+                .andExpect(content().string(containsString("href=\"/radon-quote-ledger#quote-checker\"")));
+
+        mockMvc.perform(get("/radon-mitigation-cost/california/los-angeles-county"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("commercial radon Los Angeles CA, commercial radon in Los Angeles, and radon testing Los Angeles")))
+                .andExpect(content().string(containsString("Commercial and multifamily searches should not jump straight to a residential average.")));
     }
 
     @Test
@@ -664,7 +684,7 @@ class SeoBehaviorIntegrationTest {
     void radonLevelsCountyUsesTestingGuideSeoAndFrontloadsSituationPicker() throws Exception {
         mockMvc.perform(get("/radon-levels/california/los-angeles-county"))
                 .andExpect(status().isOk())
-                .andExpect(content().string(containsString("Los Angeles County, CA Radon Levels &amp; Testing | 4.0+ Next Step")))
+                .andExpect(content().string(containsString("Los Angeles County, CA Commercial Radon, Testing &amp; Levels")))
                 .andExpect(content().string(containsString("data-nosnippet")))
                 .andExpect(content().string(containsString("Local service search answer:")))
                 .andExpect(content().string(containsString("Home result translator")))
@@ -682,7 +702,9 @@ class SeoBehaviorIntegrationTest {
                 .andExpect(content().string(not(containsString("At <strong x-text=\"parseFloat(level).toFixed(1)\"></strong> pCi/L"))))
                 .andExpect(content().string(containsString("Review retesting steps")))
                 .andExpect(content().string(containsString("Local Service Search Bridge")))
-                .andExpect(content().string(containsString("Searched for testing, mitigation services, or commercial radon?")))
+                .andExpect(content().string(containsString("Searched for commercial radon Los Angeles CA; radon testing Los Angeles?")))
+                .andExpect(content().string(containsString("Commercial provider search pack")))
+                .andExpect(content().string(containsString("EPA provider guidance")))
                 .andExpect(content().string(containsString("Local call script")))
                 .andExpect(content().string(containsString("href=\"/guides/radon-mitigation-quote-checklist\"")))
                 .andExpect(content().string(containsString("href=\"/radon-quote-ledger\"")))
@@ -694,10 +716,12 @@ class SeoBehaviorIntegrationTest {
     void gscServiceIntentCountyPagesBridgeServiceQueriesToDecisionPaths() throws Exception {
         mockMvc.perform(get("/radon-levels/new-york/ulster-county"))
                 .andExpect(status().isOk())
-                .andExpect(content().string(containsString("<title>Ulster County, NY Radon Levels &amp; Testing | 4.0+ Next Step</title>")))
+                .andExpect(content().string(containsString("<title>Ulster County, NY Radon Gas Testing &amp; Mitigation Services</title>")))
                 .andExpect(content().string(containsString("Local service search answer:")))
-                .andExpect(content().string(containsString("radon gas testing, mitigation services, commercial radon")))
+                .andExpect(content().string(containsString("radon gas testing Ulster County NY; radon mitigation services Ulster County NY")))
                 .andExpect(content().string(containsString("Local Service Search Bridge")))
+                .andExpect(content().string(containsString("Local provider search pack")))
+                .andExpect(content().string(containsString("Use the official state radon program and EPA provider guidance")))
                 .andExpect(content().string(containsString("I have a radon result of ___ pCi/L in Ulster County, NY.")))
                 .andExpect(content().string(containsString("Use the contractor quote checklist before the call")))
                 .andExpect(content().string(containsString("Open the local cost path before calling contractors")))
@@ -705,7 +729,8 @@ class SeoBehaviorIntegrationTest {
 
         mockMvc.perform(get("/radon-levels/colorado/boulder-county"))
                 .andExpect(status().isOk())
-                .andExpect(content().string(containsString("<title>Boulder County, CO Radon Levels &amp; Testing | 4.0+ Next Step</title>")))
+                .andExpect(content().string(containsString("<title>Boulder County, CO Radon Testing &amp; Mitigation Guide</title>")))
+                .andExpect(content().string(containsString("radon testing Boulder CO; Boulder radon mitigation")))
                 .andExpect(content().string(containsString("Service intent detected: testing, mitigation, or commercial radon searches need a result-to-cost path.")))
                 .andExpect(content().string(containsString("Test result -&gt; county cost path -&gt; quote ledger if a contractor gives a number.")));
     }
@@ -829,7 +854,7 @@ class SeoBehaviorIntegrationTest {
                 .andExpect(content().string(containsString("Official Signal 4.1 pCi/L")))
                 .andExpect(content().string(containsString("EPA Zone 2 context")))
                 .andExpect(content().string(containsString("Is radon bad in Loudoun County?")))
-                .andExpect(content().string(containsString("Loudoun County is stronger than the EPA zone label suggests.")))
+                .andExpect(content().string(containsString("the official source signal is stronger than the EPA zone label suggests")))
                 .andExpect(content().string(containsString("Official county data shows 4.1 pCi/L as the primary measured signal.")))
                 .andExpect(content().string(containsString("Loudoun County should be treated as a testing-priority county because the official source signal is stronger than the EPA zone label suggests.")))
                 .andExpect(content().string(containsString("a Testing Priority")))
@@ -1531,7 +1556,12 @@ class SeoBehaviorIntegrationTest {
 
     @Test
     void secondWaveTopCtrCountyPagesUseBasementFirstSerpCopy() throws Exception {
-        assertLevelsCountyCtrCopy("/radon-levels/missouri/st-louis-county", "St. Louis County, MO");
+        mockMvc.perform(get("/radon-levels/missouri/st-louis-county"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("<title>St. Louis County, MO Radon Levels, Testing &amp; Mitigation</title>")))
+                .andExpect(content().string(containsString("Searching for St Louis radon?")))
+                .andExpect(content().string(containsString("Local Service Search Bridge")))
+                .andExpect(content().string(containsString("St. Louis searches need the official Missouri test signal and the local contractor path in one place")));
         assertLevelsCountyCtrCopy("/radon-levels/pennsylvania/allegheny-county", "Allegheny County, PA");
         assertLevelsCountyCtrCopy("/radon-levels/florida/hillsborough-county", "Hillsborough, FL");
     }
@@ -1698,6 +1728,10 @@ class SeoBehaviorIntegrationTest {
                 .andExpect(content().string(containsString("<link rel=\"canonical\" href=\"https://radonverdict.com/radon-quote-ledger\">")))
                 .andExpect(content().string(containsString("Real radon quotes beat generic averages.")))
                 .andExpect(content().string(containsString("RadonVerdict observed radon quote ledger")))
+                .andExpect(content().string(containsString("Priority collection gaps")))
+                .andExpect(content().string(containsString("The next useful quote is local, not generic.")))
+                .andExpect(content().string(containsString("Ulster County, NY")))
+                .andExpect(content().string(containsString("Commercial, multifamily, or testing-scope quote signal.")))
                 .andExpect(content().string(containsString("Is this radon quote fair?")))
                 .andExpect(content().string(containsString("Radon Quote Index")))
                 .andExpect(content().string(containsString("href=\"/radon-quote-ledger/benchmark.csv\"")))

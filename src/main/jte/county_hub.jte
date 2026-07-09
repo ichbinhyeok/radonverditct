@@ -55,6 +55,57 @@
     final String primaryCountyZip = prefilledZip != null && prefilledZip.matches("\\d{5}") ? prefilledZip : (hasCountyZipCodes ? countyZipCodes.get(0) : "");
     final boolean loudounCostSearchCounty = "virginia".equals(county.getStateSlug())
             && "loudoun-county".equals(county.getCountySlug());
+    final boolean ulsterCostDemandCounty =
+            "new-york".equals(county.getStateSlug()) && "ulster-county".equals(county.getCountySlug());
+    final boolean losAngelesCommercialCostDemandCounty =
+            "california".equals(county.getStateSlug()) && "los-angeles-county".equals(county.getCountySlug());
+    final boolean boulderCostDemandCounty =
+            "colorado".equals(county.getStateSlug()) && "boulder-county".equals(county.getCountySlug());
+    final boolean broomfieldCostDemandCounty =
+            "colorado".equals(county.getStateSlug()) && "broomfield-county".equals(county.getCountySlug());
+    final boolean stLouisCostDemandCounty =
+            "missouri".equals(county.getStateSlug()) && "st-louis-county".equals(county.getCountySlug());
+    final boolean calvertCostDemandCounty =
+            "maryland".equals(county.getStateSlug()) && "calvert-county".equals(county.getCountySlug());
+    final boolean indianaClarkCostDemandCounty =
+            "indiana".equals(county.getStateSlug()) && "clark-county".equals(county.getCountySlug());
+    final boolean searchDemandCostBridgeCounty =
+            loudounCostSearchCounty
+                    || ulsterCostDemandCounty
+                    || losAngelesCommercialCostDemandCounty
+                    || boulderCostDemandCounty
+                    || broomfieldCostDemandCounty
+                    || stLouisCostDemandCounty
+                    || calvertCostDemandCounty
+                    || indianaClarkCostDemandCounty;
+    final String searchDemandQueryCluster = ulsterCostDemandCounty
+            ? "radon gas testing Ulster County NY and radon mitigation services Ulster County NY"
+            : losAngelesCommercialCostDemandCounty
+            ? "commercial radon Los Angeles CA, commercial radon in Los Angeles, and radon testing Los Angeles"
+            : boulderCostDemandCounty
+            ? "radon testing Boulder CO, Boulder radon mitigation, and radon mitigation Boulder CO"
+            : broomfieldCostDemandCounty
+            ? "Broomfield radon mitigation"
+            : loudounCostSearchCounty
+            ? "20147 radon mitigation cost and radon testing Loudoun County"
+            : stLouisCostDemandCounty
+            ? "St Louis radon"
+            : calvertCostDemandCounty
+            ? "Calvert County radon mitigation cost"
+            : indianaClarkCostDemandCounty
+            ? "radon mitigation system cost Indiana"
+            : "local radon testing, mitigation, and cost searches";
+    final String searchDemandCostBridgeBody = losAngelesCommercialCostDemandCounty
+            ? "Commercial and multifamily searches should not jump straight to a residential average. Use this page for a local budget anchor, then capture building type, test protocol, access, and scope before trusting any quote."
+            : ulsterCostDemandCounty
+            ? "Ulster search demand is testing and service-heavy, so the cost page needs to keep the pre-call sequence visible: confirm a valid reading, price a 4.0+ result, then compare quote scope."
+            : boulderCostDemandCounty || broomfieldCostDemandCounty
+            ? "Colorado service searches are close to contractor intent. This page should anchor the conversation before a phone call: result band, foundation, route complexity, warranty, and retest."
+            : loudounCostSearchCounty
+            ? "Loudoun demand is both ZIP-cost and testing driven. Keep the page focused on the local range, the official county signal, and the quote or seller-credit decision."
+            : stLouisCostDemandCounty
+            ? "St. Louis users need Missouri evidence and pricing context together; the page should move them from a real reading to scope questions before the contractor call."
+            : "This page is in a search-demand lane, so it should convert curiosity into a local result band, a cost range, and a quote comparison step.";
 }
 
 @template.layout.main(
@@ -137,6 +188,54 @@
                 countySignalSummary = "Use this as the local decision console: set the reading, deal side, and foundation clue before you compare quotes or seller-credit numbers."
             )
             @template.components.search_intent_router(county = county, className = "mt-8")
+
+            @if(searchDemandCostBridgeCounty)
+            <section class="mt-8 rounded-3xl border border-indigo-200 bg-indigo-50 p-5 sm:p-7">
+                <div class="grid gap-5 lg:grid-cols-[0.78fr_1.22fr] lg:items-start">
+                    <div>
+                        <p class="text-xs font-bold uppercase tracking-[0.18em] text-indigo-700">Search demand cost bridge</p>
+                        <h2 class="mt-2 font-display text-2xl font-black tracking-tight text-slate-950">
+                            Came from ${searchDemandQueryCluster}?
+                        </h2>
+                        <p class="mt-3 text-sm leading-relaxed text-indigo-950">
+                            ${searchDemandCostBridgeBody}
+                        </p>
+                    </div>
+                    <div class="divide-y divide-indigo-100 overflow-hidden rounded-2xl border border-indigo-200 bg-white">
+                        <a href="/radon-levels/${county.getStateSlug()}/${county.getCountySlug()}"
+                           data-track-event="cost_demand_bridge_click"
+                           data-track-label="levels_evidence"
+                           class="grid gap-2 p-4 transition-colors hover:bg-indigo-50 sm:grid-cols-[0.26fr_0.74fr]">
+                            <span class="text-xs font-black uppercase tracking-wider text-indigo-700">No result?</span>
+                            <span>
+                                <span class="block text-sm font-black text-slate-950">Check the county testing and levels page first</span>
+                                <span class="mt-1 block text-sm leading-relaxed text-slate-600">Use this if the search started as testing, map, service, or provider research instead of a confirmed 4.0+ result.</span>
+                            </span>
+                        </a>
+                        <a href="#estimate-form"
+                           data-track-event="cost_demand_bridge_click"
+                           data-track-label="estimate_form"
+                           class="grid gap-2 p-4 transition-colors hover:bg-indigo-50 sm:grid-cols-[0.26fr_0.74fr]">
+                            <span class="text-xs font-black uppercase tracking-wider text-red-700">4.0+</span>
+                            <span>
+                                <span class="block text-sm font-black text-slate-950">Turn the reading into a local budget</span>
+                                <span class="mt-1 block text-sm leading-relaxed text-slate-600">Change foundation, role, and result band before you compare any contractor number.</span>
+                            </span>
+                        </a>
+                        <a href="/radon-quote-ledger#quote-checker"
+                           data-track-event="cost_demand_bridge_click"
+                           data-track-label="quote_ledger"
+                           class="grid gap-2 p-4 transition-colors hover:bg-indigo-50 sm:grid-cols-[0.26fr_0.74fr]">
+                            <span class="text-xs font-black uppercase tracking-wider text-slate-700">Quote</span>
+                            <span>
+                                <span class="block text-sm font-black text-slate-950">Screen the quote before you trust it</span>
+                                <span class="mt-1 block text-sm leading-relaxed text-slate-600">Check fan, route, sump or crawl-space sealing, permit, warranty, and post-mitigation retest language.</span>
+                            </span>
+                        </a>
+                    </div>
+                </div>
+            </section>
+            @endif
 
             @if(hasCountyZipCodes)
             <section class="mt-8 rounded-3xl border border-slate-200 bg-slate-50 p-5 sm:p-7">

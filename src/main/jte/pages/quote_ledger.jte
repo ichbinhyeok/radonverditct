@@ -289,6 +289,40 @@
         </section>
 
         <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-14 sm:py-16">
+            <section class="mb-14 rounded-[1.75rem] border border-indigo-200 bg-indigo-50 p-5 sm:p-6">
+                <div class="grid gap-6 lg:grid-cols-[0.82fr_1.18fr] lg:items-start">
+                    <div>
+                        <p class="text-xs font-bold uppercase tracking-[0.22em] text-indigo-700">Priority collection gaps</p>
+                        <h2 class="mt-3 font-display text-3xl font-black tracking-tight text-slate-950">The next useful quote is local, not generic.</h2>
+                        <p class="mt-3 text-sm leading-relaxed text-indigo-950">
+                            Search demand is already touching testing, mitigation services, commercial radon, and county cost paths. The ledger now pushes the highest-value missing signals first so the cost model can learn from real local scope.
+                        </p>
+                    </div>
+                    <div class="grid gap-3 sm:grid-cols-2">
+                        <a href="/radon-levels/new-york/ulster-county" class="rounded-2xl border border-indigo-200 bg-white p-4 transition-colors hover:bg-indigo-50">
+                            <p class="text-sm font-black text-slate-950">Ulster County, NY</p>
+                            <p class="mt-1 text-sm leading-relaxed text-slate-600">Testing or mitigation-service quote after a confirmed result.</p>
+                        </a>
+                        <a href="/radon-levels/california/los-angeles-county" class="rounded-2xl border border-indigo-200 bg-white p-4 transition-colors hover:bg-indigo-50">
+                            <p class="text-sm font-black text-slate-950">Los Angeles County, CA</p>
+                            <p class="mt-1 text-sm leading-relaxed text-slate-600">Commercial, multifamily, or testing-scope quote signal.</p>
+                        </a>
+                        <a href="/radon-levels/colorado/boulder-county" class="rounded-2xl border border-indigo-200 bg-white p-4 transition-colors hover:bg-indigo-50">
+                            <p class="text-sm font-black text-slate-950">Boulder County, CO</p>
+                            <p class="mt-1 text-sm leading-relaxed text-slate-600">Mitigation quote with fan, route, warranty, and retest language.</p>
+                        </a>
+                        <a href="/radon-levels/virginia/loudoun-county" class="rounded-2xl border border-indigo-200 bg-white p-4 transition-colors hover:bg-indigo-50">
+                            <p class="text-sm font-black text-slate-950">Loudoun County, VA</p>
+                            <p class="mt-1 text-sm leading-relaxed text-slate-600">ZIP-cost, seller-credit, or failed-inspection quote signal.</p>
+                        </a>
+                        <a href="/radon-levels/missouri/st-louis-county" class="rounded-2xl border border-indigo-200 bg-white p-4 transition-colors hover:bg-indigo-50 sm:col-span-2">
+                            <p class="text-sm font-black text-slate-950">St. Louis County, MO</p>
+                            <p class="mt-1 text-sm leading-relaxed text-slate-600">Missouri evidence-backed quote signal, especially 4.0+ basement or mixed-foundation jobs.</p>
+                        </a>
+                    </div>
+                </div>
+            </section>
+
             <section id="quote-checker"
                      class="grid gap-8 lg:grid-cols-[0.92fr_1.08fr] lg:items-start"
                      data-track-impression="quote_checker_view"
