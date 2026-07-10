@@ -128,6 +128,46 @@ public class SeoIndexingPolicyService {
 
     private static final Set<String> GROWTH_TRAFFIC_COUNTY_SET = Set.copyOf(GROWTH_TRAFFIC_COUNTIES);
 
+    // GSC survivor cohort from 2026-04-08 through 2026-05-05, before the ranking collapse.
+    private static final Set<String> GSC_SURVIVOR_COUNTIES = Set.of(
+            "pennsylvania/indiana-county", "vermont/rutland-county", "pennsylvania/chester-county",
+            "utah/utah-county", "pennsylvania/bucks-county", "kentucky", "florida/marion-county",
+            "new-mexico/bernalillo-county", "michigan/kalamazoo-county", "new-jersey/hunterdon-county",
+            "missouri/st-charles-county", "new-jersey/gloucester-county", "georgia/paulding-county",
+            "north-carolina/iredell-county", "ohio/perry-county", "tennessee/sevier-county",
+            "indiana/owen-county", "washington/san-juan-county", "virginia/fairfax-city",
+            "colorado/boulder-county", "washington/spokane-county", "illinois/kane-county",
+            "new-jersey/burlington-county", "indiana", "california/santa-clara-county",
+            "new-jersey/somerset-county", "virginia/arlington-county", "florida/polk-county",
+            "illinois/will-county", "pennsylvania/erie-county", "virginia/charlottesville-city",
+            "alabama/madison-county", "idaho/ada-county", "michigan/monroe-county",
+            "kansas/sedgwick-county", "michigan/kent-county", "nevada", "new-york/westchester-county",
+            "california/monterey-county", "florida/citrus-county", "california/san-bernardino-county",
+            "arizona/pima-county", "alabama/jefferson-county", "pennsylvania/delaware-county",
+            "utah/tooele-county", "virginia/stafford-county", "california/san-francisco-county",
+            "indiana/vanderburgh-county", "minnesota/ramsey-county", "ohio/wood-county",
+            "montana/flathead-county", "pennsylvania/monroe-county", "utah/sanpete-county",
+            "virginia/amherst-county", "washington/clark-county", "illinois/champaign-county",
+            "texas/el-paso-county", "virginia/lynchburg-city", "alabama/shelby-county",
+            "new-jersey/salem-county", "tennessee/montgomery-county", "west-virginia/wood-county",
+            "illinois/madison-county", "kansas/leavenworth-county", "maine/cumberland-county",
+            "missouri/jasper-county", "ohio/mahoning-county", "colorado/montrose-county",
+            "georgia/gilmer-county", "idaho/franklin-county", "missouri/cape-girardeau-county",
+            "nebraska/lancaster-county", "pennsylvania/pike-county", "pennsylvania/warren-county",
+            "colorado/la-plata-county", "colorado/rio-grande-county", "florida/miami-dade-county",
+            "illinois/grundy-county", "iowa/carroll-county", "kansas/douglas-county",
+            "minnesota/washington-county", "washington/whitman-county", "wyoming/park-county",
+            "colorado/mesa-county", "ohio/medina-county", "indiana/gibson-county",
+            "tennessee/anderson-county", "new-york/oneida-county", "new-york/oswego-county",
+            "new-york/otsego-county", "pennsylvania/mckean-county", "tennessee/roane-county",
+            "virginia/clarke-county", "virginia/rockbridge-county", "new-york/sullivan-county",
+            "virginia/danville-city", "new-jersey/bergen-county", "ohio/licking-county");
+
+    private static final Set<String> RECOVERY_MODE_COUNTY_SET = Set.copyOf(
+            java.util.stream.Stream.of(RECOVERY_TRAFFIC_COUNTY_SET, GROWTH_TRAFFIC_COUNTY_SET, GSC_SURVIVOR_COUNTIES)
+                    .flatMap(Set::stream)
+                    .toList());
+
     private static final Set<String> HISTORICAL_PRIORITY_COUNTIES = Set.of(
             "california/san-francisco-county",
             "colorado/boulder-county",
@@ -188,12 +228,19 @@ public class SeoIndexingPolicyService {
     @Value("${app.site.priority-county-indexing:true}")
     private boolean priorityCountyIndexing;
 
+    @Value("${app.site.recovery-only-indexing:false}")
+    private boolean recoveryOnlyIndexing;
+
     @Value("${app.site.index-evidence-rich-cost-pages:true}")
     private boolean indexEvidenceRichCostPages;
 
     public boolean isCountyIndexableCandidate(County county) {
         if (!hasBaseIndexingEligibility(county)) {
             return false;
+        }
+
+        if (recoveryOnlyIndexing) {
+            return RECOVERY_MODE_COUNTY_SET.contains(slugKey(county));
         }
 
         return !priorityCountyIndexing || isPriorityCountyCandidate(county);
