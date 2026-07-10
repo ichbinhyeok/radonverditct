@@ -4,6 +4,9 @@ import com.radonverdict.model.County;
 import com.radonverdict.model.dto.CountyPageContent;
 import com.radonverdict.service.ContentGenerationService;
 import com.radonverdict.service.DataLoadService;
+import com.radonverdict.service.PageQualityService;
+import com.radonverdict.service.SeoIndexingPolicyService;
+import com.radonverdict.model.dto.PageQualityResult;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -27,6 +30,12 @@ class RenderedContentAuditTest {
     @Autowired
     private ContentGenerationService contentGenerationService;
 
+    @Autowired
+    private PageQualityService pageQualityService;
+
+    @Autowired
+    private SeoIndexingPolicyService seoIndexingPolicyService;
+
     @Test
     void allCountyCostPagesHaveLocalEvidenceAndStructuralVariation() {
         List<County> counties = dataLoadService.getCountyBySlugMap().values().stream()
@@ -38,11 +47,29 @@ class RenderedContentAuditTest {
         int localEvidencePages = 0;
         int deepPages = 0;
         int totalWords = 0;
+        int policyCandidates = 0;
+        int costQualityPasses = 0;
+        int levelsQualityPasses = 0;
 
         for (County county : counties) {
             CountyPageContent page = contentGenerationService.buildCostLandingPageContent(county);
             String renderedContent = contentText(page);
             structuralCohorts.merge(structuralFingerprint(county, renderedContent), 1, Integer::sum);
+            if (seoIndexingPolicyService.isCountyIndexableCandidate(county)) {
+                policyCandidates++;
+            }
+            PageQualityResult costQuality = pageQualityService.scoreMitigationCountyPage(county, page);
+            if (costQuality.isIndexable()) {
+                costQualityPasses++;
+            }
+            int sameStateCountyCount = (int) counties.stream()
+                    .filter(peer -> peer.getStateAbbr().equalsIgnoreCase(county.getStateAbbr()))
+                    .count();
+            PageQualityResult levelsQuality = pageQualityService.scoreRadonLevelsCountyPage(county,
+                    Math.min(6, Math.max(0, sameStateCountyCount - 1)));
+            if (levelsQuality.isIndexable()) {
+                levelsQualityPasses++;
+            }
             if (page.getLocalInsights() != null && page.getLocalInsights().size() >= 4) {
                 localEvidencePages++;
             }
@@ -56,17 +83,26 @@ class RenderedContentAuditTest {
         double evidenceRate = counties.isEmpty() ? 0.0 : localEvidencePages / (double) counties.size();
         double deepRate = counties.isEmpty() ? 0.0 : deepPages / (double) counties.size();
         double distinctRate = counties.isEmpty() ? 0.0 : structuralCohorts.size() / (double) counties.size();
+        double policyRate = counties.isEmpty() ? 0.0 : policyCandidates / (double) counties.size();
+        double costQualityRate = counties.isEmpty() ? 0.0 : costQualityPasses / (double) counties.size();
+        double levelsQualityRate = counties.isEmpty() ? 0.0 : levelsQualityPasses / (double) counties.size();
 
         System.out.printf(Locale.US,
-                "RENDERED_AUDIT pages=%d avgWords=%.1f evidenceRate=%.3f deepRate=%.3f distinctRate=%.3f largestCohort=%d%n",
+                "RENDERED_AUDIT pages=%d avgWords=%.1f evidenceRate=%.3f deepRate=%.3f distinctRate=%.3f largestCohort=%d policyRate=%.3f costQualityRate=%.3f levelsQualityRate=%.3f%n",
                 counties.size(), counties.isEmpty() ? 0.0 : totalWords / (double) counties.size(),
-                evidenceRate, deepRate, distinctRate, largestCohort);
+                evidenceRate, deepRate, distinctRate, largestCohort, policyRate, costQualityRate, levelsQualityRate);
 
         assertThat(counties).isNotEmpty();
         assertThat(evidenceRate).as("county pages with local evidence blocks").isGreaterThanOrEqualTo(0.90);
         assertThat(deepRate).as("county pages with meaningful content depth").isGreaterThanOrEqualTo(0.90);
         assertThat(distinctRate).as("structurally distinct county page signatures").isGreaterThanOrEqualTo(0.10);
         assertThat(largestCohort).as("largest normalized content cohort").isLessThan(600);
+        assertThat(policyRate).as("data-backed counties admitted to the full-volume policy")
+                .isGreaterThanOrEqualTo(0.99);
+        assertThat(costQualityRate).as("cost pages that remain indexable after runtime quality scoring")
+                .isGreaterThanOrEqualTo(0.99);
+        assertThat(levelsQualityRate).as("levels pages that remain indexable after runtime quality scoring")
+                .isGreaterThanOrEqualTo(0.99);
     }
 
     private String contentText(CountyPageContent page) {

@@ -222,10 +222,10 @@ public class SeoIndexingPolicyService {
         this.dataLoadService = dataLoadService;
     }
 
-    @Value("${app.site.index-zone3-pages:false}")
+    @Value("${app.site.index-zone3-pages:true}")
     private boolean indexZone3Pages;
 
-    @Value("${app.site.priority-county-indexing:true}")
+    @Value("${app.site.priority-county-indexing:false}")
     private boolean priorityCountyIndexing;
 
     @Value("${app.site.recovery-only-indexing:false}")
@@ -247,8 +247,9 @@ public class SeoIndexingPolicyService {
     }
 
     public boolean isCostPageIndexableCandidate(County county) {
-        return isCountyIndexableCandidate(county)
-                && (isSearchTrafficCandidate(county) || isEvidenceRichCostPageCandidate(county));
+        // Cost and levels pages share the same data-backed eligibility floor.
+        // Evidence and demand remain ranking signals, not reasons to hide an otherwise complete page.
+        return isCountyIndexableCandidate(county);
     }
 
     public boolean includeZoneLowSitemap() {

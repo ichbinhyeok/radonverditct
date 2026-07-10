@@ -138,7 +138,7 @@ public class SitemapController {
 
         if (indexCountyCostPages) {
             dataLoadService.getCountyBySlugMap().values().stream()
-                    .filter(seoIndexingPolicyService::isEvidenceRichCostPageCandidate)
+                    .filter(seoIndexingPolicyService::isCostPageIndexableCandidate)
                     .filter(county -> !seoIndexingPolicyService.isSearchTrafficCandidate(county))
                     .sorted((left, right) -> {
                         int scoreCompare = Integer.compare(
