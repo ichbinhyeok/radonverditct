@@ -161,7 +161,7 @@ public class SearchConsoleCohortReportService {
                 continue;
             }
             cohorts.get("levels-evidence").add(levelsPath);
-            if (seoIndexingPolicyService.isEvidenceRichCostPageCandidate(county)) {
+            if (seoIndexingPolicyService.isCostPageIndexableCandidate(county)) {
                 cohorts.get("cost-evidence").add(costPath);
             }
         }

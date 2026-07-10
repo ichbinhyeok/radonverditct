@@ -20,6 +20,8 @@ public class InternalLinkService {
 
     private final DataLoadService dataLoadService;
     private final SeoIndexingPolicyService seoIndexingPolicyService;
+    private final SearchDemandService searchDemandService;
+    private final IntentPagePolicyService intentPagePolicyService;
 
     public List<InternalLinkItem> buildMitigationCountyLinks(County county, CountyPageContent page) {
         Map<String, InternalLinkItem> links = new LinkedHashMap<>();
@@ -57,13 +59,23 @@ public class InternalLinkService {
 
         add(links, zoneGuideLink(county.getEpaZone()));
         add(links, intentGuideLink(county, page));
+        if (intentPagePolicyService.isTestingIntentCandidate(county)) {
+            add(links, InternalLinkItem.builder()
+                    .title("Radon Testing in " + county.getAreaDisplayName())
+                    .description("Use the local testing evidence before deciding on quotes or credits.")
+                    .url(intentPagePolicyService.testingPath(county))
+                    .bucket("intent")
+                    .build());
+        }
 
         List<County> sameZoneNearby = dataLoadService.getCountyBySlugMap().values().stream()
                 .filter(c -> c.getStateAbbr().equalsIgnoreCase(county.getStateAbbr()))
                 .filter(c -> !c.getCountySlug().equalsIgnoreCase(county.getCountySlug()))
                 .filter(seoIndexingPolicyService::isCostPageIndexableCandidate)
                 .filter(c -> c.getEpaZone() == county.getEpaZone())
-                .sorted((left, right) -> left.getCountyName().compareToIgnoreCase(right.getCountyName()))
+                .sorted(Comparator
+                        .comparingDouble((County candidate) -> demandScore(candidate, false)).reversed()
+                        .thenComparing((left, right) -> left.getCountyName().compareToIgnoreCase(right.getCountyName())))
                 .limit(3)
                 .toList();
 
@@ -109,6 +121,14 @@ public class InternalLinkService {
                 .build());
 
         add(links, zoneGuideLink(county.getEpaZone()));
+        if (intentPagePolicyService.isTestingIntentCandidate(county)) {
+            add(links, InternalLinkItem.builder()
+                    .title("Testing evidence in " + county.getAreaDisplayName())
+                    .description("Read the local testing signal and its limits before acting on a result.")
+                    .url(intentPagePolicyService.testingPath(county))
+                    .bucket("intent")
+                    .build());
+        }
         add(links, InternalLinkItem.builder()
                 .title("Who Pays: Buyer or Seller?")
                 .description("Use radon cost context for credits, repairs, and closing negotiation.")
@@ -123,6 +143,9 @@ public class InternalLinkService {
         if (nearbyCounties != null) {
             nearbyCounties.stream()
                     .filter(seoIndexingPolicyService::isCountyIndexableCandidate)
+                    .sorted(Comparator
+                            .comparingDouble((County candidate) -> demandScore(candidate, true)).reversed()
+                            .thenComparing(County::getCountyName))
                     .limit(3)
                     .forEach(nearby -> add(links, InternalLinkItem.builder()
                     .title(nearby.getAreaDisplayName() + " Levels")
@@ -147,7 +170,8 @@ public class InternalLinkService {
                 .filter(seoIndexingPolicyService::isCountyIndexableCandidate)
                 .filter(candidate -> measurement(candidate) != null)
                 .sorted(Comparator
-                        .comparingDouble((County candidate) -> measuredSimilarityScore(target, measurement(candidate)))
+                        .comparingDouble((County candidate) -> demandScore(candidate, true)).reversed()
+                        .thenComparingDouble(candidate -> measuredSimilarityScore(target, measurement(candidate)))
                         .thenComparing(County::getCountyName))
                 .limit(2)
                 .map(candidate -> InternalLinkItem.builder()
@@ -157,6 +181,15 @@ public class InternalLinkService {
                         .bucket("measured-peer")
                         .build())
                 .toList();
+    }
+
+    private double demandScore(County county, boolean levels) {
+        if (county == null) {
+            return 0.0;
+        }
+        String path = (levels ? "/radon-levels/" : "/radon-mitigation-cost/")
+                + county.getStateSlug() + "/" + county.getCountySlug();
+        return searchDemandService.profileForPath(path).getOpportunityScore();
     }
 
     private String nearbyDescription(County county, County nearby) {

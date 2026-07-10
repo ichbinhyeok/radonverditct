@@ -1,7 +1,11 @@
 @import com.radonverdict.model.dto.SearchConsoleCohortReport
+@import com.radonverdict.model.dto.SearchDemandProfile
+@import java.util.List
 
 @param String title
 @param SearchConsoleCohortReport report = null
+@param boolean demandExportAvailable = false
+@param List<SearchDemandProfile> demandProfiles = null
 
 @template.layout.main(
     title = title,
@@ -154,6 +158,52 @@
                             </table>
                         </div>
                     </div>
+                </section>
+
+                <section class="mb-8 rounded-xl border border-amber-200 bg-amber-50 p-5">
+                    <div class="flex flex-col gap-2 md:flex-row md:items-end md:justify-between">
+                        <div>
+                            <p class="text-xs font-bold uppercase tracking-wider text-amber-700">Demand opportunity loop</p>
+                            <h2 class="mt-1 font-display text-xl font-black text-slate-950">Pages to improve before creating more URLs</h2>
+                        </div>
+                        <p class="max-w-md text-sm leading-relaxed text-amber-900">
+                            ${demandExportAvailable ? "Loaded from the query/page export." : "Add data/search-console-query-page.csv to activate query-level scoring; cohort fallback remains active."}
+                        </p>
+                    </div>
+                    @if(demandProfiles != null && !demandProfiles.isEmpty())
+                        <div class="mt-5 overflow-x-auto rounded-xl border border-amber-200 bg-white">
+                            <table class="min-w-full divide-y divide-slate-200 text-left text-sm">
+                                <thead class="bg-amber-100 text-xs font-black uppercase tracking-wider text-amber-800">
+                                    <tr>
+                                        <th class="px-4 py-3">Query</th>
+                                        <th class="px-4 py-3">Page</th>
+                                        <th class="px-4 py-3">Intent</th>
+                                        <th class="px-4 py-3">Impressions</th>
+                                        <th class="px-4 py-3">Position</th>
+                                        <th class="px-4 py-3">Opportunity</th>
+                                        <th class="px-4 py-3">Next move</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-slate-100">
+                                    @for(var profile : demandProfiles)
+                                        <tr>
+                                            <td class="max-w-xs px-4 py-4 font-black text-slate-950">${profile.getPrimaryQuery().isBlank() ? "No query export yet" : profile.getPrimaryQuery()}</td>
+                                            <td class="max-w-sm px-4 py-4 break-all"><a href="${profile.getPath()}" class="font-bold text-indigo-700 hover:underline">${profile.getPath()}</a></td>
+                                            <td class="px-4 py-4 font-bold text-slate-700">${profile.getIntent()}</td>
+                                            <td class="px-4 py-4 text-slate-700">${String.format(java.util.Locale.US, "%,.0f", profile.getImpressions())}</td>
+                                            <td class="px-4 py-4 text-slate-700">${String.format(java.util.Locale.US, "%.1f", profile.getAveragePosition())}</td>
+                                            <td class="px-4 py-4 font-black text-amber-700">${String.format(java.util.Locale.US, "%.0f", profile.getOpportunityScore())}</td>
+                                            <td class="min-w-[280px] px-4 py-4 text-slate-600">${profile.getRecommendedAction()}</td>
+                                        </tr>
+                                    @endfor
+                                </tbody>
+                            </table>
+                        </div>
+                    @else
+                        <div class="mt-5 rounded-xl border border-amber-200 bg-white p-4 text-sm leading-relaxed text-slate-600">
+                            No page/query rows are available yet. The site keeps its current recovery and growth fallback until the export is present.
+                        </div>
+                    @endif
                 </section>
 
                 <section class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">

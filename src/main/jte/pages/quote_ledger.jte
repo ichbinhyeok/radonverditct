@@ -491,7 +491,7 @@
                     <div class="mt-7 rounded-[1.25rem] border border-dashed border-slate-300 bg-slate-50 p-6">
                         <h3 class="text-xl font-black text-slate-950">No public benchmark yet.</h3>
                         <p class="mt-2 text-sm leading-relaxed text-slate-600">
-                            The first 3 priced signals in the same market segment unlock a public range. Until then, RadonVerdict stores the signal privately and shows only collection status.
+                            The first 5 priced signals in the same market segment unlock a public range. Until then, RadonVerdict stores the signal privately and shows only collection status.
                         </p>
                     </div>
                 @endif

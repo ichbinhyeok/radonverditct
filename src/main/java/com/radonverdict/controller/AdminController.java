@@ -3,6 +3,7 @@ package com.radonverdict.controller;
 import com.radonverdict.model.entity.Lead;
 import com.radonverdict.model.dto.LeadOpsSummary;
 import com.radonverdict.service.SearchConsoleCohortReportService;
+import com.radonverdict.service.SearchDemandService;
 import com.radonverdict.service.LeadScoringService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -35,6 +36,9 @@ public class AdminController {
     @Autowired(required = false)
     private SearchConsoleCohortReportService searchConsoleCohortReportService;
 
+    @Autowired(required = false)
+    private SearchDemandService searchDemandService;
+
     @GetMapping("/admin")
     public RedirectView adminIndex() {
         return new RedirectView("/admin/leads");
@@ -55,6 +59,10 @@ public class AdminController {
         model.addAttribute("title", "Admin | Search Console Cohorts");
         if (searchConsoleCohortReportService != null) {
             model.addAttribute("report", searchConsoleCohortReportService.buildReport());
+        }
+        if (searchDemandService != null) {
+            model.addAttribute("demandExportAvailable", searchDemandService.exportAvailable());
+            model.addAttribute("demandProfiles", searchDemandService.topOpportunities(20));
         }
         return "pages/admin_search_console";
     }

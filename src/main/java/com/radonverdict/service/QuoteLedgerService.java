@@ -30,7 +30,7 @@ import java.util.Set;
 @Service
 public class QuoteLedgerService {
 
-    private static final int PUBLIC_PRICE_THRESHOLD = 3;
+    private static final int PUBLIC_PRICE_THRESHOLD = 5;
     private static final Duration BENCHMARK_CACHE_TTL = Duration.ofSeconds(30);
 
     @Value("${app.storage.quote-ledger-csv-path:data/quote_ledger.csv}")
@@ -506,7 +506,7 @@ public class QuoteLedgerService {
             boolean publicPrice = prices.size() >= PUBLIC_PRICE_THRESHOLD;
             String priceRange = publicPrice
                     ? formatDollars(prices.get(0)) + "-" + formatDollars(prices.get(prices.size() - 1))
-                    : "Hidden until 3 priced signals";
+                    : "Hidden until 5 priced signals";
             String median = publicPrice
                     ? formatDollars(prices.get(prices.size() / 2))
                     : "Collecting";

@@ -19,6 +19,7 @@ public class SitemapController {
 
     private final DataLoadService dataLoadService;
     private final SeoIndexingPolicyService seoIndexingPolicyService;
+    private final com.radonverdict.service.IntentPagePolicyService intentPagePolicyService;
 
     @Value("${app.site.base-url:https://radonverdict.com}")
     private String baseUrl;
@@ -46,6 +47,7 @@ public class SitemapController {
         addSitemapUrl(xml, "/sitemap-growth.xml");
         addSitemapUrl(xml, "/sitemap-cost-evidence.xml");
         addSitemapUrl(xml, "/sitemap-levels-evidence.xml");
+        addSitemapUrl(xml, "/sitemap-intent.xml");
         addSitemapUrl(xml, "/sitemap-core.xml");
         if (includeBroadZoneSitemap) {
             addSitemapUrl(xml, "/sitemap-zone-high.xml");
@@ -221,6 +223,26 @@ public class SitemapController {
                 .forEach(stateSlug -> {
             addUrl(xml, "/radon-levels/" + stateSlug, "0.6");
         });
+
+        xml.append("</urlset>");
+        return xml.toString();
+    }
+
+    @GetMapping(value = "/sitemap-intent.xml", produces = MediaType.APPLICATION_XML_VALUE)
+    @ResponseBody
+    public String generateIntentSitemap() {
+        StringBuilder xml = new StringBuilder();
+        xml.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
+        xml.append("<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">");
+
+        dataLoadService.getCountyBySlugMap().values().stream()
+                .filter(intentPagePolicyService::isTestingIntentCandidate)
+                .sorted((left, right) -> {
+                    int stateCompare = left.getStateSlug().compareTo(right.getStateSlug());
+                    return stateCompare != 0 ? stateCompare : left.getCountySlug().compareTo(right.getCountySlug());
+                })
+                .forEach(county -> addUrl(xml, intentPagePolicyService.testingPath(county), "0.75",
+                        resolveCountyLastmod(county)));
 
         xml.append("</urlset>");
         return xml.toString();

@@ -158,14 +158,13 @@ class QuoteLedgerIntegrationTest {
         mockMvc.perform(get("/radon-quote-ledger"))
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("Fairfax City, VA")))
-                .andExpect(content().string(containsString("$1,900-$2,300")))
-                .andExpect(content().string(containsString("$2,100")))
-                .andExpect(content().string(containsString("Early benchmark")));
+                .andExpect(content().string(containsString("Collecting")))
+                .andExpect(content().string(containsString("Need 2 more priced signals")));
 
         String publicCsv = mockMvc.perform(get("/radon-quote-ledger/benchmark.csv"))
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("\"Fairfax City, VA\"")))
-                .andExpect(content().string(containsString("\"$1,900-$2,300\"")))
+                .andExpect(content().string(containsString("\"Collecting\"")))
                 .andReturn()
                 .getResponse()
                 .getContentAsString();
@@ -179,7 +178,6 @@ class QuoteLedgerIntegrationTest {
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("Observed local signals")))
                 .andExpect(content().string(containsString("Quote ledger context for Fairfax")))
-                .andExpect(content().string(containsString("$1,900-$2,300")))
                 .andExpect(content().string(containsString("3 total, 3 priced")));
     }
 
@@ -196,12 +194,12 @@ class QuoteLedgerIntegrationTest {
                 .andExpect(content().string(containsString("Lead-derived signals")))
                 .andExpect(content().string(containsString("Fairfax City, VA")))
                 .andExpect(content().string(containsString("1 total, 0 priced")))
-                .andExpect(content().string(containsString("Hidden until 3 priced signals")));
+                .andExpect(content().string(containsString("Hidden until 5 priced signals")));
 
         String publicCsv = mockMvc.perform(get("/radon-quote-ledger/benchmark.csv"))
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("\"Fairfax City, VA\"")))
-                .andExpect(content().string(containsString("Need 3 more priced signals")))
+                .andExpect(content().string(containsString("Need 5 more priced signals")))
                 .andReturn()
                 .getResponse()
                 .getContentAsString();

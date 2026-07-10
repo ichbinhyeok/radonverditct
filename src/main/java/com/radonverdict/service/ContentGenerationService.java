@@ -4,6 +4,7 @@ import com.radonverdict.model.*;
 import com.radonverdict.model.dto.CountyPageContent;
 import com.radonverdict.model.dto.ItemizedReceipt;
 import com.radonverdict.model.dto.SimilarityAssessment;
+import com.radonverdict.model.dto.SearchDemandProfile;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -36,6 +37,7 @@ public class ContentGenerationService {
         private final PricingCalculatorService pricingCalculatorService;
         private final CountyInsightService countyInsightService;
         private final SimilarityEngineService similarityEngineService;
+        private final SearchDemandService searchDemandService;
 
         /**
          * Build the complete page content for a given county.
@@ -81,6 +83,11 @@ public class ContentGenerationService {
                 String stateAbbr = county.getStateAbbr();
                 String countyName = county.getCountyName();
                 String areaName = county.getAreaDisplayName();
+                SearchDemandProfile demandProfile = searchDemandService.profileForPath(
+                                "/radon-mitigation-cost/" + county.getStateSlug() + "/" + county.getCountySlug());
+                String demandIntent = demandProfile.getPrimaryQuery() == null || demandProfile.getPrimaryQuery().isBlank()
+                                ? "cost"
+                                : demandProfile.getIntent();
 
                 ContentTemplates templates = dataLoadService.getContentTemplates();
                 StateRegulations regulations = dataLoadService.getStateRegulations();
@@ -141,14 +148,15 @@ public class ContentGenerationService {
                 // 7. Assemble Final DTO
                 return CountyPageContent.builder()
                                 .indexable(isIndexable)
-                                .heroTitle(buildHeroTitle(areaName, stateAbbr, safeRadonResultBand))
+                                .heroTitle(buildHeroTitle(areaName, stateAbbr, safeRadonResultBand, demandIntent))
                                 .heroSummary(buildHeroSummary(areaName, receipt, safeRadonResultBand))
                                 .seoDescription(buildSeoDescription(
                                                 areaName,
                                                 stateAbbr,
                                                 receipt,
                                                 pricingRationale,
-                                                safeRadonResultBand))
+                                                safeRadonResultBand,
+                                                demandIntent))
                                 .pricingRationale(pricingRationale)
                                 .riskLevel(zoneDesc.getRiskLevel())
                                 .badgeColor(zoneDesc.getBadgeColor())
@@ -368,7 +376,7 @@ public class ContentGenerationService {
         }
 
         private String buildSeoDescription(String areaName, String stateAbbr, ItemizedReceipt receipt,
-                        String pricingRationale, String radonResultBand) {
+                        String pricingRationale, String radonResultBand, String demandIntent) {
                 if (receipt == null) {
                         return "See the typical radon mitigation price range in " + areaName + ", " + stateAbbr + ".";
                 }
@@ -388,7 +396,14 @@ public class ContentGenerationService {
                                 "If you have not tested yet, test first and treat this page as future cost context only.";
                 };
 
-                return resultLead + " Radon mitigation in " + areaName + ", " + stateAbbr + " averages $"
+                String intentLead = switch (demandIntent == null ? "cost" : demandIntent) {
+                        case "testing" -> "Radon testing and mitigation in ";
+                        case "levels" -> "Radon levels and mitigation cost in ";
+                        case "transaction" -> "Buyer and seller radon planning in ";
+                        case "commercial" -> "Commercial radon planning in ";
+                        default -> "Radon mitigation in ";
+                };
+                return resultLead + " " + intentLead + areaName + ", " + stateAbbr + " averages $"
                                 + receipt.getTotalAvg()
                                 + " (common range $" + receipt.getTotalLow() + "-$" + receipt.getTotalHigh() + "). "
                                 + rationale;
@@ -402,17 +417,16 @@ public class ContentGenerationService {
                 String areaName = county.getAreaDisplayName();
                 String stateAbbr = county.getStateAbbr();
                 ItemizedReceipt receipt = page.getReceipt();
+                SearchDemandProfile demandProfile = searchDemandService.profileForPath(
+                                "/radon-mitigation-cost/" + county.getStateSlug() + "/" + county.getCountySlug());
                 String range = "$" + receipt.getTotalLow() + "-$" + receipt.getTotalHigh();
                 String average = "$" + receipt.getTotalAvg();
 
-                page.setHeroTitle("Radon Mitigation Cost in " + areaName + ", " + stateAbbr
-                                + ": " + range + " Range");
+                page.setHeroTitle(buildCostOverviewTitle(areaName, stateAbbr, range, demandProfile));
                 page.setHeroSummary("The local planning range for radon mitigation in " + areaName + ", "
                                 + stateAbbr + " is " + range + ", with a modeled midpoint near " + average
                                 + ". Use this as the county budget anchor first, then adjust the form for your foundation, result, and transaction goal.");
-                page.setSeoDescription("Radon mitigation in " + areaName + ", " + stateAbbr
-                                + " averages " + average + " with a common range of " + range
-                                + ". See local cost drivers, foundation factors, and next steps after 2.0-3.9 or 4.0+ pCi/L.");
+                page.setSeoDescription(buildCostOverviewDescription(areaName, stateAbbr, average, range, demandProfile));
                 page.setIntentSectionTitle("Local Cost Plan for " + areaName + " Homes");
                 page.setIntentIntro("Start with the local cost range, then only move into quote comparison after a real test result supports it. "
                                 + areaName + " estimates center near " + average
@@ -429,7 +443,19 @@ public class ContentGenerationService {
                 };
         }
 
-        private String buildHeroTitle(String areaName, String stateAbbr, String radonResultBand) {
+        private String buildHeroTitle(String areaName, String stateAbbr, String radonResultBand, String demandIntent) {
+                if ("testing".equals(demandIntent)) {
+                        return "Radon Testing and Mitigation Cost in " + areaName + ", " + stateAbbr;
+                }
+                if ("levels".equals(demandIntent)) {
+                        return "Radon Levels and Mitigation Cost in " + areaName + ", " + stateAbbr;
+                }
+                if ("transaction".equals(demandIntent)) {
+                        return "Radon Mitigation Cost for Buyers and Sellers in " + areaName + ", " + stateAbbr;
+                }
+                if ("commercial".equals(demandIntent)) {
+                        return "Commercial Radon Planning in " + areaName + ", " + stateAbbr;
+                }
                 return switch (radonResultBand) {
                         case "under_2" ->
                                 "Low Radon Result in " + areaName + ", " + stateAbbr + ": What to Do Next";
@@ -440,6 +466,39 @@ public class ContentGenerationService {
                         default ->
                                 "Radon Test Plan + Cost Context in " + areaName + ", " + stateAbbr;
                 };
+        }
+
+        private String buildCostOverviewTitle(String areaName, String stateAbbr, String range,
+                        SearchDemandProfile demandProfile) {
+                String intent = demandProfile == null ? "cost" : demandProfile.getIntent();
+                if ("testing".equals(intent)) {
+                        return "Radon Testing and Mitigation Cost in " + areaName + ", " + stateAbbr
+                                        + ": " + range + " Range";
+                }
+                if ("transaction".equals(intent)) {
+                        return "Radon Mitigation Cost for Buyers and Sellers in " + areaName + ", " + stateAbbr
+                                        + ": " + range + " Range";
+                }
+                if ("commercial".equals(intent)) {
+                        return "Commercial Radon Planning in " + areaName + ", " + stateAbbr
+                                        + ": " + range + " Range";
+                }
+                return "Radon Mitigation Cost in " + areaName + ", " + stateAbbr + ": " + range + " Range";
+        }
+
+        private String buildCostOverviewDescription(String areaName, String stateAbbr, String average, String range,
+                        SearchDemandProfile demandProfile) {
+                String intent = demandProfile == null ? "cost" : demandProfile.getIntent();
+                String lead = switch (intent) {
+                        case "testing" -> "For homeowners comparing radon testing and mitigation";
+                        case "levels" -> "For homeowners translating a radon result into a budget";
+                        case "transaction" -> "For buyers and sellers planning a radon repair or credit";
+                        case "commercial" -> "For commercial property radon planning";
+                        default -> "For local radon mitigation planning";
+                };
+                return lead + " in " + areaName + ", " + stateAbbr + ", the modeled average is " + average
+                                + " with a common range of " + range
+                                + ". See local cost drivers, foundation factors, and next steps after 2.0-3.9 or 4.0+ pCi/L.";
         }
 
         private String buildHeroSummary(String areaName, ItemizedReceipt receipt, String radonResultBand) {
