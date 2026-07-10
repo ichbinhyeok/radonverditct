@@ -295,7 +295,7 @@
                         <p class="text-xs font-bold uppercase tracking-[0.22em] text-indigo-700">Priority collection gaps</p>
                         <h2 class="mt-3 font-display text-3xl font-black tracking-tight text-slate-950">The next useful quote is local, not generic.</h2>
                         <p class="mt-3 text-sm leading-relaxed text-indigo-950">
-                            Search demand is already touching testing, mitigation services, commercial radon, and county cost paths. The ledger now pushes the highest-value missing signals first so the cost model can learn from real local scope.
+                            The next useful quote is local, not generic. This ledger prioritizes missing local scope signals so the planning ranges can improve with real quotes.
                         </p>
                     </div>
                     <div class="grid gap-3 sm:grid-cols-2">

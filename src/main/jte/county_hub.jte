@@ -217,9 +217,9 @@
             <section class="mt-8 rounded-3xl border border-indigo-200 bg-indigo-50 p-5 sm:p-7">
                 <div class="grid gap-5 lg:grid-cols-[0.78fr_1.22fr] lg:items-start">
                     <div>
-                        <p class="text-xs font-bold uppercase tracking-[0.18em] text-indigo-700">Search demand cost bridge</p>
+                        <p class="text-xs font-bold uppercase tracking-[0.18em] text-indigo-700">A useful next step</p>
                         <h2 class="mt-2 font-display text-2xl font-black tracking-tight text-slate-950">
-                            Came from ${searchDemandQueryCluster}?
+                            Looking for a local cost answer?
                         </h2>
                         <p class="mt-3 text-sm leading-relaxed text-indigo-950">
                             ${searchDemandCostBridgeBody}

@@ -39,7 +39,7 @@
                     <p class="mt-1 text-2xl font-black tabular-nums text-slate-900">$${avg}</p>
                 </div>
                 <div class="border-l-4 border-amber-500 bg-amber-50 px-4 py-3">
-                    <p class="text-[11px] font-bold uppercase tracking-wider text-amber-800">Hard ceiling</p>
+                    <p class="text-[11px] font-bold uppercase tracking-wider text-amber-800">Upper planning range</p>
                     <p class="mt-1 text-2xl font-black tabular-nums text-slate-900">$${high}</p>
                 </div>
             </div>
@@ -79,7 +79,7 @@
                     <p class="mt-1 text-xs font-semibold uppercase tracking-wider text-slate-500">Negotiate cleanly</p>
                 </div>
                 <p class="text-sm leading-relaxed text-slate-700">
-                    Start the repair or credit conversation around the local average and keep $${high} as the defensible ceiling. Do not let the deal anchor on a generic national average.
+                    Start the repair or credit conversation around the local average and use $${high} as the upper planning range. Confirm the final scope with a local quote.
                 </p>
             </div>
         </div>

@@ -61,7 +61,7 @@
     final String description = costOverview
             ? "You searched for cost, so start with the local price range before the scenario details. Use this as the first budget anchor, then tune the form below for foundation type, reading, and whether this is a buyer, seller, or homeowner decision."
             : isBuying
-            ? "If you want a clean close in " + county.getAreaDisplayName() + ", start the repair-or-credit conversation around the local average and keep the local high range as your defensible ceiling."
+            ? "If you want a clean close in " + county.getAreaDisplayName() + ", start the repair-or-credit conversation around the local average and use the local high range for planning. Confirm the final scope with a quote."
             : isSelling
                     ? "If you prefer a faster closing, budget the local average first and treat the county high range as your reserve so you are not negotiating off a vague national number."
                     : isHighReading

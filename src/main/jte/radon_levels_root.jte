@@ -154,7 +154,7 @@
             <section class="mb-14 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
                 <div class="flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
                     <div>
-                        <p class="text-xs font-bold uppercase tracking-wider text-slate-500">Search Demand Map</p>
+                        <p class="text-xs font-bold uppercase tracking-wider text-slate-500">Find your local answer</p>
                         <h2 class="mt-2 font-display text-2xl font-black tracking-tight text-slate-950">Popular radon level searches</h2>
                         <p class="mt-3 max-w-3xl text-sm leading-relaxed text-slate-600">
                             These are the searches that should land on the levels hub, get a plain answer, and then continue to cost, credit, or county evidence.

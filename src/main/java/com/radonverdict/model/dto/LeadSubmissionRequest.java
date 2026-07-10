@@ -3,6 +3,7 @@ package com.radonverdict.model.dto;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.AssertTrue;
 import lombok.Data;
 
 @Data
@@ -31,6 +32,8 @@ public class LeadSubmissionRequest {
     private String stateSlug;
     private String stateAbbr;
     private String consentVersion;
+    @AssertTrue(message = "Consent is required")
+    private Boolean consent;
     private Boolean hasTested;
     private String selectedIntent;
     private String selectedRadonResultBand;

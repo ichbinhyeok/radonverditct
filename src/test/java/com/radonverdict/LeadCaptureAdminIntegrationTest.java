@@ -61,6 +61,7 @@ class LeadCaptureAdminIntegrationTest {
                         .param("stateSlug", "virginia")
                         .param("stateAbbr", "VA")
                         .param("consentVersion", "v1.0")
+                        .param("consent", "true")
                         .param("preferredContactTime", "urgent_24h")
                         .param("selectedIntent", "homeowner")
                         .param("selectedRadonResultBand", "above_4"))

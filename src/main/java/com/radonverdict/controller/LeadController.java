@@ -48,11 +48,6 @@ public class LeadController {
         String ipAddress = httpRequest.getRemoteAddr();
         String userAgent = httpRequest.getHeader("User-Agent");
 
-        // Set default consent version if missing
-        if (request.getConsentVersion() == null || request.getConsentVersion().isEmpty()) {
-            request.setConsentVersion("v1.0");
-        }
-
         try {
             LeadScoringService.LeadScore leadScore = leadService.submitLead(request, ipAddress, userAgent);
             telemetryEventService.persistEvent("lead_submit_success", "/submit-lead", ipAddress, userAgent, Map.of(

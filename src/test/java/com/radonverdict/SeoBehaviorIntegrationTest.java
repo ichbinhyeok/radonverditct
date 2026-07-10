@@ -57,7 +57,7 @@ class SeoBehaviorIntegrationTest {
                 .andExpect(content().string(containsString(":action=\"targetAction\"")))
                 .andExpect(content().string(containsString("name=\"foundationType\"")))
                 .andExpect(content().string(containsString("situation_decoder_submit")))
-                .andExpect(content().string(containsString("Search intent router")))
+                .andExpect(content().string(containsString("Choose your next step")))
                 .andExpect(content().string(containsString("Start from the exact job, not another generic radon article.")))
                 .andExpect(content().string(containsString("I need a repair or seller credit number")))
                 .andExpect(content().string(containsString("href=\"/guides/radon-failed-inspection\"")))
@@ -125,7 +125,7 @@ class SeoBehaviorIntegrationTest {
                 .andExpect(content().string(containsString("Basement vs slab vs crawl-space radon system cost")))
                 .andExpect(content().string(containsString("Radon mitigation cost for 4.0+ pCi/L")))
                 .andExpect(content().string(containsString("Radon mitigation cost after failed inspection")))
-                .andExpect(content().string(containsString("Search intent router")))
+                .andExpect(content().string(containsString("Choose your next step")))
                 .andExpect(content().string(containsString("I need a repair or seller credit number")))
                 .andExpect(content().string(containsString("href=\"/guides/radon-failed-inspection\"")))
                 .andExpect(content().string(containsString("href=\"/radon-cost-calculator?foundation=basement\"")))
@@ -157,7 +157,7 @@ class SeoBehaviorIntegrationTest {
                 .andExpect(content().string(containsString("California cost range by foundation")))
                 .andExpect(content().string(containsString("State rules that can change the quote")))
                 .andExpect(content().string(containsString("EPA zone mix in California")))
-                .andExpect(content().string(containsString("Cost pages eligible for Google")))
+                .andExpect(content().string(containsString("Local cost guides")))
                 .andExpect(content().string(containsString("Best county pages to open first")))
                 .andExpect(content().string(containsString("Slab-on-Grade")));
 
@@ -513,15 +513,15 @@ class SeoBehaviorIntegrationTest {
     void searchDemandCostPagesBridgeTestingQueriesToCostAndQuotePaths() throws Exception {
         mockMvc.perform(get("/radon-mitigation-cost/new-york/ulster-county"))
                 .andExpect(status().isOk())
-                .andExpect(content().string(containsString("Search demand cost bridge")))
-                .andExpect(content().string(containsString("radon gas testing Ulster County NY and radon mitigation services Ulster County NY")))
+                .andExpect(content().string(containsString("A useful next step")))
+                .andExpect(content().string(containsString("Looking for a local cost answer?")))
                 .andExpect(content().string(containsString("Check the county testing and levels page first")))
                 .andExpect(content().string(containsString("href=\"/radon-levels/new-york/ulster-county\"")))
                 .andExpect(content().string(containsString("href=\"/radon-quote-ledger#quote-checker\"")));
 
         mockMvc.perform(get("/radon-mitigation-cost/california/los-angeles-county"))
                 .andExpect(status().isOk())
-                .andExpect(content().string(containsString("commercial radon Los Angeles CA, commercial radon in Los Angeles, and radon testing Los Angeles")))
+                .andExpect(content().string(containsString("Looking for a local cost answer?")))
                 .andExpect(content().string(containsString("Commercial and multifamily searches should not jump straight to a residential average.")));
     }
 
@@ -554,7 +554,7 @@ class SeoBehaviorIntegrationTest {
                 .andExpect(status().isOk())
                 .andExpect(content().string(not(containsString("<meta name=\"robots\" content=\"noindex, follow\">"))))
                 .andExpect(content().string(containsString("Radon Mitigation Cost in Loudoun County, VA:")))
-                .andExpect(content().string(containsString("Search intent")))
+                .andExpect(content().string(containsString("Estimate view")))
                 .andExpect(content().string(containsString("Cost overview")))
                 .andExpect(content().string(containsString("Loudoun County Cost Range First")))
                 .andExpect(content().string(containsString("20147 radon mitigation cost")))
@@ -603,7 +603,7 @@ class SeoBehaviorIntegrationTest {
                 .andExpect(content().string(containsString("Decision side")))
                 .andExpect(content().string(containsString("Foundation clue")))
                 .andExpect(content().string(containsString("data-base-credit-url=\"/radon-credit-calculator/california/los-angeles-county\"")))
-                .andExpect(content().string(containsString("Search intent router")))
+                .andExpect(content().string(containsString("Choose your next step")))
                 .andExpect(content().string(containsString("Pick the situation that matches Los Angeles County, CA")))
                 .andExpect(content().string(containsString("href=\"/radon-credit-calculator/california/los-angeles-county?intent=buying&amp;radonResultBand=above_4&amp;foundation=basement\"")))
                 .andExpect(content().string(containsString("href=\"/radon-mitigation-cost/california/los-angeles-county?foundation=crawlspace&amp;radonResultBand=above_4&amp;intent=homeowner#estimate-form\"")))
@@ -701,8 +701,8 @@ class SeoBehaviorIntegrationTest {
                 .andExpect(content().string(containsString("/radon-credit-calculator/california/los-angeles-county?radonResultBand=above_4&intent=buying")))
                 .andExpect(content().string(not(containsString("At <strong x-text=\"parseFloat(level).toFixed(1)\"></strong> pCi/L"))))
                 .andExpect(content().string(containsString("Review retesting steps")))
-                .andExpect(content().string(containsString("Local Service Search Bridge")))
-                .andExpect(content().string(containsString("Searched for commercial radon Los Angeles CA; radon testing Los Angeles?")))
+                .andExpect(content().string(containsString("Local service next step")))
+                .andExpect(content().string(containsString("Looking for a service or cost answer?")))
                 .andExpect(content().string(containsString("Commercial provider search pack")))
                 .andExpect(content().string(containsString("EPA provider guidance")))
                 .andExpect(content().string(containsString("Local call script")))
@@ -718,8 +718,8 @@ class SeoBehaviorIntegrationTest {
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("<title>Ulster County, NY Radon Gas Testing &amp; Mitigation Services</title>")))
                 .andExpect(content().string(containsString("Local service search answer:")))
-                .andExpect(content().string(containsString("radon gas testing Ulster County NY; radon mitigation services Ulster County NY")))
-                .andExpect(content().string(containsString("Local Service Search Bridge")))
+                .andExpect(content().string(not(containsString("radon gas testing Ulster County NY; radon mitigation services Ulster County NY"))))
+                .andExpect(content().string(containsString("Local service next step")))
                 .andExpect(content().string(containsString("Local provider search pack")))
                 .andExpect(content().string(containsString("Use the official state radon program and EPA provider guidance")))
                 .andExpect(content().string(containsString("I have a radon result of ___ pCi/L in Ulster County, NY.")))
@@ -730,7 +730,7 @@ class SeoBehaviorIntegrationTest {
         mockMvc.perform(get("/radon-levels/colorado/boulder-county"))
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("<title>Boulder County, CO Radon Testing &amp; Mitigation Guide</title>")))
-                .andExpect(content().string(containsString("radon testing Boulder CO; Boulder radon mitigation")))
+                .andExpect(content().string(not(containsString("radon testing Boulder CO; Boulder radon mitigation"))))
                 .andExpect(content().string(containsString("Service intent detected: testing, mitigation, or commercial radon searches need a result-to-cost path.")))
                 .andExpect(content().string(containsString("Test result -&gt; county cost path -&gt; quote ledger if a contractor gives a number.")));
     }
@@ -1086,7 +1086,7 @@ class SeoBehaviorIntegrationTest {
                 .andExpect(content().string(containsString("<title>Radon Levels: What 2.0, 4.0, and 8.0 pCi/L Mean | EPA Guide</title>")))
                 .andExpect(content().string(containsString("Radon Levels: What 2.0, 4.0, and 8.0 pCi/L Mean")))
                 .andExpect(content().string(containsString("Popular radon level searches")))
-                .andExpect(content().string(containsString("Search intent router")))
+                .andExpect(content().string(containsString("Choose your next step")))
                 .andExpect(content().string(containsString("I need to know if this number is bad")))
                 .andExpect(content().string(containsString("href=\"/radon-levels#level-meaning\"")))
                 .andExpect(content().string(containsString("What does 4.0 pCi/L radon mean?")))
@@ -1559,8 +1559,8 @@ class SeoBehaviorIntegrationTest {
         mockMvc.perform(get("/radon-levels/missouri/st-louis-county"))
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("<title>St. Louis County, MO Radon Levels, Testing &amp; Mitigation</title>")))
-                .andExpect(content().string(containsString("Searching for St Louis radon?")))
-                .andExpect(content().string(containsString("Local Service Search Bridge")))
+                .andExpect(content().string(not(containsString("Searching for St Louis radon?"))))
+                .andExpect(content().string(containsString("Local service next step")))
                 .andExpect(content().string(containsString("St. Louis searches need the official Missouri test signal and the local contractor path in one place")));
         assertLevelsCountyCtrCopy("/radon-levels/pennsylvania/allegheny-county", "Allegheny County, PA");
         assertLevelsCountyCtrCopy("/radon-levels/florida/hillsborough-county", "Hillsborough, FL");

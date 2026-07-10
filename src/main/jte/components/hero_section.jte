@@ -25,7 +25,7 @@
         </span>
         <div class="mb-4">
             <span class="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-[11px] font-bold uppercase tracking-wider text-slate-200 border border-white/10">
-                @if(costOverview) Search intent @else Scenario @endif
+                @if(costOverview) Estimate view @else Scenario @endif
                 <span class="text-white">${scenarioLabel}</span>
             </span>
         </div>

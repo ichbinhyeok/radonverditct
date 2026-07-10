@@ -107,7 +107,7 @@
                             <div class="rounded-2xl border border-white/10 bg-slate-900/70 p-4 text-sm leading-relaxed text-slate-300">
                                 <p class="font-black text-white">Use this after a real test result.</p>
                                 <p class="mt-2">
-                                    The local page turns the reading into three numbers: an opening ask, a defensible ceiling, and a quick-close fallback. If there is no reading yet, start with the test path before negotiating a credit.
+                                    The local page turns the reading into three numbers: an opening ask, an upper planning range, and a quick-close fallback. If there is no reading yet, start with the test path before negotiating a credit.
                                 </p>
                             </div>
                         </div>
@@ -140,7 +140,7 @@
                     <p class="text-xs font-bold uppercase tracking-wider text-slate-500">Real-estate use case</p>
                     <h2 class="mt-3 font-display text-3xl font-bold tracking-tight text-slate-900">This is the Radon Seller Credit Calculator for a deal that already has a test result</h2>
                     <p class="mt-4 text-sm leading-relaxed text-slate-600">
-                        The calculator is strongest when a home inspection, buyer test, or seller disclosure has already surfaced a radon number. It turns the local mitigation estimate into three negotiation numbers: opening ask, defensible ceiling, and quick-close fallback.
+                        The calculator is strongest when a home inspection, buyer test, or seller disclosure has already surfaced a radon number. It turns the local mitigation estimate into three negotiation numbers: opening ask, upper planning range, and quick-close fallback.
                     </p>
                 </div>
                 <div class="overflow-hidden rounded-2xl border border-slate-200 bg-white">

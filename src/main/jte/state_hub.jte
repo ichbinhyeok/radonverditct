@@ -246,7 +246,7 @@
                 <section id="state-cost-evidence-priority" class="mb-10 rounded-2xl border border-emerald-200 bg-emerald-50 p-6">
                     <div class="grid gap-6 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
                         <div>
-                            <p class="text-xs font-bold uppercase tracking-wider text-emerald-700">Cost pages eligible for Google</p>
+                            <p class="text-xs font-bold uppercase tracking-wider text-emerald-700">Local cost guides</p>
                             <h2 class="mt-2 font-display text-3xl font-black tracking-tight text-slate-950">${stateName} evidence-backed cost route</h2>
                             <p class="mt-3 text-sm leading-relaxed text-emerald-950">
                                 ${costEvidenceInsight.getDiscoverySummary()}
@@ -276,7 +276,7 @@
                                             <div class="flex items-start justify-between gap-3">
                                                 <div>
                                                     <p class="text-sm font-black text-slate-950">${row.getCountyName()}</p>
-                                                    <p class="mt-1 text-xs font-black uppercase tracking-wider text-emerald-700">${row.getPriorityLabel()} - score ${row.getIndexingScore()}</p>
+                                                    <p class="mt-1 text-xs font-black uppercase tracking-wider text-emerald-700">${row.getPriorityLabel()} local evidence</p>
                                                 </div>
                                                 <p class="shrink-0 font-display text-lg font-black text-slate-950">${row.getCostRangeDisplay()}</p>
                                             </div>

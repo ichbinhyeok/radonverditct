@@ -45,7 +45,7 @@
 <section id="${sectionId}" class="${className} rounded-[1.75rem] border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
     <div class="grid gap-6 lg:grid-cols-[0.82fr_1.18fr] lg:items-start">
         <div>
-            <p class="text-xs font-bold uppercase tracking-[0.22em] text-slate-500">Search intent router</p>
+            <p class="text-xs font-bold uppercase tracking-[0.22em] text-slate-500">Choose your next step</p>
             <h2 class="mt-3 font-display text-2xl font-black tracking-tight text-slate-950 sm:text-3xl">
                 Start from the exact job, not another generic radon article.
             </h2>

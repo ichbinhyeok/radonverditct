@@ -89,7 +89,7 @@
                                 </div>
                                 <div class="rounded-xl bg-amber-100 p-4 text-amber-950">
                                     <p class="font-display text-3xl font-black">${costEvidenceInsight.getSearchCohortCostCountyCount()}</p>
-                                    <p class="mt-1 text-xs font-bold uppercase tracking-wider text-amber-700">Demand cohort</p>
+                                    <p class="mt-1 text-xs font-bold uppercase tracking-wider text-amber-700">Local guides</p>
                                 </div>
                             </div>
                             <p class="mt-5 text-sm leading-relaxed text-slate-300">
@@ -191,7 +191,7 @@
                                 <div class="grid gap-4 lg:grid-cols-[0.8fr_1.2fr_0.55fr] lg:items-start">
                                     <div>
                                         <a href="${row.getCountyPath()}" class="font-display text-xl font-black text-slate-950 hover:text-indigo-700">${row.getCountyName()}, ${row.getStateAbbr()}</a>
-                                        <p class="mt-2 text-xs font-black uppercase tracking-wider text-emerald-700">${row.getPriorityLabel()} - score ${row.getIndexingScore()}</p>
+                                        <p class="mt-2 text-xs font-black uppercase tracking-wider text-emerald-700">${row.getPriorityLabel()} local evidence</p>
                                         <p class="mt-2 font-display text-2xl font-black text-slate-950">${row.getCostRangeDisplay()}</p>
                                     </div>
                                     <div>

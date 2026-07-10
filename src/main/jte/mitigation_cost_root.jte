@@ -144,7 +144,7 @@
             <section class="mb-14 rounded-2xl border border-slate-200 bg-slate-950 p-5 text-white shadow-sm sm:p-6">
                 <div class="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
                     <div>
-                        <p class="text-xs font-bold uppercase tracking-wider text-cyan-200">Search Demand Map</p>
+                        <p class="text-xs font-bold uppercase tracking-wider text-cyan-200">Find your local cost answer</p>
                         <h2 class="mt-2 font-display text-2xl font-black tracking-tight">Popular radon mitigation cost searches</h2>
                         <p class="mt-3 max-w-3xl text-sm leading-relaxed text-slate-300">
                             If the search started with one of these questions, this page should answer it fast and move the visitor to the right local calculator or guide.
@@ -210,7 +210,7 @@
                             </div>
                             <div class="rounded-xl border border-emerald-200 bg-white p-4">
                                 <p class="font-display text-2xl font-black text-amber-700">${costEvidenceInsight.getSearchCohortCostCountyCount()}</p>
-                                <p class="mt-1 text-xs font-bold uppercase tracking-wider text-slate-500">Demand cohort</p>
+                                <p class="mt-1 text-xs font-bold uppercase tracking-wider text-slate-500">Local guides</p>
                             </div>
                         </div>
                     </div>
@@ -258,7 +258,7 @@
                                             <div class="flex items-start justify-between gap-2">
                                                 <div>
                                                     <p class="text-sm font-black text-slate-950">${row.getCountyName()}, ${row.getStateAbbr()}</p>
-                                                    <p class="mt-1 text-xs font-black uppercase tracking-wider text-emerald-700">${row.getPriorityLabel()} - score ${row.getIndexingScore()}</p>
+                                                    <p class="mt-1 text-xs font-black uppercase tracking-wider text-emerald-700">${row.getPriorityLabel()} local evidence</p>
                                                 </div>
                                                 <p class="shrink-0 font-display text-lg font-black text-slate-950">${row.getCostRangeDisplay()}</p>
                                             </div>

@@ -21,7 +21,14 @@ public class SecurityConfig {
     @Bean
     public UserDetailsService userDetailsService(
             @Value("${spring.security.user.name:admin}") String username,
-            @Value("${spring.security.user.password:tlsgur3108}") String password) {
+            @Value("${spring.security.user.password:}") String password,
+            @Value("${spring.profiles.active:}") String activeProfile) {
+        if (password == null || password.isBlank()) {
+            if (activeProfile.contains("prod")) {
+                throw new IllegalStateException("ADMIN_PASSWORD must be configured in production");
+            }
+            throw new IllegalStateException("ADMIN_PASSWORD must be configured");
+        }
         PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
         UserDetails adminUser = User.withUsername(username)
                 .password(passwordEncoder.encode(password))
@@ -33,7 +40,7 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(csrf -> csrf.disable()) // Disable CSRF for simple MVP compatibility
+                .csrf(csrf -> csrf.disable()) // Public POST forms currently use same-origin browser flows.
                 .authorizeHttpRequests(authz -> authz
                         .requestMatchers("/admin/**").authenticated() // Protect /admin URLs
                         .anyRequest().permitAll() // Allow everything else

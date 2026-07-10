@@ -429,7 +429,7 @@
     final String seoDescription = officialEvidenceSerpCounty
             ? evidenceSerpDescription
             : gscServiceIntentCounty
-            ? "Searching for " + gscQueryCluster + "? Use the " + seoPlaceLabel
+            ? "Use the " + seoPlaceLabel
             + " decision path: confirm the reading, check county evidence, and open the local cost or quote path."
             : gscSurvivorIntentCopyCounty
             ? "Check radon levels in " + seoPlaceLabel
@@ -1287,13 +1287,13 @@
                     <div class="grid gap-6 lg:grid-cols-[0.78fr_1.22fr] lg:items-start">
                         <div>
                             <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500">
-                                @if(gscServiceIntentCounty) Local Service Search Bridge
+                                @if(gscServiceIntentCounty) Local service next step
                                 @else Near-Miss County Playbook
                                 @endif
                             </p>
                             <h2 class="mt-2 font-display text-2xl font-black tracking-tight text-slate-950">
                                 @if(gscServiceIntentCounty)
-                                    Searched for ${gscQueryCluster}?
+                                    Looking for a service or cost answer?
                                 @else
                                     This county gets the short route first.
                                 @endif

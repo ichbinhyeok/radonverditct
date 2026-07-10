@@ -38,10 +38,6 @@
             <dd class="text-slate-900 font-medium">${quality.getScore()} / 100</dd>
         </div>
         <div>
-            <dt class="text-slate-500">Indexing Status</dt>
-            <dd class="text-slate-900 font-medium">@if(quality.isIndexable()) Indexable @else Noindex @endif</dd>
-        </div>
-        <div>
             <dt class="text-slate-500">Uniqueness Score</dt>
             <dd class="text-slate-900 font-medium">${quality.getSimilarityScore()} / 100</dd>
         </div>
