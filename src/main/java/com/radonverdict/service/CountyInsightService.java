@@ -1,6 +1,7 @@
 package com.radonverdict.service;
 
 import com.radonverdict.model.County;
+import com.radonverdict.model.CountyRadonMeasurement;
 import com.radonverdict.model.CountyStats;
 import com.radonverdict.model.dto.ItemizedReceipt;
 import lombok.RequiredArgsConstructor;
@@ -58,7 +59,7 @@ public class CountyInsightService {
         }
 
         String area = county.getAreaDisplayName();
-        return List.of(
+        List<String> insights = new java.util.ArrayList<>(List.of(
                 String.format(Locale.US,
                         "Housing stock profile: %.1f%% of homes in %s were built before 1980 vs %.1f%% statewide (%s by %.1f percentage points). Older foundations often have more radon entry paths.",
                         metrics.getBuiltBefore1980Pct(), area, stateAvgBuiltBefore1980, stockDirection, Math.abs(housingDelta)),
@@ -67,6 +68,77 @@ public class CountyInsightService {
                         area, metrics.getMedianHomeValue(), stateAvgHomeValue, mitigationAvg, mitigationBurdenPct),
                 String.format(Locale.US,
                         "Market depth signal: %s has %,d housing units, which usually means a %s.",
-                        area, housingUnits, marketDepth));
+                        area, housingUnits, marketDepth)));
+
+        CountyRadonMeasurement measurement = dataLoadService.getRadonMeasurementByFipsMap().get(county.getFips());
+        String evidenceInsight = buildRadonEvidenceInsight(area, measurement);
+        if (evidenceInsight != null) {
+            insights.add(0, evidenceInsight);
+        }
+
+        String sourceInsight = buildSourceInsight(area, county.getStats());
+        if (sourceInsight != null) {
+            insights.add(sourceInsight);
+        }
+
+        return insights;
+    }
+
+    private String buildRadonEvidenceInsight(String area, CountyRadonMeasurement measurement) {
+        if (measurement == null || measurement.getMetrics() == null) {
+            return null;
+        }
+
+        CountyRadonMeasurement.Metrics metrics = measurement.getMetrics();
+        Double average = firstPositive(metrics.getAverageTestResultPciL(),
+                metrics.getArithmeticMeanRadonValuePciL(), metrics.getMedianRadonValuePciL());
+        Double aboveFour = metrics.getPercentTestsAtOrAbove4PciL();
+        Double tests = firstPositive(metrics.getTotalTests(), metrics.getNumberBuildingsTested10Year(),
+                metrics.getAverageNumberOfTests());
+        if (average == null && aboveFour == null && tests == null) {
+            return null;
+        }
+
+        StringBuilder insight = new StringBuilder("Official local measurement signal for ")
+                .append(area).append(": ");
+        if (average != null) {
+            insight.append(String.format(Locale.US, "the reported central result is %.1f pCi/L", average));
+        } else {
+            insight.append("the source reports a local testing distribution");
+        }
+        if (aboveFour != null) {
+            insight.append(String.format(Locale.US, ", with %.1f%% of reported tests at or above 4.0 pCi/L", aboveFour));
+        }
+        if (tests != null) {
+            insight.append(String.format(Locale.US, ". The available series represents about %,.0f tests or tested properties", tests));
+        }
+        if (measurement.getCaveat() != null && !measurement.getCaveat().isBlank()) {
+            insight.append(". Caveat: ").append(measurement.getCaveat().trim());
+        }
+        return insight.append('.').toString();
+    }
+
+    private String buildSourceInsight(String area, CountyStats stats) {
+        if (stats == null || stats.getSources() == null || stats.getSources().isEmpty()) {
+            return null;
+        }
+        CountyStats.Source source = stats.getSources().get(0);
+        if (source == null || source.getName() == null || source.getName().isBlank()) {
+            return null;
+        }
+        String retrieved = source.getRetrievedAt() != null && !source.getRetrievedAt().isBlank()
+                ? " Retrieved " + source.getRetrievedAt().trim() + "."
+                : "";
+        return "Data provenance for " + area + ": this housing profile comes from "
+                + source.getName().trim() + "." + retrieved;
+    }
+
+    private Double firstPositive(Double... values) {
+        for (Double value : values) {
+            if (value != null && value > 0) {
+                return value;
+            }
+        }
+        return null;
     }
 }
