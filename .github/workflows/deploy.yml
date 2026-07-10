@@ -106,7 +106,6 @@ jobs:
                   - GG_JTE_USEPRECOMPILEDTEMPLATES=true
                   - SPRING_PROFILES_ACTIVE=prod
                   - SITE_LASTMOD=${SITE_LASTMOD}
-                  - SITE_RECOVERY_ONLY_INDEXING=true
                   - LEADS_CSV_PATH=/app/data/leads.csv
                   - TELEMETRY_CSV_PATH=/app/data/telemetry_events.csv
                   - CONTACT_CSV_PATH=/app/data/contact_messages.csv
