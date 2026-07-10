@@ -71,14 +71,11 @@ jobs:
     steps:
       - name: SSH to OCI and Deploy via Docker Compose
         uses: appleboy/ssh-action@v1.0.3
-        env:
-          ADMIN_PASSWORD: ${{ secrets.ADMIN_PASSWORD }}
         with:
           host: ${{ secrets.OCI_HOST }}
           username: ${{ secrets.OCI_USERNAME }}
           key: ${{ secrets.OCI_KEY }}
           script: |
-            test -n "$ADMIN_PASSWORD" || { echo "ADMIN_PASSWORD secret is required"; exit 1; }
             export SITE_LASTMOD="$(date -u +%F)"
             # 배포 디렉토리 생성 및 이동
             mkdir -p ~/deploy/radonverdict
@@ -107,7 +104,6 @@ jobs:
                   - GG_JTE_DEVELOPMENTMODE=false
                   - GG_JTE_USEPRECOMPILEDTEMPLATES=true
                   - SPRING_PROFILES_ACTIVE=prod
-                  - ADMIN_PASSWORD=${ADMIN_PASSWORD}
                   - SITE_LASTMOD=${SITE_LASTMOD}
                   - SITE_RECOVERY_ONLY_INDEXING=true
                   - LEADS_CSV_PATH=/app/data/leads.csv
