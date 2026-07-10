@@ -322,7 +322,7 @@ public class SeoIndexingPolicyService {
     }
 
     public boolean isEvidenceRichCostPageCandidate(County county) {
-        if (!indexEvidenceRichCostPages || !hasBaseIndexingEligibility(county) || !hasOfficialRadonEvidence(county)) {
+        if (!indexEvidenceRichCostPages || !isCountyIndexableCandidate(county) || !hasOfficialRadonEvidence(county)) {
             return false;
         }
 
