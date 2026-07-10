@@ -77,4 +77,16 @@ class SearchDemandServiceTest {
         assertThat(page.getHeroTitle()).contains("Radon Testing and Mitigation Cost");
         assertThat(page.getSeoDescription()).contains("testing and mitigation");
     }
+
+    @Test
+    void deployedSeedIsUsedWhenTheNextGscExportIsNotPresent() throws Exception {
+        Files.deleteIfExists(EXPORT);
+
+        SearchDemandProfile profile = searchDemandService.profileForPath(
+                "/radon-levels/new-york/schenectady-county");
+
+        assertThat(profile.getPrimaryQuery()).contains("schenectady county ny epa radon zone");
+        assertThat(profile.getImpressions()).isEqualTo(90.0);
+        assertThat(profile.getIntent()).isEqualTo("levels");
+    }
 }

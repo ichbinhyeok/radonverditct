@@ -3,9 +3,11 @@ package com.radonverdict.service;
 import com.radonverdict.model.County;
 import com.radonverdict.model.dto.SearchDemandProfile;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -25,9 +27,9 @@ import java.util.Set;
 @Service
 public class SearchDemandService {
 
-    private static final Set<String> COST_TERMS = Set.of("cost", "price", "pricing", "how much", "quote", "quotes");
+    private static final Set<String> COST_TERMS = Set.of("cost", "price", "pricing", "how much", "quote", "quotes", "mitigation");
     private static final Set<String> TESTING_TERMS = Set.of("test", "testing", "tester", "kit", "inspection");
-    private static final Set<String> LEVEL_TERMS = Set.of("level", "levels", "pci", "4.0", "radon reading", "result");
+    private static final Set<String> LEVEL_TERMS = Set.of("level", "levels", "zone", "epa", "pci", "4.0", "radon reading", "result");
     private static final Set<String> TRANSACTION_TERMS = Set.of("buyer", "seller", "selling", "buying", "inspection", "credit", "closing");
     private static final Set<String> COMMERCIAL_TERMS = Set.of("commercial", "business", "school", "multifamily");
 
@@ -74,13 +76,20 @@ public class SearchDemandService {
             return current.profiles();
         }
 
-        Map<String, List<QuerySignal>> grouped = readSignals(path).stream()
+        List<QuerySignal> signals = readSignals(path);
+        // Keep the deployed site data-driven even before the next GSC export is uploaded.
+        // A real export always wins; the committed seed is a dated recovery snapshot.
+        if (signals.isEmpty()) {
+            signals = readSeedSignals();
+        }
+
+        Map<String, List<QuerySignal>> grouped = signals.stream()
                 .filter(signal -> !signal.path().isBlank())
                 .collect(java.util.stream.Collectors.groupingBy(QuerySignal::path, LinkedHashMap::new,
                         java.util.stream.Collectors.toList()));
 
         Map<String, SearchDemandProfile> profiles = new LinkedHashMap<>();
-        grouped.forEach((page, signals) -> profiles.put(page, buildProfile(page, signals)));
+        grouped.forEach((page, pageSignals) -> profiles.put(page, buildProfile(page, pageSignals)));
         Map<String, SearchDemandProfile> immutable = Map.copyOf(profiles);
         cache = new Cache(signature, immutable);
         return immutable;
@@ -267,6 +276,58 @@ public class SearchDemandService {
         } catch (IOException ignored) {
             return List.of();
         }
+    }
+
+    private List<QuerySignal> readSeedSignals() {
+        ClassPathResource resource = new ClassPathResource("data/search_demand_seeds.csv");
+        if (!resource.exists()) {
+            return List.of();
+        }
+        try (InputStream input = resource.getInputStream()) {
+            List<String> lines = new String(input.readAllBytes(), java.nio.charset.StandardCharsets.UTF_8)
+                    .lines().toList();
+            return readSignals(lines);
+        } catch (IOException ignored) {
+            return List.of();
+        }
+    }
+
+    private List<QuerySignal> readSignals(List<String> lines) {
+        if (lines.size() < 2) {
+            return List.of();
+        }
+        List<String> headers = parseCsv(lines.get(0));
+        int queryIndex = headerIndex(headers, "query", "keyword");
+        int pageIndex = headerIndex(headers, "page", "url");
+        int clicksIndex = headerIndex(headers, "clicks", "click");
+        int impressionsIndex = headerIndex(headers, "impressions", "impression");
+        int ctrIndex = headerIndex(headers, "ctr");
+        int positionIndex = headerIndex(headers, "position", "avg position");
+        if (queryIndex < 0 || pageIndex < 0) {
+            return List.of();
+        }
+
+        List<QuerySignal> signals = new ArrayList<>();
+        for (int i = 1; i < lines.size(); i++) {
+            List<String> columns = parseCsv(lines.get(i));
+            String page = normalizePath(value(columns, pageIndex));
+            String query = value(columns, queryIndex).toLowerCase(Locale.ROOT).trim();
+            if (page.isBlank() || query.isBlank()) {
+                continue;
+            }
+            double impressions = number(columns, impressionsIndex);
+            double clicks = number(columns, clicksIndex);
+            double ctr = number(columns, ctrIndex);
+            if (ctr > 1.0) {
+                ctr /= 100.0;
+            }
+            if (ctr <= 0 && impressions > 0) {
+                ctr = clicks / impressions;
+            }
+            signals.add(new QuerySignal(page, query, clicks, impressions, ctr,
+                    number(columns, positionIndex)));
+        }
+        return signals;
     }
 
     private int headerIndex(List<String> headers, String... needles) {
