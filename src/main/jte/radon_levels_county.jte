@@ -6,6 +6,7 @@
 @import com.radonverdict.model.dto.InternalLinkItem
 @import com.radonverdict.model.dto.PageQualityResult
 @import com.radonverdict.model.dto.TrustMetadata
+@import com.radonverdict.model.dto.SearchDemandProfile
 @import com.radonverdict.util.JsonLdUtils
 @import java.util.List
 
@@ -27,6 +28,7 @@
 @param boolean searchTrafficCounty = false
 @param boolean monetizationHooksEnabled = false
 @param boolean showSeoDebug = false
+@param SearchDemandProfile demandProfile = null
 !{
     final String seoCountyDisplay = county.getSeoDisplayName();
     final String seoPlaceLabel = seoCountyDisplay + ", " + county.getStateAbbr();
@@ -50,6 +52,10 @@
         stateNameBuilder.append(displayPart);
     }
     final String stateName = stateNameBuilder.length() > 0 ? stateNameBuilder.toString() : county.getStateAbbr();
+    final boolean gscDemandTestingCounty = demandProfile != null
+            && demandProfile.getPrimaryQuery() != null
+            && !demandProfile.getPrimaryQuery().isBlank()
+            && "testing".equals(demandProfile.getIntent());
     final boolean hasCountyStats = county.getStats() != null && county.getStats().getMetrics() != null;
     final int totalHousingUnits = hasCountyStats ? county.getStats().getMetrics().getTotalHousingUnits() : 0;
     final double builtBefore1980Pct = hasCountyStats ? county.getStats().getMetrics().getBuiltBefore1980Pct() : 0.0;
@@ -410,6 +416,8 @@
             ? seoPlaceLabel + " Radon Levels: " + evidenceSerpTitleMetric
             : gscServiceIntentCounty
             ? serviceSearchTitle
+            : gscDemandTestingCounty
+            ? seoPlaceLabel + " Radon Testing & Levels | EPA Zone Guide"
             : gscSurvivorIntentCopyCounty
             ? seoPlaceLabel + " Radon Levels | Test, Retest, or Cost Path"
             : epaZoneCtrPriorityCounty
@@ -431,6 +439,9 @@
             : gscServiceIntentCounty
             ? "Use the " + seoPlaceLabel
             + " decision path: confirm the reading, check county evidence, and open the local cost or quote path."
+            : gscDemandTestingCounty
+            ? "Compare radon testing options in " + seoPlaceLabel
+            + ", check the EPA zone, and use the local evidence to decide whether to test, retest, or plan mitigation."
             : gscSurvivorIntentCopyCounty
             ? "Check radon levels in " + seoPlaceLabel
             + ", see the official county signal, and choose the fast path from first test to retest, cost, or seller-credit planning."
@@ -458,6 +469,8 @@
             ? "EPA Radon Zone & Basement Testing in " + seoPlaceLabel
             : gscServiceIntentCounty
             ? "Radon testing, levels & next step in " + seoPlaceLabel
+            : gscDemandTestingCounty
+            ? "Radon Testing & Levels in " + seoPlaceLabel
             : gscSurvivorIntentCopyCounty
             ? seoPlaceLabel + " radon levels: test-to-decision path"
             : basementCtrPriorityCounty

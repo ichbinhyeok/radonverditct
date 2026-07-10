@@ -10,12 +10,14 @@ import com.radonverdict.model.dto.PageQualityResult;
 import com.radonverdict.model.dto.RadonEvidenceCoverageSummary;
 import com.radonverdict.model.dto.RadonNationalEvidenceInsight;
 import com.radonverdict.model.dto.RadonStateEvidenceInsight;
+import com.radonverdict.model.dto.SearchDemandProfile;
 import com.radonverdict.model.dto.TrustMetadata;
 import com.radonverdict.service.DataLoadService;
 import com.radonverdict.service.CountyRadonEvidenceService;
 import com.radonverdict.service.InternalLinkService;
 import com.radonverdict.service.PageQualityService;
 import com.radonverdict.service.SeoIndexingPolicyService;
+import com.radonverdict.service.SearchDemandService;
 import com.radonverdict.service.TrustMetadataService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -45,6 +47,7 @@ public class RadonLevelsController {
     private final SeoIndexingPolicyService seoIndexingPolicyService;
     private final TrustMetadataService trustMetadataService;
     private final InternalLinkService internalLinkService;
+    private final SearchDemandService searchDemandService;
 
     @Value("${app.feature.monetization-hooks.enabled:false}")
     private boolean monetizationHooksEnabled;
@@ -189,6 +192,8 @@ public class RadonLevelsController {
         model.addAttribute("statePeerCountyCount", statePeerCountyCount(county));
         model.addAttribute("priorityCounty", seoIndexingPolicyService.isPriorityCountyCandidate(county));
         model.addAttribute("searchTrafficCounty", seoIndexingPolicyService.isSearchTrafficCandidate(county));
+        model.addAttribute("demandProfile", searchDemandService.profileForPath(
+                "/radon-levels/" + county.getStateSlug() + "/" + county.getCountySlug()));
         model.addAttribute("monetizationHooksEnabled", monetizationHooksEnabled);
         model.addAttribute("showSeoDebug", seoDebugVisible);
         model.addAttribute("canonicalUrl",
