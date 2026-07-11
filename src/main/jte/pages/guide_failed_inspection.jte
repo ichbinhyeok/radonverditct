@@ -14,6 +14,21 @@
                     + (clientReading != null ? "&radonReading=" + clientReading : "")
                     + (clientIntent != null ? "&intent=" + clientIntent : "")
                     + "&source=home-inspector-packet";
+    final String clientCostUrl = clientZip == null
+            ? "/radon-cost-calculator"
+            : clientActionUrl + "&mode=cost";
+    final boolean clientIsBuying = "buying".equals(clientIntent);
+    final boolean clientIsSelling = "selling".equals(clientIntent);
+    final boolean clientIsHomeowner = "homeowner".equals(clientIntent);
+    final String primaryCtaLabel = clientIsBuying
+            ? "Plan my credit ask"
+            : clientIsSelling
+                    ? "Compare repair vs. credit"
+                    : clientIsHomeowner
+                            ? "Estimate my mitigation path"
+                            : "Calculate seller credit";
+    final String secondaryCtaLabel = clientIsHomeowner ? "Open quote checklist" : "See local mitigation range";
+    final String secondaryCtaUrl = clientIsHomeowner ? "/guides/radon-mitigation-quote-checklist" : clientCostUrl;
 }
 
 @template.layout.main(
@@ -107,11 +122,11 @@
                         <div class="mt-8 flex flex-col gap-3 sm:flex-row">
                             <a href="${clientActionUrl}"
                                class="inline-flex min-h-[52px] items-center justify-center rounded-xl bg-white px-5 text-sm font-black text-slate-950 transition-colors hover:bg-slate-100">
-                                Calculate seller credit
+                                ${primaryCtaLabel}
                             </a>
-                            <a href="${clientActionUrl}"
+                            <a href="${secondaryCtaUrl}"
                                class="inline-flex min-h-[52px] items-center justify-center rounded-xl border border-white/20 px-5 text-sm font-black text-white transition-colors hover:bg-white/10">
-                                Open local cost path
+                                ${secondaryCtaLabel}
                             </a>
                         </div>
                     </div>

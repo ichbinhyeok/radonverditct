@@ -258,6 +258,8 @@ class SeoBehaviorIntegrationTest {
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("<meta name=\"robots\" content=\"noindex, follow\">")))
                 .andExpect(content().string(containsString("Buyer Radon Credit Calculator for Los Angeles County, CA")))
+                .andExpect(content().string(containsString("Property assumptions not confirmed")))
+                .andExpect(content().string(containsString("Confirm two details before you use these credit numbers.")))
                 .andExpect(content().string(containsString("Opening ask")))
                 .andExpect(content().string(containsString("Defensible ceiling")))
                 .andExpect(content().string(containsString("Split-cost fallback")));
@@ -272,6 +274,19 @@ class SeoBehaviorIntegrationTest {
                 .andExpect(content().string(containsString("Seller Radon Credit Calculator for Los Angeles County, CA")))
                 .andExpect(content().string(containsString("Reserve target")))
                 .andExpect(content().string(containsString("Fast-close credit")));
+    }
+
+    @Test
+    void countyCreditCalculatorHidesAssumptionWarningAfterScenarioIsConfirmed() throws Exception {
+        mockMvc.perform(get("/radon-credit-calculator/california/los-angeles-county")
+                        .param("intent", "buying")
+                        .param("radonResultBand", "above_4")
+                        .param("foundation", "basement")
+                        .param("sqftCategory", "under_2000"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(not(containsString("Property assumptions not confirmed"))))
+                .andExpect(content().string(containsString("Basement")))
+                .andExpect(content().string(containsString("Under 2,000 sq ft")));
     }
 
     @Test
@@ -1672,7 +1687,7 @@ class SeoBehaviorIntegrationTest {
                 .andExpect(content().string(containsString("<link rel=\"canonical\" href=\"https://radonverdict.com/guides/radon-failed-inspection\">")))
                 .andExpect(content().string(containsString("Radon failed inspection: credit, repair, or retest?")))
                 .andExpect(content().string(containsString("Calculate seller credit")))
-                .andExpect(content().string(containsString("Open local cost path")))
+                .andExpect(content().string(containsString("See local mitigation range")))
                 .andExpect(content().string(containsString("Do these in the right order.")))
                 .andExpect(content().string(containsString("Who pays after a failed radon inspection?")))
                 .andExpect(content().string(containsString("href=\"/guides/radon-mitigation-quote-checklist\"")))
@@ -1789,6 +1804,15 @@ class SeoBehaviorIntegrationTest {
                 .andExpect(content().string(containsString("5.8 pCi/L")))
                 .andExpect(content().string(containsString("ZIP 22030")))
                 .andExpect(content().string(containsString("Buying")));
+
+        mockMvc.perform(get("/guides/radon-failed-inspection")
+                        .param("zipCode", "22030")
+                        .param("radonReading", "5.8")
+                        .param("intent", "homeowner"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("Estimate my mitigation path")))
+                .andExpect(content().string(containsString("Open quote checklist")))
+                .andExpect(content().string(not(containsString("Calculate seller credit"))));
 
         mockMvc.perform(get("/client-action-plan")
                         .param("zipCode", "22030")

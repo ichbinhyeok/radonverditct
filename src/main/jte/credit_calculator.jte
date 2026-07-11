@@ -4,6 +4,8 @@
 @param County county
 @param CountyPageContent page
 @param String canonicalActionPlanUrl
+@param boolean foundationConfirmed = false
+@param boolean sqftConfirmed = false
 
 !{
     final boolean isSelling = "selling".equals(page.getSelectedIntent());
@@ -25,6 +27,8 @@
             : "If you are negotiating after a radon result in " + county.getAreaDisplayName() + ", start around $"
                     + openingAsk + " and keep $" + ceilingAsk
                     + " as your strongest local ceiling if routing or timing gets harder.";
+    final boolean scenarioNeedsConfirmation = !foundationConfirmed || !sqftConfirmed;
+    final String creditCalculatorPath = "/radon-credit-calculator/" + county.getStateSlug() + "/" + county.getCountySlug();
 }
 
 @template.layout.main(
@@ -66,6 +70,35 @@
                     </div>
                 </div>
             </section>
+
+            @if(scenarioNeedsConfirmation)
+                <section class="mt-8 border border-amber-300 bg-amber-50 p-6 sm:p-8" data-scenario-confirmation>
+                    <p class="text-xs font-black uppercase tracking-wider text-amber-800">Property assumptions not confirmed</p>
+                    <h2 class="mt-2 font-display text-2xl font-black tracking-tight text-slate-950">Confirm two details before you use these credit numbers.</h2>
+                    <p class="mt-2 max-w-3xl text-sm leading-relaxed text-slate-700">The numbers below are a local planning scenario until the foundation and home size are confirmed. This takes about 20 seconds and updates the range without losing the radon result or deal side.</p>
+                    <form action="${creditCalculatorPath}" method="get" class="mt-5 grid gap-4 md:grid-cols-[1fr_1fr_auto] md:items-end">
+                        <input type="hidden" name="intent" value="${page.getSelectedIntent()}">
+                        <input type="hidden" name="radonResultBand" value="${page.getSelectedRadonResultBand()}">
+                        <label class="block text-sm font-black text-slate-800">Foundation
+                            <select name="foundation" required class="mt-2 block min-h-[48px] w-full border border-slate-300 bg-white px-3 text-base font-bold text-slate-950 focus:border-slate-950 focus:outline-none">
+                                @if(!foundationConfirmed)<option value="" selected>Choose foundation</option>@endif
+                                @if(foundationConfirmed && "basement".equals(page.getSelectedFoundationType()))<option value="basement" selected>Basement</option>@else<option value="basement">Basement</option>@endif
+                                @if(foundationConfirmed && "slab".equals(page.getSelectedFoundationType()))<option value="slab" selected>Slab</option>@else<option value="slab">Slab</option>@endif
+                                @if(foundationConfirmed && "crawlspace".equals(page.getSelectedFoundationType()))<option value="crawlspace" selected>Crawl space</option>@else<option value="crawlspace">Crawl space</option>@endif
+                                @if(foundationConfirmed && "other".equals(page.getSelectedFoundationType()))<option value="other" selected>Not sure / mixed</option>@else<option value="other">Not sure / mixed</option>@endif
+                            </select>
+                        </label>
+                        <label class="block text-sm font-black text-slate-800">Home size
+                            <select name="sqftCategory" required class="mt-2 block min-h-[48px] w-full border border-slate-300 bg-white px-3 text-base font-bold text-slate-950 focus:border-slate-950 focus:outline-none">
+                                @if(!sqftConfirmed)<option value="" selected>Choose home size</option>@endif
+                                @if(sqftConfirmed && "under_2000".equals(page.getSelectedSqftCategory()))<option value="under_2000" selected>Under 2,000 sq ft</option>@else<option value="under_2000">Under 2,000 sq ft</option>@endif
+                                @if(sqftConfirmed && "over_2000".equals(page.getSelectedSqftCategory()))<option value="over_2000" selected>Over 2,000 sq ft</option>@else<option value="over_2000">Over 2,000 sq ft</option>@endif
+                            </select>
+                        </label>
+                        <button type="submit" class="min-h-[48px] bg-slate-950 px-5 text-sm font-black text-white transition-colors hover:bg-slate-800">Update credit numbers</button>
+                    </form>
+                </section>
+            @endif
 
             <section class="mt-8 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
                 <div class="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">

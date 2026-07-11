@@ -186,6 +186,7 @@ public class PageController {
     public RedirectView clientActionPlan(@RequestParam("zipCode") String zipCode,
                                          @RequestParam(name = "intent", required = false) String intent,
                                          @RequestParam(name = "radonReading", required = false) String radonReading,
+                                         @RequestParam(name = "mode", required = false) String mode,
                                          @RequestParam(name = "source", required = false) String source) {
         String normalizedZip = zipCode == null ? null : zipCode.trim();
         String fips = dataLoadService.getZipToFipsMap().get(normalizedZip);
@@ -199,8 +200,9 @@ public class PageController {
 
         String sanitizedIntent = sanitizeIntent(intent, "homeowner");
         String resultBand = resultBandForReading(radonReading);
+        boolean forceCostPath = "cost".equalsIgnoreCase(mode);
         String path = buildCountyScenarioRedirect(
-                "buying".equals(sanitizedIntent) || "selling".equals(sanitizedIntent)
+                !forceCostPath && ("buying".equals(sanitizedIntent) || "selling".equals(sanitizedIntent))
                         ? "/radon-credit-calculator/{stateSlug}/{countySlug}"
                         : "/radon-mitigation-cost/{stateSlug}/{countySlug}",
                 county,
@@ -327,8 +329,10 @@ public class PageController {
 
         CountyPageContent defaultScenario = contentService.buildDefaultPageContent(county);
         String transactionIntent = "selling".equalsIgnoreCase(intent) ? "selling" : "buying";
-        String resolvedFoundation = foundation != null ? foundation : defaultScenario.getSelectedFoundationType();
-        String resolvedSqftCategory = sqftCategory != null ? sqftCategory : defaultScenario.getSelectedSqftCategory();
+        String confirmedFoundation = sanitizeFoundation(foundation);
+        String confirmedSqftCategory = sanitizeSqftCategory(sqftCategory);
+        String resolvedFoundation = confirmedFoundation != null ? confirmedFoundation : defaultScenario.getSelectedFoundationType();
+        String resolvedSqftCategory = confirmedSqftCategory != null ? confirmedSqftCategory : defaultScenario.getSelectedSqftCategory();
         String resolvedResultBand = radonResultBand != null ? radonResultBand : "above_4";
 
         CountyPageContent pageContent = contentService.buildPageContent(
@@ -344,6 +348,8 @@ public class PageController {
                 normalizedBaseUrl() + "/radon-mitigation-cost/" + county.getStateSlug() + "/" + county.getCountySlug()
                         + "?intent=" + transactionIntent
                         + "&radonResultBand=" + resolvedResultBand);
+        model.addAttribute("foundationConfirmed", confirmedFoundation != null);
+        model.addAttribute("sqftConfirmed", confirmedSqftCategory != null);
 
         return "credit_calculator";
     }
@@ -591,6 +597,17 @@ public class PageController {
         return switch (normalized) {
             case "basement", "slab", "other" -> normalized;
             case "crawlspace", "crawl_space" -> "crawlspace";
+            default -> null;
+        };
+    }
+
+    private String sanitizeSqftCategory(String value) {
+        String normalized = normalizeToken(value);
+        if (normalized == null) {
+            return null;
+        }
+        return switch (normalized) {
+            case "under_2000", "over_2000" -> normalized;
             default -> null;
         };
     }
