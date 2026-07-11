@@ -1764,6 +1764,18 @@ class SeoBehaviorIntegrationTest {
                 .getContentAsString();
 
         assertJsonLdBlocksAreValid(toolkitHtml);
+
+        String inspectorPacketHtml = mockMvc.perform(get("/for-home-inspectors"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("<title>Radon Decision Packet for Home Inspectors | RadonVerdict</title>")))
+                .andExpect(content().string(containsString("Copy client link")))
+                .andExpect(content().string(containsString("Copy client note")))
+                .andExpect(content().string(containsString("/guides/radon-failed-inspection?source=home-inspector-packet")))
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+
+        assertJsonLdBlocksAreValid(inspectorPacketHtml);
     }
 
     @Test

@@ -70,6 +70,12 @@ public class GuideController {
         return "pages/guide_inspection_toolkit";
     }
 
+    @GetMapping("/for-home-inspectors")
+    public String homeInspectorPacket(Model model) {
+        model.addAttribute("title", "Radon Decision Packet for Home Inspectors | RadonVerdict");
+        return "pages/home_inspector_packet";
+    }
+
     @GetMapping("/guides/radon-mitigation-quote-checklist")
     public String guideQuoteChecklist(Model model) {
         model.addAttribute("title", "Radon Mitigation Quote Checklist: Questions Before You Hire | RadonVerdict");

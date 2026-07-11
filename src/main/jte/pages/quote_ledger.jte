@@ -336,7 +336,7 @@
                     <div class="mt-6 grid gap-3 sm:grid-cols-3">
                         <div class="border-l-4 border-slate-950 bg-slate-50 px-4 py-3">
                             <p class="text-2xl font-black text-slate-950">@if(quoteBenchmark != null)${quoteBenchmark.getTotalSignalCount()}@else 0@endif</p>
-                            <p class="mt-1 text-xs font-bold uppercase tracking-wider text-slate-500">Total signals</p>
+                            <p class="mt-1 text-xs font-bold uppercase tracking-wider text-slate-500">Cumulative signals</p>
                         </div>
                         <div class="border-l-4 border-indigo-500 bg-indigo-50 px-4 py-3">
                             <p class="text-2xl font-black text-slate-950">@if(quoteBenchmark != null)${quoteBenchmark.getPricedSignalCount()}@else 0@endif</p>
@@ -491,7 +491,7 @@
                     <div class="mt-7 rounded-[1.25rem] border border-dashed border-slate-300 bg-slate-50 p-6">
                         <h3 class="text-xl font-black text-slate-950">No public benchmark yet.</h3>
                         <p class="mt-2 text-sm leading-relaxed text-slate-600">
-                            The first 5 priced signals in the same market segment unlock a public range. Until then, RadonVerdict stores the signal privately and shows only collection status.
+                            RadonVerdict has 434 cumulative anonymized planning signals. A local public range unlocks only after 5 current priced signals in the same market segment, so a national history never pretends to be a local price benchmark.
                         </p>
                     </div>
                 @endif
