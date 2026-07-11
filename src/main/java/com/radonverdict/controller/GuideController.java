@@ -64,11 +64,13 @@ public class GuideController {
             @RequestParam(name = "zipCode", required = false) String zipCode,
             @RequestParam(name = "radonReading", required = false) String radonReading,
             @RequestParam(name = "intent", required = false) String intent,
+            @RequestParam(name = "source", required = false) String source,
             Model model) {
         model.addAttribute("title", "Radon Failed Inspection: Credit, Cost, and Retest Plan | RadonVerdict");
         model.addAttribute("clientZip", normalizeZip(zipCode));
         model.addAttribute("clientReading", normalizeReading(radonReading));
         model.addAttribute("clientIntent", normalizeIntent(intent));
+        model.addAttribute("clientSource", normalizeSource(source));
         return "pages/guide_failed_inspection";
     }
 
@@ -165,6 +167,14 @@ public class GuideController {
             case "buying", "selling", "homeowner" -> normalized;
             default -> null;
         };
+    }
+
+    private String normalizeSource(String value) {
+        if (value == null) {
+            return null;
+        }
+        String normalized = value.trim().toLowerCase(java.util.Locale.US);
+        return normalized.matches("[a-z0-9_-]{2,60}") ? normalized : null;
     }
 
     @GetMapping("/guides/radon-myths-granite-countertops")

@@ -3,6 +3,7 @@
 @param String clientZip = null
 @param String clientReading = null
 @param String clientIntent = null
+@param String clientSource = null
 
 !{
     final String seoTitle = "Radon Failed Inspection: Seller Credit, Cost, and Retest Plan";
@@ -13,7 +14,7 @@
             : "/client-action-plan?zipCode=" + clientZip
                     + (clientReading != null ? "&radonReading=" + clientReading : "")
                     + (clientIntent != null ? "&intent=" + clientIntent : "")
-                    + "&source=home-inspector-packet";
+                    + "&source=" + (clientSource != null ? clientSource : "home-inspector-packet");
     final String clientCostUrl = clientZip == null
             ? "/radon-cost-calculator"
             : clientActionUrl + "&mode=cost";

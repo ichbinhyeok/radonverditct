@@ -1,7 +1,6 @@
 @import com.radonverdict.util.JsonLdUtils
 
 !{
-    final String clientLink = "/guides/radon-failed-inspection?source=home-inspector-packet";
     final String clientNote = "A radon result is a decision item, not a panic item. This free guide explains what the number means, how to check the local cost path, and when a repair, credit, retest, or quote checklist makes sense.";
 }
 
@@ -33,7 +32,7 @@
                                 class="inline-flex min-h-[52px] items-center justify-center rounded-xl bg-white px-5 text-sm font-black text-slate-950 transition-colors hover:bg-cyan-100">
                             Copy client link
                         </button>
-                        <a href="${clientLink}" class="inline-flex min-h-[52px] items-center justify-center rounded-xl border border-white/20 px-5 text-sm font-black text-white transition-colors hover:bg-white/10">
+                        <a href="/guides/radon-failed-inspection?source=home-inspector-packet" data-client-preview-link class="inline-flex min-h-[52px] items-center justify-center rounded-xl border border-white/20 px-5 text-sm font-black text-white transition-colors hover:bg-white/10">
                             Preview client page
                         </a>
                     </div>
@@ -167,8 +166,13 @@
 
         <script>
             (() => {
-                const clientUrl = window.location.origin + '${clientLink}';
+                const rawSource = new URLSearchParams(window.location.search).get('source') || '';
+                const outreachSource = /^[a-z0-9_-]{2,60}$/i.test(rawSource)
+                    ? rawSource.toLowerCase()
+                    : 'home-inspector-packet';
+                const clientUrl = window.location.origin + '/guides/radon-failed-inspection?source=' + encodeURIComponent(outreachSource);
                 const clientNote = $unsafe{JsonLdUtils.json(clientNote + "\n\n" + "Link: ")} + clientUrl;
+                document.querySelectorAll('[data-client-preview-link]').forEach((link) => link.href = clientUrl);
                 const setStatus = (message) => document.querySelectorAll('[data-copy-status]').forEach((node) => node.textContent = message);
                 const legacyCopy = (value) => {
                     const input = document.createElement('textarea');
@@ -212,7 +216,7 @@
                             return;
                         }
                         const params = new URLSearchParams({
-                            source: 'home-inspector-packet',
+                            source: outreachSource,
                             zipCode: zipValue,
                             radonReading: readingValue,
                             intent: intent.value

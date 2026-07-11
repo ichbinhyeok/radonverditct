@@ -1798,12 +1798,14 @@ class SeoBehaviorIntegrationTest {
         mockMvc.perform(get("/guides/radon-failed-inspection")
                         .param("zipCode", "22030")
                         .param("radonReading", "5.8")
-                        .param("intent", "buying"))
+                        .param("intent", "buying")
+                        .param("source", "inspector-nova-001"))
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("Your inspection context")))
                 .andExpect(content().string(containsString("5.8 pCi/L")))
                 .andExpect(content().string(containsString("ZIP 22030")))
-                .andExpect(content().string(containsString("Buying")));
+                .andExpect(content().string(containsString("Buying")))
+                .andExpect(content().string(containsString("source=inspector-nova-001")));
 
         mockMvc.perform(get("/guides/radon-failed-inspection")
                         .param("zipCode", "22030")
