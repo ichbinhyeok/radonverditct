@@ -1,8 +1,19 @@
 @import com.radonverdict.util.JsonLdUtils
 
+@param String clientZip = null
+@param String clientReading = null
+@param String clientIntent = null
+
 !{
     final String seoTitle = "Radon Failed Inspection: Seller Credit, Cost, and Retest Plan";
     final String seoDescription = "Failed a radon inspection? See when to retest, when to ask for repairs or a seller credit, and how to use local mitigation cost before the deal deadline.";
+    final boolean hasClientContext = clientZip != null || clientReading != null || clientIntent != null;
+    final String clientActionUrl = clientZip == null
+            ? "/radon-cost-calculator"
+            : "/client-action-plan?zipCode=" + clientZip
+                    + (clientReading != null ? "&radonReading=" + clientReading : "")
+                    + (clientIntent != null ? "&intent=" + clientIntent : "")
+                    + "&source=home-inspector-packet";
 }
 
 @template.layout.main(
@@ -81,12 +92,24 @@
                         <p class="mt-5 max-w-2xl text-lg font-semibold leading-relaxed text-slate-300">
                             Use the test number, deadline, and local mitigation range to choose the next move before the deal conversation turns into guesswork.
                         </p>
+                        @if(hasClientContext)
+                            <div class="mt-6 border-l-2 border-cyan-300 bg-white/10 px-4 py-3">
+                                <p class="text-xs font-black uppercase tracking-wider text-cyan-200">Your inspection context</p>
+                                <p class="mt-1 text-sm font-bold text-white">
+                                    @if(clientReading != null)${clientReading} pCi/L@endif
+                                    @if(clientReading != null && (clientZip != null || clientIntent != null)) <span class="text-slate-400">|</span> @endif
+                                    @if(clientZip != null)ZIP ${clientZip}@endif
+                                    @if(clientZip != null && clientIntent != null) <span class="text-slate-400">|</span> @endif
+                                    @if(clientIntent != null)${clientIntent.equals("buying") ? "Buying" : clientIntent.equals("selling") ? "Selling" : "Living here"}@endif
+                                </p>
+                            </div>
+                        @endif
                         <div class="mt-8 flex flex-col gap-3 sm:flex-row">
-                            <a href="/radon-credit-calculator"
+                            <a href="${clientActionUrl}"
                                class="inline-flex min-h-[52px] items-center justify-center rounded-xl bg-white px-5 text-sm font-black text-slate-950 transition-colors hover:bg-slate-100">
                                 Calculate seller credit
                             </a>
-                            <a href="/radon-cost-calculator"
+                            <a href="${clientActionUrl}"
                                class="inline-flex min-h-[52px] items-center justify-center rounded-xl border border-white/20 px-5 text-sm font-black text-white transition-colors hover:bg-white/10">
                                 Open local cost path
                             </a>

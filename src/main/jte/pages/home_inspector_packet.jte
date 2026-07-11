@@ -88,6 +88,38 @@
                 </div>
             </section>
 
+            <section class="grid gap-8 border-b border-slate-200 py-14 lg:grid-cols-[0.8fr_1.2fr] lg:items-start">
+                <div>
+                    <p class="text-xs font-black uppercase tracking-[0.22em] text-indigo-700">Make the follow-up specific</p>
+                    <h2 class="mt-3 font-display text-3xl font-black tracking-tight text-slate-950">Send the client a link that starts with their result.</h2>
+                    <p class="mt-3 text-sm leading-relaxed text-slate-600">Use only the result, property ZIP, and situation already in the inspection conversation. Nothing is saved from this form.</p>
+                </div>
+                <div class="border border-slate-200 bg-slate-50 p-5 sm:p-6" data-client-link-builder>
+                    <div class="grid gap-4 sm:grid-cols-3">
+                        <label class="block text-sm font-black text-slate-800">Result (pCi/L)
+                            <input type="text" inputmode="decimal" pattern="[0-9]{1,2}(\\.[0-9]{1,2})?" placeholder="e.g. 5.8" data-client-reading class="mt-2 block min-h-[48px] w-full border border-slate-300 bg-white px-3 text-base font-bold text-slate-950 focus:border-slate-950 focus:outline-none">
+                        </label>
+                        <label class="block text-sm font-black text-slate-800">Property ZIP
+                            <input type="text" inputmode="numeric" pattern="[0-9]{5}" maxlength="5" placeholder="e.g. 22030" data-client-zip class="mt-2 block min-h-[48px] w-full border border-slate-300 bg-white px-3 text-base font-bold text-slate-950 focus:border-slate-950 focus:outline-none">
+                        </label>
+                        <label class="block text-sm font-black text-slate-800">Situation
+                            <select data-client-intent class="mt-2 block min-h-[48px] w-full border border-slate-300 bg-white px-3 text-base font-bold text-slate-950 focus:border-slate-950 focus:outline-none">
+                                <option value="buying">Buying</option>
+                                <option value="selling">Selling</option>
+                                <option value="homeowner">Living here</option>
+                            </select>
+                        </label>
+                    </div>
+                    <div class="mt-5 flex flex-col gap-3 sm:flex-row sm:items-center">
+                        <button type="button" data-copy-prepared-link data-track-event="inspector_packet_copy_prepared_link" data-track-label="client_context"
+                                class="inline-flex min-h-[52px] items-center justify-center rounded-xl bg-slate-950 px-5 text-sm font-black text-white transition-colors hover:bg-slate-800">
+                            Copy client follow-up link
+                        </button>
+                        <p data-prepared-link-status class="text-sm font-bold text-slate-600" aria-live="polite">The client will see the result context before choosing a local path.</p>
+                    </div>
+                </div>
+            </section>
+
             <section class="grid gap-8 py-14 lg:grid-cols-3">
                 <div class="border-t-2 border-slate-950 pt-5">
                     <p class="text-xs font-black uppercase tracking-wider text-slate-500">1. Explain</p>
@@ -165,6 +197,31 @@
                 };
                 document.querySelectorAll('[data-copy-client-link]').forEach((button) => button.addEventListener('click', () => copy(clientUrl, 'Client link copied.')));
                 document.querySelectorAll('[data-copy-client-note]').forEach((button) => button.addEventListener('click', () => copy(clientNote, 'Client note copied.')));
+                const builder = document.querySelector('[data-client-link-builder]');
+                if (builder) {
+                    const reading = builder.querySelector('[data-client-reading]');
+                    const zip = builder.querySelector('[data-client-zip]');
+                    const intent = builder.querySelector('[data-client-intent]');
+                    const preparedStatus = builder.querySelector('[data-prepared-link-status]');
+                    const preparedButton = builder.querySelector('[data-copy-prepared-link]');
+                    preparedButton.addEventListener('click', () => {
+                        const zipValue = zip.value.trim();
+                        const readingValue = reading.value.trim();
+                        if (!/^\d{5}$/.test(zipValue) || !/^\d{1,2}(?:\.\d{1,2})?$/.test(readingValue)) {
+                            preparedStatus.textContent = 'Add a valid result and 5-digit property ZIP first.';
+                            return;
+                        }
+                        const params = new URLSearchParams({
+                            source: 'home-inspector-packet',
+                            zipCode: zipValue,
+                            radonReading: readingValue,
+                            intent: intent.value
+                        });
+                        const preparedUrl = window.location.origin + '/guides/radon-failed-inspection?' + params.toString();
+                        copy(preparedUrl, 'Client follow-up link copied.');
+                        preparedStatus.textContent = 'Prepared link copied: result, ZIP, and situation are included.';
+                    });
+                }
             })();
         </script>
     `

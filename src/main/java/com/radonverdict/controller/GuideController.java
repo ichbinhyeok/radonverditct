@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -59,8 +60,15 @@ public class GuideController {
     }
 
     @GetMapping("/guides/radon-failed-inspection")
-    public String guideFailedInspection(Model model) {
+    public String guideFailedInspection(
+            @RequestParam(name = "zipCode", required = false) String zipCode,
+            @RequestParam(name = "radonReading", required = false) String radonReading,
+            @RequestParam(name = "intent", required = false) String intent,
+            Model model) {
         model.addAttribute("title", "Radon Failed Inspection: Credit, Cost, and Retest Plan | RadonVerdict");
+        model.addAttribute("clientZip", normalizeZip(zipCode));
+        model.addAttribute("clientReading", normalizeReading(radonReading));
+        model.addAttribute("clientIntent", normalizeIntent(intent));
         return "pages/guide_failed_inspection";
     }
 
@@ -122,6 +130,41 @@ public class GuideController {
     public String guideEnergyCosts(Model model) {
         model.addAttribute("title", "Radon System Electricity Cost: $5-$15/Month to Run the Fan | RadonVerdict");
         return "pages/guide_energy_costs";
+    }
+
+    private String normalizeZip(String value) {
+        if (value == null) {
+            return null;
+        }
+        String normalized = value.trim();
+        return normalized.matches("\\d{5}") ? normalized : null;
+    }
+
+    private String normalizeReading(String value) {
+        if (value == null) {
+            return null;
+        }
+        String normalized = value.trim();
+        if (!normalized.matches("\\d{1,2}(?:\\.\\d{1,2})?")) {
+            return null;
+        }
+        try {
+            double reading = Double.parseDouble(normalized);
+            return reading >= 0 && reading <= 99.99 ? normalized : null;
+        } catch (NumberFormatException ignored) {
+            return null;
+        }
+    }
+
+    private String normalizeIntent(String value) {
+        if (value == null) {
+            return null;
+        }
+        String normalized = value.trim().toLowerCase(java.util.Locale.US);
+        return switch (normalized) {
+            case "buying", "selling", "homeowner" -> normalized;
+            default -> null;
+        };
     }
 
     @GetMapping("/guides/radon-myths-granite-countertops")

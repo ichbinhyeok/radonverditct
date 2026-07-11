@@ -21,6 +21,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
@@ -1770,12 +1771,32 @@ class SeoBehaviorIntegrationTest {
                 .andExpect(content().string(containsString("<title>Radon Decision Packet for Home Inspectors | RadonVerdict</title>")))
                 .andExpect(content().string(containsString("Copy client link")))
                 .andExpect(content().string(containsString("Copy client note")))
+                .andExpect(content().string(containsString("Copy client follow-up link")))
+                .andExpect(content().string(containsString("data-client-reading")))
                 .andExpect(content().string(containsString("/guides/radon-failed-inspection?source=home-inspector-packet")))
                 .andReturn()
                 .getResponse()
                 .getContentAsString();
 
         assertJsonLdBlocksAreValid(inspectorPacketHtml);
+
+        mockMvc.perform(get("/guides/radon-failed-inspection")
+                        .param("zipCode", "22030")
+                        .param("radonReading", "5.8")
+                        .param("intent", "buying"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("Your inspection context")))
+                .andExpect(content().string(containsString("5.8 pCi/L")))
+                .andExpect(content().string(containsString("ZIP 22030")))
+                .andExpect(content().string(containsString("Buying")));
+
+        mockMvc.perform(get("/client-action-plan")
+                        .param("zipCode", "22030")
+                        .param("radonReading", "5.8")
+                        .param("intent", "buying")
+                        .param("source", "home-inspector-packet"))
+                .andExpect(status().isSeeOther())
+                .andExpect(redirectedUrl("/radon-credit-calculator/virginia/fairfax-city?intent=buying&radonResultBand=above_4&zipCode=22030&source=home-inspector-packet"));
     }
 
     @Test

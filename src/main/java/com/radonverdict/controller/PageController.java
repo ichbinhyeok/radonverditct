@@ -182,6 +182,39 @@ public class PageController {
                 HttpStatus.SEE_OTHER);
     }
 
+    @GetMapping("/client-action-plan")
+    public RedirectView clientActionPlan(@RequestParam("zipCode") String zipCode,
+                                         @RequestParam(name = "intent", required = false) String intent,
+                                         @RequestParam(name = "radonReading", required = false) String radonReading,
+                                         @RequestParam(name = "source", required = false) String source) {
+        String normalizedZip = zipCode == null ? null : zipCode.trim();
+        String fips = dataLoadService.getZipToFipsMap().get(normalizedZip);
+        if (fips == null) {
+            return redirect("/radon-cost-calculator?error=notfound", HttpStatus.SEE_OTHER);
+        }
+        County county = dataLoadService.getCountByFipsMap().get(fips);
+        if (county == null) {
+            return redirect("/radon-cost-calculator?error=notfound", HttpStatus.SEE_OTHER);
+        }
+
+        String sanitizedIntent = sanitizeIntent(intent, "homeowner");
+        String resultBand = resultBandForReading(radonReading);
+        String path = buildCountyScenarioRedirect(
+                "buying".equals(sanitizedIntent) || "selling".equals(sanitizedIntent)
+                        ? "/radon-credit-calculator/{stateSlug}/{countySlug}"
+                        : "/radon-mitigation-cost/{stateSlug}/{countySlug}",
+                county,
+                sanitizedIntent,
+                resultBand,
+                normalizedZip,
+                null);
+        String sanitizedSource = sanitizeSource(source);
+        if (sanitizedSource != null) {
+            path += "&source=" + sanitizedSource;
+        }
+        return redirect(path, HttpStatus.SEE_OTHER);
+    }
+
     @GetMapping("/radon-mitigation-cost/{stateSlug}")
     public Object stateHub(@PathVariable("stateSlug") String stateSlug, Model model) {
         List<County> stateCounties = dataLoadService.getCountyBySlugMap().values().stream()
@@ -521,6 +554,32 @@ public class PageController {
             case "not_tested", "under_2", "between_2_and_4", "above_4" -> normalized;
             default -> fallback;
         };
+    }
+
+    private String resultBandForReading(String rawReading) {
+        if (rawReading == null || !rawReading.matches("\\d{1,2}(?:\\.\\d{1,2})?")) {
+            return "above_4";
+        }
+        try {
+            double reading = Double.parseDouble(rawReading);
+            if (reading < 2) {
+                return "under_2";
+            }
+            if (reading < 4) {
+                return "between_2_and_4";
+            }
+        } catch (NumberFormatException ignored) {
+            // A failed-inspection link defaults to the action-level route.
+        }
+        return "above_4";
+    }
+
+    private String sanitizeSource(String value) {
+        if (value == null) {
+            return null;
+        }
+        String normalized = value.trim().toLowerCase(Locale.US);
+        return normalized.matches("[a-z0-9_-]{2,60}") ? normalized : null;
     }
 
     private String sanitizeFoundation(String value) {

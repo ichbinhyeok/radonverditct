@@ -90,6 +90,9 @@
           if (query.get('intent')) {
             context.intent = query.get('intent');
           }
+          if (/^[a-z0-9_-]{2,60}$/.test(query.get('source') || '')) {
+            context.acquisition_source = query.get('source');
+          }
 
           return context;
         }
