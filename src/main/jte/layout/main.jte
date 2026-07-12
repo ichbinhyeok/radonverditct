@@ -5,6 +5,7 @@
 @param String description = "National Radon Mitigation Cost Calculator"
 @param String canonicalUrl = null
 @param boolean noindex = false
+@param boolean minimalChrome = false
 @param Content headContent = null
 @param Content content
 
@@ -321,6 +322,7 @@
 </head>
 <body class="bg-slate-50 text-slate-800 font-sans antialiased selection:bg-brand-900 selection:text-white flex flex-col min-h-screen">
     
+    @if(!minimalChrome)
     <!-- Glassmorphism Navbar -->
     <header x-data="{ mobileNavOpen: false }" class="sticky top-0 z-50 glass-header">
         <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 min-h-16 flex items-center justify-between gap-3">
@@ -372,12 +374,14 @@
             </nav>
         </div>
     </header>
+    @endif
 
     <!-- Main Content Injection -->
     <main class="flex-grow flex flex-col min-w-0 w-full">
         ${content}
     </main>
 
+    @if(!minimalChrome)
     <!-- ${java.time.LocalDate.now().getYear()} SaaS Style Minimal Footer -->
     <footer class="bg-white border-t border-slate-100 mt-20">
         <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -421,5 +425,6 @@
             </div>
         </div>
     </footer>
+    @endif
 </body>
 </html>

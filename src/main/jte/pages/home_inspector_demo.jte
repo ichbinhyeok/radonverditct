@@ -9,90 +9,128 @@
     title = "Inspector Client Follow-Up Link Demo | RadonVerdict",
     canonicalUrl = "https://radonverdict.com/for-home-inspectors/demo",
     description = "A working demo of a client-ready radon follow-up link for home inspectors.",
+    minimalChrome = true,
     content = @`
         <style>
-            .inspector-demo-shell { background: #10211e; color: #fff; }
-            .inspector-demo-eyebrow { color: #9dd9b9; }
-            .inspector-demo-dot { background: #9dd9b9; }
-            .inspector-demo-primary { background: #d8f06a; color: #10211e; }
-            .inspector-demo-primary:hover { background: #efffa7; }
-            .inspector-demo-status { color: #d8f06a; }
-            .inspector-demo-rule { border-color: rgba(255, 255, 255, .2); }
-            .inspector-demo-browser { background: #f7f8f4; }
-            .inspector-demo-client-left { background: #edf2ec; }
-            .inspector-demo-client-accent { color: #397857; }
-            .inspector-demo-client-button { background: #10211e; }
-            .inspector-demo-client-button:hover { background: #24463e; }
+            .inspector-demo { min-height: 100svh; background: #f7f7f4; color: #18211d; padding: 22px; }
+            .inspector-demo__frame { width: min(1280px, 100%); min-height: calc(100svh - 44px); margin: 0 auto; display: flex; flex-direction: column; }
+            .inspector-demo__nav { display: flex; align-items: center; justify-content: space-between; min-height: 40px; color: #59635d; font-size: 13px; }
+            .inspector-demo__brand { display: inline-flex; align-items: center; gap: 9px; color: #18211d; font-family: Outfit, Inter, sans-serif; font-size: 16px; font-weight: 700; letter-spacing: -0.02em; }
+            .inspector-demo__mark { display: grid; width: 24px; height: 24px; place-items: center; border-radius: 7px; background: #1d3930; color: #fff; font: 700 12px/1 Inter, sans-serif; }
+            .inspector-demo__nav-note { display: flex; align-items: center; gap: 8px; }
+            .inspector-demo__nav-note::before { width: 6px; height: 6px; border-radius: 50%; background: #4c8b6a; content: ""; }
+            .inspector-demo__hero { display: grid; flex: 1; grid-template-columns: minmax(260px, .62fr) minmax(0, 1.38fr); align-items: center; gap: clamp(34px, 6vw, 96px); padding: clamp(42px, 7vh, 84px) 0; }
+            .inspector-demo__intro { max-width: 365px; }
+            .inspector-demo__eyebrow { margin: 0 0 16px; color: #4c8b6a; font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+            .inspector-demo h1 { max-width: 350px; margin: 0; color: #18211d; font-family: Outfit, Inter, sans-serif; font-size: clamp(38px, 4.15vw, 59px); font-weight: 700; letter-spacing: -0.035em; line-height: .99; }
+            .inspector-demo__lede { max-width: 340px; margin: 20px 0 0; color: #657069; font-size: 15px; line-height: 1.6; }
+            .inspector-demo__meta { display: flex; flex-wrap: wrap; gap: 8px 14px; margin-top: 27px; color: #53605a; font-size: 12px; }
+            .inspector-demo__meta span { display: inline-flex; align-items: center; gap: 6px; }
+            .inspector-demo__meta span::before { width: 5px; height: 5px; border-radius: 50%; background: #a9b4ad; content: ""; }
+            .inspector-demo__tools { display: flex; align-items: center; gap: 14px; margin-top: 30px; }
+            .inspector-demo__copy { border: 0; border-bottom: 1px solid #aeb6b0; padding: 0 0 3px; background: transparent; color: #29342e; font-size: 13px; font-weight: 600; }
+            .inspector-demo__copy:hover { border-color: #29342e; }
+            .inspector-demo__status { min-height: 18px; margin: 10px 0 0; color: #397857; font-size: 12px; font-weight: 600; }
+            .inspector-demo__sample { min-width: 0; }
+            .inspector-demo__sample-label { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; color: #78827c; font-size: 12px; }
+            .inspector-demo__sample-label strong { color: #3b4740; font-weight: 600; }
+            .inspector-demo__client { overflow: hidden; border: 1px solid #dde1dc; border-radius: 8px; background: #fff; }
+            .inspector-demo__client-top { display: flex; align-items: center; justify-content: space-between; height: 58px; padding: 0 25px; border-bottom: 1px solid #e7e9e5; }
+            .inspector-demo__client-brand { display: flex; align-items: center; gap: 10px; min-width: 0; }
+            .inspector-demo__client-avatar { display: grid; flex: 0 0 auto; width: 29px; height: 29px; place-items: center; border-radius: 50%; background: #edf4ed; color: #397857; font-size: 11px; font-weight: 700; }
+            .inspector-demo__client-brand b { display: block; color: #27322c; font-size: 13px; font-weight: 650; }
+            .inspector-demo__client-brand span { display: block; margin-top: 2px; color: #89918b; font-size: 11px; }
+            .inspector-demo__shared { color: #6e7771; font-size: 11px; }
+            .inspector-demo__client-body { display: grid; grid-template-columns: 255px minmax(0, 1fr); }
+            .inspector-demo__result { padding: 31px 27px; background: #f2f5f1; }
+            .inspector-demo__result-label, .inspector-demo__plan-label { margin: 0; color: #718077; font-size: 11px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; }
+            .inspector-demo__reading { display: flex; align-items: baseline; gap: 7px; margin: 16px 0 12px; color: #1c2821; font-family: Outfit, Inter, sans-serif; font-size: 47px; font-weight: 700; letter-spacing: -0.05em; line-height: 1; }
+            .inspector-demo__reading small { color: #637069; font-family: Inter, sans-serif; font-size: 13px; font-weight: 600; letter-spacing: 0; }
+            .inspector-demo__alert { margin: 0; color: #4c5c53; font-size: 13px; line-height: 1.55; }
+            .inspector-demo__context { margin-top: 30px; padding-top: 16px; border-top: 1px solid #dce3dc; color: #64716a; font-size: 12px; line-height: 1.55; }
+            .inspector-demo__context b { display: block; margin-bottom: 4px; color: #2f3d35; font-size: 12px; font-weight: 650; }
+            .inspector-demo__plan { padding: 31px 32px 27px; }
+            .inspector-demo__plan h2 { max-width: 390px; margin: 10px 0 21px; color: #1d2821; font-family: Outfit, Inter, sans-serif; font-size: clamp(22px, 2.15vw, 29px); font-weight: 650; letter-spacing: -0.025em; line-height: 1.15; }
+            .inspector-demo__choices { display: grid; border-top: 1px solid #e6e9e5; }
+            .inspector-demo__choice { display: grid; grid-template-columns: 26px minmax(0, 1fr); gap: 12px; padding: 14px 0; border-bottom: 1px solid #e6e9e5; }
+            .inspector-demo__choice-number { display: grid; width: 22px; height: 22px; place-items: center; border-radius: 50%; background: #edf4ed; color: #397857; font-size: 10px; font-weight: 700; }
+            .inspector-demo__choice b { display: block; color: #26332b; font-size: 13px; font-weight: 650; }
+            .inspector-demo__choice span { display: block; margin-top: 3px; color: #78837c; font-size: 12px; line-height: 1.45; }
+            .inspector-demo__action { display: flex; align-items: center; justify-content: space-between; min-height: 44px; margin-top: 21px; padding: 0 15px; border-radius: 5px; background: #1d3930; color: #fff; font-size: 13px; font-weight: 650; transition: background .15s ease; }
+            .inspector-demo__action:hover { background: #295342; }
+            .inspector-demo__client-foot { display: flex; align-items: center; justify-content: space-between; gap: 18px; padding: 13px 25px; border-top: 1px solid #e7e9e5; color: #8a938d; font-size: 11px; line-height: 1.4; }
+            .inspector-demo__client-foot a { flex: 0 0 auto; color: #397857; font-weight: 650; }
+            .inspector-demo__footer { display: flex; align-items: center; justify-content: space-between; min-height: 38px; border-top: 1px solid #dedfda; color: #89918b; font-size: 11px; }
+            @media (max-width: 800px) {
+                .inspector-demo { padding: 15px; }
+                .inspector-demo__frame { min-height: calc(100svh - 30px); }
+                .inspector-demo__nav-note { font-size: 11px; }
+                .inspector-demo__hero { grid-template-columns: 1fr; gap: 36px; padding: 42px 0; }
+                .inspector-demo__intro { max-width: 100%; }
+                .inspector-demo h1 { max-width: 350px; font-size: 42px; }
+                .inspector-demo__lede { max-width: 350px; }
+                .inspector-demo__client-top { height: auto; min-height: 57px; padding: 13px 16px; }
+                .inspector-demo__shared { display: none; }
+                .inspector-demo__client-body { grid-template-columns: 1fr; }
+                .inspector-demo__result, .inspector-demo__plan { padding: 24px 20px; }
+                .inspector-demo__context { margin-top: 23px; }
+                .inspector-demo__client-foot { align-items: flex-start; padding: 12px 16px; }
+                .inspector-demo__footer { padding-top: 12px; }
+                .inspector-demo__footer span:last-child { display: none; }
+            }
         </style>
-        <main class="inspector-demo-shell">
-            <section class="min-h-[calc(100svh-65px)] overflow-hidden">
-                <div class="mx-auto flex min-h-[calc(100svh-65px)] max-w-7xl flex-col px-4 py-6 sm:px-6 sm:py-8 lg:px-8">
-                    <div class="inspector-demo-rule flex items-center justify-between border-b pb-4 text-[11px] font-bold uppercase tracking-[0.18em] text-white/70">
-                        <span>RadonVerdict / inspector follow-up</span>
-                        <span class="hidden sm:inline">A real client-ready link</span>
-                    </div>
 
-                    <div class="grid flex-1 gap-8 py-8 lg:grid-cols-[0.8fr_1.2fr] lg:items-center lg:gap-14 lg:py-10">
-                        <div class="max-w-xl">
-                            <p class="inspector-demo-eyebrow text-xs font-black uppercase tracking-[0.2em]">One result. One useful next step.</p>
-                            <h1 class="mt-4 font-display text-4xl font-black leading-[1.02] sm:text-5xl lg:text-6xl">Stop explaining the same radon result twice.</h1>
-                            <p class="mt-5 max-w-lg text-base leading-relaxed text-white/75 sm:text-lg">Put this link below the report. Your client sees their result, local context, and the repair-or-credit decision path without you becoming the adviser.</p>
+        <main class="inspector-demo">
+            <div class="inspector-demo__frame">
+                <nav class="inspector-demo__nav" aria-label="Demo navigation">
+                    <a class="inspector-demo__brand" href="/"><span class="inspector-demo__mark">R</span>RadonVerdict</a>
+                    <span class="inspector-demo__nav-note">For home inspectors</span>
+                </nav>
 
-                            <div class="mt-7 flex flex-wrap gap-x-5 gap-y-3 text-sm font-bold text-white/85">
-                                <span class="flex items-center gap-2"><i class="inspector-demo-dot h-2 w-2"></i>No login</span>
-                                <span class="flex items-center gap-2"><i class="inspector-demo-dot h-2 w-2"></i>No client data</span>
-                                <span class="flex items-center gap-2"><i class="inspector-demo-dot h-2 w-2"></i>No contractor recommendation</span>
-                            </div>
-
-                            <div class="mt-8 flex flex-wrap gap-3">
-                                <a href="${demoUrl}" data-track-event="inspector_demo_open_client" class="inspector-demo-primary inline-flex min-h-[50px] items-center px-5 text-sm font-black transition-colors">Open the live client view <span class="ml-3 text-lg">→</span></a>
-                                <button type="button" data-copy-demo-link data-track-event="inspector_demo_copy_link" class="inline-flex min-h-[50px] items-center border border-white/35 px-5 text-sm font-black text-white transition-colors hover:bg-white/10">Copy the client link</button>
-                            </div>
-                            <p data-demo-status class="inspector-demo-status mt-3 min-h-5 text-sm font-bold" aria-live="polite"></p>
+                <section class="inspector-demo__hero">
+                    <div class="inspector-demo__intro">
+                        <p class="inspector-demo__eyebrow">Client follow-up link</p>
+                        <h1>Send the decision, not another explanation.</h1>
+                        <p class="inspector-demo__lede">Add one link below a radon result. The client gets a calm, local next-step guide while your inspection stays independent.</p>
+                        <div class="inspector-demo__meta"><span>No login</span><span>No client data</span><span>No contractor referral</span></div>
+                        <div class="inspector-demo__tools">
+                            <button type="button" class="inspector-demo__copy" data-copy-demo-note data-track-event="inspector_demo_copy_note">Copy ready note</button>
+                            <button type="button" class="inspector-demo__copy" data-copy-demo-link data-track-event="inspector_demo_copy_link">Copy link</button>
                         </div>
+                        <p class="inspector-demo__status" data-demo-status aria-live="polite"></p>
+                    </div>
 
-                        <div class="relative mx-auto w-full max-w-2xl lg:max-w-none">
-                            <div class="inspector-demo-primary absolute -left-3 top-12 hidden h-[72%] w-px lg:block"></div>
-                            <div class="inspector-demo-browser border border-white/25 p-2 shadow-[18px_18px_0_rgba(0,0,0,0.22)] sm:p-3">
-                                <div class="flex items-center gap-2 border-b border-slate-200 px-2 py-2 text-[10px] font-bold uppercase tracking-[0.14em] text-slate-500 sm:px-3">
-                                    <span class="h-2 w-2 rounded-full bg-[#d9573f]"></span><span class="h-2 w-2 rounded-full bg-[#e7bd54]"></span><span class="h-2 w-2 rounded-full bg-[#7ebd91]"></span>
-                                    <span class="ml-2 truncate">radonverdict.com / your-client-plan</span>
-                                </div>
-                                <div class="grid lg:grid-cols-[0.92fr_1.08fr]">
-                                    <div class="inspector-demo-client-left p-5 text-slate-950 sm:p-7">
-                                        <div class="flex items-center gap-3">
-                                            <span class="grid h-9 w-9 place-items-center bg-[#10211e] text-xs font-black text-white">YI</span>
-                                            <div><p class="text-sm font-black">Your Inspection Company</p><p class="text-xs text-slate-500">Shared after your inspection</p></div>
-                                        </div>
-                                        <p class="inspector-demo-client-accent mt-8 text-xs font-black uppercase tracking-[0.16em]">Your radon result</p>
-                                        <p class="mt-2 font-display text-5xl font-black leading-none tracking-normal">5.8 <span class="text-lg">pCi/L</span></p>
-                                        <p class="mt-3 max-w-xs text-sm leading-relaxed text-slate-600">This is above the EPA action level. Start with the decision, not a generic search.</p>
-                                        <div class="mt-8 border-t border-slate-300 pt-4 text-xs font-bold uppercase tracking-[0.12em] text-slate-500">
-                                            Fairfax, VA <span class="mx-2 text-slate-300">/</span> Buying a home
-                                        </div>
+                    <div class="inspector-demo__sample">
+                        <div class="inspector-demo__sample-label"><span>What your client receives</span><strong>Live example</strong></div>
+                        <article class="inspector-demo__client" aria-label="Client follow-up guide example">
+                            <header class="inspector-demo__client-top">
+                                <div class="inspector-demo__client-brand"><span class="inspector-demo__client-avatar">YI</span><div><b>Your Inspection Company</b><span>Independent inspection follow-up</span></div></div>
+                                <span class="inspector-demo__shared">Shared with your client</span>
+                            </header>
+                            <div class="inspector-demo__client-body">
+                                <section class="inspector-demo__result">
+                                    <p class="inspector-demo__result-label">Radon result</p>
+                                    <div class="inspector-demo__reading">5.8 <small>pCi/L</small></div>
+                                    <p class="inspector-demo__alert">Above the EPA action level. This guide turns the result into a clear decision path.</p>
+                                    <div class="inspector-demo__context"><b>Fairfax, Virginia</b>Buying a home &middot; ZIP 22030</div>
+                                </section>
+                                <section class="inspector-demo__plan">
+                                    <p class="inspector-demo__plan-label">Your local next-step guide</p>
+                                    <h2>What should you decide before closing?</h2>
+                                    <div class="inspector-demo__choices">
+                                        <div class="inspector-demo__choice"><span class="inspector-demo__choice-number">1</span><div><b>Use a local mitigation range</b><span>Set a credible starting point for a repair or credit conversation.</span></div></div>
+                                        <div class="inspector-demo__choice"><span class="inspector-demo__choice-number">2</span><div><b>Choose the transaction path</b><span>Compare repair, seller credit, or a retest plan before the deadline.</span></div></div>
                                     </div>
-                                    <div class="p-5 text-slate-950 sm:p-7">
-                                        <p class="inspector-demo-client-accent text-xs font-black uppercase tracking-[0.16em]">Your next-step guide</p>
-                                        <h2 class="mt-3 font-display text-3xl font-black leading-[1.08]">What do you need to decide before closing?</h2>
-                                        <div class="mt-6 divide-y divide-slate-200 border-y border-slate-200">
-                                            <div class="flex gap-3 py-4"><span class="inspector-demo-client-accent text-sm font-black">01</span><div><p class="text-sm font-black">Use a local mitigation range</p><p class="mt-1 text-sm leading-relaxed text-slate-600">Set a credible repair or credit starting point.</p></div></div>
-                                            <div class="flex gap-3 py-4"><span class="inspector-demo-client-accent text-sm font-black">02</span><div><p class="text-sm font-black">Choose the transaction path</p><p class="mt-1 text-sm leading-relaxed text-slate-600">Repair, seller credit, or a retest plan.</p></div></div>
-                                        </div>
-                                        <a href="${demoUrl}" data-track-event="inspector_demo_open_client" class="inspector-demo-client-button mt-6 flex min-h-[48px] items-center justify-between px-4 text-sm font-black text-white transition-colors">Build my local plan <span class="text-lg">→</span></a>
-                                        <p class="mt-3 text-xs leading-relaxed text-slate-500">Your inspector is not recommending a contractor or negotiating the transaction.</p>
-                                    </div>
-                                </div>
+                                    <a class="inspector-demo__action" href="${demoUrl}" data-track-event="inspector_demo_open_client">Build my local plan <span>&rarr;</span></a>
+                                </section>
                             </div>
-                            <div class="mt-4 flex items-center gap-3 text-xs font-bold text-white/60"><span class="inspector-demo-rule h-px flex-1 border-t"></span>This is the actual customer experience<span class="inspector-demo-rule h-px flex-1 border-t"></span></div>
-                        </div>
+                            <footer class="inspector-demo__client-foot"><span>Your inspector is not recommending a contractor or negotiating the transaction.</span><a href="${demoUrl}" data-track-event="inspector_demo_open_client">Open live guide &rarr;</a></footer>
+                        </article>
                     </div>
+                </section>
 
-                    <div class="inspector-demo-rule border-t pt-4 text-xs font-medium leading-relaxed text-white/55 sm:flex sm:items-center sm:justify-between sm:gap-6">
-                        <span>Try it on one recent elevated result. If it is not useful, you do not need to use it again.</span>
-                        <button type="button" data-copy-demo-note data-track-event="inspector_demo_copy_note" class="mt-2 underline decoration-white/40 underline-offset-4 hover:text-white sm:mt-0">Copy the short note for your report</button>
-                    </div>
-                </div>
-            </section>
+                <footer class="inspector-demo__footer"><span>RadonVerdict &middot; Client decision support</span><span>Try it on one recent elevated result.</span></footer>
+            </div>
         </main>
 
         <script>
@@ -105,7 +143,7 @@
                         await navigator.clipboard.writeText(value);
                         status.textContent = message;
                     } catch (error) {
-                        status.textContent = 'Copy is unavailable in this browser. Open the client view instead.';
+                        status.textContent = 'Copy is unavailable in this browser. Open the live guide instead.';
                     }
                 };
                 document.querySelector('[data-copy-demo-link]').addEventListener('click', () => copy(demoUrl, 'Client link copied.'));
