@@ -71,6 +71,9 @@ public class GuideController {
         model.addAttribute("clientReading", normalizeReading(radonReading));
         model.addAttribute("clientIntent", normalizeIntent(intent));
         model.addAttribute("clientSource", normalizeSource(source));
+        model.addAttribute("sharedByInspector", "inspector-demo".equals(normalizeSource(source))
+                ? "Your Inspection Company"
+                : null);
         return "pages/guide_failed_inspection";
     }
 
@@ -83,6 +86,20 @@ public class GuideController {
     @GetMapping("/for-home-inspectors")
     public String homeInspectorPacket(Model model) {
         model.addAttribute("title", "Radon Decision Packet for Home Inspectors | RadonVerdict");
+        model.addAttribute("packetSource", "home-inspector-packet");
+        model.addAttribute("pageTitle", "Radon Decision Packet for Home Inspectors | RadonVerdict");
+        model.addAttribute("canonicalUrl", "https://radonverdict.com/for-home-inspectors");
+        return "pages/home_inspector_packet";
+    }
+
+    @GetMapping("/for-home-inspectors/demo")
+    public String homeInspectorPacketDemo(Model model) {
+        model.addAttribute("title", "Inspector Client Follow-Up Link Demo | RadonVerdict");
+        model.addAttribute("packetSource", "inspector-demo");
+        model.addAttribute("inspectorPreviewName", "Your Inspection Company");
+        model.addAttribute("salesDemo", true);
+        model.addAttribute("pageTitle", "Inspector Client Follow-Up Link Demo | RadonVerdict");
+        model.addAttribute("canonicalUrl", "https://radonverdict.com/for-home-inspectors/demo");
         return "pages/home_inspector_packet";
     }
 

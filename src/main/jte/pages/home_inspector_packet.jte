@@ -1,12 +1,18 @@
 @import com.radonverdict.util.JsonLdUtils
 
+@param String packetSource = "home-inspector-packet"
+@param String inspectorPreviewName = null
+@param boolean salesDemo = false
+@param String pageTitle = "Radon Decision Packet for Home Inspectors | RadonVerdict"
+@param String canonicalUrl = "https://radonverdict.com/for-home-inspectors"
+
 !{
     final String clientNote = "A radon result is a decision item, not a panic item. This free guide explains what the number means, how to check the local cost path, and when a repair, credit, retest, or quote checklist makes sense.";
 }
 
 @template.layout.main(
-    title = "Radon Decision Packet for Home Inspectors | RadonVerdict",
-    canonicalUrl = "https://radonverdict.com/for-home-inspectors",
+    title = pageTitle,
+    canonicalUrl = canonicalUrl,
     description = "A free client-ready radon decision packet for home inspectors: result meaning, local cost path, seller-credit route, and quote checklist.",
     headContent = @`
         <script type="application/ld+json">
@@ -25,14 +31,19 @@
             <div class="mx-auto grid max-w-6xl gap-12 px-4 py-16 sm:px-6 sm:py-20 lg:grid-cols-[0.9fr_1.1fr] lg:items-center lg:px-8">
                 <div>
                     <p class="text-xs font-black uppercase tracking-[0.24em] text-cyan-200">RadonVerdict for home inspectors</p>
-                    <h1 class="mt-5 max-w-xl font-display text-4xl font-black leading-[1.02] text-white sm:text-6xl">Give every radon result a clear next step.</h1>
-                    <p class="mt-6 max-w-lg text-lg font-semibold leading-relaxed text-slate-300">One client-ready link for result meaning, local cost context, seller-credit math, and a contractor quote checklist.</p>
+                    @if(salesDemo)
+                        <h1 class="mt-5 max-w-xl font-display text-4xl font-black leading-[1.02] text-white sm:text-6xl">A client follow-up link with your name on it.</h1>
+                        <p class="mt-6 max-w-lg text-lg font-semibold leading-relaxed text-slate-300">This is a working demo for ${inspectorPreviewName}. The client sees who shared it, then gets the result explanation and next step without making you the mitigation or negotiation expert.</p>
+                    @else
+                        <h1 class="mt-5 max-w-xl font-display text-4xl font-black leading-[1.02] text-white sm:text-6xl">Give every radon result a clear next step.</h1>
+                        <p class="mt-6 max-w-lg text-lg font-semibold leading-relaxed text-slate-300">One client-ready link for result meaning, local cost context, seller-credit math, and a contractor quote checklist.</p>
+                    @endif
                     <div class="mt-8 flex flex-col gap-3 sm:flex-row">
                         <button type="button" data-copy-client-link data-track-event="inspector_packet_copy_link" data-track-label="hero"
                                 class="inline-flex min-h-[52px] items-center justify-center rounded-xl bg-white px-5 text-sm font-black text-slate-950 transition-colors hover:bg-cyan-100">
                             Copy client link
                         </button>
-                        <a href="/guides/radon-failed-inspection?source=home-inspector-packet" data-client-preview-link class="inline-flex min-h-[52px] items-center justify-center rounded-xl border border-white/20 px-5 text-sm font-black text-white transition-colors hover:bg-white/10">
+                        <a href="/guides/radon-failed-inspection?source=${packetSource}" data-client-preview-link class="inline-flex min-h-[52px] items-center justify-center rounded-xl border border-white/20 px-5 text-sm font-black text-white transition-colors hover:bg-white/10">
                             Preview client page
                         </a>
                     </div>
@@ -166,10 +177,11 @@
 
         <script>
             (() => {
-                const rawSource = new URLSearchParams(window.location.search).get('source') || '';
+                const defaultSource = $unsafe{JsonLdUtils.json(packetSource)};
+                const rawSource = new URLSearchParams(window.location.search).get('source') || defaultSource;
                 const outreachSource = /^[a-z0-9_-]{2,60}$/i.test(rawSource)
                     ? rawSource.toLowerCase()
-                    : 'home-inspector-packet';
+                    : defaultSource;
                 const clientUrl = window.location.origin + '/guides/radon-failed-inspection?source=' + encodeURIComponent(outreachSource);
                 const clientNote = $unsafe{JsonLdUtils.json(clientNote + "\n\n" + "Link: ")} + clientUrl;
                 document.querySelectorAll('[data-client-preview-link]').forEach((link) => link.href = clientUrl);

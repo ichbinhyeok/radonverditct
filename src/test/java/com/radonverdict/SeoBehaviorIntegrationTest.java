@@ -1795,6 +1795,12 @@ class SeoBehaviorIntegrationTest {
 
         assertJsonLdBlocksAreValid(inspectorPacketHtml);
 
+        mockMvc.perform(get("/for-home-inspectors/demo"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("A client follow-up link with your name on it.")))
+                .andExpect(content().string(containsString("Your Inspection Company")))
+                .andExpect(content().string(containsString("source=inspector-demo")));
+
         mockMvc.perform(get("/guides/radon-failed-inspection")
                         .param("zipCode", "22030")
                         .param("radonReading", "5.8")
@@ -1806,6 +1812,10 @@ class SeoBehaviorIntegrationTest {
                 .andExpect(content().string(containsString("ZIP 22030")))
                 .andExpect(content().string(containsString("Buying")))
                 .andExpect(content().string(containsString("source=inspector-nova-001")));
+
+        mockMvc.perform(get("/guides/radon-failed-inspection").param("source", "inspector-demo"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("Shared by Your Inspection Company")));
 
         mockMvc.perform(get("/guides/radon-failed-inspection")
                         .param("zipCode", "22030")

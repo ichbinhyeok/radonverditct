@@ -4,6 +4,7 @@
 @param String clientReading = null
 @param String clientIntent = null
 @param String clientSource = null
+@param String sharedByInspector = null
 
 !{
     final String seoTitle = "Radon Failed Inspection: Seller Credit, Cost, and Retest Plan";
@@ -108,6 +109,13 @@
                         <p class="mt-5 max-w-2xl text-lg font-semibold leading-relaxed text-slate-300">
                             Use the test number, deadline, and local mitigation range to choose the next move before the deal conversation turns into guesswork.
                         </p>
+                        @if(sharedByInspector != null)
+                            <div class="mt-6 border-l-2 border-cyan-300 bg-white/10 px-4 py-3">
+                                <p class="text-xs font-black uppercase tracking-wider text-cyan-200">Client follow-up</p>
+                                <p class="mt-1 text-sm font-bold text-white">Shared by ${sharedByInspector}</p>
+                                <p class="mt-1 text-sm leading-relaxed text-slate-300">This guide explains decision options. Your inspector is not recommending a contractor or negotiating the transaction.</p>
+                            </div>
+                        @endif
                         @if(hasClientContext)
                             <div class="mt-6 border-l-2 border-cyan-300 bg-white/10 px-4 py-3">
                                 <p class="text-xs font-black uppercase tracking-wider text-cyan-200">Your inspection context</p>
