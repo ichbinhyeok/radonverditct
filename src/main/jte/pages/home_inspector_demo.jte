@@ -10,81 +10,86 @@
     canonicalUrl = "https://radonverdict.com/for-home-inspectors/demo",
     description = "A working demo of a client-ready radon follow-up link for home inspectors.",
     content = @`
-        <main class="bg-[#f5f7f6] text-slate-950">
-            <section class="border-b border-slate-200 bg-white">
-                <div class="mx-auto flex max-w-6xl items-center justify-between gap-5 px-4 py-4 sm:px-6 lg:px-8">
-                    <div class="flex items-center gap-3">
-                        <span class="grid h-9 w-9 place-items-center bg-[#0d5c4e] text-sm font-black text-white">YI</span>
-                        <div>
-                            <p class="text-sm font-black">Your Inspection Company</p>
-                            <p class="text-xs font-semibold text-slate-500">Client follow-up link preview</p>
-                        </div>
-                    </div>
-                    <span class="hidden border border-[#0d5c4e]/25 bg-[#e4f3ee] px-3 py-1.5 text-xs font-black text-[#0d5c4e] sm:inline-flex">Working demo</span>
-                </div>
-            </section>
-
-            <section class="mx-auto grid max-w-6xl gap-10 px-4 py-12 sm:px-6 sm:py-16 lg:grid-cols-[0.75fr_1.25fr] lg:items-start lg:px-8">
-                <div class="pt-2">
-                    <p class="text-xs font-black uppercase tracking-[0.2em] text-[#0d5c4e]">After the report</p>
-                    <h1 class="mt-4 max-w-md font-display text-4xl font-black leading-[1.04] text-slate-950 sm:text-5xl">Give clients the next step without writing it again.</h1>
-                    <p class="mt-5 max-w-md text-base font-medium leading-relaxed text-slate-600">This is the page a customer receives after an elevated radon result. It explains the decision without making the inspector a mitigation company or negotiation adviser.</p>
-                    <dl class="mt-8 space-y-4 border-t border-slate-300 pt-6">
-                        <div class="grid grid-cols-[26px_1fr] gap-3">
-                            <dt class="grid h-6 w-6 place-items-center bg-[#0d5c4e] text-xs font-black text-white">1</dt>
-                            <dd><strong class="text-sm">Paste one link below the report.</strong><p class="mt-1 text-sm leading-relaxed text-slate-600">No client account, report upload, or address required.</p></dd>
-                        </div>
-                        <div class="grid grid-cols-[26px_1fr] gap-3">
-                            <dt class="grid h-6 w-6 place-items-center bg-[#d9573f] text-xs font-black text-white">2</dt>
-                            <dd><strong class="text-sm">Keep your role clear.</strong><p class="mt-1 text-sm leading-relaxed text-slate-600">The client gets facts and decision paths, not a contractor recommendation from you.</p></dd>
-                        </div>
-                    </dl>
-                </div>
-
-                <div class="border border-slate-300 bg-white shadow-[0_18px_45px_rgba(15,23,42,0.10)]">
-                    <div class="flex items-center justify-between border-b border-slate-200 px-5 py-4 sm:px-6">
-                        <div>
-                            <p class="text-xs font-black uppercase tracking-[0.16em] text-slate-500">Client view</p>
-                            <p class="mt-1 text-sm font-bold text-slate-900">Shared by Your Inspection Company</p>
-                        </div>
-                        <span class="border border-slate-200 px-2.5 py-1 text-xs font-black text-slate-600">No login</span>
+        <style>
+            .inspector-demo-shell { background: #10211e; color: #fff; }
+            .inspector-demo-eyebrow { color: #9dd9b9; }
+            .inspector-demo-dot { background: #9dd9b9; }
+            .inspector-demo-primary { background: #d8f06a; color: #10211e; }
+            .inspector-demo-primary:hover { background: #efffa7; }
+            .inspector-demo-status { color: #d8f06a; }
+            .inspector-demo-rule { border-color: rgba(255, 255, 255, .2); }
+            .inspector-demo-browser { background: #f7f8f4; }
+            .inspector-demo-client-left { background: #edf2ec; }
+            .inspector-demo-client-accent { color: #397857; }
+            .inspector-demo-client-button { background: #10211e; }
+            .inspector-demo-client-button:hover { background: #24463e; }
+        </style>
+        <main class="inspector-demo-shell">
+            <section class="min-h-[calc(100svh-65px)] overflow-hidden">
+                <div class="mx-auto flex min-h-[calc(100svh-65px)] max-w-7xl flex-col px-4 py-6 sm:px-6 sm:py-8 lg:px-8">
+                    <div class="inspector-demo-rule flex items-center justify-between border-b pb-4 text-[11px] font-bold uppercase tracking-[0.18em] text-white/70">
+                        <span>RadonVerdict / inspector follow-up</span>
+                        <span class="hidden sm:inline">A real client-ready link</span>
                     </div>
 
-                    <div class="grid gap-0 lg:grid-cols-[1.05fr_0.95fr]">
-                        <div class="p-5 sm:p-7">
-                            <p class="text-xs font-black uppercase tracking-[0.18em] text-[#0d5c4e]">Your inspection context</p>
-                            <h2 class="mt-3 font-display text-3xl font-black leading-tight text-slate-950">Your result deserves a clear decision.</h2>
-                            <div class="mt-6 grid grid-cols-3 border-y border-slate-200">
-                                <div class="py-3 pr-3"><p class="text-xs font-bold text-slate-500">RESULT</p><p class="mt-1 text-lg font-black">5.8 <span class="text-xs">pCi/L</span></p></div>
-                                <div class="border-l border-slate-200 px-3 py-3"><p class="text-xs font-bold text-slate-500">ZIP</p><p class="mt-1 text-lg font-black">22030</p></div>
-                                <div class="border-l border-slate-200 px-3 py-3"><p class="text-xs font-bold text-slate-500">SITUATION</p><p class="mt-1 text-lg font-black">Buying</p></div>
+                    <div class="grid flex-1 gap-8 py-8 lg:grid-cols-[0.8fr_1.2fr] lg:items-center lg:gap-14 lg:py-10">
+                        <div class="max-w-xl">
+                            <p class="inspector-demo-eyebrow text-xs font-black uppercase tracking-[0.2em]">One result. One useful next step.</p>
+                            <h1 class="mt-4 font-display text-4xl font-black leading-[1.02] sm:text-5xl lg:text-6xl">Stop explaining the same radon result twice.</h1>
+                            <p class="mt-5 max-w-lg text-base leading-relaxed text-white/75 sm:text-lg">Put this link below the report. Your client sees their result, local context, and the repair-or-credit decision path without you becoming the adviser.</p>
+
+                            <div class="mt-7 flex flex-wrap gap-x-5 gap-y-3 text-sm font-bold text-white/85">
+                                <span class="flex items-center gap-2"><i class="inspector-demo-dot h-2 w-2"></i>No login</span>
+                                <span class="flex items-center gap-2"><i class="inspector-demo-dot h-2 w-2"></i>No client data</span>
+                                <span class="flex items-center gap-2"><i class="inspector-demo-dot h-2 w-2"></i>No contractor recommendation</span>
                             </div>
-                            <p class="mt-5 text-sm leading-relaxed text-slate-600">Start with the valid test result, then compare a local mitigation range with the repair or credit decision before your deadline.</p>
-                            <a href="${demoUrl}" data-track-event="inspector_demo_open_client" class="mt-6 inline-flex min-h-[48px] items-center justify-center bg-[#0d5c4e] px-5 text-sm font-black text-white transition-colors hover:bg-[#08453a]">Open the working client page</a>
+
+                            <div class="mt-8 flex flex-wrap gap-3">
+                                <a href="${demoUrl}" data-track-event="inspector_demo_open_client" class="inspector-demo-primary inline-flex min-h-[50px] items-center px-5 text-sm font-black transition-colors">Open the live client view <span class="ml-3 text-lg">→</span></a>
+                                <button type="button" data-copy-demo-link data-track-event="inspector_demo_copy_link" class="inline-flex min-h-[50px] items-center border border-white/35 px-5 text-sm font-black text-white transition-colors hover:bg-white/10">Copy the client link</button>
+                            </div>
+                            <p data-demo-status class="inspector-demo-status mt-3 min-h-5 text-sm font-bold" aria-live="polite"></p>
                         </div>
 
-                        <aside class="border-t border-slate-200 bg-[#eaf3f0] p-5 sm:p-7 lg:border-l lg:border-t-0">
-                            <p class="text-xs font-black uppercase tracking-[0.18em] text-[#0d5c4e]">What it answers</p>
-                            <ol class="mt-5 space-y-5">
-                                <li><p class="text-sm font-black">What does this result mean?</p><p class="mt-1 text-sm leading-relaxed text-slate-600">A factual explanation before the client searches through generic advice.</p></li>
-                                <li><p class="text-sm font-black">What could the next step cost?</p><p class="mt-1 text-sm leading-relaxed text-slate-600">Local context before anyone picks an arbitrary repair or credit number.</p></li>
-                                <li><p class="text-sm font-black">Who decides what happens next?</p><p class="mt-1 text-sm leading-relaxed text-slate-600">The client chooses a path; the inspection remains an inspection.</p></li>
-                            </ol>
-                        </aside>
+                        <div class="relative mx-auto w-full max-w-2xl lg:max-w-none">
+                            <div class="inspector-demo-primary absolute -left-3 top-12 hidden h-[72%] w-px lg:block"></div>
+                            <div class="inspector-demo-browser border border-white/25 p-2 shadow-[18px_18px_0_rgba(0,0,0,0.22)] sm:p-3">
+                                <div class="flex items-center gap-2 border-b border-slate-200 px-2 py-2 text-[10px] font-bold uppercase tracking-[0.14em] text-slate-500 sm:px-3">
+                                    <span class="h-2 w-2 rounded-full bg-[#d9573f]"></span><span class="h-2 w-2 rounded-full bg-[#e7bd54]"></span><span class="h-2 w-2 rounded-full bg-[#7ebd91]"></span>
+                                    <span class="ml-2 truncate">radonverdict.com / your-client-plan</span>
+                                </div>
+                                <div class="grid lg:grid-cols-[0.92fr_1.08fr]">
+                                    <div class="inspector-demo-client-left p-5 text-slate-950 sm:p-7">
+                                        <div class="flex items-center gap-3">
+                                            <span class="grid h-9 w-9 place-items-center bg-[#10211e] text-xs font-black text-white">YI</span>
+                                            <div><p class="text-sm font-black">Your Inspection Company</p><p class="text-xs text-slate-500">Shared after your inspection</p></div>
+                                        </div>
+                                        <p class="inspector-demo-client-accent mt-8 text-xs font-black uppercase tracking-[0.16em]">Your radon result</p>
+                                        <p class="mt-2 font-display text-5xl font-black leading-none tracking-normal">5.8 <span class="text-lg">pCi/L</span></p>
+                                        <p class="mt-3 max-w-xs text-sm leading-relaxed text-slate-600">This is above the EPA action level. Start with the decision, not a generic search.</p>
+                                        <div class="mt-8 border-t border-slate-300 pt-4 text-xs font-bold uppercase tracking-[0.12em] text-slate-500">
+                                            Fairfax, VA <span class="mx-2 text-slate-300">/</span> Buying a home
+                                        </div>
+                                    </div>
+                                    <div class="p-5 text-slate-950 sm:p-7">
+                                        <p class="inspector-demo-client-accent text-xs font-black uppercase tracking-[0.16em]">Your next-step guide</p>
+                                        <h2 class="mt-3 font-display text-3xl font-black leading-[1.08]">What do you need to decide before closing?</h2>
+                                        <div class="mt-6 divide-y divide-slate-200 border-y border-slate-200">
+                                            <div class="flex gap-3 py-4"><span class="inspector-demo-client-accent text-sm font-black">01</span><div><p class="text-sm font-black">Use a local mitigation range</p><p class="mt-1 text-sm leading-relaxed text-slate-600">Set a credible repair or credit starting point.</p></div></div>
+                                            <div class="flex gap-3 py-4"><span class="inspector-demo-client-accent text-sm font-black">02</span><div><p class="text-sm font-black">Choose the transaction path</p><p class="mt-1 text-sm leading-relaxed text-slate-600">Repair, seller credit, or a retest plan.</p></div></div>
+                                        </div>
+                                        <a href="${demoUrl}" data-track-event="inspector_demo_open_client" class="inspector-demo-client-button mt-6 flex min-h-[48px] items-center justify-between px-4 text-sm font-black text-white transition-colors">Build my local plan <span class="text-lg">→</span></a>
+                                        <p class="mt-3 text-xs leading-relaxed text-slate-500">Your inspector is not recommending a contractor or negotiating the transaction.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mt-4 flex items-center gap-3 text-xs font-bold text-white/60"><span class="inspector-demo-rule h-px flex-1 border-t"></span>This is the actual customer experience<span class="inspector-demo-rule h-px flex-1 border-t"></span></div>
+                        </div>
                     </div>
 
-                    <div class="border-t border-slate-200 bg-slate-50 p-5 sm:p-6">
-                        <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-                            <div>
-                                <p class="text-sm font-black text-slate-950">What you paste below the report</p>
-                                <p class="mt-1 text-sm leading-relaxed text-slate-600">A short factual note. The customer can open it when they are ready.</p>
-                            </div>
-                            <div class="flex shrink-0 gap-2">
-                                <button type="button" data-copy-demo-note data-track-event="inspector_demo_copy_note" class="inline-flex min-h-[44px] items-center justify-center border border-slate-300 bg-white px-4 text-sm font-black text-slate-900 hover:bg-slate-100">Copy note</button>
-                                <button type="button" data-copy-demo-link data-track-event="inspector_demo_copy_link" class="inline-flex min-h-[44px] items-center justify-center bg-slate-950 px-4 text-sm font-black text-white hover:bg-slate-800">Copy link</button>
-                            </div>
-                        </div>
-                        <p data-demo-status class="mt-3 min-h-5 text-sm font-bold text-[#0d5c4e]" aria-live="polite"></p>
+                    <div class="inspector-demo-rule border-t pt-4 text-xs font-medium leading-relaxed text-white/55 sm:flex sm:items-center sm:justify-between sm:gap-6">
+                        <span>Try it on one recent elevated result. If it is not useful, you do not need to use it again.</span>
+                        <button type="button" data-copy-demo-note data-track-event="inspector_demo_copy_note" class="mt-2 underline decoration-white/40 underline-offset-4 hover:text-white sm:mt-0">Copy the short note for your report</button>
                     </div>
                 </div>
             </section>
@@ -100,10 +105,10 @@
                         await navigator.clipboard.writeText(value);
                         status.textContent = message;
                     } catch (error) {
-                        status.textContent = 'Copy is unavailable in this browser. Open the client page instead.';
+                        status.textContent = 'Copy is unavailable in this browser. Open the client view instead.';
                     }
                 };
-                document.querySelector('[data-copy-demo-link]').addEventListener('click', () => copy(demoUrl, 'Client follow-up link copied.'));
+                document.querySelector('[data-copy-demo-link]').addEventListener('click', () => copy(demoUrl, 'Client link copied.'));
                 document.querySelector('[data-copy-demo-note]').addEventListener('click', () => copy(demoNote, 'Client note copied.'));
             })();
         </script>

@@ -1797,7 +1797,7 @@ class SeoBehaviorIntegrationTest {
 
         mockMvc.perform(get("/for-home-inspectors/demo"))
                 .andExpect(status().isOk())
-                .andExpect(content().string(containsString("Give clients the next step without writing it again.")))
+                .andExpect(content().string(containsString("Stop explaining the same radon result twice.")))
                 .andExpect(content().string(containsString("Your Inspection Company")))
                 .andExpect(content().string(containsString("source=inspector-demo")));
 
