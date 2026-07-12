@@ -95,12 +95,7 @@ public class GuideController {
     @GetMapping("/for-home-inspectors/demo")
     public String homeInspectorPacketDemo(Model model) {
         model.addAttribute("title", "Inspector Client Follow-Up Link Demo | RadonVerdict");
-        model.addAttribute("packetSource", "inspector-demo");
-        model.addAttribute("inspectorPreviewName", "Your Inspection Company");
-        model.addAttribute("salesDemo", true);
-        model.addAttribute("pageTitle", "Inspector Client Follow-Up Link Demo | RadonVerdict");
-        model.addAttribute("canonicalUrl", "https://radonverdict.com/for-home-inspectors/demo");
-        return "pages/home_inspector_packet";
+        return "pages/home_inspector_demo";
     }
 
     @GetMapping("/guides/radon-mitigation-quote-checklist")
