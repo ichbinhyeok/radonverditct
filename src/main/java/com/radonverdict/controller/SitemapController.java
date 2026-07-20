@@ -1,6 +1,8 @@
 package com.radonverdict.controller;
 
 import com.radonverdict.model.County;
+import com.radonverdict.model.CountyRadonMeasurement;
+import com.radonverdict.model.CountyRadonTier;
 import com.radonverdict.service.DataLoadService;
 import com.radonverdict.service.SeoIndexingPolicyService;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +18,8 @@ import java.util.Collection;
 @Controller
 @RequiredArgsConstructor
 public class SitemapController {
+
+    private static final LocalDate SEO_CONTENT_LASTMOD = LocalDate.of(2026, 7, 20);
 
     private final DataLoadService dataLoadService;
     private final SeoIndexingPolicyService seoIndexingPolicyService;
@@ -47,7 +51,6 @@ public class SitemapController {
         addSitemapUrl(xml, "/sitemap-growth.xml");
         addSitemapUrl(xml, "/sitemap-cost-evidence.xml");
         addSitemapUrl(xml, "/sitemap-levels-evidence.xml");
-        addSitemapUrl(xml, "/sitemap-intent.xml");
         addSitemapUrl(xml, "/sitemap-core.xml");
         if (includeBroadZoneSitemap) {
             addSitemapUrl(xml, "/sitemap-zone-high.xml");
@@ -88,12 +91,6 @@ public class SitemapController {
                             "/radon-levels/" + county.getStateSlug() + "/" + county.getCountySlug(),
                             "0.9",
                             resolveCountyLastmod(county));
-                    if (indexCountyCostPages && seoIndexingPolicyService.isCostPageIndexableCandidate(county)) {
-                        addUrl(xml,
-                                "/radon-mitigation-cost/" + county.getStateSlug() + "/" + county.getCountySlug(),
-                                "0.8",
-                                resolveCountyLastmod(county));
-                    }
                 });
 
         xml.append("</urlset>");
@@ -119,12 +116,6 @@ public class SitemapController {
                             "/radon-levels/" + county.getStateSlug() + "/" + county.getCountySlug(),
                             "0.85",
                             resolveCountyLastmod(county));
-                    if (indexCountyCostPages && seoIndexingPolicyService.isCostPageIndexableCandidate(county)) {
-                        addUrl(xml,
-                                "/radon-mitigation-cost/" + county.getStateSlug() + "/" + county.getCountySlug(),
-                                "0.75",
-                                resolveCountyLastmod(county));
-                    }
                 });
 
         xml.append("</urlset>");
@@ -141,7 +132,6 @@ public class SitemapController {
         if (indexCountyCostPages) {
             dataLoadService.getCountyBySlugMap().values().stream()
                     .filter(seoIndexingPolicyService::isCostPageIndexableCandidate)
-                    .filter(county -> !seoIndexingPolicyService.isSearchTrafficCandidate(county))
                     .sorted((left, right) -> {
                         int scoreCompare = Integer.compare(
                                 seoIndexingPolicyService.countyIndexingScore(right),
@@ -381,11 +371,41 @@ public class SitemapController {
         if (configuredLastmod != null && !configuredLastmod.isBlank()) {
             return configuredLastmod;
         }
-        return LocalDate.now().toString();
+        return SEO_CONTENT_LASTMOD.toString();
     }
 
     private String resolveCountyLastmod(County county) {
-        return resolveLastmod();
+        if (configuredLastmod != null && !configuredLastmod.isBlank()) {
+            return configuredLastmod;
+        }
+
+        LocalDate lastmod = SEO_CONTENT_LASTMOD;
+        if (county == null || county.getFips() == null) {
+            return lastmod.toString();
+        }
+
+        CountyRadonMeasurement measurement = dataLoadService.getRadonMeasurementByFipsMap().get(county.getFips());
+        CountyRadonTier tier = dataLoadService.getRadonTierByFipsMap().get(county.getFips());
+        lastmod = laterOf(lastmod, parseDate(measurement != null ? measurement.getRetrievedAt() : null));
+        lastmod = laterOf(lastmod, parseDate(tier != null ? tier.getRetrievedAt() : null));
+        lastmod = laterOf(lastmod, parseDate(
+                county.getStats() != null ? county.getStats().getRetrievedAt() : null));
+        return lastmod.toString();
+    }
+
+    private LocalDate laterOf(LocalDate current, LocalDate candidate) {
+        return candidate != null && candidate.isAfter(current) ? candidate : current;
+    }
+
+    private LocalDate parseDate(String value) {
+        if (value == null || value.isBlank()) {
+            return null;
+        }
+        try {
+            return LocalDate.parse(value.trim());
+        } catch (java.time.format.DateTimeParseException ignored) {
+            return null;
+        }
     }
 
     @GetMapping(value = "/robots.txt", produces = MediaType.TEXT_PLAIN_VALUE)

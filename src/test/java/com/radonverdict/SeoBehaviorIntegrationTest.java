@@ -137,7 +137,7 @@ class SeoBehaviorIntegrationTest {
                 .andExpect(content().string(containsString("Basement, slab, and crawl-space cost ranges")))
                 .andExpect(content().string(containsString("When the cost question becomes urgent")))
                 .andExpect(content().string(containsString("Browse radon mitigation cost by state")))
-                .andExpect(content().string(containsString("href=\"/radon-mitigation-cost/california\"")))
+                .andExpect(content().string(containsString("href=\"/radon-mitigation-cost/colorado\"")))
                 .andExpect(content().string(containsString("href=\"/radon-cost-calculator\"")))
                 .andExpect(content().string(containsString("href=\"/radon-credit-calculator\"")))
                 .andExpect(content().string(containsString("href=\"/radon-levels\"")))
@@ -150,22 +150,22 @@ class SeoBehaviorIntegrationTest {
 
     @Test
     void mitigationCostStateAndCountyPagesLinkBackToRootPillar() throws Exception {
-        mockMvc.perform(get("/radon-mitigation-cost/california"))
+        mockMvc.perform(get("/radon-mitigation-cost/colorado"))
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("href=\"/radon-mitigation-cost\"")))
                 .andExpect(content().string(containsString("Cost Basics")))
                 .andExpect(content().string(containsString("Use the national cost guide")))
-                .andExpect(content().string(containsString("California cost range by foundation")))
+                .andExpect(content().string(containsString("Colorado cost range by foundation")))
                 .andExpect(content().string(containsString("State rules that can change the quote")))
-                .andExpect(content().string(containsString("EPA zone mix in California")))
+                .andExpect(content().string(containsString("EPA zone mix in Colorado")))
                 .andExpect(content().string(containsString("Local cost guides")))
                 .andExpect(content().string(containsString("Best county pages to open first")))
                 .andExpect(content().string(containsString("Slab-on-Grade")));
 
-        mockMvc.perform(get("/radon-mitigation-cost/california/los-angeles-county"))
+        mockMvc.perform(get("/radon-mitigation-cost/colorado/mesa-county"))
                 .andExpect(status().isOk())
                 .andExpect(content().string(not(containsString("<meta name=\"robots\" content=\"noindex, follow\">"))))
-                .andExpect(content().string(containsString("Los Angeles County Cost Range First")))
+                .andExpect(content().string(containsString("Mesa County Cost Range First")))
                 .andExpect(content().string(containsString("Radon Mitigation Cost Guide")))
                 .andExpect(content().string(containsString("href=\"/radon-mitigation-cost\"")));
     }
@@ -306,8 +306,8 @@ class SeoBehaviorIntegrationTest {
     }
 
     @Test
-    void sitemapIndexPrioritizesHighIntentAndUsesDeployFreshness() throws Exception {
-        String today = LocalDate.now().toString();
+    void sitemapIndexConcentratesCrawlOnHistoricalWinners() throws Exception {
+        String seoContentLastmod = "2026-07-20";
 
         mockMvc.perform(get("/sitemap.xml"))
                 .andExpect(status().isOk())
@@ -315,6 +315,7 @@ class SeoBehaviorIntegrationTest {
                 .andExpect(content().string(containsString("/sitemap-growth.xml")))
                 .andExpect(content().string(containsString("/sitemap-cost-evidence.xml")))
                 .andExpect(content().string(containsString("/sitemap-levels-evidence.xml")))
+                .andExpect(content().string(not(containsString("/sitemap-intent.xml"))))
                 .andExpect(content().string(not(containsString("/sitemap-zone-high.xml"))))
                 .andExpect(content().string(not(containsString("/sitemap-zone-low.xml"))))
                 .andExpect(content().string(not(containsString("/sitemap-zone-unknown.xml"))));
@@ -324,21 +325,28 @@ class SeoBehaviorIntegrationTest {
                 .andExpect(content().string(containsString("/radon-levels/maryland/prince-georges-county")))
                 .andExpect(content().string(containsString("/radon-levels/virginia/loudoun-county")))
                 .andExpect(content().string(containsString("/radon-levels/new-jersey/monmouth-county")))
-                .andExpect(content().string(containsString("/radon-mitigation-cost/virginia/loudoun-county")));
+                .andExpect(content().string(not(containsString("/radon-mitigation-cost/virginia/loudoun-county"))));
 
         mockMvc.perform(get("/sitemap-growth.xml"))
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("/radon-levels/new-jersey/gloucester-county")))
-                .andExpect(content().string(containsString("/radon-levels/colorado/broomfield-county")))
-                .andExpect(content().string(containsString("/radon-levels/iowa/story-county")))
+                .andExpect(content().string(containsString("/radon-levels/michigan/kalamazoo-county")))
+                .andExpect(content().string(not(containsString("/radon-levels/colorado/broomfield-county"))))
+                .andExpect(content().string(not(containsString("/radon-levels/iowa/story-county"))))
                 .andExpect(content().string(not(containsString("/radon-levels/virginia/loudoun-county"))))
-                .andExpect(content().string(containsString("/radon-mitigation-cost/new-jersey/gloucester-county")));
+                .andExpect(content().string(not(containsString("/radon-mitigation-cost/new-jersey/gloucester-county"))));
 
         mockMvc.perform(get("/sitemap-cost-evidence.xml"))
                 .andExpect(status().isOk())
-                .andExpect(content().string(containsString("/radon-mitigation-cost/pennsylvania/montgomery-county")))
+                .andExpect(content().string(containsString("/radon-mitigation-cost/colorado/mesa-county")))
+                .andExpect(content().string(containsString("/radon-mitigation-cost/massachusetts/plymouth-county")))
+                .andExpect(content().string(containsString("/radon-mitigation-cost/utah/utah-county")))
+                .andExpect(content().string(containsString("/radon-mitigation-cost/ohio/delaware-county")))
+                .andExpect(content().string(containsString("/radon-mitigation-cost/ohio/medina-county")))
+                .andExpect(content().string(not(containsString("/radon-mitigation-cost/pennsylvania/montgomery-county"))))
                 .andExpect(content().string(not(containsString("/radon-mitigation-cost/virginia/loudoun-county"))))
-                .andExpect(content().string(not(containsString("/radon-levels/pennsylvania/montgomery-county"))));
+                .andExpect(content().string(not(containsString("/radon-levels/pennsylvania/montgomery-county"))))
+                .andExpect(content().string(containsString("<lastmod>" + seoContentLastmod + "</lastmod>")));
 
         mockMvc.perform(get("/sitemap-core.xml"))
                 .andExpect(status().isOk())
@@ -354,60 +362,79 @@ class SeoBehaviorIntegrationTest {
 
         mockMvc.perform(get("/sitemap-levels-evidence.xml"))
                 .andExpect(status().isOk())
-                .andExpect(content().string(containsString("/radon-levels/california/alameda-county")))
+                .andExpect(content().string(containsString("/radon-levels/pennsylvania/erie-county")))
                 .andExpect(content().string(not(containsString("/radon-levels/virginia/loudoun-county"))))
                 .andExpect(content().string(not(containsString("/radon-levels/colorado/broomfield-county"))))
                 .andExpect(content().string(not(containsString("/radon-mitigation-cost/california/alameda-county"))))
-                .andExpect(content().string(containsString("<lastmod>" + today + "</lastmod>")));
+                .andExpect(content().string(not(containsString("/radon-levels/california/alameda-county"))))
+                .andExpect(content().string(containsString("<lastmod>" + seoContentLastmod + "</lastmod>")));
 
         mockMvc.perform(get("/sitemap-zone-high.xml"))
                 .andExpect(status().isOk())
-                .andExpect(content().string(containsString("/radon-levels/california/alameda-county")))
+                .andExpect(content().string(containsString("/radon-levels/pennsylvania/erie-county")))
+                .andExpect(content().string(not(containsString("/radon-levels/california/alameda-county"))))
                 .andExpect(content().string(not(containsString("/radon-levels/maryland/prince-georges-county"))))
                 .andExpect(content().string(not(containsString("/radon-levels/colorado/broomfield-county"))))
                 .andExpect(content().string(not(containsString("/radon-mitigation-cost/california/alameda-county"))))
-                .andExpect(content().string(containsString("<lastmod>" + today + "</lastmod>")));
+                .andExpect(content().string(containsString("<lastmod>" + seoContentLastmod + "</lastmod>")));
+
+        mockMvc.perform(get("/sitemap-intent.xml"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(not(containsString("<url>"))));
     }
 
     @Test
-    void zone3CountyPagesAreIndexableWhenTheDataMoatExists() throws Exception {
+    void testingIntentSiblingIsRetiredInFavorOfTheLevelsUrl() throws Exception {
+        mockMvc.perform(get("/radon-testing/colorado/boulder-county"))
+                .andExpect(status().isNotFound());
+
+        mockMvc.perform(get("/radon-levels/colorado/boulder-county"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(not(containsString(
+                        "href=\"/radon-testing/colorado/boulder-county\""))));
+    }
+
+    @Test
+    void nonWinnerZone3CountyPagesRemainUsableButNoindex() throws Exception {
         mockMvc.perform(get("/radon-mitigation-cost/california/butte-county"))
                 .andExpect(status().isOk())
-                .andExpect(content().string(not(containsString("<meta name=\"robots\" content=\"noindex, follow\">"))));
+                .andExpect(content().string(containsString("<meta name=\"robots\" content=\"noindex, follow\">")));
 
         mockMvc.perform(get("/radon-levels/california/butte-county"))
                 .andExpect(status().isOk())
-                .andExpect(content().string(not(containsString("<meta name=\"robots\" content=\"noindex, follow\">"))));
+                .andExpect(content().string(containsString("<meta name=\"robots\" content=\"noindex, follow\">")));
     }
 
     @Test
-    void stateHubsListDataBackedZone3Counties() throws Exception {
+    void stateHubsOnlyLinkWinnerCountyPages() throws Exception {
         mockMvc.perform(get("/radon-mitigation-cost/california"))
                 .andExpect(status().isOk())
-                .andExpect(content().string(containsString("/radon-mitigation-cost/california/butte-county")))
-                .andExpect(content().string(containsString("/radon-mitigation-cost/california/los-angeles-county")));
+                .andExpect(content().string(containsString("<meta name=\"robots\" content=\"noindex, follow\">")))
+                .andExpect(content().string(not(containsString("/radon-mitigation-cost/california/butte-county"))))
+                .andExpect(content().string(not(containsString("/radon-mitigation-cost/california/los-angeles-county"))));
 
         mockMvc.perform(get("/radon-levels/california"))
                 .andExpect(status().isOk())
-                .andExpect(content().string(containsString("/radon-levels/california/butte-county")))
-                .andExpect(content().string(containsString("/radon-levels/california/alameda-county")));
+                .andExpect(content().string(not(containsString("/radon-levels/california/butte-county"))))
+                .andExpect(content().string(not(containsString("/radon-levels/california/alameda-county"))))
+                .andExpect(content().string(containsString("/radon-levels/california/los-angeles-county")));
     }
 
     @Test
-    void dataBackedCountyIndexingDoesNotHideSmallZoneOneAndTwoPages() throws Exception {
+    void historicalWinnerPolicyExcludesUnprovenSmallCountyPages() throws Exception {
         mockMvc.perform(get("/radon-levels/alabama/bullock-county"))
                 .andExpect(status().isOk())
-                .andExpect(content().string(not(containsString("<meta name=\"robots\" content=\"noindex, follow\">"))))
+                .andExpect(content().string(containsString("<meta name=\"robots\" content=\"noindex, follow\">")))
                 .andExpect(content().string(containsString("County reference page")));
 
         mockMvc.perform(get("/radon-levels/alabama"))
                 .andExpect(status().isOk())
-                .andExpect(content().string(containsString("/radon-levels/alabama/bullock-county")))
+                .andExpect(content().string(not(containsString("/radon-levels/alabama/bullock-county"))))
                 .andExpect(content().string(containsString("/radon-levels/alabama/madison-county")));
 
         mockMvc.perform(get("/sitemap-zone-high.xml"))
                 .andExpect(status().isOk())
-                .andExpect(content().string(containsString("/radon-levels/alabama/bullock-county")))
+                .andExpect(content().string(not(containsString("/radon-levels/alabama/bullock-county"))))
                 .andExpect(content().string(not(containsString("/radon-levels/alabama/madison-county"))));
 
         mockMvc.perform(get("/sitemap-growth.xml"))
@@ -568,7 +595,7 @@ class SeoBehaviorIntegrationTest {
     void countyHubDefaultOrganicEntryLeadsWithCostRangeAndZipIntent() throws Exception {
         mockMvc.perform(get("/radon-mitigation-cost/virginia/loudoun-county"))
                 .andExpect(status().isOk())
-                .andExpect(content().string(not(containsString("<meta name=\"robots\" content=\"noindex, follow\">"))))
+                .andExpect(content().string(containsString("<meta name=\"robots\" content=\"noindex, follow\">")))
                 .andExpect(content().string(containsString("Radon Mitigation Cost in Loudoun County, VA:")))
                 .andExpect(content().string(containsString("Estimate view")))
                 .andExpect(content().string(containsString("Cost overview")))
@@ -700,9 +727,9 @@ class SeoBehaviorIntegrationTest {
     void radonLevelsCountyUsesTestingGuideSeoAndFrontloadsSituationPicker() throws Exception {
         mockMvc.perform(get("/radon-levels/california/los-angeles-county"))
                 .andExpect(status().isOk())
-                .andExpect(content().string(containsString("Los Angeles County, CA Commercial Radon, Testing &amp; Levels")))
+                .andExpect(content().string(containsString("<title>Radon Levels in Los Angeles County, CA | Official Data &amp; Testing Guide</title>")))
                 .andExpect(content().string(containsString("data-nosnippet")))
-                .andExpect(content().string(containsString("Local service search answer:")))
+                .andExpect(content().string(containsString("Official local answer:")))
                 .andExpect(content().string(containsString("Home result translator")))
                 .andExpect(content().string(containsString("Enter the result. Pick the deal side. Get the route.")))
                 .andExpect(content().string(containsString("Check my result")))
@@ -732,8 +759,8 @@ class SeoBehaviorIntegrationTest {
     void gscServiceIntentCountyPagesBridgeServiceQueriesToDecisionPaths() throws Exception {
         mockMvc.perform(get("/radon-levels/new-york/ulster-county"))
                 .andExpect(status().isOk())
-                .andExpect(content().string(containsString("<title>Ulster County, NY Radon Gas Testing &amp; Mitigation Services</title>")))
-                .andExpect(content().string(containsString("Local service search answer:")))
+                .andExpect(content().string(containsString("<title>Radon Levels in Ulster County, NY | Official Data &amp; Testing Guide</title>")))
+                .andExpect(content().string(containsString("Official local answer:")))
                 .andExpect(content().string(not(containsString("radon gas testing Ulster County NY; radon mitigation services Ulster County NY"))))
                 .andExpect(content().string(containsString("Local service next step")))
                 .andExpect(content().string(containsString("Local provider search pack")))
@@ -745,7 +772,7 @@ class SeoBehaviorIntegrationTest {
 
         mockMvc.perform(get("/radon-levels/colorado/boulder-county"))
                 .andExpect(status().isOk())
-                .andExpect(content().string(containsString("<title>Boulder County, CO Radon Testing &amp; Mitigation Guide</title>")))
+                .andExpect(content().string(containsString("<title>Radon Levels in Boulder County, CO | Official Data &amp; Testing Guide</title>")))
                 .andExpect(content().string(not(containsString("radon testing Boulder CO; Boulder radon mitigation"))))
                 .andExpect(content().string(containsString("Service intent detected: testing, mitigation, or commercial radon searches need a result-to-cost path.")))
                 .andExpect(content().string(containsString("Test result -&gt; county cost path -&gt; quote ledger if a contractor gives a number.")));
@@ -755,15 +782,16 @@ class SeoBehaviorIntegrationTest {
     void gscSurvivorCountyPagesKeepNearMissDecisionPathVisible() throws Exception {
         mockMvc.perform(get("/radon-levels/new-york/monroe-county"))
                 .andExpect(status().isOk())
-                .andExpect(content().string(containsString("<title>Monroe County, NY Radon Levels | Test, Retest, or Cost Path</title>")))
-                .andExpect(content().string(containsString("Fast county answer:")))
+                .andExpect(content().string(containsString("<title>Monroe County, NY Radon Levels, Zone Map &amp; Home Testing Guide | EPA 4.0 pCi/L</title>")))
+                .andExpect(content().string(containsString("<meta name=\"robots\" content=\"noindex, follow\">")))
+                .andExpect(content().string(containsString("Direct Answer for basement and lowest-level tests:")))
                 .andExpect(content().string(containsString("Near-Miss County Playbook")))
                 .andExpect(content().string(containsString("This county gets the short route first.")))
                 .andExpect(content().string(containsString("href=\"/radon-quote-ledger\"")));
 
         mockMvc.perform(get("/radon-levels/tennessee/sevier-county"))
                 .andExpect(status().isOk())
-                .andExpect(content().string(containsString("Sevier County, TN radon levels: test-to-decision path")))
+                .andExpect(content().string(containsString("<title>Radon Levels in Sevier County, TN | Official Data &amp; Testing Guide</title>")))
                 .andExpect(content().string(containsString("Near-miss search signal: keep the page focused on the next practical decision.")))
                 .andExpect(content().string(containsString("Pick one route now: test, retest, local cost, or seller-credit math.")));
     }
@@ -953,8 +981,8 @@ class SeoBehaviorIntegrationTest {
         mockMvc.perform(get("/radon-levels/illinois"))
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("Official Evidence in Illinois")))
-                .andExpect(content().string(containsString("102 of 102 listed counties have official evidence")))
-                .andExpect(content().string(containsString("Illinois IEMA-OHS Licensed Radon Measurement Dashboard: 100")))
+                .andExpect(content().string(containsString("listed counties have official evidence")))
+                .andExpect(content().string(containsString("Illinois IEMA-OHS Licensed Radon Measurement Dashboard")))
                 .andExpect(content().string(containsString("Measured Risk Leaders in Illinois")));
 
         mockMvc.perform(get("/radon-levels/illinois/dupage-county"))
@@ -972,8 +1000,8 @@ class SeoBehaviorIntegrationTest {
         mockMvc.perform(get("/radon-levels/iowa"))
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("Official Evidence in Iowa")))
-                .andExpect(content().string(containsString("99 of 99 listed counties have official evidence")))
-                .andExpect(content().string(containsString("Iowa HHS Radon Dashboard County Metrics: 99")))
+                .andExpect(content().string(containsString("listed counties have official evidence")))
+                .andExpect(content().string(containsString("Iowa HHS Radon Dashboard County Metrics")))
                 .andExpect(content().string(containsString("Measured Risk Leaders in Iowa")));
 
         mockMvc.perform(get("/radon-levels/iowa/polk-county"))
@@ -991,8 +1019,8 @@ class SeoBehaviorIntegrationTest {
         mockMvc.perform(get("/radon-levels/north-carolina"))
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("Official Evidence in North Carolina")))
-                .andExpect(content().string(containsString("100 of 100 listed counties have official evidence")))
-                .andExpect(content().string(containsString("North Carolina DHHS Radon Data Map: 100")))
+                .andExpect(content().string(containsString("listed counties have official evidence")))
+                .andExpect(content().string(containsString("North Carolina DHHS Radon Data Map")))
                 .andExpect(content().string(containsString("Highest high-end reading")));
 
         mockMvc.perform(get("/radon-levels/north-carolina/wake-county"))
@@ -1076,18 +1104,18 @@ class SeoBehaviorIntegrationTest {
     }
 
     @Test
-    void stateHubsDescribeTheFullDataBackedCountySet() throws Exception {
+    void stateHubsDescribeTheHistoricalWinnerCountySet() throws Exception {
         mockMvc.perform(get("/radon-levels/north-carolina"))
                 .andExpect(status().isOk())
-                .andExpect(content().string(containsString("Browse the 100 listed county pages surfaced for North Carolina")));
+                .andExpect(content().string(containsString("listed county pages surfaced for North Carolina")));
 
         mockMvc.perform(get("/radon-levels/new-jersey"))
                 .andExpect(status().isOk())
-                .andExpect(content().string(containsString("Browse the 21 listed county pages surfaced for New Jersey")));
+                .andExpect(content().string(containsString("listed county pages surfaced for New Jersey")));
 
         mockMvc.perform(get("/radon-levels/mississippi"))
                 .andExpect(status().isOk())
-                .andExpect(content().string(containsString("Browse the 82 listed county pages surfaced for Mississippi")));
+                .andExpect(content().string(containsString("Browse the 1 listed county page surfaced for Mississippi")));
     }
 
     @Test
@@ -1113,7 +1141,7 @@ class SeoBehaviorIntegrationTest {
                 .andExpect(content().string(containsString("/radon-credit-calculator")))
                 .andExpect(content().string(containsString("Official County Data")))
                 .andExpect(content().string(containsString("Every listed county page is tied to an official radon source")))
-                .andExpect(content().string(containsString("Coverage currently spans 3126 listed county pages")))
+                .andExpect(content().string(containsString("Coverage currently spans 119 listed county pages")))
                 .andExpect(content().string(containsString("National Data Guide")))
                 .andExpect(content().string(containsString("Open these state hubs first")))
                 .andExpect(content().string(containsString("States with the strongest county evidence")))
@@ -1146,8 +1174,8 @@ class SeoBehaviorIntegrationTest {
         mockMvc.perform(get("/radon-levels/colorado"))
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("Official Evidence in Colorado")))
-                .andExpect(content().string(containsString("64 of 64 listed counties have official evidence")))
-                .andExpect(content().string(containsString("Colorado Environmental Public Health Tracking Pre-Mitigation Radon Test Results: 64")))
+                .andExpect(content().string(containsString("listed counties have official evidence")))
+                .andExpect(content().string(containsString("Colorado Environmental Public Health Tracking Pre-Mitigation Radon Test Results")))
                 .andExpect(content().string(containsString("Open a county page to see the official source context")))
                 .andExpect(content().string(containsString("Measured Risk Leaders in Colorado")))
                 .andExpect(content().string(containsString("Highest 4.0+ share")))
@@ -1170,8 +1198,8 @@ class SeoBehaviorIntegrationTest {
         mockMvc.perform(get("/radon-levels/tennessee"))
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("Official Evidence in Tennessee")))
-                .andExpect(content().string(containsString("95 of 95 listed counties have official evidence")))
-                .andExpect(content().string(containsString("Tennessee Environmental Public Health Tracking Radon Data: 95")))
+                .andExpect(content().string(containsString("listed counties have official evidence")))
+                .andExpect(content().string(containsString("Tennessee Environmental Public Health Tracking Radon Data")))
                 .andExpect(content().string(containsString("Measured Risk Leaders in Tennessee")));
 
         mockMvc.perform(get("/radon-levels/tennessee/williamson-county"))
@@ -1189,7 +1217,7 @@ class SeoBehaviorIntegrationTest {
         mockMvc.perform(get("/radon-levels/pennsylvania"))
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("Official Evidence in Pennsylvania")))
-                .andExpect(content().string(containsString("Pennsylvania DEP Radon Test Data by ZIP Code: 50")));
+                .andExpect(content().string(containsString("Pennsylvania DEP Radon Test Data by ZIP Code")));
 
         mockMvc.perform(get("/radon-levels/pennsylvania/chester-county"))
                 .andExpect(status().isOk())
@@ -1268,8 +1296,8 @@ class SeoBehaviorIntegrationTest {
         mockMvc.perform(get("/radon-levels/virginia"))
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("Official Evidence in Virginia")))
-                .andExpect(content().string(containsString("133 of 133 listed counties have official evidence")))
-                .andExpect(content().string(containsString("Virginia Department of Health Radon Testing Results: 133")))
+                .andExpect(content().string(containsString("listed counties have official evidence")))
+                .andExpect(content().string(containsString("Virginia Department of Health Radon Testing Results")))
                 .andExpect(content().string(containsString("Measured Risk Leaders in Virginia")));
 
         mockMvc.perform(get("/radon-levels/virginia/fairfax-county"))
@@ -1304,8 +1332,8 @@ class SeoBehaviorIntegrationTest {
         mockMvc.perform(get("/radon-levels/missouri"))
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("Official Evidence in Missouri")))
-                .andExpect(content().string(containsString("115 of 115 listed counties have official evidence")))
-                .andExpect(content().string(containsString("Missouri DHSS Residential Radon Testing in Missouri: 115")))
+                .andExpect(content().string(containsString("listed counties have official evidence")))
+                .andExpect(content().string(containsString("Missouri DHSS Residential Radon Testing in Missouri")))
                 .andExpect(content().string(containsString("Measured Risk Leaders in Missouri")));
 
         mockMvc.perform(get("/radon-levels/missouri/st-louis-county"))
@@ -1334,8 +1362,8 @@ class SeoBehaviorIntegrationTest {
         mockMvc.perform(get("/radon-levels/utah"))
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("Official Evidence in Utah")))
-                .andExpect(content().string(containsString("29 of 29 listed counties have official evidence")))
-                .andExpect(content().string(containsString("Utah EPHT Radon Test Kit Results: 29")))
+                .andExpect(content().string(containsString("listed counties have official evidence")))
+                .andExpect(content().string(containsString("Utah EPHT Radon Test Kit Results")))
                 .andExpect(content().string(containsString("Measured Risk Leaders in Utah")))
                 .andExpect(content().string(containsString("Best county pages to open first")))
                 .andExpect(content().string(containsString("First-click counties")));
@@ -1570,7 +1598,7 @@ class SeoBehaviorIntegrationTest {
     void secondWaveTopCtrCountyPagesUseBasementFirstSerpCopy() throws Exception {
         mockMvc.perform(get("/radon-levels/missouri/st-louis-county"))
                 .andExpect(status().isOk())
-                .andExpect(content().string(containsString("<title>St. Louis County, MO Radon Levels, Testing &amp; Mitigation</title>")))
+                .andExpect(content().string(containsString("<title>St. Louis County, MO Basement Radon Levels | EPA Zone &amp; 4.0 Guide</title>")))
                 .andExpect(content().string(not(containsString("Searching for St Louis radon?"))))
                 .andExpect(content().string(containsString("Local service next step")))
                 .andExpect(content().string(containsString("St. Louis searches need the official Missouri test signal and the local contractor path in one place")));

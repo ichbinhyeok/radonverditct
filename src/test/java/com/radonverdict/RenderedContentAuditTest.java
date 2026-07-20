@@ -48,6 +48,7 @@ class RenderedContentAuditTest {
         int deepPages = 0;
         int totalWords = 0;
         int policyCandidates = 0;
+        int costPolicyCandidates = 0;
         int costQualityPasses = 0;
         int levelsQualityPasses = 0;
 
@@ -57,6 +58,9 @@ class RenderedContentAuditTest {
             structuralCohorts.merge(structuralFingerprint(county, renderedContent), 1, Integer::sum);
             if (seoIndexingPolicyService.isCountyIndexableCandidate(county)) {
                 policyCandidates++;
+            }
+            if (seoIndexingPolicyService.isCostPageIndexableCandidate(county)) {
+                costPolicyCandidates++;
             }
             PageQualityResult costQuality = pageQualityService.scoreMitigationCountyPage(county, page);
             if (costQuality.isIndexable()) {
@@ -88,17 +92,20 @@ class RenderedContentAuditTest {
         double levelsQualityRate = counties.isEmpty() ? 0.0 : levelsQualityPasses / (double) counties.size();
 
         System.out.printf(Locale.US,
-                "RENDERED_AUDIT pages=%d avgWords=%.1f evidenceRate=%.3f deepRate=%.3f distinctRate=%.3f largestCohort=%d policyRate=%.3f costQualityRate=%.3f levelsQualityRate=%.3f%n",
+                "RENDERED_AUDIT pages=%d avgWords=%.1f evidenceRate=%.3f deepRate=%.3f distinctRate=%.3f largestCohort=%d policyCandidates=%d costPolicyCandidates=%d policyRate=%.3f costQualityRate=%.3f levelsQualityRate=%.3f%n",
                 counties.size(), counties.isEmpty() ? 0.0 : totalWords / (double) counties.size(),
-                evidenceRate, deepRate, distinctRate, largestCohort, policyRate, costQualityRate, levelsQualityRate);
+                evidenceRate, deepRate, distinctRate, largestCohort, policyCandidates, costPolicyCandidates,
+                policyRate, costQualityRate, levelsQualityRate);
 
         assertThat(counties).isNotEmpty();
         assertThat(evidenceRate).as("county pages with local evidence blocks").isGreaterThanOrEqualTo(0.90);
         assertThat(deepRate).as("county pages with meaningful content depth").isGreaterThanOrEqualTo(0.90);
         assertThat(distinctRate).as("structurally distinct county page signatures").isGreaterThanOrEqualTo(0.10);
         assertThat(largestCohort).as("largest normalized content cohort").isLessThan(600);
-        assertThat(policyRate).as("data-backed counties admitted to the full-volume policy")
-                .isGreaterThanOrEqualTo(0.99);
+        assertThat(policyCandidates).as("historical levels winner cohort")
+                .isBetween(100, 200);
+        assertThat(costPolicyCandidates).as("historically clicked county cost cohort")
+                .isEqualTo(5);
         assertThat(costQualityRate).as("cost pages that remain indexable after runtime quality scoring")
                 .isGreaterThanOrEqualTo(0.99);
         assertThat(levelsQualityRate).as("levels pages that remain indexable after runtime quality scoring")

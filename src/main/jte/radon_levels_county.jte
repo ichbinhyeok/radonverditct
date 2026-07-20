@@ -414,12 +414,6 @@
 
     final String seoTitle = officialEvidenceSerpCounty
             ? seoPlaceLabel + " Radon Levels: " + evidenceSerpTitleMetric
-            : gscServiceIntentCounty
-            ? serviceSearchTitle
-            : gscDemandTestingCounty
-            ? seoPlaceLabel + " Radon Testing & Levels | EPA Zone Guide"
-            : gscSurvivorIntentCopyCounty
-            ? seoPlaceLabel + " Radon Levels | Test, Retest, or Cost Path"
             : epaZoneCtrPriorityCounty
             ? seoPlaceLabel + " EPA Radon Zone | Basement Levels & 4.0 Guide"
             : basementCtrPriorityCounty
@@ -436,15 +430,6 @@
 
     final String seoDescription = officialEvidenceSerpCounty
             ? evidenceSerpDescription
-            : gscServiceIntentCounty
-            ? "Use the " + seoPlaceLabel
-            + " decision path: confirm the reading, check county evidence, and open the local cost or quote path."
-            : gscDemandTestingCounty
-            ? "Compare radon testing options in " + seoPlaceLabel
-            + ", check the EPA zone, and use the local evidence to decide whether to test, retest, or plan mitigation."
-            : gscSurvivorIntentCopyCounty
-            ? "Check radon levels in " + seoPlaceLabel
-            + ", see the official county signal, and choose the fast path from first test to retest, cost, or seller-credit planning."
             : epaZoneCtrPriorityCounty
             ? "Check the EPA radon zone for " + seoPlaceLabel
             + ", see what that zone means for basement radon levels, and know when 2.0-3.9 versus 4.0+ changes the next step."
@@ -467,12 +452,6 @@
 
     final String heroTitle = epaZoneCtrPriorityCounty
             ? "EPA Radon Zone & Basement Testing in " + seoPlaceLabel
-            : gscServiceIntentCounty
-            ? "Radon testing, levels & next step in " + seoPlaceLabel
-            : gscDemandTestingCounty
-            ? "Radon Testing & Levels in " + seoPlaceLabel
-            : gscSurvivorIntentCopyCounty
-            ? seoPlaceLabel + " radon levels: test-to-decision path"
             : basementCtrPriorityCounty
             ? "Basement Radon Levels, EPA Zone & Test Meaning in " + seoPlaceLabel
             : nextStepCtrLiftCounty
@@ -487,10 +466,6 @@
 
     final String directAnswerLead = epaZoneCtrPriorityCounty
             ? "EPA zone answer first: "
-            : gscServiceIntentCounty
-            ? "Local service search answer: "
-            : gscSurvivorIntentCopyCounty
-            ? "Fast county answer: "
             : basementCtrPriorityCounty
             ? "Basement test answer: "
             : nextStepCtrLiftCounty
@@ -503,14 +478,7 @@
             ? "Official local answer: "
             : "Direct Answer for basement and lowest-level tests: ";
 
-    final String introIntentLead = gscServiceIntentCounty
-            ? "If you searched for radon gas testing, mitigation services, commercial radon, or a local contractor in "
-                    + county.getAreaDisplayName()
-                    + ", use this page to separate the reading from the hiring decision. Confirm the result first, then open the local cost or quote path."
-            : gscSurvivorIntentCopyCounty
-            ? "If you landed here from a " + county.getAreaDisplayName()
-                    + " radon-level search, start with the short lane: no reading yet, borderline result, or 4.0+ result."
-            : fallsChurchDecisionCounty
+    final String introIntentLead = fallsChurchDecisionCounty
             ? "If you are checking radon levels in a " + county.getAreaDisplayName()
                     + " basement, use the EPA zone as context first, then decide whether a 2.0-3.9 result needs a retest or a 4.0+ result needs mitigation planning."
             : schenectadyZoneCounty
@@ -1296,7 +1264,7 @@
             </div>
 
             @if(gscServiceIntentCounty || gscSurvivorNearMissCounty)
-                <section id="search-intent-bridge" class="mb-10 rounded-[1.75rem] border border-slate-200 bg-white p-5 sm:p-6 shadow-sm">
+                <section id="search-intent-bridge" data-nosnippet class="mb-10 rounded-[1.75rem] border border-slate-200 bg-white p-5 sm:p-6 shadow-sm">
                     <div class="grid gap-6 lg:grid-cols-[0.78fr_1.22fr] lg:items-start">
                         <div>
                             <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500">

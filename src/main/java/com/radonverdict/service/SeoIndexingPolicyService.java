@@ -163,13 +163,9 @@ public class SeoIndexingPolicyService {
             "virginia/clarke-county", "virginia/rockbridge-county", "new-york/sullivan-county",
             "virginia/danville-city", "new-jersey/bergen-county", "ohio/licking-county");
 
-    private static final Set<String> RECOVERY_MODE_COUNTY_SET = Set.copyOf(
-            java.util.stream.Stream.of(RECOVERY_TRAFFIC_COUNTY_SET, GROWTH_TRAFFIC_COUNTY_SET, GSC_SURVIVOR_COUNTIES)
-                    .flatMap(Set::stream)
-                    .toList());
-
     private static final Set<String> HISTORICAL_PRIORITY_COUNTIES = Set.of(
             "california/san-francisco-county",
+            "mississippi/alcorn-county",
             "colorado/boulder-county",
             "florida/marion-county",
             "idaho/ada-county",
@@ -216,44 +212,44 @@ public class SeoIndexingPolicyService {
             "illinois/kane-county",
             "alabama/madison-county");
 
+    private static final Set<String> LEVELS_WINNER_COUNTIES = Set.copyOf(
+            java.util.stream.Stream.of(
+                            RECOVERY_TRAFFIC_COUNTY_SET,
+                            GSC_SURVIVOR_COUNTIES,
+                            HISTORICAL_PRIORITY_COUNTIES)
+                    .flatMap(Set::stream)
+                    .toList());
+
+    // County cost URLs that earned an organic click during the pre-collapse window.
+    // All other county cost pages remain usable conversion pages, but are noindex.
+    private static final Set<String> HISTORICAL_COST_WINNER_COUNTIES = Set.of(
+            "massachusetts/plymouth-county",
+            "utah/utah-county",
+            "colorado/mesa-county",
+            "ohio/delaware-county",
+            "ohio/medina-county");
+
     private final DataLoadService dataLoadService;
 
     public SeoIndexingPolicyService(DataLoadService dataLoadService) {
         this.dataLoadService = dataLoadService;
     }
 
-    @Value("${app.site.index-zone3-pages:true}")
-    private boolean indexZone3Pages;
-
-    @Value("${app.site.priority-county-indexing:false}")
-    private boolean priorityCountyIndexing;
-
-    @Value("${app.site.recovery-only-indexing:false}")
-    private boolean recoveryOnlyIndexing;
-
     @Value("${app.site.index-evidence-rich-cost-pages:true}")
     private boolean indexEvidenceRichCostPages;
 
     public boolean isCountyIndexableCandidate(County county) {
-        if (!hasBaseIndexingEligibility(county)) {
-            return false;
-        }
-
-        if (recoveryOnlyIndexing) {
-            return RECOVERY_MODE_COUNTY_SET.contains(slugKey(county));
-        }
-
-        return !priorityCountyIndexing || isPriorityCountyCandidate(county);
+        return hasBaseIndexingEligibility(county)
+                && LEVELS_WINNER_COUNTIES.contains(slugKey(county));
     }
 
     public boolean isCostPageIndexableCandidate(County county) {
-        // Cost and levels pages share the same data-backed eligibility floor.
-        // Evidence and demand remain ranking signals, not reasons to hide an otherwise complete page.
-        return isCountyIndexableCandidate(county);
+        return hasBaseIndexingEligibility(county)
+                && HISTORICAL_COST_WINNER_COUNTIES.contains(slugKey(county));
     }
 
     public boolean includeZoneLowSitemap() {
-        return indexZone3Pages;
+        return false;
     }
 
     public boolean isRecoveryTrafficCandidate(County county) {
@@ -323,7 +319,7 @@ public class SeoIndexingPolicyService {
     }
 
     public boolean isEvidenceRichCostPageCandidate(County county) {
-        if (!indexEvidenceRichCostPages || !isCountyIndexableCandidate(county) || !hasOfficialRadonEvidence(county)) {
+        if (!indexEvidenceRichCostPages || !hasBaseIndexingEligibility(county) || !hasOfficialRadonEvidence(county)) {
             return false;
         }
 
@@ -398,8 +394,8 @@ public class SeoIndexingPolicyService {
         if (county.getEpaZone() <= 0) {
             return "missing_epa_zone";
         }
-        if (!indexZone3Pages && county.getEpaZone() == 3) {
-            return "zone3_paused";
+        if (HISTORICAL_COST_WINNER_COUNTIES.contains(slugKey(county))) {
+            return "historical_cost_winner";
         }
         if (isSearchTrafficCandidate(county)) {
             return "search_traffic_cohort";
@@ -431,7 +427,7 @@ public class SeoIndexingPolicyService {
             return false;
         }
 
-        return indexZone3Pages || county.getEpaZone() != 3;
+        return true;
     }
 
     private boolean hasOfficialRadonEvidence(County county) {
