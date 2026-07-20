@@ -184,6 +184,11 @@
                         <p class="mt-2 text-sm leading-relaxed text-slate-700">Use the state directory to open county pages backed by EPA zones, state measurement tables, CDC summaries, or official maps.</p>
                         <span class="mt-3 inline-flex text-xs font-black uppercase tracking-wider text-indigo-800">Browse counties &rarr;</span>
                     </a>
+                    <a href="/radon-testing/new-york/ulster-county" class="block rounded-xl border border-sky-200 bg-sky-50 p-4 transition-all hover:border-sky-300 hover:bg-sky-100 md:col-span-2">
+                        <p class="text-sm font-black text-sky-950">Radon gas testing in Ulster County, NY</p>
+                        <p class="mt-2 text-sm leading-relaxed text-slate-700">Use the dedicated local guide when the question is how to place the test, preserve closed-house conditions, and act on the result—not just what the county level data says.</p>
+                        <span class="mt-3 inline-flex text-xs font-black uppercase tracking-wider text-sky-800">Open the Ulster County testing guide &rarr;</span>
+                    </a>
                 </div>
             </section>
 

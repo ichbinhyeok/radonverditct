@@ -43,6 +43,10 @@ class SeoBehaviorIntegrationTest {
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("<title>RadonVerdict | Radon Result, Cost, and Next-Step Planner</title>")))
                 .andExpect(content().string(containsString("<link rel=\"canonical\" href=\"https://radonverdict.com/\">")))
+                .andExpect(content().string(containsString("href=\"/radon-testing/new-york/ulster-county\"")))
+                .andExpect(content().string(containsString("Radon gas testing in Ulster County, NY")))
+                .andExpect(content().string(containsString("href=\"/radon-mitigation-cost/massachusetts\"")))
+                .andExpect(content().string(containsString("Massachusetts radon mitigation cost")))
                 .andExpect(content().string(containsString("RadonVerdict")))
                 .andExpect(content().string(containsString("Decision console")))
                 .andExpect(content().string(containsString("Radon reading")))
@@ -315,7 +319,7 @@ class SeoBehaviorIntegrationTest {
                 .andExpect(content().string(containsString("/sitemap-growth.xml")))
                 .andExpect(content().string(containsString("/sitemap-cost-evidence.xml")))
                 .andExpect(content().string(containsString("/sitemap-levels-evidence.xml")))
-                .andExpect(content().string(not(containsString("/sitemap-intent.xml"))))
+                .andExpect(content().string(containsString("/sitemap-intent.xml")))
                 .andExpect(content().string(not(containsString("/sitemap-zone-high.xml"))))
                 .andExpect(content().string(not(containsString("/sitemap-zone-low.xml"))))
                 .andExpect(content().string(not(containsString("/sitemap-zone-unknown.xml"))));
@@ -380,11 +384,13 @@ class SeoBehaviorIntegrationTest {
 
         mockMvc.perform(get("/sitemap-intent.xml"))
                 .andExpect(status().isOk())
-                .andExpect(content().string(not(containsString("<url>"))));
+                .andExpect(content().string(containsString("/radon-testing/new-york/ulster-county")))
+                .andExpect(content().string(not(containsString("/radon-testing/colorado/boulder-county"))))
+                .andExpect(content().string(containsString("<lastmod>" + seoContentLastmod + "</lastmod>")));
     }
 
     @Test
-    void testingIntentSiblingIsRetiredInFavorOfTheLevelsUrl() throws Exception {
+    void onlyDemandProvenUlsterTestingIntentIsIndexable() throws Exception {
         mockMvc.perform(get("/radon-testing/colorado/boulder-county"))
                 .andExpect(status().isNotFound());
 
@@ -392,6 +398,26 @@ class SeoBehaviorIntegrationTest {
                 .andExpect(status().isOk())
                 .andExpect(content().string(not(containsString(
                         "href=\"/radon-testing/colorado/boulder-county\""))));
+
+        mockMvc.perform(get("/radon-testing/new-york/ulster-county"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(not(containsString("<meta name=\"robots\" content=\"noindex, follow\">"))))
+                .andExpect(content().string(containsString(
+                        "<title>Radon Gas Testing in Ulster County, NY | Local Data &amp; Test Steps</title>")))
+                .andExpect(content().string(containsString(
+                        "<link rel=\"canonical\" href=\"https://radonverdict.com/radon-testing/new-york/ulster-county\">")))
+                .andExpect(content().string(containsString("How to test a home in Ulster County")))
+                .andExpect(content().string(containsString("\"@type\": \"FAQPage\"")));
+
+        mockMvc.perform(get("/radon-levels/new-york/ulster-county"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString(
+                        "href=\"/radon-testing/new-york/ulster-county\"")));
+
+        mockMvc.perform(get("/radon-levels"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString(
+                        "href=\"/radon-testing/new-york/ulster-county\"")));
     }
 
     @Test
@@ -1507,6 +1533,13 @@ class SeoBehaviorIntegrationTest {
                 .andExpect(content().string(containsString("California Radon Map, Levels")))
                 .andExpect(content().string(containsString("Testing Guide by County")))
                 .andExpect(content().string(containsString("Check the California radon map by county")));
+
+        mockMvc.perform(get("/radon-mitigation-cost/massachusetts"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("What does radon mitigation cost in Massachusetts?")))
+                .andExpect(content().string(containsString(
+                        "href=\"/radon-mitigation-cost/massachusetts/plymouth-county\"")))
+                .andExpect(content().string(containsString("See Plymouth County mitigation cost")));
     }
 
     @Test

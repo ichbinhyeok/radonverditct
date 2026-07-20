@@ -51,6 +51,7 @@ public class SitemapController {
         addSitemapUrl(xml, "/sitemap-growth.xml");
         addSitemapUrl(xml, "/sitemap-cost-evidence.xml");
         addSitemapUrl(xml, "/sitemap-levels-evidence.xml");
+        addSitemapUrl(xml, "/sitemap-intent.xml");
         addSitemapUrl(xml, "/sitemap-core.xml");
         if (includeBroadZoneSitemap) {
             addSitemapUrl(xml, "/sitemap-zone-high.xml");

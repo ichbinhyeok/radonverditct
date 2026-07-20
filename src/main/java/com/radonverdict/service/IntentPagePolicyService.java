@@ -6,10 +6,11 @@ import org.springframework.stereotype.Service;
 @Service
 public class IntentPagePolicyService {
 
+    private static final String ULSTER_COUNTY_TESTING_KEY = "new-york/ulster-county";
+
     public boolean isTestingIntentCandidate(County county) {
-        // Testing demand is consolidated into the county levels URL so Google sees
-        // one local informational page instead of competing levels/testing siblings.
-        return false;
+        return county != null
+                && ULSTER_COUNTY_TESTING_KEY.equals(county.getStateSlug() + "/" + county.getCountySlug());
     }
 
     public String testingPath(County county) {

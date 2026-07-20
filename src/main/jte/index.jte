@@ -182,6 +182,36 @@
 
         @template.components.situation_decoder()
 
+        <section class="border-b border-slate-200 bg-slate-50 py-10">
+            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="grid gap-4 lg:grid-cols-[0.72fr_1.28fr] lg:items-stretch">
+                    <div class="rounded-2xl bg-slate-950 p-6 text-white">
+                        <p class="text-xs font-bold uppercase tracking-[0.22em] text-emerald-300">Featured local evidence</p>
+                        <h2 class="mt-3 font-display text-2xl font-black tracking-tight">Start where the question is already specific.</h2>
+                        <p class="mt-3 text-sm font-medium leading-relaxed text-slate-300">
+                            These routes answer a real local decision directly: how to test in Ulster County and how to budget mitigation in Massachusetts.
+                        </p>
+                    </div>
+                    <div class="grid gap-4 sm:grid-cols-2">
+                        <a href="/radon-testing/new-york/ulster-county"
+                           class="group rounded-2xl border border-indigo-200 bg-white p-6 transition-all hover:border-indigo-400 hover:shadow-md">
+                            <p class="text-xs font-black uppercase tracking-wider text-indigo-700">Test first</p>
+                            <h3 class="mt-2 font-display text-xl font-black text-slate-950">Radon gas testing in Ulster County, NY</h3>
+                            <p class="mt-3 text-sm leading-relaxed text-slate-600">Placement, closed-house conditions, local evidence, and the next move after the result.</p>
+                            <span class="mt-4 inline-flex text-sm font-black text-indigo-800">Open the Ulster testing guide &rarr;</span>
+                        </a>
+                        <a href="/radon-mitigation-cost/massachusetts"
+                           class="group rounded-2xl border border-emerald-200 bg-white p-6 transition-all hover:border-emerald-400 hover:shadow-md">
+                            <p class="text-xs font-black uppercase tracking-wider text-emerald-700">Price the response</p>
+                            <h3 class="mt-2 font-display text-xl font-black text-slate-950">Massachusetts radon mitigation cost</h3>
+                            <p class="mt-3 text-sm leading-relaxed text-slate-600">Compare basement, slab, and crawl-space ranges, then open the Plymouth County evidence page.</p>
+                            <span class="mt-4 inline-flex text-sm font-black text-emerald-800">Open Massachusetts cost guidance &rarr;</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <section class="bg-white py-14 sm:py-16">
             <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
                 @template.components.search_intent_router(className = "mt-0")

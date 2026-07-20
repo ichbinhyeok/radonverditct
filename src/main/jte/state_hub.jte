@@ -41,6 +41,7 @@
     final long classifiedCountyCount = zone1Count + zone2Count + zone3Count;
     final boolean minnesotaCostCalibrationState = "minnesota".equals(stateSlug);
     final boolean indianaCostCalibrationState = "indiana".equals(stateSlug);
+    final boolean massachusettsCostFocus = "massachusetts".equals(stateSlug);
     final boolean officialCostCalibrationState = minnesotaCostCalibrationState || indianaCostCalibrationState;
     final String officialCostRange = minnesotaCostCalibrationState
             ? "$1,500-$3,000"
@@ -195,6 +196,38 @@
                             <p class="mt-4 text-sm leading-relaxed text-slate-600">
                                 ${classifiedCountyCount} classified counties are used for state-level risk context. EPA zones do not replace a home test, but they help explain why county pages and confirmed 4.0+ results matter before comparing quotes.
                             </p>
+                        </div>
+                    </div>
+                </section>
+            @endif
+
+            @if(massachusettsCostFocus && basementReceipt != null && slabReceipt != null && crawlspaceReceipt != null)
+                <section class="mb-10 rounded-2xl border border-emerald-200 bg-emerald-50 p-6 sm:p-8">
+                    <div class="grid gap-6 lg:grid-cols-[1.05fr_0.95fr] lg:items-start">
+                        <div>
+                            <p class="text-xs font-black uppercase tracking-[0.18em] text-emerald-700">Massachusetts cost answer</p>
+                            <h2 class="mt-2 font-display text-3xl font-black tracking-tight text-slate-950">What does radon mitigation cost in Massachusetts?</h2>
+                            <p class="mt-4 leading-relaxed text-slate-700">
+                                Start with the foundation range on this page, then use Plymouth County as the local evidence route. A contractor quote can move beyond the baseline when crawl-space membrane work, finished routing, sump sealing, electrical work, or a complex roof exit changes the scope.
+                            </p>
+                            <a href="/radon-mitigation-cost/massachusetts/plymouth-county"
+                               class="mt-5 inline-flex min-h-12 items-center justify-center rounded-xl bg-slate-950 px-5 text-sm font-black text-white hover:bg-slate-800">
+                                See Plymouth County mitigation cost
+                            </a>
+                        </div>
+                        <div class="grid gap-3 sm:grid-cols-3 lg:grid-cols-1">
+                            <div class="rounded-xl border border-emerald-200 bg-white p-4">
+                                <p class="text-xs font-bold uppercase tracking-wider text-emerald-700">Basement</p>
+                                <p class="mt-2 font-display text-2xl font-black text-slate-950">$${basementReceipt.getTotalLow()}-$${basementReceipt.getTotalHigh()}</p>
+                            </div>
+                            <div class="rounded-xl border border-emerald-200 bg-white p-4">
+                                <p class="text-xs font-bold uppercase tracking-wider text-emerald-700">Slab</p>
+                                <p class="mt-2 font-display text-2xl font-black text-slate-950">$${slabReceipt.getTotalLow()}-$${slabReceipt.getTotalHigh()}</p>
+                            </div>
+                            <div class="rounded-xl border border-emerald-200 bg-white p-4">
+                                <p class="text-xs font-bold uppercase tracking-wider text-emerald-700">Crawl space</p>
+                                <p class="mt-2 font-display text-2xl font-black text-slate-950">$${crawlspaceReceipt.getTotalLow()}-$${crawlspaceReceipt.getTotalHigh()}</p>
+                            </div>
                         </div>
                     </div>
                 </section>
