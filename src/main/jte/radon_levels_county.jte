@@ -29,6 +29,8 @@
 @param boolean monetizationHooksEnabled = false
 @param boolean showSeoDebug = false
 @param SearchDemandProfile demandProfile = null
+@param String testingIntentPath = null
+@param String commercialIntentPath = null
 !{
     final String seoCountyDisplay = county.getSeoDisplayName();
     final String seoPlaceLabel = seoCountyDisplay + ", " + county.getStateAbbr();
@@ -262,11 +264,15 @@
     final boolean recoveryFocusCounty = schenectadyZoneCounty
             || fallsChurchDecisionCounty
             || ulsterServiceSearchCounty;
-    final String heroTestingGuideUrl = ulsterServiceSearchCounty
-            ? "/radon-testing/new-york/ulster-county"
+    final String heroTestingGuideUrl = commercialIntentPath != null
+            ? commercialIntentPath
+            : testingIntentPath != null
+            ? testingIntentPath
             : "/guides/how-to-test-for-radon";
-    final String heroTestingGuideLabel = ulsterServiceSearchCounty
-            ? "Test a home in Ulster County"
+    final String heroTestingGuideLabel = commercialIntentPath != null
+            ? "Plan commercial testing"
+            : testingIntentPath != null
+            ? "Test a home in " + county.getAreaDisplayName()
             : "I Need to Test First";
     final boolean losAngelesCommercialSearchCounty =
             "california".equals(county.getStateSlug()) && "los-angeles-county".equals(county.getCountySlug());

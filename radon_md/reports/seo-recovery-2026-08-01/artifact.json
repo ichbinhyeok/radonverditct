@@ -1,0 +1,134 @@
+{
+  "surface": "report",
+  "manifest": {
+    "version": 1,
+    "surface": "report",
+    "title": "RadonVerdict Organic Recovery",
+    "description": "Search Console diagnosis and the controlled front-funnel recovery portfolio for August 2026.",
+    "generatedAt": "2026-08-01T02:05:00+09:00",
+    "charts": [
+      {
+        "id": "weekly_impressions",
+        "title": "Weekly Google impressions",
+        "subtitle": "May 1 through July 30 weekly buckets; the final bucket ends July 29.",
+        "type": "bar",
+        "dataset": "phase_performance",
+        "sourceId": "gsc_performance",
+        "encodings": {
+          "x": { "field": "period", "type": "nominal", "label": "Period" },
+          "y": { "field": "impressions", "type": "quantitative", "label": "Impressions" },
+          "tooltip": [
+            { "field": "clicks", "type": "quantitative", "label": "Clicks" },
+            { "field": "position", "type": "quantitative", "label": "Average position", "format": "number" }
+          ]
+        }
+      }
+    ],
+    "tables": [],
+    "sources": [
+      {
+        "id": "gsc_performance",
+        "label": "Google Search Console performance export",
+        "path": "queries/gsc_performance.sql"
+      },
+      {
+        "id": "gsc_query_page",
+        "label": "Google Search Console query-by-page export",
+        "path": "queries/gsc_query_page.sql"
+      }
+    ],
+    "blocks": [
+      {
+        "id": "executive_summary",
+        "type": "markdown",
+        "sourceId": "gsc_performance",
+        "body": "## Executive Summary\n\n- **The site is not at 100 clicks per day; it is in a very early recovery state.** From May 1 through July 29, Google's property-level aggregate recorded 12 clicks and 1,228 impressions. Eleven clicks and 620 impressions occurred in the first seven days, followed by only one click across the remaining 83 days.\n- **Indexing alone is no longer the central constraint.** Late-July impressions rose to 88 for the week starting July 24, but average position was 34.5. Google can crawl and surface the site; it does not yet rank enough useful landing pages for enough demand.\n- **The strongest current signal is local action intent.** Visible queries are concentrated in testing, mitigation, commercial testing, and EPA-zone questions. The recovery work therefore splits proven intent away from generic county-level pages and keeps the rest of the programmatic inventory quarantined.\n- **The target requires a portfolio, not one page.** At a 3–5% CTR, 100 clicks per day needs roughly 2,000–3,333 qualified impressions per day. The current work creates the first controlled portfolio; it does not claim the target has been reached."
+      },
+      {
+        "id": "collapse_shape",
+        "type": "markdown",
+        "sourceId": "gsc_performance",
+        "body": "## The collapse is real, but reach is beginning to re-form\n\nThe defining break happened immediately after the first week of May. Weekly impressions fell from 620 to 86 and average position deteriorated from 9.4 to 35.9. The last complete weekly bucket reached 88 impressions—better than the June floor, but still only 14% of the May 1 weekly level.\n\n**So what:** the recovery engine must grow both ranking depth and demand coverage. CTR work alone cannot bridge this gap."
+      },
+      {
+        "id": "intent_mismatch",
+        "type": "markdown",
+        "sourceId": "gsc_query_page",
+        "body": "## Google is finding demand, then choosing the wrong page\n\nThe largest visible cluster—`radon gas testing ulster county ny`—was sent to a general radon-level page for 165 impressions at an average position of 54.7. Los Angeles commercial-radon searches were also sent to a homeowner-oriented county evidence page at positions 84–90. Powhatan testing reached position 18.8 without a testing-specific landing. Transylvania mitigation earned seven impressions at position 22.7 while its cost page remained quarantined.\n\n**So what:** these are not prompts for dozens of generic articles. They are evidence that the existing local evidence pages need a small number of intent-matched children, supported by the parent county and national hubs."
+      },
+      { "id": "weekly_chart", "type": "chart", "chartId": "weekly_impressions" },
+      {
+        "id": "portfolio_intro",
+        "type": "markdown",
+        "sourceId": "gsc_query_page",
+        "body": "## The August portfolio opens only demand-backed surfaces\n\n- **Ulster, Powhatan, Broomfield, and Bernalillo:** dedicated local testing pages, linked from their county evidence pages and the national levels hub.\n- **Los Angeles County:** a separate commercial and multifamily testing protocol with CDPH provider verification; the county page remains the levels-data owner.\n- **Douglas County, Minnesota:** moved into the cost-evidence sitemap after an explicit mitigation-system-cost query reached position 20.\n- **Transylvania County, North Carolina:** moved into the cost-evidence sitemap after seven explicit mitigation impressions at position 22.7.\n- **Guardrail:** all non-cohort county cost pages remain noindex. There is no broad programmatic release."
+      },
+      {
+        "id": "next_steps",
+        "type": "markdown",
+        "body": "## Recommended next steps\n\n1. **Hold the new URL and title contracts for 21 days.** Do not rewrite them before Google has recrawled and query-to-page assignment can be measured.\n2. **Measure the portfolio weekly at query × page grain.** Promote a page only when non-site impressions or clicks rise; quarantine pages that produce no demand after a fair crawl window.\n3. **Build the next national asset from new GSC evidence.** The result interpreter and testing guide are already live. The next asset should come from fresh query growth, not a keyword list invented outside Search Console.\n4. **Add authority outside the codebase.** Local health programs, inspectors, and evidence citations are the realistic route to the links and mentions required for a 77×–128× impression expansion."
+      },
+      {
+        "id": "questions",
+        "type": "markdown",
+        "body": "## Further questions\n\n- Will Google reassign Ulster and Powhatan testing queries to their new intent pages after crawl?\n- Does the Los Angeles commercial page gain position faster than the existing county evidence page?\n- Do Douglas County and Transylvania County cost pages retain or improve their current page-two/three rankings once indexable?\n- Which national non-brand query first produces sustained impressions for the result interpreter or testing guide?"
+      },
+      {
+        "id": "caveats",
+        "type": "markdown",
+        "sourceId": "gsc_query_page",
+        "body": "## Caveats and assumptions\n\nSearch Console suppresses some low-volume query rows for privacy. Page-grouped impressions also summed above the property aggregate because multiple result URLs can be counted separately; the property-level no-dimension aggregate of 12 clicks and 1,228 impressions controls the headline. The newest days can be preliminary. Average position is impression-weighted and can move with query mix. Search Console evidence supports prioritization, not a guarantee of future ranking or a causal claim that a single code change will produce traffic."
+      }
+    ]
+  },
+  "snapshot": {
+    "version": 1,
+    "generatedAt": "2026-08-01T02:05:00+09:00",
+    "status": "partial",
+    "datasets": {
+      "phase_performance": [
+        { "period": "May 1–7", "clicks": 11, "impressions": 620, "position": 9.35 },
+        { "period": "May 8–Jun 4", "clicks": 0, "impressions": 273, "position": 40.20 },
+        { "period": "Jun 5–Jul 2", "clicks": 1, "impressions": 103, "position": 44.86 },
+        { "period": "Jul 3–29", "clicks": 0, "impressions": 232, "position": 42.83 }
+      ],
+      "weekly_performance": [
+        { "week_start": "2026-05-01", "week_label": "May 1", "clicks": 11, "impressions": 620, "ctr": 0.0177, "position": 9.35 },
+        { "week_start": "2026-05-08", "week_label": "May 8", "clicks": 0, "impressions": 86, "ctr": 0, "position": 35.93 },
+        { "week_start": "2026-05-15", "week_label": "May 15", "clicks": 0, "impressions": 101, "ctr": 0, "position": 41.20 },
+        { "week_start": "2026-05-22", "week_label": "May 22", "clicks": 0, "impressions": 56, "ctr": 0, "position": 43.39 },
+        { "week_start": "2026-05-29", "week_label": "May 29", "clicks": 0, "impressions": 30, "ctr": 0, "position": 44.07 },
+        { "week_start": "2026-06-05", "week_label": "Jun 5", "clicks": 1, "impressions": 17, "ctr": 0.0588, "position": 40.94 },
+        { "week_start": "2026-06-12", "week_label": "Jun 12", "clicks": 0, "impressions": 18, "ctr": 0, "position": 51.67 },
+        { "week_start": "2026-06-19", "week_label": "Jun 19", "clicks": 0, "impressions": 31, "ctr": 0, "position": 50.58 },
+        { "week_start": "2026-06-26", "week_label": "Jun 26", "clicks": 0, "impressions": 37, "ctr": 0, "position": 36.11 },
+        { "week_start": "2026-07-03", "week_label": "Jul 3", "clicks": 0, "impressions": 45, "ctr": 0, "position": 46.29 },
+        { "week_start": "2026-07-10", "week_label": "Jul 10", "clicks": 0, "impressions": 36, "ctr": 0, "position": 49.44 },
+        { "week_start": "2026-07-17", "week_label": "Jul 17", "clicks": 0, "impressions": 63, "ctr": 0, "position": 48.30 },
+        { "week_start": "2026-07-24", "week_label": "Jul 24", "clicks": 0, "impressions": 88, "ctr": 0, "position": 34.47 }
+      ],
+      "query_opportunities": [
+        { "query": "radon gas testing ulster county ny", "impressions": 165, "position": 54.72, "landing": "/radon-levels/new-york/ulster-county" },
+        { "query": "radon mitigation services ulster county ny", "impressions": 29, "position": 65.86, "landing": "/radon-levels/new-york/ulster-county" },
+        { "query": "radon levels in basement testing falls church va", "impressions": 26, "position": 59.62, "landing": "/radon-levels/virginia/falls-church-city" },
+        { "query": "radon levels in basement falls church va", "impressions": 15, "position": 37.47, "landing": "/radon-levels/virginia/falls-church-city" },
+        { "query": "schenectady county ny epa radon zone", "impressions": 9, "position": 3.11, "landing": "/radon-levels/new-york/schenectady-county" },
+        { "query": "los angeles commercial radon", "impressions": 8, "position": 89.88, "landing": "/radon-levels/california/los-angeles-county" },
+        { "query": "transylvania radon mitigation", "impressions": 7, "position": 22.71, "landing": "/radon-mitigation-cost/north-carolina/transylvania-county" },
+        { "query": "radon testing powhatan va", "impressions": 6, "position": 18.83, "landing": "/radon-levels/virginia/powhatan-county" }
+      ]
+    }
+  },
+  "sources": [
+    {
+      "id": "gsc_performance",
+      "path": "https://search.google.com/search-console/performance/search-analytics?resource_id=sc-domain%3Aradonverdict.com",
+      "description": "Page-level and date-level Search Analytics API export for 2026-05-01 through 2026-07-29, dataState=all. Clicks are result clicks; impressions are result appearances; position is the impression-weighted topmost result position. Exported 2026-08-01 01:45 KST."
+    },
+    {
+      "id": "gsc_query_page",
+      "path": "https://search.google.com/search-console/performance/search-analytics?resource_id=sc-domain%3Aradonverdict.com",
+      "description": "Query-by-page Search Analytics API export for 2026-05-01 through 2026-07-29, excluding site: operator rows for opportunity analysis. Exported 2026-08-01 01:45 KST."
+    }
+  ]
+}

@@ -234,6 +234,11 @@ public class SitemapController {
                 .forEach(county -> addUrl(xml, intentPagePolicyService.testingPath(county), "0.75",
                         resolveCountyLastmod(county)));
 
+        dataLoadService.getCountyBySlugMap().values().stream()
+                .filter(intentPagePolicyService::isCommercialIntentCandidate)
+                .forEach(county -> addUrl(xml, intentPagePolicyService.commercialPath(county), "0.8",
+                        resolveCountyLastmod(county)));
+
         xml.append("</urlset>");
         return xml.toString();
     }

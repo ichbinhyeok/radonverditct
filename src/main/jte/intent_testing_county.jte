@@ -10,6 +10,12 @@
 
 !{
     final String placeLabel = county.getAreaDisplayName() + ", " + county.getStateAbbr();
+    final String countyLabel = county.getAreaDisplayName();
+    final String stateName = java.util.Arrays.stream(county.getStateSlug().split("-"))
+            .map(part -> part.substring(0, 1).toUpperCase(java.util.Locale.ROOT) + part.substring(1))
+            .collect(java.util.stream.Collectors.joining(" "));
+    final String levelsPath = "/radon-levels/" + county.getStateSlug() + "/" + county.getCountySlug();
+    final String stateLevelsPath = "/radon-levels/" + county.getStateSlug();
     final String seoTitle = "Radon Gas Testing in " + placeLabel + " | Local Data & Test Steps";
     final String seoDescription = "How to test for radon in " + placeLabel + ": placement, closed-house conditions, result thresholds, local evidence, and what to do after the test.";
     final String testProtocolAnswer = "Use a short-term radon test on the lowest level that could be regularly occupied. Keep windows and exterior doors closed under the kit instructions, place the device away from drafts, heat, humidity, and exterior walls, and do not move it during the test.";
@@ -50,8 +56,8 @@
                 },{
                     "@type": "ListItem",
                     "position": 2,
-                    "name": "New York Radon Levels",
-                    "item": "https://radonverdict.com/radon-levels/new-york"
+                    "name": $unsafe{JsonLdUtils.json(stateName + " Radon Levels")},
+                    "item": $unsafe{JsonLdUtils.json("https://radonverdict.com" + stateLevelsPath)}
                 },{
                     "@type": "ListItem",
                     "position": 3,
@@ -88,27 +94,27 @@
                 <ol class="inline-flex flex-wrap items-center gap-2">
                     <li><a href="/" class="hover:text-slate-900">Home</a></li>
                     <li class="text-slate-300">/</li>
-                    <li><a href="/radon-levels/new-york" class="hover:text-slate-900">New York Radon Levels</a></li>
+                    <li><a href="${stateLevelsPath}" class="hover:text-slate-900">${stateName} Radon Levels</a></li>
                     <li class="text-slate-300">/</li>
-                    <li class="font-semibold text-slate-900" aria-current="page">Ulster County Testing</li>
+                    <li class="font-semibold text-slate-900" aria-current="page">${countyLabel} Testing</li>
                 </ol>
             </nav>
 
             <header class="grid gap-8 lg:grid-cols-[1.12fr_0.88fr] lg:items-start">
                 <div>
-                    <p class="text-xs font-black uppercase tracking-[0.2em] text-indigo-700">Ulster County test-first guide</p>
+                    <p class="text-xs font-black uppercase tracking-[0.2em] text-indigo-700">${countyLabel} test-first guide</p>
                     <h1 class="mt-3 font-display text-4xl font-black tracking-tight text-slate-950 sm:text-5xl">
                         Radon Gas Testing in ${placeLabel}
                     </h1>
                     <p class="mt-5 max-w-3xl text-lg leading-relaxed text-slate-700">
-                        Test the home before pricing mitigation or calling a county map an all-clear. Ulster County evidence explains the local context, but the reading from the lowest regularly occupied level controls the decision.
+                        Test the home before pricing mitigation or calling a county map an all-clear. ${countyLabel} evidence explains the local context, but the reading from the lowest regularly occupied level controls the decision.
                     </p>
                     <div class="mt-7 flex flex-col gap-3 sm:flex-row">
                         <a href="#testing-steps" class="inline-flex min-h-12 items-center justify-center rounded-xl bg-slate-950 px-5 text-sm font-black text-white hover:bg-slate-800">
                             Follow the test steps
                         </a>
-                        <a href="/radon-levels/new-york/ulster-county" class="inline-flex min-h-12 items-center justify-center rounded-xl border border-slate-300 bg-white px-5 text-sm font-black text-slate-800 hover:bg-slate-50">
-                            Check Ulster County radon levels
+                        <a href="${levelsPath}" class="inline-flex min-h-12 items-center justify-center rounded-xl border border-slate-300 bg-white px-5 text-sm font-black text-slate-800 hover:bg-slate-50">
+                            Check ${countyLabel} radon levels
                         </a>
                     </div>
                 </div>
@@ -125,7 +131,7 @@
 
             <section id="testing-steps" class="mt-10 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
                 <p class="text-xs font-black uppercase tracking-wider text-emerald-700">Short-term test protocol</p>
-                <h2 class="mt-2 font-display text-3xl font-black tracking-tight text-slate-950">How to test a home in Ulster County</h2>
+                <h2 class="mt-2 font-display text-3xl font-black tracking-tight text-slate-950">How to test a home in ${countyLabel}</h2>
                 <p class="mt-4 max-w-3xl leading-relaxed text-slate-700">${testProtocolAnswer}</p>
 
                 <ol class="mt-7 grid gap-4 md:grid-cols-2">
@@ -155,7 +161,7 @@
             <section class="mt-8 grid gap-6 lg:grid-cols-[0.9fr_1.1fr]">
                 <div class="rounded-2xl border border-slate-200 bg-white p-6">
                     <p class="text-xs font-black uppercase tracking-wider text-slate-500">Local evidence</p>
-                    <h2 class="mt-2 font-display text-2xl font-black text-slate-950">What the Ulster County signal says</h2>
+                    <h2 class="mt-2 font-display text-2xl font-black text-slate-950">What the ${countyLabel} signal says</h2>
                     <div class="mt-5 grid gap-3">
                         <div class="rounded-xl bg-slate-50 p-4">
                             <p class="text-xs font-bold uppercase tracking-wider text-slate-500">Evidence profile</p>
@@ -201,7 +207,7 @@
                     Do not use a county average as a home result, and do not start with contractor prices when the property has not been tested. Move through the sequence once: test, interpret, then compare written quotes only if the result supports it.
                 </p>
                 <div class="mt-6 flex flex-col gap-3 sm:flex-row">
-                    <a href="/radon-levels/new-york/ulster-county" class="inline-flex min-h-12 items-center justify-center rounded-xl bg-white px-5 text-sm font-black text-slate-950 hover:bg-slate-100">Interpret the Ulster County signal</a>
+                    <a href="${levelsPath}" class="inline-flex min-h-12 items-center justify-center rounded-xl bg-white px-5 text-sm font-black text-slate-950 hover:bg-slate-100">Interpret the ${countyLabel} signal</a>
                     <a href="/guides/radon-mitigation-quote-checklist" class="inline-flex min-h-12 items-center justify-center rounded-xl border border-white/20 px-5 text-sm font-black text-white hover:bg-white/10">Open the quote checklist</a>
                 </div>
             </section>

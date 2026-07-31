@@ -104,8 +104,8 @@ class RenderedContentAuditTest {
         assertThat(largestCohort).as("largest normalized content cohort").isLessThan(600);
         assertThat(policyCandidates).as("historical levels winner cohort")
                 .isBetween(100, 200);
-        assertThat(costPolicyCandidates).as("historically clicked county cost cohort")
-                .isEqualTo(5);
+        assertThat(costPolicyCandidates).as("click-backed or current-query cost cohort")
+                .isEqualTo(7);
         assertThat(costQualityRate).as("cost pages that remain indexable after runtime quality scoring")
                 .isGreaterThanOrEqualTo(0.99);
         assertThat(levelsQualityRate).as("levels pages that remain indexable after runtime quality scoring")

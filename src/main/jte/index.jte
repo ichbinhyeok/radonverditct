@@ -191,7 +191,7 @@
                         <p class="text-xs font-bold uppercase tracking-[0.22em] text-emerald-300">Featured local evidence</p>
                         <h2 class="mt-3 font-display text-2xl font-black tracking-tight">Start where the question is already specific.</h2>
                         <p class="mt-3 text-sm font-medium leading-relaxed text-slate-300">
-                            These routes answer a real local decision directly: how to test in Ulster County and how to budget mitigation in Massachusetts.
+                            These routes answer observed search demand directly: local testing, commercial building protocol, and evidence-backed mitigation planning.
                         </p>
                     </div>
                     <div class="grid gap-4 sm:grid-cols-2">
@@ -201,6 +201,13 @@
                             <h3 class="mt-2 font-display text-xl font-black text-slate-950">Radon gas testing in Ulster County, NY</h3>
                             <p class="mt-3 text-sm leading-relaxed text-slate-600">Placement, closed-house conditions, local evidence, and the next move after the result.</p>
                             <span class="mt-4 inline-flex text-sm font-black text-indigo-800">Open the Ulster testing guide &rarr;</span>
+                        </a>
+                        <a href="/commercial-radon-testing/california/los-angeles-county"
+                           class="group rounded-2xl border border-cyan-200 bg-cyan-50 p-5 transition hover:-translate-y-0.5 hover:border-cyan-300 hover:shadow-md">
+                            <p class="text-xs font-black uppercase tracking-wider text-cyan-700">Observed commercial search demand</p>
+                            <h3 class="mt-2 font-display text-xl font-black text-slate-950">Commercial radon testing in Los Angeles County</h3>
+                            <p class="mt-2 text-sm leading-relaxed text-slate-700">Turn a vague provider search into a building-wide measurement scope and California certification check.</p>
+                            <span class="mt-4 inline-flex text-sm font-black text-cyan-800">Open the commercial protocol &rarr;</span>
                         </a>
                         <a href="/radon-levels/illinois/dupage-county"
                            class="group rounded-2xl border border-emerald-200 bg-white p-6 transition-all hover:border-emerald-400 hover:shadow-md">

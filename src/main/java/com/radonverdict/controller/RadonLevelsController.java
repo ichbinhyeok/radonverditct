@@ -15,6 +15,7 @@ import com.radonverdict.model.dto.TrustMetadata;
 import com.radonverdict.service.DataLoadService;
 import com.radonverdict.service.CountyRadonEvidenceService;
 import com.radonverdict.service.InternalLinkService;
+import com.radonverdict.service.IntentPagePolicyService;
 import com.radonverdict.service.PageQualityService;
 import com.radonverdict.service.SeoIndexingPolicyService;
 import com.radonverdict.service.SearchDemandService;
@@ -48,6 +49,7 @@ public class RadonLevelsController {
     private final TrustMetadataService trustMetadataService;
     private final InternalLinkService internalLinkService;
     private final SearchDemandService searchDemandService;
+    private final IntentPagePolicyService intentPagePolicyService;
 
     @Value("${app.feature.monetization-hooks.enabled:false}")
     private boolean monetizationHooksEnabled;
@@ -199,6 +201,12 @@ public class RadonLevelsController {
         model.addAttribute("searchTrafficCounty", seoIndexingPolicyService.isSearchTrafficCandidate(county));
         model.addAttribute("demandProfile", searchDemandService.profileForPath(
                 "/radon-levels/" + county.getStateSlug() + "/" + county.getCountySlug()));
+        model.addAttribute("testingIntentPath", intentPagePolicyService.isTestingIntentCandidate(county)
+                ? intentPagePolicyService.testingPath(county)
+                : null);
+        model.addAttribute("commercialIntentPath", intentPagePolicyService.isCommercialIntentCandidate(county)
+                ? intentPagePolicyService.commercialPath(county)
+                : null);
         model.addAttribute("monetizationHooksEnabled", monetizationHooksEnabled);
         model.addAttribute("showSeoDebug", seoDebugVisible);
         model.addAttribute("canonicalUrl",

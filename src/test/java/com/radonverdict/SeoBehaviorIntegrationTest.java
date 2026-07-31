@@ -385,6 +385,8 @@ class SeoBehaviorIntegrationTest {
                 .andExpect(content().string(containsString("/radon-mitigation-cost/utah/utah-county")))
                 .andExpect(content().string(containsString("/radon-mitigation-cost/ohio/delaware-county")))
                 .andExpect(content().string(containsString("/radon-mitigation-cost/ohio/medina-county")))
+                .andExpect(content().string(containsString("/radon-mitigation-cost/minnesota/douglas-county")))
+                .andExpect(content().string(containsString("/radon-mitigation-cost/north-carolina/transylvania-county")))
                 .andExpect(content().string(not(containsString("/radon-mitigation-cost/pennsylvania/montgomery-county"))))
                 .andExpect(content().string(not(containsString("/radon-mitigation-cost/virginia/loudoun-county"))))
                 .andExpect(content().string(not(containsString("/radon-levels/pennsylvania/montgomery-county"))))
@@ -424,6 +426,10 @@ class SeoBehaviorIntegrationTest {
         mockMvc.perform(get("/sitemap-intent.xml"))
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("/radon-testing/new-york/ulster-county")))
+                .andExpect(content().string(containsString("/radon-testing/virginia/powhatan-county")))
+                .andExpect(content().string(containsString("/radon-testing/colorado/broomfield-county")))
+                .andExpect(content().string(containsString("/radon-testing/new-mexico/bernalillo-county")))
+                .andExpect(content().string(containsString("/commercial-radon-testing/california/los-angeles-county")))
                 .andExpect(content().string(not(containsString("/radon-testing/colorado/boulder-county"))))
                 .andExpect(content().string(containsString("<lastmod>" + seoContentLastmod + "</lastmod>")));
     }
@@ -465,7 +471,7 @@ class SeoBehaviorIntegrationTest {
     }
 
     @Test
-    void onlyDemandProvenUlsterTestingIntentIsIndexable() throws Exception {
+    void queryLevelDemandIntentPagesAreIndexableAndLinkedFromCountyEvidence() throws Exception {
         mockMvc.perform(get("/radon-testing/colorado/boulder-county"))
                 .andExpect(status().isNotFound());
 
@@ -492,7 +498,34 @@ class SeoBehaviorIntegrationTest {
         mockMvc.perform(get("/radon-levels"))
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString(
-                        "href=\"/radon-testing/new-york/ulster-county\"")));
+                        "href=\"/radon-testing/new-york/ulster-county\"")))
+                .andExpect(content().string(containsString(
+                        "href=\"/radon-testing/virginia/powhatan-county\"")))
+                .andExpect(content().string(containsString(
+                        "href=\"/commercial-radon-testing/california/los-angeles-county\"")));
+
+        mockMvc.perform(get("/radon-testing/virginia/powhatan-county"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString(
+                        "<title>Radon Gas Testing in Powhatan County, VA | Local Data &amp; Test Steps</title>")))
+                .andExpect(content().string(containsString("How to test a home in Powhatan County")))
+                .andExpect(content().string(containsString(
+                        "href=\"/radon-levels/virginia/powhatan-county\"")));
+
+        mockMvc.perform(get("/radon-levels/virginia/powhatan-county"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString(
+                        "href=\"/radon-testing/virginia/powhatan-county\"")));
+
+        mockMvc.perform(get("/commercial-radon-testing/california/los-angeles-county"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(not(containsString("<meta name=\"robots\" content=\"noindex, follow\">"))))
+                .andExpect(content().string(containsString(
+                        "<title>Commercial Radon Testing in Los Angeles County, CA | Building Protocol</title>")))
+                .andExpect(content().string(containsString("A location map, not a price quote")))
+                .andExpect(content().string(containsString("Certified-Radon-Services-Providers.aspx")))
+                .andExpect(content().string(containsString(
+                        "<link rel=\"canonical\" href=\"https://radonverdict.com/commercial-radon-testing/california/los-angeles-county\">")));
     }
 
     @Test

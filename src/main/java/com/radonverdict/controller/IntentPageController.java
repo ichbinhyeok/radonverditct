@@ -53,6 +53,30 @@ public class IntentPageController {
         return "intent_testing_county";
     }
 
+    @GetMapping("/commercial-radon-testing/{stateSlug}/{countySlug}")
+    public Object commercialTestingPage(@PathVariable String stateSlug, @PathVariable String countySlug, Model model) {
+        County county = dataLoadService.getCountyBySlugMap().get(stateSlug.toLowerCase() + "/" + countySlug.toLowerCase());
+        if (county == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "County not found");
+        }
+        if (!county.getStateSlug().equals(stateSlug) || !county.getCountySlug().equals(countySlug)) {
+            RedirectView redirect = new RedirectView(intentPagePolicyService.commercialPath(county), true);
+            redirect.setStatusCode(HttpStatus.MOVED_PERMANENTLY);
+            return redirect;
+        }
+        if (!intentPagePolicyService.isCommercialIntentCandidate(county)) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Commercial intent page is not currently eligible");
+        }
+
+        CountyRadonEvidence evidence = countyRadonEvidenceService.buildEvidence(county);
+        TrustMetadata trust = trustMetadataService.forRadonLevelsCountyPage(county);
+        model.addAttribute("county", county);
+        model.addAttribute("evidence", evidence);
+        model.addAttribute("trust", trust);
+        model.addAttribute("canonicalUrl", normalizedBaseUrl() + intentPagePolicyService.commercialPath(county));
+        return "intent_commercial_testing_county";
+    }
+
     private String normalizedBaseUrl() {
         if (baseUrl == null || baseUrl.isBlank()) {
             return "https://radonverdict.com";

@@ -152,6 +152,21 @@
                         <p class="mt-2 text-sm leading-relaxed text-slate-700">Use the dedicated local guide when the question is how to place the test, preserve closed-house conditions, and act on the result—not just what the county level data says.</p>
                         <span class="mt-3 inline-flex text-xs font-black uppercase tracking-wider text-sky-800">Open the Ulster County testing guide &rarr;</span>
                     </a>
+                    <a href="/radon-testing/virginia/powhatan-county" class="block rounded-xl border border-sky-100 bg-sky-50 p-4 transition-all hover:border-sky-300 hover:bg-sky-100">
+                        <p class="text-sm font-black text-sky-950">Radon testing in Powhatan County, VA</p>
+                        <p class="mt-2 text-sm leading-relaxed text-slate-700">Placement, closed-house conditions, local evidence, and the decision after the result.</p>
+                        <span class="mt-3 inline-flex text-xs font-black uppercase tracking-wider text-sky-800">Open Powhatan testing &rarr;</span>
+                    </a>
+                    <a href="/radon-testing/colorado/broomfield-county" class="block rounded-xl border border-sky-100 bg-sky-50 p-4 transition-all hover:border-sky-300 hover:bg-sky-100">
+                        <p class="text-sm font-black text-sky-950">Radon testing in Broomfield County, CO</p>
+                        <p class="mt-2 text-sm leading-relaxed text-slate-700">A test-first path for searchers who are otherwise sent straight to mitigation pages.</p>
+                        <span class="mt-3 inline-flex text-xs font-black uppercase tracking-wider text-sky-800">Open Broomfield testing &rarr;</span>
+                    </a>
+                    <a href="/commercial-radon-testing/california/los-angeles-county" class="block rounded-xl border border-cyan-200 bg-cyan-50 p-4 transition-all hover:border-cyan-300 hover:bg-cyan-100 md:col-span-2">
+                        <p class="text-sm font-black text-cyan-950">Commercial radon testing in Los Angeles County</p>
+                        <p class="mt-2 text-sm leading-relaxed text-slate-700">Build a compliant measurement scope for multifamily, mixed-use, school, office, retail, or other non-residential property before asking for a mitigation bid.</p>
+                        <span class="mt-3 inline-flex text-xs font-black uppercase tracking-wider text-cyan-800">Open commercial testing protocol &rarr;</span>
+                    </a>
                 </div>
             </section>
 

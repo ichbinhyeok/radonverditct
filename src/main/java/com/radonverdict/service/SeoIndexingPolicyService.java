@@ -220,14 +220,18 @@ public class SeoIndexingPolicyService {
                     .flatMap(Set::stream)
                     .toList());
 
-    // County cost URLs that earned an organic click during the pre-collapse window.
+    // County cost URLs with either a pre-collapse click or current query-level demand.
+    // Douglas and Transylvania were added from the 2026-07-29 GSC query/page export:
+    // both already ranked for explicit mitigation-cost intent while still quarantined.
     // All other county cost pages remain usable conversion pages, but are noindex.
-    private static final Set<String> HISTORICAL_COST_WINNER_COUNTIES = Set.of(
+    private static final Set<String> COST_SEARCH_OPPORTUNITY_COUNTIES = Set.of(
             "massachusetts/plymouth-county",
             "utah/utah-county",
             "colorado/mesa-county",
             "ohio/delaware-county",
-            "ohio/medina-county");
+            "ohio/medina-county",
+            "minnesota/douglas-county",
+            "north-carolina/transylvania-county");
 
     private final DataLoadService dataLoadService;
 
@@ -245,7 +249,7 @@ public class SeoIndexingPolicyService {
 
     public boolean isCostPageIndexableCandidate(County county) {
         return hasBaseIndexingEligibility(county)
-                && HISTORICAL_COST_WINNER_COUNTIES.contains(slugKey(county));
+                && COST_SEARCH_OPPORTUNITY_COUNTIES.contains(slugKey(county));
     }
 
     public boolean includeZoneLowSitemap() {
@@ -394,8 +398,8 @@ public class SeoIndexingPolicyService {
         if (county.getEpaZone() <= 0) {
             return "missing_epa_zone";
         }
-        if (HISTORICAL_COST_WINNER_COUNTIES.contains(slugKey(county))) {
-            return "historical_cost_winner";
+        if (COST_SEARCH_OPPORTUNITY_COUNTIES.contains(slugKey(county))) {
+            return "cost_search_opportunity";
         }
         if (isSearchTrafficCandidate(county)) {
             return "search_traffic_cohort";
