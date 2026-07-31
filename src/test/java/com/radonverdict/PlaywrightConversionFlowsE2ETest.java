@@ -75,13 +75,13 @@ class PlaywrightConversionFlowsE2ETest {
             persona.page.locator("input[name='zipCode']").fill("22030");
             persona.page.locator("form[action='/search-zip']")
                     .evaluate("form => form.submit()");
-            persona.page.waitForURL("**/radon-mitigation-cost/**");
+            persona.page.waitForURL("**/plan?**");
             persona.page.waitForLoadState(LoadState.DOMCONTENTLOADED);
-            persona.page.locator("text=4.0+ Action Plan for Buyers").first().waitFor();
+            persona.page.locator("text=Primary county match").first().waitFor();
 
             assertTrue(persona.page.content().contains("Fairfax, VA"));
-            assertTrue(persona.page.locator("text=4.0+ Action Plan for Buyers").first().isVisible());
-            assertTrue(persona.page.locator("button:has-text('Request Credit Follow-Up')").first().isVisible());
+            assertTrue(persona.page.locator("text=Your radon action plan").first().isVisible());
+            assertTrue(persona.page.locator("text=Unavailable from these inputs").first().isVisible());
 
             persona.screenshot("county_action_plan_buying_above_4");
             persona.assertNoFirstPartyFailures();
@@ -100,14 +100,13 @@ class PlaywrightConversionFlowsE2ETest {
             persona.page.locator("input[name='zipCode']").fill("22030");
             persona.page.locator("form[action='/search-zip-credit']")
                     .evaluate("form => form.submit()");
-            persona.page.waitForURL("**/radon-credit-calculator/**");
+            persona.page.waitForURL("**/plan?**");
             persona.page.waitForLoadState(LoadState.DOMCONTENTLOADED);
-            persona.page.locator("text=Opening ask").first().waitFor();
+            persona.page.locator("text=Primary county match").first().waitFor();
 
             assertTrue(persona.page.content().contains("Fairfax, VA"));
-            assertTrue(persona.page.locator("h1").first().innerText().contains("Buyer Radon Credit Calculator for Fairfax, VA"));
-            assertTrue(persona.page.locator("text=Opening ask").first().isVisible());
-            assertTrue(persona.page.locator("text=Open Seller Credit Worksheet").first().isVisible());
+            assertTrue(persona.page.locator("h1").first().innerText().contains("Your radon action plan"));
+            assertTrue(persona.page.locator("text=Unavailable from these inputs").first().isVisible());
 
             persona.screenshot("credit_calculator_fairfax_city");
             persona.assertNoFirstPartyFailures();

@@ -168,7 +168,7 @@ class SeoBehaviorIntegrationTest {
 
         mockMvc.perform(get("/radon-mitigation-cost/colorado/mesa-county"))
                 .andExpect(status().isOk())
-                .andExpect(content().string(containsString("<meta name=\"robots\" content=\"noindex, follow\">")))
+                .andExpect(content().string(not(containsString("<meta name=\"robots\" content=\"noindex, follow\">"))))
                 .andExpect(content().string(containsString("Mesa County Cost Range First")))
                 .andExpect(content().string(containsString("Radon Mitigation Cost Guide")))
                 .andExpect(content().string(containsString("href=\"/radon-mitigation-cost\"")));
@@ -281,11 +281,15 @@ class SeoBehaviorIntegrationTest {
     }
 
     @Test
-    void costSurfacesStayReachableButAreQuarantined() throws Exception {
+    void historicalCostWinnerEscapesGlobalQuarantine() throws Exception {
         mockMvc.perform(get("/radon-mitigation-cost/colorado/mesa-county"))
                 .andExpect(status().isOk())
-                .andExpect(header().string("X-Robots-Tag", "noindex, follow"))
+                .andExpect(header().doesNotExist("X-Robots-Tag"))
                 .andExpect(content().string(containsString("<link rel=\"canonical\" href=\"https://radonverdict.com/radon-mitigation-cost/colorado/mesa-county\">")));
+
+        mockMvc.perform(get("/radon-mitigation-cost/california/butte-county"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("<meta name=\"robots\" content=\"noindex, follow\">")));
     }
 
     @Test
@@ -351,7 +355,7 @@ class SeoBehaviorIntegrationTest {
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("/sitemap-recovery.xml")))
                 .andExpect(content().string(containsString("/sitemap-growth.xml")))
-                .andExpect(content().string(not(containsString("/sitemap-cost-evidence.xml"))))
+                .andExpect(content().string(containsString("/sitemap-cost-evidence.xml")))
                 .andExpect(content().string(containsString("/sitemap-levels-evidence.xml")))
                 .andExpect(content().string(containsString("/sitemap-intent.xml")))
                 .andExpect(content().string(not(containsString("/sitemap-zone-high.xml"))))
@@ -376,15 +380,15 @@ class SeoBehaviorIntegrationTest {
 
         mockMvc.perform(get("/sitemap-cost-evidence.xml"))
                 .andExpect(status().isOk())
-                .andExpect(content().string(not(containsString("/radon-mitigation-cost/colorado/mesa-county"))))
-                .andExpect(content().string(not(containsString("/radon-mitigation-cost/massachusetts/plymouth-county"))))
-                .andExpect(content().string(not(containsString("/radon-mitigation-cost/utah/utah-county"))))
-                .andExpect(content().string(not(containsString("/radon-mitigation-cost/ohio/delaware-county"))))
-                .andExpect(content().string(not(containsString("/radon-mitigation-cost/ohio/medina-county"))))
+                .andExpect(content().string(containsString("/radon-mitigation-cost/colorado/mesa-county")))
+                .andExpect(content().string(containsString("/radon-mitigation-cost/massachusetts/plymouth-county")))
+                .andExpect(content().string(containsString("/radon-mitigation-cost/utah/utah-county")))
+                .andExpect(content().string(containsString("/radon-mitigation-cost/ohio/delaware-county")))
+                .andExpect(content().string(containsString("/radon-mitigation-cost/ohio/medina-county")))
                 .andExpect(content().string(not(containsString("/radon-mitigation-cost/pennsylvania/montgomery-county"))))
                 .andExpect(content().string(not(containsString("/radon-mitigation-cost/virginia/loudoun-county"))))
                 .andExpect(content().string(not(containsString("/radon-levels/pennsylvania/montgomery-county"))))
-                .andExpect(content().string(not(containsString("<loc>"))));
+                .andExpect(content().string(containsString("<loc>")));
 
         mockMvc.perform(get("/sitemap-core.xml"))
                 .andExpect(status().isOk())

@@ -55,7 +55,7 @@ public class PageController {
     @Value("${app.feature.monetization-hooks.enabled:false}")
     private boolean monetizationHooksEnabled;
 
-    @Value("${app.site.index-county-cost-pages:false}")
+    @Value("${app.site.index-county-cost-pages:true}")
     private boolean indexCountyCostPages;
 
     @Value("${app.site.base-url:https://radonverdict.com}")

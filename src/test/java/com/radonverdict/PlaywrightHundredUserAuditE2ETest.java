@@ -488,12 +488,12 @@ class PlaywrightHundredUserAuditE2ETest {
         }
         input.fill(zip);
         page.locator("form[action='/search-zip']").first().evaluate("form => form.submit()");
-        page.waitForURL("**/radon-mitigation-cost/**");
-        if (!page.url().contains("/radon-mitigation-cost/")) {
-            failures.add(scenario.path() + " ZIP cost search did not route to county cost page: " + page.url());
+        page.waitForURL("**/plan?**");
+        if (!page.url().contains("/plan?")) {
+            failures.add(scenario.path() + " ZIP search did not route to the private action plan: " + page.url());
         }
-        if (page.locator("text=Estimated Local Range").first().count() == 0) {
-            failures.add(scenario.path() + " ZIP cost result missing local range");
+        if (page.locator("text=Primary county match").first().count() == 0) {
+            failures.add(scenario.path() + " ZIP action plan missing county match");
         }
     }
 
@@ -506,12 +506,12 @@ class PlaywrightHundredUserAuditE2ETest {
         }
         input.fill(zip);
         page.locator("form[action='/search-zip-credit']").first().evaluate("form => form.submit()");
-        page.waitForURL("**/radon-credit-calculator/**");
-        if (!page.url().contains("/radon-credit-calculator/")) {
-            failures.add(scenario.path() + " ZIP credit search did not route to local credit page: " + page.url());
+        page.waitForURL("**/plan?**");
+        if (!page.url().contains("/plan?")) {
+            failures.add(scenario.path() + " ZIP credit search did not route to the private action plan: " + page.url());
         }
-        if (page.locator("text=Opening ask").first().count() == 0) {
-            failures.add(scenario.path() + " ZIP credit result missing negotiation output");
+        if (page.locator("text=Primary county match").first().count() == 0) {
+            failures.add(scenario.path() + " ZIP credit action plan missing county match");
         }
     }
 

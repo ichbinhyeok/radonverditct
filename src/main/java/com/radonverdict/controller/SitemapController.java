@@ -37,7 +37,7 @@ public class SitemapController {
     @Value("${app.site.include-broad-zone-sitemap:false}")
     private boolean includeBroadZoneSitemap;
 
-    @Value("${app.site.index-county-cost-pages:false}")
+    @Value("${app.site.index-county-cost-pages:true}")
     private boolean indexCountyCostPages;
 
     @GetMapping(value = "/sitemap.xml", produces = MediaType.APPLICATION_XML_VALUE)

@@ -16,7 +16,6 @@ public class CostSurfaceNoindexFilter extends OncePerRequestFilter {
             throws ServletException, IOException {
         String path = request.getRequestURI();
         if (path.equals("/radon-mitigation-cost")
-                || path.startsWith("/radon-mitigation-cost/")
                 || path.equals("/radon-cost-calculator")
                 || path.equals("/radon-credit-calculator")
                 || path.startsWith("/radon-credit-calculator/")
