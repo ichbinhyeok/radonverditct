@@ -1,5 +1,5 @@
 @template.layout.main(
-    title = "RadonVerdict | Radon Result, Cost, and Next-Step Planner",
+    title = "RadonVerdict | Radon Result and Next-Step Planner",
     canonicalUrl = "https://radonverdict.com/",
     description = "Use RadonVerdict to turn a radon test result, ZIP code, and buying/selling context into a local action plan.",
     headContent = @`
@@ -33,7 +33,7 @@
                     <div id="home-decision-console"
                          class="rounded-2xl border border-white/10 bg-white p-4 text-slate-900 shadow-2xl sm:p-5"
                          x-data="{
-                            reading: '5.5',
+                            reading: '',
                             noTest: false,
                             intent: 'homeowner',
                             get readingNumber() {
@@ -66,9 +66,9 @@
                             get nextMove() {
                                 if (this.resultBand === 'not_tested') return 'Test first. Do not price mitigation from fear alone.';
                                 if (this.resultBand === 'under_2') return 'Keep the result, retest on schedule, and avoid panic quotes.';
-                                if (this.intent === 'buying' || this.intent === 'selling') return 'Open the local credit range and negotiation plan.';
+                                if (this.intent === 'buying' || this.intent === 'selling') return 'Open the result checklist and negotiation plan.';
                                 if (this.resultBand === 'between_2_and_4') return 'Retest or monitor before you commit to a mitigation bid.';
-                                return 'Open the county cost plan and quote coach.';
+                                return 'Confirm the result, then compare written mitigation quotes.';
                             }
                          }">
                         <div class="flex items-center justify-between gap-3 border-b border-slate-200 pb-4">
@@ -79,15 +79,16 @@
                             <div class="hidden rounded-lg bg-slate-950 px-3 py-2 text-xs font-bold text-white sm:block">Live path</div>
                         </div>
 
-                        <form action="/search-zip" method="POST" class="mt-5 space-y-5">
-                            <input type="hidden" name="radonResultBand" value="above_4" :value="resultBand">
+                        <form action="/plan" method="GET" class="mt-5 space-y-5">
+                            <input type="hidden" name="noTest" :value="noTest">
+                            <input type="hidden" name="source" value="home">
 
                             <div class="grid gap-4 md:grid-cols-[1.1fr_0.9fr]">
                                 <div class="rounded-xl border border-slate-200 bg-slate-50 p-4">
                                     <div class="flex items-center justify-between gap-3">
                                         <label for="homeRadonReading" class="text-sm font-bold text-slate-800">Radon reading</label>
                                         <button type="button"
-                                                @click="noTest = !noTest; if (!noTest && !reading) reading = '5.5'"
+                                                @click="noTest = !noTest"
                                                 class="rounded-lg border border-slate-300 bg-white px-3 py-2 text-xs font-black text-slate-700 transition-colors hover:bg-slate-100"
                                                 :aria-pressed="noTest.toString()">
                                             <span x-text="noTest ? 'Enter a result' : 'No test yet'">No test yet</span>
@@ -95,6 +96,7 @@
                                     </div>
                                     <div class="mt-3 flex items-center rounded-xl border border-slate-300 bg-white px-4 shadow-sm focus-within:border-slate-900 focus-within:bg-white">
                                         <input id="homeRadonReading"
+                                               name="radonReading"
                                                x-model="reading"
                                                :disabled="noTest"
                                                type="number"
@@ -200,12 +202,12 @@
                             <p class="mt-3 text-sm leading-relaxed text-slate-600">Placement, closed-house conditions, local evidence, and the next move after the result.</p>
                             <span class="mt-4 inline-flex text-sm font-black text-indigo-800">Open the Ulster testing guide &rarr;</span>
                         </a>
-                        <a href="/radon-mitigation-cost/massachusetts"
+                        <a href="/radon-levels/illinois/dupage-county"
                            class="group rounded-2xl border border-emerald-200 bg-white p-6 transition-all hover:border-emerald-400 hover:shadow-md">
-                            <p class="text-xs font-black uppercase tracking-wider text-emerald-700">Price the response</p>
-                            <h3 class="mt-2 font-display text-xl font-black text-slate-950">Massachusetts radon mitigation cost</h3>
-                            <p class="mt-3 text-sm leading-relaxed text-slate-600">Compare basement, slab, and crawl-space ranges, then open the Plymouth County evidence page.</p>
-                            <span class="mt-4 inline-flex text-sm font-black text-emerald-800">Open Massachusetts cost guidance &rarr;</span>
+                            <p class="text-xs font-black uppercase tracking-wider text-emerald-700">Read official evidence</p>
+                            <h3 class="mt-2 font-display text-xl font-black text-slate-950">DuPage County, IL radon levels</h3>
+                            <p class="mt-3 text-sm leading-relaxed text-slate-600">See the official Illinois measurement summary, statistic types, coverage period, and limits before interpreting a home result.</p>
+                            <span class="mt-4 inline-flex text-sm font-black text-emerald-800">Open DuPage evidence &rarr;</span>
                         </a>
                     </div>
                 </div>

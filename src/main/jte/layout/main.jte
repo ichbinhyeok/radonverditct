@@ -333,8 +333,8 @@
                 <span class="font-display font-bold text-xl tracking-tight text-slate-900">Radon<span class="text-slate-400">Verdict</span></span>
             </a>
             <nav class="hidden lg:flex gap-6 text-sm font-medium text-slate-500">
-                <a href="/radon-cost-calculator" class="tap-target-inline hover:text-slate-900 transition-colors">Action Plan</a>
-                <a href="/radon-mitigation-cost" class="tap-target-inline hover:text-slate-900 transition-colors">Costs</a>
+                <a href="/plan" class="tap-target-inline hover:text-slate-900 transition-colors">Action Plan</a>
+                <a href="/guides/radon-mitigation-quote-checklist" class="tap-target-inline hover:text-slate-900 transition-colors">Quote checklist</a>
                 <a href="/radon-levels" class="tap-target-inline hover:text-slate-900 transition-colors">Radon Levels</a>
                 <a href="/guides/how-to-test-for-radon" class="tap-target-inline hover:text-slate-900 transition-colors">Testing Guide</a>
                 <a href="/guides" class="tap-target-inline hover:text-slate-900 transition-colors">Guides</a>
@@ -362,8 +362,8 @@
              x-cloak
              class="lg:hidden border-t border-slate-200/80 bg-white/95 backdrop-blur-sm">
             <nav class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex flex-col">
-                <a href="/radon-cost-calculator" class="tap-target-inline rounded-xl px-3 text-slate-700 hover:bg-slate-100 hover:text-slate-900">Action Plan</a>
-                <a href="/radon-mitigation-cost" class="tap-target-inline rounded-xl px-3 text-slate-700 hover:bg-slate-100 hover:text-slate-900">Costs</a>
+                <a href="/plan" class="tap-target-inline rounded-xl px-3 text-slate-700 hover:bg-slate-100 hover:text-slate-900">Action Plan</a>
+                <a href="/guides/radon-mitigation-quote-checklist" class="tap-target-inline rounded-xl px-3 text-slate-700 hover:bg-slate-100 hover:text-slate-900">Quote checklist</a>
                 <a href="/radon-levels" class="tap-target-inline rounded-xl px-3 text-slate-700 hover:bg-slate-100 hover:text-slate-900">Radon Levels</a>
                 <a href="/guides/how-to-test-for-radon" class="tap-target-inline rounded-xl px-3 text-slate-700 hover:bg-slate-100 hover:text-slate-900">Testing Guide</a>
                 <a href="/guides" class="tap-target-inline rounded-xl px-3 text-slate-700 hover:bg-slate-100 hover:text-slate-900">Guides</a>
@@ -400,8 +400,8 @@
                         <li><a href="/radon-data-sources" class="tap-target-inline hover:text-indigo-600 transition-colors">Data Sources</a></li>
                         <li><a href="/radon-quote-ledger" class="tap-target-inline hover:text-indigo-600 transition-colors">Quote Ledger</a></li>
                         <li><a href="/contact" class="tap-target-inline hover:text-indigo-600 transition-colors">Contact</a></li>
-                        <li><a href="/radon-cost-calculator" class="tap-target-inline hover:text-indigo-600 transition-colors">Action Plan</a></li>
-                        <li><a href="/radon-mitigation-cost" class="tap-target-inline hover:text-indigo-600 transition-colors">Mitigation Cost</a></li>
+                        <li><a href="/plan" class="tap-target-inline hover:text-indigo-600 transition-colors">Action Plan</a></li>
+                        <li><a href="/guides/radon-mitigation-quote-checklist" class="tap-target-inline hover:text-indigo-600 transition-colors">Quote Checklist</a></li>
                         <li><a href="/radon-levels" class="tap-target-inline hover:text-indigo-600 transition-colors">Radon Levels</a></li>
                         <li><a href="/guides/how-to-test-for-radon" class="tap-target-inline hover:text-indigo-600 transition-colors">Testing Guide</a></li>
                         <li><a href="/guides" class="tap-target-inline hover:text-indigo-600 transition-colors">Guides</a></li>

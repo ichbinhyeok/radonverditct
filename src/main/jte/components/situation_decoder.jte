@@ -79,11 +79,12 @@
                             </div>
                         </div>
 
-                        <form :action="targetAction" method="POST" class="mt-5">
+                        <form action="/plan" method="GET" class="mt-5">
                             <input type="hidden" name="zipCode" :value="zip">
                             <input type="hidden" name="intent" :value="intent">
-                            <input type="hidden" name="radonResultBand" :value="resultBand">
-                            <input type="hidden" name="foundationType" :value="foundation">
+                            <input type="hidden" name="radonReading" :value="reading === null ? '' : reading">
+                            <input type="hidden" name="noTest" :value="noTest">
+                            <input type="hidden" name="source" value="situation-decoder">
                             <button type="submit"
                                     :disabled="!zip"
                                     data-track-event="situation_decoder_submit"
@@ -98,9 +99,9 @@
                                class="inline-flex min-h-[44px] items-center justify-center rounded-lg border border-slate-200 px-3 text-center text-xs font-black text-slate-700 transition-colors hover:bg-slate-50">
                                 Interpret number
                             </a>
-                            <a href="/radon-credit-calculator"
+                            <a href="/guides/radon-failed-inspection"
                                class="inline-flex min-h-[44px] items-center justify-center rounded-lg border border-slate-200 px-3 text-center text-xs font-black text-slate-700 transition-colors hover:bg-slate-50">
-                                Credit math
+                                Deal checklist
                             </a>
                         </div>
                     </div>

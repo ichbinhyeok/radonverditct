@@ -37,7 +37,7 @@ public class SitemapController {
     @Value("${app.site.include-broad-zone-sitemap:false}")
     private boolean includeBroadZoneSitemap;
 
-    @Value("${app.site.index-county-cost-pages:true}")
+    @Value("${app.site.index-county-cost-pages:false}")
     private boolean indexCountyCostPages;
 
     @GetMapping(value = "/sitemap.xml", produces = MediaType.APPLICATION_XML_VALUE)
@@ -49,7 +49,9 @@ public class SitemapController {
 
         addSitemapUrl(xml, "/sitemap-recovery.xml");
         addSitemapUrl(xml, "/sitemap-growth.xml");
-        addSitemapUrl(xml, "/sitemap-cost-evidence.xml");
+        if (indexCountyCostPages) {
+            addSitemapUrl(xml, "/sitemap-cost-evidence.xml");
+        }
         addSitemapUrl(xml, "/sitemap-levels-evidence.xml");
         addSitemapUrl(xml, "/sitemap-intent.xml");
         addSitemapUrl(xml, "/sitemap-core.xml");
@@ -165,15 +167,11 @@ public class SitemapController {
 
         // 1. Static & Hub Pages
         addUrl(xml, "/", "1.0");
-        addUrl(xml, "/radon-cost-calculator", "0.9");
-        addUrl(xml, "/radon-credit-calculator", "0.9");
-        addUrl(xml, "/radon-mitigation-cost", "0.9");
+        addUrl(xml, "/radon-test-result-meaning", "0.9");
         addUrl(xml, "/radon-levels", "0.9");
         addUrl(xml, "/about", "0.8");
         addUrl(xml, "/methodology", "0.8");
         addUrl(xml, "/radon-data-sources", "0.8");
-        addUrl(xml, "/radon-cost-data-report", "0.85");
-        addUrl(xml, "/radon-quote-ledger", "0.8");
         addUrl(xml, "/for-home-inspectors", "0.7");
         addUrl(xml, "/contact", "0.8");
         addUrl(xml, "/guides", "0.8");
@@ -201,13 +199,13 @@ public class SitemapController {
 
         // 3. State Hubs (match each vertical's own indexability policy)
         Collection<County> counties = dataLoadService.getCountyBySlugMap().values();
-        counties.stream()
-                .filter(seoIndexingPolicyService::isCostPageIndexableCandidate)
-                .map(County::getStateSlug)
-                .distinct()
-                .forEach(stateSlug -> {
-            addUrl(xml, "/radon-mitigation-cost/" + stateSlug, "0.6");
-        });
+        if (indexCountyCostPages) {
+            counties.stream()
+                    .filter(seoIndexingPolicyService::isCostPageIndexableCandidate)
+                    .map(County::getStateSlug)
+                    .distinct()
+                    .forEach(stateSlug -> addUrl(xml, "/radon-mitigation-cost/" + stateSlug, "0.6"));
+        }
         counties.stream()
                 .filter(seoIndexingPolicyService::isCountyIndexableCandidate)
                 .map(County::getStateSlug)

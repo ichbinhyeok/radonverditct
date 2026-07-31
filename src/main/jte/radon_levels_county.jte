@@ -259,6 +259,15 @@
                     || madisonAlabamaDecisionCounty;
     final boolean ulsterServiceSearchCounty =
             "new-york".equals(county.getStateSlug()) && "ulster-county".equals(county.getCountySlug());
+    final boolean recoveryFocusCounty = schenectadyZoneCounty
+            || fallsChurchDecisionCounty
+            || ulsterServiceSearchCounty;
+    final String heroTestingGuideUrl = ulsterServiceSearchCounty
+            ? "/radon-testing/new-york/ulster-county"
+            : "/guides/how-to-test-for-radon";
+    final String heroTestingGuideLabel = ulsterServiceSearchCounty
+            ? "Test a home in Ulster County"
+            : "I Need to Test First";
     final boolean losAngelesCommercialSearchCounty =
             "california".equals(county.getStateSlug()) && "los-angeles-county".equals(county.getCountySlug());
     final boolean boulderServiceSearchCounty =
@@ -428,7 +437,9 @@
             ? "Radon Levels in " + seoPlaceLabel + " | Official Data & Testing Guide"
             : seoPlaceLabel + " Radon Levels, Zone Map & Home Testing Guide | EPA 4.0 pCi/L";
 
-    final String seoDescription = officialEvidenceSerpCounty
+    final String seoDescription = fallsChurchDecisionCounty
+            ? "Basement radon levels in " + seoPlaceLabel + ": see the EPA zone and official citywide testing context. The VDH county summary is not a basement-only home result; use a correctly placed test to decide the next step."
+            : officialEvidenceSerpCounty
             ? evidenceSerpDescription
             : epaZoneCtrPriorityCounty
             ? "Check the EPA radon zone for " + seoPlaceLabel
@@ -450,7 +461,11 @@
             + " using official county, state, EPA zone, and testing-source context. See when to test, retest, or act after a 4.0+ pCi/L result."
             : seoPlaceLabel + " radon guide for basement and lowest-level home tests. See EPA zone data, what 2.0, 4.0, and 8.0+ pCi/L mean, and when mitigation quotes are worth comparing.";
 
-    final String heroTitle = epaZoneCtrPriorityCounty
+    final String heroTitle = schenectadyZoneCounty
+            ? seoPlaceLabel + " EPA Radon Zone: Zone " + county.getEpaZone()
+            : fallsChurchDecisionCounty
+            ? "Basement Radon Levels in " + seoPlaceLabel
+            : epaZoneCtrPriorityCounty
             ? "EPA Radon Zone & Basement Testing in " + seoPlaceLabel
             : basementCtrPriorityCounty
             ? "Basement Radon Levels, EPA Zone & Test Meaning in " + seoPlaceLabel
@@ -479,8 +494,7 @@
             : "Direct Answer for basement and lowest-level tests: ";
 
     final String introIntentLead = fallsChurchDecisionCounty
-            ? "If you are checking radon levels in a " + county.getAreaDisplayName()
-                    + " basement, use the EPA zone as context first, then decide whether a 2.0-3.9 result needs a retest or a 4.0+ result needs mitigation planning."
+            ? "The Virginia Department of Health county summary is not a basement-only measurement, so it cannot tell you what a specific Falls Church basement will read. Use the EPA zone and citywide testing data as context, then test the lowest regularly occupied level in the home."
             : schenectadyZoneCounty
             ? "If you are trying to confirm the EPA radon zone for " + county.getAreaDisplayName()
                     + ", use this page for the zone answer first, then map that zone to what a basement or lowest-level test result actually means."
@@ -878,11 +892,11 @@
                                    class="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-2xl bg-white text-slate-900 text-sm font-black hover:bg-slate-100 transition-colors shadow-lg">
                                     Pick My Next Step
                                 </a>
-                                <a href="/guides/how-to-test-for-radon"
+                                <a href="${heroTestingGuideUrl}"
                                    data-track-event="levels_test_guide_click"
                                    data-track-label="hero_primary"
                                    class="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-2xl border border-white/20 text-white text-sm font-bold hover:bg-white/10 transition-colors">
-                                    I Need to Test First
+                                    ${heroTestingGuideLabel}
                                 </a>
                             </div>
                         </div>
@@ -908,6 +922,31 @@
                             </div>
                         </div>
                     </div>
+
+                    @if(recoveryFocusCounty)
+                        <section id="situation-picker" class="mt-8 rounded-[1.75rem] border border-white/20 bg-white p-5 text-slate-900 shadow-2xl sm:p-6">
+                            <p class="text-xs font-bold uppercase tracking-[0.18em] text-indigo-700">Start here</p>
+                            <h2 class="mt-2 font-display text-2xl font-black leading-tight">What do you know about this home?</h2>
+                            <p class="mt-2 max-w-3xl text-sm leading-relaxed text-slate-600">Choose one path. The longer county record is below if you need to check the evidence.</p>
+                            <div class="mt-5 grid gap-3 md:grid-cols-3">
+                                <a href="${heroTestingGuideUrl}" data-track-event="levels_recovery_path_click" data-track-label="no_result" class="rounded-2xl border border-emerald-200 bg-emerald-50 p-4 transition-colors hover:border-emerald-400 hover:bg-emerald-100">
+                                    <p class="text-xs font-bold uppercase tracking-wider text-emerald-700">No result yet</p>
+                                    <h3 class="mt-2 font-display text-lg font-black">Test first</h3>
+                                    <p class="mt-2 text-sm leading-relaxed text-slate-700">Get a real reading before comparing quotes or treating the county average as your result.</p>
+                                </a>
+                                <a href="/guides/how-to-test-for-radon" data-track-event="levels_recovery_path_click" data-track-label="borderline_result" class="rounded-2xl border border-amber-200 bg-amber-50 p-4 transition-colors hover:border-amber-400 hover:bg-amber-100">
+                                    <p class="text-xs font-bold uppercase tracking-wider text-amber-700">2.0–3.9 pCi/L</p>
+                                    <h3 class="mt-2 font-display text-lg font-black">Confirm before spending</h3>
+                                    <p class="mt-2 text-sm leading-relaxed text-slate-700">Use a follow-up or long-term test to reduce uncertainty before making a large decision.</p>
+                                </a>
+                                <a href="/guides/radon-failed-inspection" data-track-event="levels_recovery_path_click" data-track-label="action_or_transaction" class="rounded-2xl border border-rose-200 bg-rose-50 p-4 transition-colors hover:border-rose-400 hover:bg-rose-100">
+                                    <p class="text-xs font-bold uppercase tracking-wider text-rose-700">4.0+ or a transaction</p>
+                                    <h3 class="mt-2 font-display text-lg font-black">Take the next documented step</h3>
+                                    <p class="mt-2 text-sm leading-relaxed text-slate-700">Use the inspection path to organize confirmation, written scopes, and negotiation without inventing a local price.</p>
+                                </a>
+                            </div>
+                        </section>
+                    @endif
 
                     @if(radonEvidence != null)
                         <div id="county-evidence-first" class="levels-evidence-reading-block mt-8 rounded-[1.75rem] bg-white p-4 sm:p-6 shadow-2xl border border-white/10">
@@ -1148,15 +1187,16 @@
                         </div>
                     @endif
 
-                    @template.components.radon_result_translator(
-                        county = county,
-                        countySignalSummary = countySignalSummary,
-                        measuredPrimaryResultDisplay = measuredPrimaryResultDisplay,
-                        measuredPercentAbove4Display = measuredPercentAbove4Display
-                    )
-                    @template.components.search_intent_router(county = county, className = "mt-8")
+                    @if(!recoveryFocusCounty)
+                        @template.components.radon_result_translator(
+                            county = county,
+                            countySignalSummary = countySignalSummary,
+                            measuredPrimaryResultDisplay = measuredPrimaryResultDisplay,
+                            measuredPercentAbove4Display = measuredPercentAbove4Display
+                        )
+                        @template.components.search_intent_router(county = county, className = "mt-8")
 
-                    <div id="situation-picker" class="mt-8 rounded-[1.75rem] bg-white p-5 sm:p-6 shadow-2xl border border-white/10">
+                        <div id="situation-picker" class="mt-8 rounded-[1.75rem] bg-white p-5 sm:p-6 shadow-2xl border border-white/10">
                         <div class="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between mb-5">
                             <div>
                                 <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-100 text-slate-700 text-xs font-bold tracking-wider uppercase mb-3">
@@ -1259,7 +1299,8 @@
                                 </svg>
                             </a>
                         </div>
-                    </div>
+                        </div>
+                    @endif
                 </div>
             </div>
 

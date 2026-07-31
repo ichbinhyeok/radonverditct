@@ -72,6 +72,34 @@
                 </div>
             </section>
 
+            <section class="border-t border-slate-200 py-12">
+                <div class="max-w-3xl">
+                    <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500">Citation-ready local records</p>
+                    <h2 class="mt-3 font-display text-3xl font-black tracking-tight text-slate-950">Three public county records, with the claim boundary visible</h2>
+                    <p class="mt-4 text-base leading-relaxed text-slate-600">
+                        These are direct, stable pages for the local evidence selected for this recovery pass. Each record names the official source and period, links to the complete county page, and states what the aggregate cannot prove about one home.
+                    </p>
+                </div>
+                <div class="mt-8 divide-y divide-slate-200 overflow-hidden rounded-2xl border border-slate-200 bg-white">
+                    <article id="schenectady-county" class="scroll-mt-24 p-6">
+                        <p class="text-xs font-bold uppercase tracking-widest text-indigo-700">Schenectady County, New York · 2015–2019</p>
+                        <h3 class="mt-2 text-xl font-black text-slate-950"><a href="/radon-levels/new-york/schenectady-county" class="hover:text-indigo-700">EPA Zone 2; submitted-test average 2.4 pCi/L</a></h3>
+                        <p class="mt-3 text-sm leading-relaxed text-slate-600">New York State Department of Health residential test data reports 16.0% of submitted tests at or above 4.0 pCi/L. It is a county-level submitted-test summary, not a prediction for an individual basement.</p>
+                    </article>
+                    <article id="falls-church-city" class="scroll-mt-24 p-6">
+                        <p class="text-xs font-bold uppercase tracking-widest text-indigo-700">Falls Church, Virginia · 2016–2024</p>
+                        <h3 class="mt-2 text-xl font-black text-slate-950"><a href="/radon-levels/virginia/falls-church-city" class="hover:text-indigo-700">165 reported tests; citywide average 2.6 pCi/L</a></h3>
+                        <p class="mt-3 text-sm leading-relaxed text-slate-600">Virginia Department of Health data is a citywide result record after its published exclusions. It is not a basement-only measurement and cannot substitute for testing the lowest regularly occupied level of a specific home.</p>
+                    </article>
+                    <article id="ulster-county" class="scroll-mt-24 p-6">
+                        <p class="text-xs font-bold uppercase tracking-widest text-indigo-700">Ulster County, New York · 2015–2019</p>
+                        <h3 class="mt-2 text-xl font-black text-slate-950"><a href="/radon-levels/new-york/ulster-county" class="hover:text-indigo-700">Submitted-test average 3.8 pCi/L; 24.4% at or above 4.0</a></h3>
+                        <p class="mt-3 text-sm leading-relaxed text-slate-600">New York State Department of Health data supplies the county context. The linked testing page explains how to obtain the measurement that decides what this particular home needs.</p>
+                        <a href="/radon-testing/new-york/ulster-county" class="mt-4 inline-flex text-sm font-bold text-indigo-700 hover:underline">How to test a home in Ulster County</a>
+                    </article>
+                </div>
+            </section>
+
             <section class="py-10">
                 <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
                     <div class="rounded-2xl border border-slate-200 bg-white p-5">

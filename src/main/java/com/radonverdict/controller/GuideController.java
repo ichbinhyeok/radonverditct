@@ -37,17 +37,17 @@ public class GuideController {
 
     @GetMapping("/guides/how-to-test-for-radon")
     public String guideRadonTesting(Model model) {
-        model.addAttribute("title", "How to Test for Radon: Complete Homeowner's Guide | RadonVerdict");
+        model.addAttribute("title", "How to Test for Radon at Home: Kit Placement & Results | RadonVerdict");
         TrustMetadata trust = trustMetadataService.forGuidePage();
         model.addAttribute("trust", trust);
         model.addAttribute("aeo", AeoAnswerBlock.builder()
                 .question("What is the fastest reliable way to test a home for radon?")
-                .directAnswer("Use a short-term EPA-listed radon kit in the lowest livable level for 2 to 7 days under closed-house conditions, then send it to the lab. Re-test or confirm with long-term monitoring if results are elevated.")
+                .directAnswer("Use a short-term home radon test in the lowest regularly occupied level under the kit's closed-house instructions, then send it to the lab. A follow-up or long-term test can reduce uncertainty when the result is elevated or near a decision threshold.")
                 .evidenceRows(List.of(
                         AeoAnswerBlock.Row.builder().label("Primary Method").value("Short-term charcoal kit").build(),
                         AeoAnswerBlock.Row.builder().label("Test Window").value("2 to 7 days").build(),
                         AeoAnswerBlock.Row.builder().label("EPA Action Level").value("4.0 pCi/L").build(),
-                        AeoAnswerBlock.Row.builder().label("WHO Reference").value("2.7 pCi/L").build()))
+                        AeoAnswerBlock.Row.builder().label("Placement").value("Lowest regularly occupied level").build()))
                 .sources(trust != null ? trust.getSources() : List.of())
                 .build());
         return "pages/guide_radon_testing";
@@ -66,7 +66,7 @@ public class GuideController {
             @RequestParam(name = "intent", required = false) String intent,
             @RequestParam(name = "source", required = false) String source,
             Model model) {
-        model.addAttribute("title", "Radon Failed Inspection: Credit, Cost, and Retest Plan | RadonVerdict");
+        model.addAttribute("title", "Radon Failed Inspection: Repair, Credit, or Retest? | RadonVerdict");
         model.addAttribute("clientZip", normalizeZip(zipCode));
         model.addAttribute("clientReading", normalizeReading(radonReading));
         model.addAttribute("clientIntent", normalizeIntent(intent));

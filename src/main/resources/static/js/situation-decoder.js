@@ -10,7 +10,7 @@
       resultBand: 'above_4',
       resultLabel: '4.0+ pCi/L',
       verdict: 'Action-level reading',
-      routeSummary: 'Open the local cost plan and seller-credit path before negotiation starts.',
+      routeSummary: 'Confirm the result and open the buying action checklist before negotiation starts.',
       toneClass: 'bg-rose-100 text-rose-800',
       get readingDisplay() {
         if (this.noTest) return 'No test found';
@@ -29,7 +29,7 @@
       },
       get primaryCta() {
         if (this.noTest) return 'Open testing-first plan';
-        if (this.needsCreditPath) return 'Open local credit path';
+        if (this.needsCreditPath) return 'Open negotiation action plan';
         return 'Open local action plan';
       },
       get needsCreditPath() {
@@ -37,7 +37,7 @@
           && (this.resultBand === 'above_4' || this.resultBand === 'between_2_and_4');
       },
       get targetAction() {
-        return this.needsCreditPath ? '/search-zip-credit' : '/search-zip';
+        return '/plan';
       },
       loadExample(type) {
         if (type === 'buyer') {
@@ -102,8 +102,8 @@
           this.resultLabel = '2.0-3.9';
           this.verdict = 'Borderline reading';
           this.routeSummary = this.intent === 'homeowner'
-            ? 'Retest or monitor before committing to a bid; price mitigation only if the home has compounding risk.'
-            : 'Use the borderline result carefully: confirm test validity, then keep local cost context ready for negotiation.';
+            ? 'Retest or monitor before committing to work.'
+            : 'Confirm test validity, then keep the result and deadline together for negotiation.';
           this.toneClass = 'bg-amber-100 text-amber-800';
           return;
         }
@@ -112,8 +112,8 @@
         this.resultLabel = '4.0+ pCi/L';
         this.verdict = 'Action-level reading';
         this.routeSummary = this.intent === 'homeowner'
-          ? 'Open the local cost plan and quote coach before calling contractors.'
-          : 'Open the local credit calculator with county cost anchors before negotiation starts.';
+          ? 'Confirm the result, then compare written mitigation quotes.'
+          : 'Confirm the result and deadline before setting a repair or credit request.';
         this.toneClass = 'bg-rose-100 text-rose-800';
       }
     };

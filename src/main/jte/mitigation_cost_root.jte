@@ -13,6 +13,7 @@
 @param Map<String, List<County>> stateMap
 @param TrustMetadata trust = null
 @param CostEvidenceHubInsight costEvidenceInsight = null
+@param boolean noindex = true
 
 !{
     final String seoTitle = "Radon Mitigation Cost by State, Foundation Type, and Result";
@@ -23,6 +24,7 @@
     title = seoTitle + " | RadonVerdict",
     description = seoDescription,
     canonicalUrl = "https://radonverdict.com/radon-mitigation-cost",
+    noindex = noindex,
     headContent = @`
         <script type="application/ld+json">
             {

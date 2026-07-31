@@ -1,11 +1,15 @@
 @import com.radonverdict.model.dto.SearchConsoleCohortReport
 @import com.radonverdict.model.dto.SearchDemandProfile
+@import com.radonverdict.model.dto.SeoRecoveryReport
+@import com.radonverdict.model.dto.OrganicTrafficGoalReport
 @import java.util.List
 
 @param String title
 @param SearchConsoleCohortReport report = null
 @param boolean demandExportAvailable = false
 @param List<SearchDemandProfile> demandProfiles = null
+@param SeoRecoveryReport recoveryReport = null
+@param OrganicTrafficGoalReport organicTrafficGoalReport = null
 
 @template.layout.main(
     title = title,
@@ -26,11 +30,115 @@
                 </a>
             </div>
 
+            @if(organicTrafficGoalReport != null)
+                <section class="mb-8 rounded-xl border border-slate-950 bg-slate-950 p-5 text-white shadow-sm">
+                    <div class="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+                        <div>
+                            <p class="text-xs font-bold uppercase tracking-wider ${organicTrafficGoalReport.isDailyExportAvailable() ? "text-emerald-300" : "text-amber-300"}">100 daily organic-click portfolio</p>
+                            <h2 class="mt-1 font-display text-2xl font-black">${organicTrafficGoalReport.getSummary()}</h2>
+                        </div>
+                        <div class="rounded-xl bg-white/10 px-5 py-4 text-right">
+                            <p class="text-xs font-bold uppercase tracking-wider text-slate-300">Observed daily clicks</p>
+                            <p class="mt-1 font-display text-4xl font-black">${String.format(java.util.Locale.US, "%.1f", organicTrafficGoalReport.getObservedDailyClicks())}<span class="ml-1 text-lg text-slate-300">/ ${organicTrafficGoalReport.getDailyClickGoal()}</span></p>
+                            @if(organicTrafficGoalReport.isDailyExportAvailable())
+                                <p class="mt-1 text-xs text-slate-300">${organicTrafficGoalReport.getFirstDate()} to ${organicTrafficGoalReport.getLastDate()} · ${organicTrafficGoalReport.getDaysObserved()} days</p>
+                            @endif
+                        </div>
+                    </div>
+                    <p class="mt-4 text-sm leading-relaxed text-slate-300">Expected file: <span class="font-mono text-white">data/search-console/daily-query-page.csv</span> with Date, Query, Page, and Clicks. A 28-day aggregate must not be used here because it cannot prove daily clicks.</p>
+                    <div class="mt-5 grid gap-3 md:grid-cols-2 xl:grid-cols-4">
+                        @for(var cluster : organicTrafficGoalReport.getClusters())
+                            <div class="rounded-xl border border-white/10 bg-white/5 p-4">
+                                <p class="text-sm font-black text-white">${cluster.getName()}</p>
+                                <p class="mt-2 text-2xl font-black">${String.format(java.util.Locale.US, "%.1f", cluster.getObservedDailyClicks())}<span class="text-sm font-semibold text-slate-300"> / ${cluster.getDailyClickTarget()}</span></p>
+                                <p class="mt-1 text-xs leading-relaxed text-slate-300">Shortfall ${String.format(java.util.Locale.US, "%.1f", cluster.getDailyClickShortfall())} daily clicks</p>
+                                <p class="mt-3 break-all text-xs leading-relaxed text-slate-400">${String.join(" · ", cluster.getPaths())}</p>
+                            </div>
+                        @endfor
+                    </div>
+                </section>
+            @endif
+
             @if(report == null)
                 <div class="rounded-xl border border-rose-200 bg-rose-50 p-5 text-sm font-semibold text-rose-800">
                     Search Console report service is unavailable.
                 </div>
             @else
+                <section class="mb-8 rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+                    <div class="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
+                        <div>
+                            <p class="text-xs font-bold uppercase tracking-wider ${recoveryReport != null && recoveryReport.isSnapshotsAvailable() ? "text-emerald-700" : "text-amber-700"}">SEO recovery engine</p>
+                            <h2 class="mt-1 font-display text-2xl font-black text-slate-950">${recoveryReport != null ? recoveryReport.getSummary() : "Recovery engine unavailable."}</h2>
+                        </div>
+                        @if(recoveryReport != null)
+                            <div class="rounded-xl bg-slate-950 px-4 py-3 text-sm font-bold text-white">
+                                ${recoveryReport.getSnapshotCount()} dated exports
+                                @if(recoveryReport.getLatestSnapshotDate() != null)
+                                    <span class="ml-2 text-slate-300">latest ${recoveryReport.getLatestSnapshotDate()}</span>
+                                @endif
+                            </div>
+                        @endif
+                    </div>
+                    <p class="mt-4 text-sm leading-relaxed text-slate-600">Drop comparable query/page exports into <span class="font-mono text-slate-900">data/search-console/snapshots/query-page-YYYY-MM-DD.csv</span>. Columns: Query, Page, Clicks, Impressions, Position; add Date only when one file contains multiple days.</p>
+                    @if(recoveryReport != null && recoveryReport.getActions() != null && !recoveryReport.getActions().isEmpty())
+                        <div class="mt-5 overflow-x-auto rounded-xl border border-slate-200">
+                            <table class="min-w-full divide-y divide-slate-200 text-left text-sm">
+                                <thead class="bg-slate-50 text-xs font-black uppercase tracking-wider text-slate-500">
+                                    <tr><th class="px-4 py-3">Decision</th><th class="px-4 py-3">URL / query</th><th class="px-4 py-3">Current signal</th><th class="px-4 py-3">Why this action</th></tr>
+                                </thead>
+                                <tbody class="divide-y divide-slate-100">
+                                    @for(var action : recoveryReport.getActions())
+                                        <tr>
+                                            <td class="px-4 py-4"><span class="rounded-md bg-slate-950 px-2 py-1 text-xs font-black text-white">${action.getDecision()}</span><div class="mt-2 text-xs font-bold text-slate-500">${action.getCohort()} · ${action.getIndexingStatus()}</div></td>
+                                            <td class="max-w-sm px-4 py-4"><a class="break-all font-bold text-indigo-700 hover:underline" href="${action.getPath()}">${action.getPath()}</a><div class="mt-2 text-xs text-slate-600">${action.getPrimaryQuery()}</div></td>
+                                            <td class="px-4 py-4 text-slate-700">${String.format(java.util.Locale.US, "%.0f", action.getLatestImpressions())} impressions<br>position ${String.format(java.util.Locale.US, "%.1f", action.getLatestPosition())}<br>CTR ${String.format(java.util.Locale.US, "%.1f%%", action.getLatestCtr() * 100)}</td>
+                                            <td class="min-w-[340px] px-4 py-4 leading-relaxed text-slate-600">${action.getReason()}</td>
+                                        </tr>
+                                    @endfor
+                                </tbody>
+                            </table>
+                        </div>
+                    @endif
+                </section>
+                @if(recoveryReport != null && recoveryReport.getActivationBriefs() != null && !recoveryReport.getActivationBriefs().isEmpty())
+                    <section class="mb-8 rounded-xl border border-indigo-200 bg-indigo-50 p-5 shadow-sm">
+                        <div class="flex flex-col gap-2 md:flex-row md:items-end md:justify-between">
+                            <div>
+                                <p class="text-xs font-bold uppercase tracking-wider text-indigo-700">Re-ignition release queue</p>
+                                <h2 class="mt-1 font-display text-2xl font-black text-slate-950">Citation packets for the pages that can earn discovery</h2>
+                            </div>
+                            <p class="max-w-md text-sm leading-relaxed text-indigo-900">This creates a narrowly targeted editor packet; it never sends email automatically. Release is blocked when Search Console evidence or indexability is not ready.</p>
+                        </div>
+                        <div class="mt-5 space-y-4">
+                            @for(var brief : recoveryReport.getActivationBriefs())
+                                <article class="rounded-xl border border-indigo-200 bg-white p-5">
+                                    <div class="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
+                                        <div>
+                                            <p class="text-xs font-black uppercase tracking-wider ${"READY_TO_PITCH".equals(brief.getStatus()) ? "text-emerald-700" : "text-amber-700"}">${brief.getStatus()}</p>
+                                            <h3 class="mt-1 font-display text-xl font-black text-slate-950">${brief.getPrimaryQuery()}</h3>
+                                            <a href="${brief.getPath()}" class="mt-2 inline-block break-all text-sm font-bold text-indigo-700 hover:underline">${brief.getPath()}</a>
+                                        </div>
+                                        <a href="${brief.getPublicCitationUrl()}" class="inline-flex shrink-0 items-center justify-center rounded-lg bg-slate-950 px-4 py-2.5 text-sm font-black text-white hover:bg-slate-800">Open public citation record</a>
+                                    </div>
+                                    <p class="mt-4 text-sm leading-relaxed text-slate-700">${brief.getReleaseReason()}</p>
+                                    <div class="mt-4 grid gap-4 lg:grid-cols-2">
+                                        <div class="rounded-lg border border-slate-200 bg-slate-50 p-4">
+                                            <p class="text-xs font-black uppercase tracking-wider text-slate-500">Citable claim</p>
+                                            <p class="mt-2 text-sm leading-relaxed text-slate-800">${brief.getEvidenceClaim()}</p>
+                                            <p class="mt-3 text-sm leading-relaxed text-slate-600"><strong>Boundary:</strong> ${brief.getClaimBoundary()}</p>
+                                            <p class="mt-3 text-xs leading-relaxed text-slate-500"><strong>Pitch only to:</strong> ${brief.getTargetEditors()}</p>
+                                        </div>
+                                        <div class="rounded-lg border border-slate-200 bg-slate-50 p-4">
+                                            <p class="text-xs font-black uppercase tracking-wider text-slate-500">Editor draft</p>
+                                            <p class="mt-2 text-sm font-bold text-slate-900">${brief.getOutreachSubject()}</p>
+                                            <pre class="mt-3 whitespace-pre-wrap break-words font-sans text-sm leading-relaxed text-slate-700">${brief.getOutreachBody()}</pre>
+                                        </div>
+                                    </div>
+                                </article>
+                            @endfor
+                        </div>
+                    </section>
+                @endif
                 <section class="mb-6 rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
                     <div class="grid gap-4 lg:grid-cols-[1fr_0.45fr] lg:items-center">
                         <div>
@@ -112,50 +220,15 @@
                     <div class="flex flex-col gap-2 md:flex-row md:items-end md:justify-between">
                         <div>
                             <p class="text-xs font-bold uppercase tracking-wider text-emerald-700">Query watchlist</p>
-                            <h2 class="mt-1 font-display text-xl font-black text-slate-950">Patch titles and inspect the page that matches the query</h2>
+                            <h2 class="mt-1 font-display text-xl font-black text-slate-950">Static watchlist retired</h2>
                         </div>
                         <p class="max-w-md text-sm leading-relaxed text-emerald-900">
-                            Use this after the sitemap check: query intent first, target URL second, cost or ledger action third.
+                            The dated recovery engine above is the authority for query decisions. Do not use old cost-page examples to choose a target URL.
                         </p>
                     </div>
                     <div class="mt-5 overflow-hidden rounded-xl border border-emerald-200 bg-white">
                         <div class="overflow-x-auto">
-                            <table class="min-w-full divide-y divide-slate-200 text-left text-sm">
-                                <thead class="bg-emerald-50 text-xs font-black uppercase tracking-wider text-emerald-700">
-                                    <tr>
-                                        <th class="px-4 py-3">Query family</th>
-                                        <th class="px-4 py-3">Target URL</th>
-                                        <th class="px-4 py-3">Page job</th>
-                                    </tr>
-                                </thead>
-                                <tbody class="divide-y divide-slate-100">
-                                    <tr>
-                                        <td class="px-4 py-4 font-black text-slate-950">radon gas testing Ulster County NY</td>
-                                        <td class="px-4 py-4"><a href="/radon-levels/new-york/ulster-county" class="font-bold text-indigo-700 hover:underline">/radon-levels/new-york/ulster-county</a></td>
-                                        <td class="px-4 py-4 text-slate-600">Testing answer first, then 4.0+ cost and quote ledger.</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="px-4 py-4 font-black text-slate-950">commercial radon Los Angeles CA</td>
-                                        <td class="px-4 py-4"><a href="/radon-levels/california/los-angeles-county" class="font-bold text-indigo-700 hover:underline">/radon-levels/california/los-angeles-county</a></td>
-                                        <td class="px-4 py-4 text-slate-600">Commercial scope, provider lookup, then cost/quote screen.</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="px-4 py-4 font-black text-slate-950">radon testing Boulder CO</td>
-                                        <td class="px-4 py-4"><a href="/radon-levels/colorado/boulder-county" class="font-bold text-indigo-700 hover:underline">/radon-levels/colorado/boulder-county</a></td>
-                                        <td class="px-4 py-4 text-slate-600">Testing-to-mitigation bridge and contractor quote checklist.</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="px-4 py-4 font-black text-slate-950">radon testing Loudoun County</td>
-                                        <td class="px-4 py-4"><a href="/radon-levels/virginia/loudoun-county" class="font-bold text-indigo-700 hover:underline">/radon-levels/virginia/loudoun-county</a></td>
-                                        <td class="px-4 py-4 text-slate-600">Official VA signal, testing answer, ZIP-cost bridge.</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="px-4 py-4 font-black text-slate-950">St Louis radon</td>
-                                        <td class="px-4 py-4"><a href="/radon-levels/missouri/st-louis-county" class="font-bold text-indigo-700 hover:underline">/radon-levels/missouri/st-louis-county</a></td>
-                                        <td class="px-4 py-4 text-slate-600">Missouri DHSS evidence, result-band explanation, cost path.</td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                            <p class="p-4 text-sm leading-relaxed text-slate-600">The target must be indexable and match one canonical intent. A quarantined cost URL is never an SEO recovery target.</p>
                         </div>
                     </div>
                 </section>
@@ -167,10 +240,10 @@
                             <h2 class="mt-1 font-display text-xl font-black text-slate-950">Pages to improve before creating more URLs</h2>
                         </div>
                         <p class="max-w-md text-sm leading-relaxed text-amber-900">
-                            ${demandExportAvailable ? "Loaded from the query/page export." : "Add data/search-console-query-page.csv to activate query-level scoring; cohort fallback remains active."}
+                            ${demandExportAvailable ? "Legacy single-window view only. Use the dated recovery engine above for a change decision." : "No current single-window export is loaded; the dated recovery engine remains the source of truth."}
                         </p>
                     </div>
-                    @if(demandProfiles != null && !demandProfiles.isEmpty())
+                    @if(demandExportAvailable && demandProfiles != null && !demandProfiles.isEmpty())
                         <div class="mt-5 overflow-x-auto rounded-xl border border-amber-200 bg-white">
                             <table class="min-w-full divide-y divide-slate-200 text-left text-sm">
                                 <thead class="bg-amber-100 text-xs font-black uppercase tracking-wider text-amber-800">

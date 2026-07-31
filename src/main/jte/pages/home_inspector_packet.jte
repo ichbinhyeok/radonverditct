@@ -182,7 +182,7 @@
                 const outreachSource = /^[a-z0-9_-]{2,60}$/i.test(rawSource)
                     ? rawSource.toLowerCase()
                     : defaultSource;
-                const clientUrl = window.location.origin + '/guides/radon-failed-inspection?source=' + encodeURIComponent(outreachSource);
+                const clientUrl = window.location.origin + '/plan?source=' + encodeURIComponent(outreachSource);
                 const clientNote = $unsafe{JsonLdUtils.json(clientNote + "\n\n" + "Link: ")} + clientUrl;
                 document.querySelectorAll('[data-client-preview-link]').forEach((link) => link.href = clientUrl);
                 const setStatus = (message) => document.querySelectorAll('[data-copy-status]').forEach((node) => node.textContent = message);

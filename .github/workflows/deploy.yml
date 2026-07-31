@@ -77,7 +77,6 @@ jobs:
           username: ${{ secrets.OCI_USERNAME }}
           key: ${{ secrets.OCI_KEY }}
           script: |
-            export SITE_LASTMOD="$(date -u +%F)"
             # 배포 디렉토리 생성 및 이동
             mkdir -p ~/deploy/radonverdict
             mkdir -p ~/deploy/radonverdict/data
@@ -105,7 +104,6 @@ jobs:
                   - GG_JTE_DEVELOPMENTMODE=false
                   - GG_JTE_USEPRECOMPILEDTEMPLATES=true
                   - SPRING_PROFILES_ACTIVE=prod
-                  - SITE_LASTMOD=${SITE_LASTMOD}
                   - LEADS_CSV_PATH=/app/data/leads.csv
                   - TELEMETRY_CSV_PATH=/app/data/telemetry_events.csv
                   - CONTACT_CSV_PATH=/app/data/contact_messages.csv

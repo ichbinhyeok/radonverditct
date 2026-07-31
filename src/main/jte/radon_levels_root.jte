@@ -18,8 +18,8 @@
 @param TrustMetadata trust = null
 
 !{
-    final String seoTitle = "Radon Levels: What 2.0, 4.0, and 8.0 pCi/L Mean | EPA Guide";
-    final String seoDescription = "Understand radon levels in pCi/L: what 2.0, 4.0, and 8.0 mean, when to retest, when to mitigate, and how to use EPA radon zones by state and county.";
+    final String seoTitle = "Radon Levels by County: EPA Zones & Local Context";
+    final String seoDescription = "Browse radon levels by state and county, compare EPA radon zones, and open the source behind local radon context.";
 }
 
 @template.layout.main(
@@ -61,41 +61,6 @@
                 }]
             }
         </script>
-        <script type="application/ld+json">
-            {
-                "@context": "https://schema.org",
-                "@type": "FAQPage",
-                "mainEntity": [{
-                    "@type": "Question",
-                    "name": "What does a 4.0 pCi/L radon level mean?",
-                    "acceptedAnswer": {
-                        "@type": "Answer",
-                        "text": "A 4.0 pCi/L radon level is the main EPA action threshold. Homeowners should confirm the result if needed, then start mitigation planning and local cost comparison."
-                    }
-                },{
-                    "@type": "Question",
-                    "name": "Is a 2.5 pCi/L radon level bad?",
-                    "acceptedAnswer": {
-                        "@type": "Answer",
-                        "text": "A 2.5 pCi/L radon level is below the main EPA action threshold but it is not zero risk. Retesting, long-term monitoring, or pricing reduction can be reasonable depending on the home and situation."
-                    }
-                },{
-                    "@type": "Question",
-                    "name": "What does an 8.0 pCi/L radon level mean?",
-                    "acceptedAnswer": {
-                        "@type": "Answer",
-                        "text": "An 8.0 pCi/L radon level is a high reading. Mitigation quotes should be prioritized, and in a real-estate deal the local cost range can support a repair or credit request."
-                    }
-                },{
-                    "@type": "Question",
-                    "name": "Where can I check radon levels by county?",
-                    "acceptedAnswer": {
-                        "@type": "Answer",
-                        "text": "Use the state directory to open county pages. County pages combine EPA zone context with official state tables, CDC summaries, or official radon-potential maps when available."
-                    }
-                }]
-            }
-        </script>
     `,
     content = @`
         <div class="bg-white border-b border-slate-200">
@@ -110,39 +75,37 @@
 
                 <div class="grid grid-cols-1 lg:grid-cols-[1.15fr_0.85fr] gap-10 items-start">
                     <div>
-                        <p class="text-xs font-bold uppercase tracking-wider text-indigo-700 mb-4">Radon Levels Parent Guide</p>
+                        <p class="text-xs font-bold uppercase tracking-wider text-indigo-700 mb-4">Local radon context</p>
                         <h1 class="font-display font-black text-4xl sm:text-5xl text-slate-900 tracking-tight leading-tight">
-                            Radon Levels: What 2.0, 4.0, and 8.0 pCi/L Mean
+                            Radon Levels by County and State
                         </h1>
                         <p class="mt-6 text-lg sm:text-xl text-slate-600 leading-relaxed font-medium">
-                            Use this page to translate a radon test result into a practical next step, then open state and county pages backed by official measurement tables, CDC summaries, or official radon maps.
+                            Compare EPA zone context and source-backed local records. County data is context, not a substitute for testing the home you live in.
                         </p>
-                        <div class="mt-8 flex flex-col sm:flex-row gap-3">
-                            <a href="#level-meaning"
-                               class="inline-flex items-center justify-center rounded-xl bg-slate-900 px-5 py-3 text-sm font-bold text-white hover:bg-slate-800 transition-colors">
-                                Interpret My Number
-                            </a>
-                            <a href="#state-directory"
-                               class="inline-flex items-center justify-center rounded-xl border border-slate-200 bg-white px-5 py-3 text-sm font-semibold text-slate-700 hover:bg-slate-50 transition-colors">
-                                Browse State Maps
-                            </a>
+                        <div class="mt-8 rounded-2xl border border-slate-200 bg-slate-50 p-4 sm:p-5">
+                            <p class="text-sm font-bold text-slate-900">Already have a number from a radon report?</p>
+                            <a href="/radon-test-result-meaning" data-track-event="levels_root_result_interpreter" data-track-label="hero" class="mt-3 inline-flex min-h-12 items-center justify-center rounded-xl bg-slate-900 px-5 text-sm font-black text-white hover:bg-slate-800">Interpret my test result</a>
+                            <div class="mt-3 flex flex-wrap gap-x-4 gap-y-2 text-sm font-semibold">
+                                <a href="/guides/how-to-test-for-radon" class="text-indigo-700 hover:underline">No result yet? Start with testing.</a>
+                                <a href="#state-directory" class="text-slate-600 hover:text-slate-950 hover:underline">Browse state records.</a>
+                            </div>
                         </div>
                     </div>
 
                     <div class="rounded-2xl border border-slate-200 bg-slate-50 p-5 sm:p-6">
-                        <p class="text-xs font-bold uppercase tracking-wider text-slate-500">Fast Answer</p>
+                        <p class="text-xs font-bold uppercase tracking-wider text-slate-500">What county context can tell you</p>
                         <div class="mt-4 space-y-3">
                             <div class="rounded-xl border border-emerald-200 bg-white p-4">
-                                <p class="text-sm font-bold text-emerald-800">Under 2.0 pCi/L</p>
-                                <p class="mt-1 text-sm text-slate-600">Lower concern, but retest periodically because home levels change.</p>
+                                <p class="text-sm font-bold text-emerald-800">EPA zone</p>
+                                <p class="mt-1 text-sm text-slate-600">A county-level potential category, useful for context but never a home measurement.</p>
                             </div>
                             <div class="rounded-xl border border-amber-200 bg-white p-4">
-                                <p class="text-sm font-bold text-amber-800">2.0 to 3.9 pCi/L</p>
-                                <p class="mt-1 text-sm text-slate-600">Retest or track long-term. Reduction can still be worth considering.</p>
+                                <p class="text-sm font-bold text-amber-800">Official local records</p>
+                                <p class="mt-1 text-sm text-slate-600">Some county pages include state or public-health tables with period and source limits shown.</p>
                             </div>
                             <div class="rounded-xl border border-rose-200 bg-white p-4">
-                                <p class="text-sm font-bold text-rose-800">4.0+ pCi/L</p>
-                                <p class="mt-1 text-sm text-slate-600">Start mitigation planning. This is the main EPA action threshold.</p>
+                                <p class="text-sm font-bold text-rose-800">What it cannot tell you</p>
+                                <p class="mt-1 text-sm text-slate-600">It cannot predict the radon level in one basement, slab, or crawl-space home.</p>
                             </div>
                         </div>
                     </div>
@@ -154,35 +117,35 @@
             <section class="mb-14 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
                 <div class="flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
                     <div>
-                        <p class="text-xs font-bold uppercase tracking-wider text-slate-500">Find your local answer</p>
-                        <h2 class="mt-2 font-display text-2xl font-black tracking-tight text-slate-950">Popular radon level searches</h2>
+                        <p class="text-xs font-bold uppercase tracking-wider text-slate-500">Directory guide</p>
+                        <h2 class="mt-2 font-display text-2xl font-black tracking-tight text-slate-950">Use local evidence without mistaking it for your result</h2>
                         <p class="mt-3 max-w-3xl text-sm leading-relaxed text-slate-600">
-                            These are the searches that should land on the levels hub, get a plain answer, and then continue to cost, credit, or county evidence.
+                            Start with your state, then open a listed county source. Each page makes the geography, source period, and statistical limit visible before asking you to act.
                         </p>
                     </div>
                     <a href="#state-directory" class="text-sm font-black text-indigo-700 hover:underline">Open state directory</a>
                 </div>
 
                 <div class="mt-6 grid grid-cols-1 gap-3 md:grid-cols-2">
-                    <a href="#level-meaning" class="block rounded-xl border border-rose-100 bg-rose-50 p-4 transition-all hover:border-rose-200 hover:bg-rose-100">
-                        <p class="text-sm font-black text-rose-950">What does 4.0 pCi/L radon mean?</p>
-                        <p class="mt-2 text-sm leading-relaxed text-slate-700">It is the main EPA action threshold, so the next step is confirmation if needed and mitigation planning.</p>
-                        <span class="mt-3 inline-flex text-xs font-black uppercase tracking-wider text-rose-800">Interpret 4.0+ &rarr;</span>
-                    </a>
-                    <a href="#level-meaning" class="block rounded-xl border border-amber-100 bg-amber-50 p-4 transition-all hover:border-amber-200 hover:bg-amber-100">
-                        <p class="text-sm font-black text-amber-950">Is 2.5 pCi/L radon bad?</p>
-                        <p class="mt-2 text-sm leading-relaxed text-slate-700">It is below the main action threshold, but not an all-clear. Retesting or long-term monitoring usually decides the next move.</p>
-                        <span class="mt-3 inline-flex text-xs font-black uppercase tracking-wider text-amber-800">See borderline range &rarr;</span>
-                    </a>
-                    <a href="/radon-cost-calculator" class="block rounded-xl border border-red-100 bg-red-50 p-4 transition-all hover:border-red-200 hover:bg-red-100">
-                        <p class="text-sm font-black text-red-950">What does 8.0 pCi/L radon mean?</p>
-                        <p class="mt-2 text-sm leading-relaxed text-slate-700">That is a high reading. Prioritize mitigation quotes and use the ZIP calculator to open the local cost path.</p>
-                        <span class="mt-3 inline-flex text-xs font-black uppercase tracking-wider text-red-800">Price mitigation &rarr;</span>
-                    </a>
                     <a href="#state-directory" class="block rounded-xl border border-indigo-100 bg-indigo-50 p-4 transition-all hover:border-indigo-200 hover:bg-indigo-100">
-                        <p class="text-sm font-black text-indigo-950">Radon levels by county</p>
-                        <p class="mt-2 text-sm leading-relaxed text-slate-700">Use the state directory to open county pages backed by EPA zones, state measurement tables, CDC summaries, or official maps.</p>
-                        <span class="mt-3 inline-flex text-xs font-black uppercase tracking-wider text-indigo-800">Browse counties &rarr;</span>
+                        <p class="text-sm font-black text-indigo-950">Browse by state</p>
+                        <p class="mt-2 text-sm leading-relaxed text-slate-700">Open the state hub first when you need county-level EPA zone or public source context.</p>
+                        <span class="mt-3 inline-flex text-xs font-black uppercase tracking-wider text-indigo-800">Open state directory &rarr;</span>
+                    </a>
+                    <a href="/radon-data-sources" class="block rounded-xl border border-amber-100 bg-amber-50 p-4 transition-all hover:border-amber-200 hover:bg-amber-100">
+                        <p class="text-sm font-black text-amber-950">Read the source base</p>
+                        <p class="mt-2 text-sm leading-relaxed text-slate-700">See which public source is used and why a county summary has limits.</p>
+                        <span class="mt-3 inline-flex text-xs font-black uppercase tracking-wider text-amber-800">Open data sources &rarr;</span>
+                    </a>
+                    <a href="/radon-test-result-meaning" class="block rounded-xl border border-rose-100 bg-rose-50 p-4 transition-all hover:border-rose-200 hover:bg-rose-100">
+                        <p class="text-sm font-black text-rose-950">Already have a report?</p>
+                        <p class="mt-2 text-sm leading-relaxed text-slate-700">Use the result interpreter for test-type-aware next steps rather than comparing your number to a county average.</p>
+                        <span class="mt-3 inline-flex text-xs font-black uppercase tracking-wider text-rose-800">Interpret my result &rarr;</span>
+                    </a>
+                    <a href="/guides/how-to-test-for-radon" class="block rounded-xl border border-emerald-100 bg-emerald-50 p-4 transition-all hover:border-emerald-200 hover:bg-emerald-100">
+                        <p class="text-sm font-black text-emerald-950">No report yet?</p>
+                        <p class="mt-2 text-sm leading-relaxed text-slate-700">Start with a correctly placed test. A zone map is never a substitute for it.</p>
+                        <span class="mt-3 inline-flex text-xs font-black uppercase tracking-wider text-emerald-800">Read testing guide &rarr;</span>
                     </a>
                     <a href="/radon-testing/new-york/ulster-county" class="block rounded-xl border border-sky-200 bg-sky-50 p-4 transition-all hover:border-sky-300 hover:bg-sky-100 md:col-span-2">
                         <p class="text-sm font-black text-sky-950">Radon gas testing in Ulster County, NY</p>
@@ -349,66 +312,21 @@
                 @template.components.aeo_answer_block(block = aeo)
             @endif
 
-            <section id="level-meaning" class="mt-14">
-                <div class="flex flex-col gap-3 md:flex-row md:items-end md:justify-between mb-6">
-                    <div>
-                        <p class="text-xs font-bold uppercase tracking-wider text-slate-500">Result Meaning</p>
-                        <h2 class="font-display font-bold text-3xl text-slate-900 tracking-tight">What your radon number means</h2>
-                    </div>
-                    <a href="/guides/how-to-test-for-radon" class="text-sm font-bold text-indigo-700 hover:underline">
-                        No result yet? Read the testing guide
-                    </a>
-                </div>
-
-                <div class="overflow-hidden rounded-2xl border border-slate-200 bg-white">
-                    <div class="grid grid-cols-1 md:grid-cols-[0.8fr_1.2fr_1.2fr] border-b border-slate-200 bg-slate-50 text-xs font-bold uppercase tracking-wider text-slate-500">
-                        <div class="p-4">Reading</div>
-                        <div class="p-4">Plain meaning</div>
-                        <div class="p-4">Next step</div>
-                    </div>
-                    <div class="divide-y divide-slate-100">
-                        <div class="grid grid-cols-1 md:grid-cols-[0.8fr_1.2fr_1.2fr]">
-                            <div class="p-4 font-display text-xl font-black text-emerald-700">Under 2.0</div>
-                            <div class="p-4 text-sm leading-relaxed text-slate-600">Below the range where most homeowners start pricing mitigation, but not a permanent all-clear.</div>
-                            <div class="p-4 text-sm leading-relaxed text-slate-700">Keep the result, retest after major home changes, and consider periodic monitoring.</div>
-                        </div>
-                        <div class="grid grid-cols-1 md:grid-cols-[0.8fr_1.2fr_1.2fr]">
-                            <div class="p-4 font-display text-xl font-black text-amber-700">2.0-3.9</div>
-                            <div class="p-4 text-sm leading-relaxed text-slate-600">Borderline range. It is below the main EPA action threshold, but risk is not zero.</div>
-                            <div class="p-4 text-sm leading-relaxed text-slate-700">Retest with a valid setup, use a long-term monitor, or price mitigation if the home has compounding risk.</div>
-                        </div>
-                        <div class="grid grid-cols-1 md:grid-cols-[0.8fr_1.2fr_1.2fr]">
-                            <div class="p-4 font-display text-xl font-black text-rose-700">4.0-7.9</div>
-                            <div class="p-4 text-sm leading-relaxed text-slate-600">Elevated result. This is where mitigation planning becomes the practical next step.</div>
-                            <div class="p-4 text-sm leading-relaxed text-slate-700">Confirm the reading if needed, then compare local mitigation costs and contractor requirements.</div>
-                        </div>
-                        <div class="grid grid-cols-1 md:grid-cols-[0.8fr_1.2fr_1.2fr]">
-                            <div class="p-4 font-display text-xl font-black text-red-800">8.0+</div>
-                            <div class="p-4 text-sm leading-relaxed text-slate-600">High reading. Waiting usually creates more risk and more negotiation friction.</div>
-                            <div class="p-4 text-sm leading-relaxed text-slate-700">Prioritize mitigation quotes. In a real-estate deal, turn the local cost range into a repair or credit ask.</div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
             <section class="mt-16 grid grid-cols-1 lg:grid-cols-3 gap-4">
-                <a href="/radon-cost-calculator"
-                   class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm hover:border-slate-900 hover:shadow-md transition-all">
-                    <p class="text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">4.0+ Reading</p>
-                    <h2 class="font-display font-bold text-lg text-slate-900 mb-2">Get a Local Action Plan</h2>
-                    <p class="text-sm text-slate-600 leading-relaxed">Use your ZIP, foundation type, and result band to open the right county cost page.</p>
+                <a href="/radon-test-result-meaning" class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm hover:border-slate-900 hover:shadow-md transition-all">
+                    <p class="text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">Have a report</p>
+                    <h2 class="font-display font-bold text-lg text-slate-900 mb-2">Interpret the result</h2>
+                    <p class="text-sm text-slate-600 leading-relaxed">Use the national threshold and your test type, not a county average, for the next decision.</p>
                 </a>
-                <a href="/radon-credit-calculator"
-                   class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm hover:border-blue-300 hover:shadow-md transition-all">
-                    <p class="text-xs font-bold uppercase tracking-wider text-blue-700 mb-2">Buying or Selling</p>
-                    <h2 class="font-display font-bold text-lg text-slate-900 mb-2">Calculate a Seller Credit</h2>
-                    <p class="text-sm text-slate-600 leading-relaxed">Turn a local mitigation range into a repair ask, credit ask, or quick-close fallback.</p>
+                <a href="/guides/how-to-test-for-radon" class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm hover:border-emerald-300 hover:shadow-md transition-all">
+                    <p class="text-xs font-bold uppercase tracking-wider text-emerald-700 mb-2">Need a test</p>
+                    <h2 class="font-display font-bold text-lg text-slate-900 mb-2">Test the actual home</h2>
+                    <p class="text-sm text-slate-600 leading-relaxed">A correctly placed home test is the only way to know the level where you live.</p>
                 </a>
-                <a href="/methodology"
-                   class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm hover:border-indigo-300 hover:shadow-md transition-all">
+                <a href="/methodology" class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm hover:border-indigo-300 hover:shadow-md transition-all">
                     <p class="text-xs font-bold uppercase tracking-wider text-indigo-700 mb-2">Trust & Sources</p>
                     <h2 class="font-display font-bold text-lg text-slate-900 mb-2">Read the Methodology</h2>
-                    <p class="text-sm text-slate-600 leading-relaxed">See how public EPA, state, housing, and cost data are used across RadonVerdict.</p>
+                    <p class="text-sm text-slate-600 leading-relaxed">See how public EPA, state, and public-health data are distinguished from a property-level result.</p>
                 </a>
             </section>
 

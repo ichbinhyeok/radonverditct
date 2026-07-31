@@ -1,7 +1,7 @@
 @import com.radonverdict.util.JsonLdUtils
 
 !{
-    final String demoUrl = "/guides/radon-failed-inspection?source=inspector-demo&zipCode=22030&radonReading=5.8&intent=buying";
+    final String demoUrl = "/plan?source=inspector-demo&zipCode=22030&radonReading=5.8&intent=buying";
     final String clientNote = "Your radon result was 5.8 pCi/L. This independent next-step guide explains the result, shows local decision context, and helps you prepare for the repair or credit conversation.\n\nLink: ";
 }
 

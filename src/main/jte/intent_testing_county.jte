@@ -196,13 +196,13 @@
 
             <section class="mt-8 rounded-2xl border border-slate-900 bg-slate-950 p-6 text-white sm:p-8">
                 <p class="text-xs font-black uppercase tracking-[0.18em] text-emerald-300">Keep each question on the right page</p>
-                <h2 class="mt-2 font-display text-2xl font-black">Testing tells you the number. Levels explain it. Cost pages price the response.</h2>
+                <h2 class="mt-2 font-display text-2xl font-black">Testing gives you the number. The official local record gives it context.</h2>
                 <p class="mt-4 max-w-3xl leading-relaxed text-slate-300">
-                    Do not use a county average as a home result, and do not start with contractor prices when the property has not been tested. Move through the sequence once: test, interpret, then budget only if the result supports it.
+                    Do not use a county average as a home result, and do not start with contractor prices when the property has not been tested. Move through the sequence once: test, interpret, then compare written quotes only if the result supports it.
                 </p>
                 <div class="mt-6 flex flex-col gap-3 sm:flex-row">
                     <a href="/radon-levels/new-york/ulster-county" class="inline-flex min-h-12 items-center justify-center rounded-xl bg-white px-5 text-sm font-black text-slate-950 hover:bg-slate-100">Interpret the Ulster County signal</a>
-                    <a href="/radon-mitigation-cost" class="inline-flex min-h-12 items-center justify-center rounded-xl border border-white/20 px-5 text-sm font-black text-white hover:bg-white/10">Open mitigation cost planning</a>
+                    <a href="/guides/radon-mitigation-quote-checklist" class="inline-flex min-h-12 items-center justify-center rounded-xl border border-white/20 px-5 text-sm font-black text-white hover:bg-white/10">Open the quote checklist</a>
                 </div>
             </section>
 

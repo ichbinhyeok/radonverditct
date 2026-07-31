@@ -3,6 +3,10 @@ package com.radonverdict.controller;
 import com.radonverdict.model.entity.Lead;
 import com.radonverdict.model.dto.LeadOpsSummary;
 import com.radonverdict.service.SearchConsoleCohortReportService;
+import com.radonverdict.service.SeoRecoveryEngineService;
+import com.radonverdict.service.OrganicTrafficGoalService;
+import com.radonverdict.model.dto.SeoRecoveryReport;
+import com.radonverdict.model.dto.OrganicTrafficGoalReport;
 import com.radonverdict.service.SearchDemandService;
 import com.radonverdict.service.LeadScoringService;
 import lombok.RequiredArgsConstructor;
@@ -39,6 +43,12 @@ public class AdminController {
     @Autowired(required = false)
     private SearchDemandService searchDemandService;
 
+    @Autowired(required = false)
+    private SeoRecoveryEngineService seoRecoveryEngineService;
+
+    @Autowired(required = false)
+    private OrganicTrafficGoalService organicTrafficGoalService;
+
     @GetMapping("/admin")
     public RedirectView adminIndex() {
         return new RedirectView("/admin/leads");
@@ -63,6 +73,12 @@ public class AdminController {
         if (searchDemandService != null) {
             model.addAttribute("demandExportAvailable", searchDemandService.exportAvailable());
             model.addAttribute("demandProfiles", searchDemandService.topOpportunities(20));
+        }
+        if (seoRecoveryEngineService != null) {
+            model.addAttribute("recoveryReport", seoRecoveryEngineService.buildReport());
+        }
+        if (organicTrafficGoalService != null) {
+            model.addAttribute("organicTrafficGoalReport", organicTrafficGoalService.buildReport());
         }
         return "pages/admin_search_console";
     }

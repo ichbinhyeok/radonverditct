@@ -12,7 +12,7 @@
 @template.layout.main(
     title = title,
     canonicalUrl = "https://radonverdict.com/guides/how-to-test-for-radon",
-    description = "Complete guide to radon testing: how to test, which kit to buy, understanding results, and when to retest. Expert-level advice from RadonVerdict.",
+    description = "How to test for radon, place a home test correctly, understand the result, and decide when a follow-up test or mitigation plan is appropriate.",
     headContent = @`
         <script type="application/ld+json">
             {
@@ -48,7 +48,7 @@
                     {
                         "@type": "HowToStep",
                         "name": "Read Your Results",
-                        "text": "If results are below 2.0 pCi/L, no action is needed. If between 2.0 and 4.0 pCi/L, consider mitigation. If above 4.0 pCi/L, the EPA recommends mitigating your home within a few months."
+                        "text": "Keep every result. A result from 2.0 to 3.9 pCi/L can justify a follow-up or long-term test. At 4.0 pCi/L or higher, follow the test instructions for confirmation when needed and begin mitigation planning."
                     }
                 ]
             }
@@ -58,7 +58,7 @@
         <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24 prose prose-slate md:prose-lg">
             <a href="/guides" class="not-prose inline-flex items-center gap-1 text-xs font-bold text-slate-400 hover:text-indigo-600 transition-colors uppercase tracking-wider mb-6"><svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg> All Guides</a>
             <span class="inline-block py-1 px-3 rounded-full bg-emerald-50 text-emerald-700 text-xs font-bold tracking-wider uppercase mb-6 ml-3">Testing &amp; Detection</span>
-            <h1 class="font-display font-bold text-4xl text-slate-900 mb-6 tracking-tight">How to Test for Radon: A Complete Homeowner's Guide</h1>
+            <h1 class="font-display font-bold text-4xl text-slate-900 mb-6 tracking-tight">How to Test for Radon at Home: Kit Placement and Results</h1>
             <p class="lead text-xl text-slate-600 mb-10 leading-relaxed font-medium pb-10 border-b border-slate-200">
                 Radon testing is the only way to know if your home has dangerous radon levels. This guide covers every testing method, how to interpret your results, and the critical mistakes that invalidate tests.
             </p>
@@ -77,7 +77,7 @@
                 Radon is invisible, odorless, and tasteless. You cannot detect it without a test. The EPA estimates that <strong>1 in every 15 US homes</strong> has radon levels above the 4.0 pCi/L action threshold. Even homes in "low-risk" EPA zones can have dangerously elevated readings due to localized geological conditions.
             </p>
             <p class="text-slate-600 mb-6">
-                Testing is inexpensive ($15-$200 depending on method), takes minutes to set up, and provides a definitive answer. There is no scenario in which skipping this test makes sense.
+                A test is the only way to know the level in a particular home. The right follow-up depends on the test type, the result, and whether the result will affect a purchase, sale, or mitigation decision.
             </p>
 
             <h2 class="font-display font-bold text-2xl text-slate-900 mt-12 mb-4">The 3 Types of Radon Tests</h2>
@@ -221,55 +221,53 @@
                         <tr>
                             <td class="px-4 py-3 font-semibold text-emerald-600">Below 2.0</td>
                             <td class="px-4 py-3 text-slate-700">Low</td>
-                            <td class="px-4 py-3 text-slate-600">No action needed. Re-test every 2 years.</td>
+                            <td class="px-4 py-3 text-slate-600">Keep the result and retest on a sensible schedule or after major home changes.</td>
                         </tr>
                         <tr>
                             <td class="px-4 py-3 font-semibold text-amber-600">2.0 - 4.0</td>
                             <td class="px-4 py-3 text-slate-700">Moderate</td>
-                            <td class="px-4 py-3 text-slate-600">Consider mitigation (WHO recommends action at 2.7). Confirm with long-term test.</td>
+                            <td class="px-4 py-3 text-slate-600">A follow-up or long-term test can reduce uncertainty; consider reduction based on the full situation.</td>
                         </tr>
                         <tr>
                             <td class="px-4 py-3 font-semibold text-red-600">4.0 - 8.0</td>
                             <td class="px-4 py-3 text-slate-700">High</td>
-                            <td class="px-4 py-3 text-slate-600">Mitigate within a few months. Confirm with second short-term test.</td>
+                            <td class="px-4 py-3 text-slate-600">Follow the test instructions for confirmation when needed, then begin mitigation planning.</td>
                         </tr>
                         <tr>
                             <td class="px-4 py-3 font-semibold text-red-700">Above 8.0</td>
                             <td class="px-4 py-3 text-slate-700">Very High</td>
-                            <td class="px-4 py-3 text-slate-600">Mitigate immediately. Limit time in lower levels until fixed.</td>
+                            <td class="px-4 py-3 text-slate-600">Treat this as a high result: document the test conditions and prioritize the mitigation decision.</td>
                         </tr>
                     </tbody>
                 </table>
             </div>
 
             <p class="text-slate-600 mb-6">
-                If your short-term test reads above 4.0 pCi/L, the EPA recommends confirming with a second short-term test or a long-term test before committing to mitigation. However, if your reading is above 8.0, the risk is high enough that the EPA recommends acting immediately rather than waiting for confirmation.
+                If a short-term test reads at or above 4.0 pCi/L, follow the kit instructions and current EPA or CDC guidance for confirmation. Keep the report, the test duration, and placement notes together before you compare scopes from mitigation professionals.
             </p>
 
             <h2 class="font-display font-bold text-2xl text-slate-900 mt-12 mb-4">When to Re-Test (Even If Your First Test Was Low)</h2>
             <p class="text-slate-600 mb-4">Radon levels fluctuate. A one-time test provides a snapshot, not a guarantee. The EPA recommends re-testing in these scenarios:</p>
             <ul class="list-disc pl-6 text-slate-600 mb-6 space-y-2">
-                <li><strong>Every 2 years</strong> as routine maintenance - even if previous tests were low</li>
+                <li><strong>On a sensible periodic schedule</strong> - especially if the home has changed or the prior test was a short snapshot</li>
                 <li><strong>After major renovation</strong> - especially if you've altered the foundation, waterproofing, or HVAC system</li>
                 <li><strong>After any real estate transaction</strong> - tests conducted under "closed house" conditions for sales may not reflect normal living patterns</li>
-                <li><strong>Seasonal change</strong> - radon levels typically peak during winter when homes are sealed and heating systems create negative pressure. A summer test may underrepresent your actual annual average by 20-50%</li>
+                <li><strong>When seasons or occupancy change the question</strong> - a long-term test can better capture variation over time.</li>
             </ul>
 
             <h2 class="font-display font-bold text-2xl text-slate-900 mt-12 mb-4">Professional Testing vs. DIY</h2>
             <p class="text-slate-600 mb-6">
-                Professional radon testing (by a certified NRPP or AARST professional) costs $150-$300 and uses calibrated continuous monitors that log hourly data with tamper-detection.
-                This is the standard required for real estate transactions in most states. However, for personal screening purposes, a $15-$30 charcoal canister provides
-                a reliable initial reading. If the result is borderline (near 4.0 pCi/L), follow up with professional testing or a long-term kit.
+                A qualified radon professional can help when the result will affect a real-estate transaction, test conditions need independent documentation, or the home has an unusual layout. For personal screening, a properly used home kit can provide a useful initial measurement. If the result is near 4.0 pCi/L, use the test instructions and a follow-up test to reduce uncertainty.
             </p>
 
             <!-- CTA Section -->
             <div class="not-prose bg-indigo-50 border border-indigo-100 rounded-2xl p-8 mt-12 text-slate-900 shadow-sm relative overflow-hidden">
                 <div class="absolute top-0 right-0 -mr-16 -mt-16 w-32 h-32 rounded-full bg-indigo-200 opacity-50 blur-2xl"></div>
-                <h3 class="font-display font-bold text-xl text-indigo-950 mb-3 relative z-10">Check mitigation costs &amp; local requirements for your county.</h3>
-                <p class="text-indigo-800 mb-6 text-sm leading-relaxed relative z-10">Check your radon level against EPA and WHO thresholds, then get an itemized mitigation cost estimate specific to your state's labor rates and foundation types.</p>
+                <h3 class="font-display font-bold text-xl text-indigo-950 mb-3 relative z-10">Have a result? Put the next step in writing.</h3>
+                <p class="text-indigo-800 mb-6 text-sm leading-relaxed relative z-10">Use the result interpreter for the decision path, then use the inspection guide or quote checklist when a documented scope matters.</p>
                 <div class="flex flex-col sm:flex-row gap-3 relative z-10">
-                    <a href="/radon-cost-calculator" class="inline-flex items-center justify-center px-6 py-3 border border-transparent text-sm font-bold rounded-xl text-white bg-indigo-600 hover:bg-indigo-700 transition shadow-sm">
-                        Calculate My Local Cost ->
+                    <a href="/radon-test-result-meaning" class="inline-flex items-center justify-center px-6 py-3 border border-transparent text-sm font-bold rounded-xl text-white bg-indigo-600 hover:bg-indigo-700 transition shadow-sm">
+                        Interpret My Result ->
                     </a>
                     <a href="/guides/diy-vs-professional-radon-mitigation" class="inline-flex items-center justify-center px-6 py-3 border border-indigo-200 text-sm font-bold rounded-xl text-indigo-800 bg-white hover:bg-indigo-50 transition">
                         DIY vs. Professional

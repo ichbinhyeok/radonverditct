@@ -55,7 +55,7 @@ public class PageController {
     @Value("${app.feature.monetization-hooks.enabled:false}")
     private boolean monetizationHooksEnabled;
 
-    @Value("${app.site.index-county-cost-pages:true}")
+    @Value("${app.site.index-county-cost-pages:false}")
     private boolean indexCountyCostPages;
 
     @Value("${app.site.base-url:https://radonverdict.com}")
@@ -75,9 +75,7 @@ public class PageController {
         ItemizedReceipt defaultReceipt = calcService.calculate("US", "National Average", "other", "homeowner");
         model.addAttribute("defaultReceipt", defaultReceipt);
 
-        if (error != null) {
-            model.addAttribute("noindex", true);
-        }
+        model.addAttribute("noindex", true);
 
         // Group counties by state for the directory
         Map<String, List<County>> stateMap = dataLoadService.getCountyBySlugMap().values().stream()
@@ -96,6 +94,7 @@ public class PageController {
         model.addAttribute("crawlspaceReceipt", calcService.calculate("US", "National Average", "Crawl Space", "crawlspace", "homeowner", "under_2000"));
         model.addAttribute("defaultReceipt", calcService.calculate("US", "National Average", "other", "homeowner"));
         model.addAttribute("trust", trustMetadataService.forGuidePage());
+        model.addAttribute("noindex", true);
 
         List<County> costCounties = costEvidenceHubService.costIndexableCounties(dataLoadService.getCountyBySlugMap().values().stream()
                 .sorted(Comparator.comparing(County::getStateAbbr).thenComparing(County::getCountyName))
@@ -114,9 +113,7 @@ public class PageController {
         model.addAttribute("defaultReceipt", defaultReceipt);
         model.addAttribute("trust", trustMetadataService.forGuidePage());
 
-        if (error != null) {
-            model.addAttribute("noindex", true);
-        }
+        model.addAttribute("noindex", true);
 
         Map<String, List<County>> stateMap = dataLoadService.getCountyBySlugMap().values().stream()
                 .filter(seoIndexingPolicyService::isCountyIndexableCandidate)
@@ -130,56 +127,24 @@ public class PageController {
     @PostMapping("/search-zip")
     public RedirectView searchZip(@RequestParam("zipCode") String zipCode,
                                   @RequestParam(name = "intent", required = false) String intent,
+                                  @RequestParam(name = "radonReading", required = false) String radonReading,
+                                  @RequestParam(name = "noTest", defaultValue = "false") boolean noTest,
                                   @RequestParam(name = "radonResultBand", required = false) String radonResultBand,
                                   @RequestParam(name = "foundationType", required = false) String foundationType,
                                   @RequestParam(name = "foundation", required = false) String foundation) {
-        String normalizedZip = zipCode == null ? null : zipCode.trim();
-        String fips = dataLoadService.getZipToFipsMap().get(normalizedZip);
-        if (fips == null) {
-            // Handle invalid zip - redirect to global calculator with error
-            return redirect("/radon-cost-calculator?error=notfound", HttpStatus.SEE_OTHER);
-        }
-        County county = dataLoadService.getCountByFipsMap().get(fips);
-        if (county == null) {
-            return redirect("/radon-cost-calculator?error=notfound", HttpStatus.SEE_OTHER);
-        }
-
-        return redirect(buildCountyScenarioRedirect(
-                        "/radon-mitigation-cost/{stateSlug}/{countySlug}",
-                        county,
-                        sanitizeIntent(intent, null),
-                        sanitizeRadonResultBand(radonResultBand, null),
-                        normalizedZip,
-                        sanitizeFoundation(firstPresent(foundationType, foundation))),
-                HttpStatus.SEE_OTHER);
+        return redirect(buildPlanRedirect(zipCode, radonReading, noTest, intent, "home"), HttpStatus.SEE_OTHER);
     }
 
     @PostMapping("/search-zip-credit")
     public RedirectView searchZipCredit(@RequestParam("zipCode") String zipCode,
                                         @RequestParam(name = "intent", required = false) String intent,
                                         @RequestParam(name = "role", required = false) String role,
+                                        @RequestParam(name = "radonReading", required = false) String radonReading,
+                                        @RequestParam(name = "noTest", defaultValue = "false") boolean noTest,
                                         @RequestParam(name = "radonResultBand", required = false) String radonResultBand,
                                         @RequestParam(name = "foundationType", required = false) String foundationType,
                                         @RequestParam(name = "foundation", required = false) String foundation) {
-        String normalizedZip = zipCode == null ? null : zipCode.trim();
-        String fips = dataLoadService.getZipToFipsMap().get(normalizedZip);
-        if (fips == null) {
-            return redirect("/radon-credit-calculator?error=notfound", HttpStatus.SEE_OTHER);
-        }
-
-        County county = dataLoadService.getCountByFipsMap().get(fips);
-        if (county == null) {
-            return redirect("/radon-credit-calculator?error=notfound", HttpStatus.SEE_OTHER);
-        }
-
-        return redirect(buildCountyScenarioRedirect(
-                        "/radon-credit-calculator/{stateSlug}/{countySlug}",
-                        county,
-                        sanitizeCreditIntent(intent, role),
-                        sanitizeRadonResultBand(radonResultBand, "above_4"),
-                        normalizedZip,
-                        sanitizeFoundation(firstPresent(foundationType, foundation))),
-                HttpStatus.SEE_OTHER);
+        return redirect(buildPlanRedirect(zipCode, radonReading, noTest, sanitizeCreditIntent(intent, role), "credit-tool"), HttpStatus.SEE_OTHER);
     }
 
     @GetMapping("/client-action-plan")
@@ -188,33 +153,17 @@ public class PageController {
                                          @RequestParam(name = "radonReading", required = false) String radonReading,
                                          @RequestParam(name = "mode", required = false) String mode,
                                          @RequestParam(name = "source", required = false) String source) {
-        String normalizedZip = zipCode == null ? null : zipCode.trim();
-        String fips = dataLoadService.getZipToFipsMap().get(normalizedZip);
-        if (fips == null) {
-            return redirect("/radon-cost-calculator?error=notfound", HttpStatus.SEE_OTHER);
-        }
-        County county = dataLoadService.getCountByFipsMap().get(fips);
-        if (county == null) {
-            return redirect("/radon-cost-calculator?error=notfound", HttpStatus.SEE_OTHER);
-        }
+        return redirect(buildPlanRedirect(zipCode, radonReading, false, intent, source), HttpStatus.SEE_OTHER);
+    }
 
-        String sanitizedIntent = sanitizeIntent(intent, "homeowner");
-        String resultBand = resultBandForReading(radonReading);
-        boolean forceCostPath = "cost".equalsIgnoreCase(mode);
-        String path = buildCountyScenarioRedirect(
-                !forceCostPath && ("buying".equals(sanitizedIntent) || "selling".equals(sanitizedIntent))
-                        ? "/radon-credit-calculator/{stateSlug}/{countySlug}"
-                        : "/radon-mitigation-cost/{stateSlug}/{countySlug}",
-                county,
-                sanitizedIntent,
-                resultBand,
-                normalizedZip,
-                null);
-        String sanitizedSource = sanitizeSource(source);
-        if (sanitizedSource != null) {
-            path += "&source=" + sanitizedSource;
-        }
-        return redirect(path, HttpStatus.SEE_OTHER);
+    private String buildPlanRedirect(String zipCode, String radonReading, boolean noTest, String intent, String source) {
+        UriComponentsBuilder builder = UriComponentsBuilder.fromPath("/plan");
+        addQueryParam(builder, "zipCode", zipCode == null ? null : zipCode.trim());
+        addQueryParam(builder, "radonReading", radonReading == null ? null : radonReading.trim());
+        if (noTest) builder.queryParam("noTest", true);
+        addQueryParam(builder, "intent", sanitizeIntent(intent, "homeowner"));
+        addQueryParam(builder, "source", sanitizeSource(source));
+        return builder.build().encode().toUriString();
     }
 
     @GetMapping("/radon-mitigation-cost/{stateSlug}")
@@ -495,27 +444,6 @@ public class PageController {
                 .toList();
     }
 
-    private String buildCountyScenarioRedirect(
-            String pathTemplate,
-            County county,
-            String intent,
-            String radonResultBand,
-            String zipCode,
-            String foundation) {
-        UriComponentsBuilder builder = UriComponentsBuilder.fromPath(pathTemplate);
-        addQueryParam(builder, "intent", intent);
-        addQueryParam(builder, "radonResultBand", radonResultBand);
-        if (zipCode != null && zipCode.matches("\\d{5}")) {
-            addQueryParam(builder, "zipCode", zipCode);
-        }
-        addQueryParam(builder, "foundation", foundation);
-
-        return builder
-                .buildAndExpand(county.getStateSlug(), county.getCountySlug())
-                .encode()
-                .toUriString();
-    }
-
     private void addQueryParam(UriComponentsBuilder builder, String key, String value) {
         if (value != null && !value.isBlank()) {
             builder.queryParam(key, value);
@@ -548,36 +476,6 @@ public class PageController {
             case "homeowner", "owner", "living_here" -> "homeowner";
             default -> fallback;
         };
-    }
-
-    private String sanitizeRadonResultBand(String value, String fallback) {
-        String normalized = normalizeToken(value);
-        if (normalized == null) {
-            return fallback;
-        }
-
-        return switch (normalized) {
-            case "not_tested", "under_2", "between_2_and_4", "above_4" -> normalized;
-            default -> fallback;
-        };
-    }
-
-    private String resultBandForReading(String rawReading) {
-        if (rawReading == null || !rawReading.matches("\\d{1,2}(?:\\.\\d{1,2})?")) {
-            return "above_4";
-        }
-        try {
-            double reading = Double.parseDouble(rawReading);
-            if (reading < 2) {
-                return "under_2";
-            }
-            if (reading < 4) {
-                return "between_2_and_4";
-            }
-        } catch (NumberFormatException ignored) {
-            // A failed-inspection link defaults to the action-level route.
-        }
-        return "above_4";
     }
 
     private String sanitizeSource(String value) {
@@ -621,13 +519,6 @@ public class PageController {
                 .toLowerCase(Locale.ROOT)
                 .replace('-', '_')
                 .replace(' ', '_');
-    }
-
-    private String firstPresent(String first, String second) {
-        if (first != null && !first.isBlank()) {
-            return first;
-        }
-        return second;
     }
 
     private RedirectView redirect(String path, HttpStatus status) {

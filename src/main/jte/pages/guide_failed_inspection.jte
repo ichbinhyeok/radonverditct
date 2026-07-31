@@ -7,18 +7,15 @@
 @param String sharedByInspector = null
 
 !{
-    final String seoTitle = "Radon Failed Inspection: Seller Credit, Cost, and Retest Plan";
-    final String seoDescription = "Failed a radon inspection? See when to retest, when to ask for repairs or a seller credit, and how to use local mitigation cost before the deal deadline.";
+    final String seoTitle = "Radon Failed Inspection: Repair, Credit, or Retest?";
+    final String seoDescription = "Failed a radon inspection? See when to confirm the test, when to ask for repair or a seller credit, and how to document the next step before closing.";
     final boolean hasClientContext = clientZip != null || clientReading != null || clientIntent != null;
     final String clientActionUrl = clientZip == null
-            ? "/radon-cost-calculator"
-            : "/client-action-plan?zipCode=" + clientZip
+            ? "/plan"
+            : "/plan?zipCode=" + clientZip
                     + (clientReading != null ? "&radonReading=" + clientReading : "")
                     + (clientIntent != null ? "&intent=" + clientIntent : "")
                     + "&source=" + (clientSource != null ? clientSource : "home-inspector-packet");
-    final String clientCostUrl = clientZip == null
-            ? "/radon-cost-calculator"
-            : clientActionUrl + "&mode=cost";
     final boolean clientIsBuying = "buying".equals(clientIntent);
     final boolean clientIsSelling = "selling".equals(clientIntent);
     final boolean clientIsHomeowner = "homeowner".equals(clientIntent);
@@ -29,8 +26,8 @@
                     : clientIsHomeowner
                             ? "Estimate my mitigation path"
                             : "Calculate seller credit";
-    final String secondaryCtaLabel = clientIsHomeowner ? "Open quote checklist" : "See local mitigation range";
-    final String secondaryCtaUrl = clientIsHomeowner ? "/guides/radon-mitigation-quote-checklist" : clientCostUrl;
+    final String secondaryCtaLabel = clientIsHomeowner ? "Open quote checklist" : "Review negotiation actions";
+    final String secondaryCtaUrl = clientIsHomeowner ? "/guides/radon-mitigation-quote-checklist" : clientActionUrl;
 }
 
 @template.layout.main(
@@ -67,7 +64,7 @@
                     "name": "What happens if a home fails a radon inspection?",
                     "acceptedAnswer": {
                         "@type": "Answer",
-                        "text": "A failed radon inspection usually means the buyer and seller need to confirm the test was valid, price local mitigation, and decide between seller repair, closing credit, price concession, or buyer-managed mitigation after closing."
+                        "text": "A failed radon inspection usually means the buyer and seller need to confirm the test conditions, obtain a documented mitigation scope when appropriate, and decide between seller repair, a closing credit, or buyer-managed mitigation after closing."
                     }
                 },{
                     "@type": "Question",
@@ -81,7 +78,7 @@
                     "name": "Do you retest after a 4.0 pCi/L radon result?",
                     "acceptedAnswer": {
                         "@type": "Answer",
-                        "text": "Retesting can be reasonable if the original test setup was questionable or the result is borderline. A clear 4.0+ result during a deal should also trigger local cost and credit planning before deadlines pass."
+                        "text": "Retesting can be reasonable if the original test setup was questionable or the result is borderline. A clear 4.0+ result during a deal should also trigger a documented repair-or-credit decision before deadlines pass."
                     }
                 }]
             }
@@ -107,7 +104,7 @@
                             Radon failed inspection: credit, repair, or retest?
                         </h1>
                         <p class="mt-5 max-w-2xl text-lg font-semibold leading-relaxed text-slate-300">
-                            Use the test number, deadline, and local mitigation range to choose the next move before the deal conversation turns into guesswork.
+                            Use the test number, test conditions, and deadline to choose the next move before the deal conversation turns into guesswork.
                         </p>
                         @if(sharedByInspector != null)
                             <div class="mt-6 border-l-2 border-cyan-300 bg-white/10 px-4 py-3">
@@ -145,11 +142,11 @@
                         <div class="mt-4 space-y-3">
                             <div class="rounded-2xl border border-white/10 bg-white p-4 text-slate-950">
                                 <p class="text-sm font-black">4.0+ pCi/L with a valid test</p>
-                                <p class="mt-1 text-sm leading-relaxed text-slate-600">Price mitigation now and turn the local range into a repair or credit ask.</p>
+                                <p class="mt-1 text-sm leading-relaxed text-slate-600">Document the mitigation scope, then choose a repair or credit request that fits the deadline.</p>
                             </div>
                             <div class="rounded-2xl border border-white/10 bg-white/10 p-4">
                                 <p class="text-sm font-black text-white">Questionable setup or borderline result</p>
-                                <p class="mt-1 text-sm leading-relaxed text-slate-300">Retest quickly, but do not let retesting delay the cost/credit plan.</p>
+                                <p class="mt-1 text-sm leading-relaxed text-slate-300">Retest promptly, but do not let an unclear test question hide the deadline decision.</p>
                             </div>
                             <div class="rounded-2xl border border-white/10 bg-white/10 p-4">
                                 <p class="text-sm font-black text-white">Seller wants a clean close</p>
@@ -163,11 +160,11 @@
 
         <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-14 sm:py-16">
             <section class="grid gap-5 lg:grid-cols-4">
-                <a href="/radon-credit-calculator"
+                <a href="/plan?intent=buying&amp;source=failed-inspection-guide"
                    class="rounded-2xl border border-rose-200 bg-rose-50 p-5 transition-colors hover:border-rose-300 hover:bg-rose-100">
                     <p class="text-xs font-black uppercase tracking-wider text-rose-700">Buyer ask</p>
-                    <h2 class="mt-3 text-xl font-black text-slate-950">Turn the result into a credit number</h2>
-                    <p class="mt-2 text-sm leading-relaxed text-slate-700">Use county cost as the anchor, not a random national average.</p>
+                    <h2 class="mt-3 text-xl font-black text-slate-950">Build a documented next step</h2>
+                    <p class="mt-2 text-sm leading-relaxed text-slate-700">Keep the reported result, test type, and deadline together before choosing repair, credit, or retest.</p>
                 </a>
                 <a href="/guides/radon-seller-credit-worksheet"
                    class="rounded-2xl border border-blue-200 bg-blue-50 p-5 transition-colors hover:border-blue-300 hover:bg-blue-100">
@@ -175,11 +172,11 @@
                     <h2 class="mt-3 text-xl font-black text-slate-950">Choose repair, credit, or concession</h2>
                     <p class="mt-2 text-sm leading-relaxed text-slate-700">Keep the negotiation specific without overpromising contractor scope.</p>
                 </a>
-                <a href="/radon-cost-calculator"
+                <a href="/radon-test-result-meaning"
                    class="rounded-2xl border border-slate-200 bg-slate-50 p-5 transition-colors hover:border-slate-400 hover:bg-slate-100">
-                    <p class="text-xs font-black uppercase tracking-wider text-slate-500">Local cost</p>
-                    <h2 class="mt-3 text-xl font-black text-slate-950">Open the county mitigation range</h2>
-                    <p class="mt-2 text-sm leading-relaxed text-slate-700">Foundation type, county context, and result band change the budget.</p>
+                    <p class="text-xs font-black uppercase tracking-wider text-slate-500">Test result</p>
+                    <h2 class="mt-3 text-xl font-black text-slate-950">Check what the number means</h2>
+                    <p class="mt-2 text-sm leading-relaxed text-slate-700">Use the test type and reported number before turning an inspection into a negotiation path.</p>
                 </a>
                 <a href="/guides/how-to-test-for-radon"
                    class="rounded-2xl border border-emerald-200 bg-emerald-50 p-5 transition-colors hover:border-emerald-300 hover:bg-emerald-100">
@@ -271,7 +268,7 @@
                         <h3 class="font-black text-slate-950">What should I ask a radon contractor?</h3>
                         <p class="mt-1 text-sm leading-relaxed text-slate-600">Use this before comparing quotes, especially when scope and retest proof matter.</p>
                     </a>
-                    <a href="/radon-levels" class="rounded-2xl border border-slate-200 bg-white p-4 transition-colors hover:border-slate-400 hover:bg-slate-50">
+                    <a href="/radon-test-result-meaning" class="rounded-2xl border border-slate-200 bg-white p-4 transition-colors hover:border-slate-400 hover:bg-slate-50">
                         <h3 class="font-black text-slate-950">What does the radon number mean?</h3>
                         <p class="mt-1 text-sm leading-relaxed text-slate-600">Use this when the buyer, seller, or agent does not understand 2.0 vs 4.0+.</p>
                     </a>

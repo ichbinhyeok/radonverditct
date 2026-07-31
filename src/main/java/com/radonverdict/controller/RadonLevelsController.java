@@ -58,6 +58,11 @@ public class RadonLevelsController {
     @Value("${app.feature.seo-debug-visible:false}")
     private boolean seoDebugVisible;
 
+    @GetMapping("/radon-test-result-meaning")
+    public String radonTestResultMeaning() {
+        return "radon_result_interpreter";
+    }
+
     @GetMapping("/radon-levels")
     public String radonLevelsRoot(Model model) {
         List<County> allCounties = dataLoadService.getCountyBySlugMap().values().stream()
