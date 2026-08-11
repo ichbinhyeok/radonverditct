@@ -40,6 +40,35 @@
                 ]
             }
         </script>
+        <script type="application/ld+json">
+            {
+                "@context": "https://schema.org",
+                "@type": "Dataset",
+                "name": "RadonVerdict US County Radon Evidence Dataset",
+                "description": "A normalized county-level dataset compiled from official state health, CDC tracking, EPA zone, and state radon-potential sources. Each record preserves its source, reporting period, retrieval date, metric boundaries, and property-level caveat.",
+                "url": "https://radonverdict.com/radon-data-sources",
+                "creator": {
+                    "@type": "Organization",
+                    "name": "RadonVerdict",
+                    "url": "https://radonverdict.com"
+                },
+                "spatialCoverage": "United States",
+                "isAccessibleForFree": true,
+                "keywords": ["radon", "county radon data", "EPA radon zone", "public health", "home testing"],
+                "variableMeasured": [
+                    "EPA radon zone",
+                    "official test count",
+                    "average radon test result in pCi/L",
+                    "percent of tests at or above 4 pCi/L",
+                    "official radon-potential tier"
+                ],
+                "distribution": {
+                    "@type": "DataDownload",
+                    "encodingFormat": "text/csv",
+                    "contentUrl": "https://radonverdict.com/datasets/us-county-radon-evidence.csv"
+                }
+            }
+        </script>
     `,
     content = @`
         <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-20">
@@ -60,6 +89,9 @@
                     RadonVerdict is built around a simple rule: official radon evidence comes before calculators. County pages use public EPA, state, CDC, NJ DEP, Census, ZIP, and cost-reference data to decide whether a page has enough local evidence for search and what next step a user should see.
                 </p>
                 <div class="mt-8 flex flex-col gap-3 sm:flex-row">
+                    <a href="/datasets/us-county-radon-evidence.csv" class="inline-flex items-center justify-center rounded-xl bg-indigo-700 px-5 py-3 text-sm font-bold text-white transition-colors hover:bg-indigo-600">
+                        Download County Evidence CSV
+                    </a>
                     <a href="/methodology" class="inline-flex items-center justify-center rounded-xl bg-slate-900 px-5 py-3 text-sm font-bold text-white transition-colors hover:bg-slate-800">
                         Read Methodology
                     </a>
@@ -69,6 +101,28 @@
                     <a href="/radon-levels" class="inline-flex items-center justify-center rounded-xl border border-slate-200 bg-white px-5 py-3 text-sm font-bold text-slate-800 transition-colors hover:bg-slate-50">
                         Open Radon Levels
                     </a>
+                </div>
+            </section>
+
+            <section class="border-b border-slate-200 py-12" id="county-evidence-dataset">
+                <div class="grid gap-8 lg:grid-cols-[1fr_0.9fr] lg:items-start">
+                    <div>
+                        <p class="text-xs font-bold uppercase tracking-[0.18em] text-indigo-700">Open data download</p>
+                        <h2 class="mt-3 font-display text-3xl font-black tracking-tight text-slate-950">Use the county evidence without scraping this site</h2>
+                        <p class="mt-4 text-base leading-relaxed text-slate-600">
+                            The CSV contains one normalized row per official measurement or radon-potential record. It includes county FIPS, EPA zone, source URL, reporting period, retrieval date, available metrics, the source caveat, and a stable county evidence URL.
+                        </p>
+                        <p class="mt-4 text-sm leading-relaxed text-slate-600">
+                            This is a transformed index of public-source records, not a replacement for the primary datasets. Preserve the source URL and caveat when quoting a row, and verify decisions against the linked agency source.
+                        </p>
+                    </div>
+                    <div class="rounded-2xl border border-indigo-200 bg-indigo-50 p-6">
+                        <p class="text-xs font-black uppercase tracking-wider text-indigo-700">Suggested citation</p>
+                        <p class="mt-3 text-sm font-semibold leading-relaxed text-slate-800">RadonVerdict. “US County Radon Evidence Dataset.” Accessed from radonverdict.com/radon-data-sources.</p>
+                        <a href="/datasets/us-county-radon-evidence.csv" download class="mt-5 inline-flex items-center justify-center rounded-xl bg-indigo-700 px-5 py-3 text-sm font-black text-white hover:bg-indigo-600">
+                            Download CSV (${String.format(java.util.Locale.US, "%,d", officialEvidenceCount)} records)
+                        </a>
+                    </div>
                 </div>
             </section>
 

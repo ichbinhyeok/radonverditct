@@ -672,6 +672,10 @@ class SeoBehaviorIntegrationTest {
                 .andExpect(content().string(containsString("<title>Radon Data Sources &amp; Evidence Policy | RadonVerdict</title>")))
                 .andExpect(content().string(containsString("Radon data sources, evidence hierarchy, and indexing policy")))
                 .andExpect(content().string(containsString("Three public county records, with the claim boundary visible")))
+                .andExpect(content().string(containsString("Use the county evidence without scraping this site")))
+                .andExpect(content().string(containsString("href=\"/datasets/us-county-radon-evidence.csv\"")))
+                .andExpect(content().string(containsString("\"@type\": \"Dataset\"")))
+                .andExpect(content().string(containsString("\"@type\": \"DataDownload\"")))
                 .andExpect(content().string(containsString("EPA Zone 2; submitted-test average 2.4 pCi/L")))
                 .andExpect(content().string(containsString("165 reported tests; citywide average 2.6 pCi/L")))
                 .andExpect(content().string(containsString("Submitted-test average 3.8 pCi/L; 24.4% at or above 4.0")))
@@ -698,6 +702,26 @@ class SeoBehaviorIntegrationTest {
         assertFalse(lowerHtml.contains("moat"), "Data sources page should not expose internal strategy language.");
         assertFalse(lowerHtml.contains("internal links"), "Data sources page should use user-facing language.");
         assertFalse(lowerHtml.contains("indexation"), "Data sources page should avoid internal SEO jargon.");
+    }
+
+    @Test
+    void countyEvidenceDatasetIsDownloadableAndCitationReady() throws Exception {
+        String csv = mockMvc.perform(get("/datasets/us-county-radon-evidence.csv"))
+                .andExpect(status().isOk())
+                .andExpect(header().string("Content-Type", containsString("text/csv")))
+                .andExpect(header().string("Content-Disposition",
+                        "attachment; filename=radonverdict-us-county-radon-evidence.csv"))
+                .andExpect(content().string(containsString("county_fips,state_abbr,county_name")))
+                .andExpect(content().string(containsString("official_measurement")))
+                .andExpect(content().string(containsString("official_potential_tier")))
+                .andExpect(content().string(containsString("https://radonverdict.com/radon-levels/")))
+                .andReturn()
+                .getResponse()
+                .getContentAsString(StandardCharsets.UTF_8);
+
+        assertTrue(csv.lines().count() > 700, "The public dataset should expose the complete evidence inventory.");
+        assertTrue(csv.contains("\"New York State Department of Health"));
+        assertTrue(csv.contains("\"New Jersey DEP Radon Potential Municipality Tier Table"));
     }
 
     @Test
