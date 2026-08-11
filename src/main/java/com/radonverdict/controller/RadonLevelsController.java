@@ -60,6 +60,9 @@ public class RadonLevelsController {
     @Value("${app.feature.seo-debug-visible:false}")
     private boolean seoDebugVisible;
 
+    @Value("${app.site.retire-non-evidence-county-pages:true}")
+    private boolean retireNonEvidenceCountyPages;
+
     @GetMapping("/radon-test-result-meaning")
     public String radonTestResultMeaning() {
         return "radon_result_interpreter";
@@ -154,6 +157,10 @@ public class RadonLevelsController {
 
         if (!county.getStateSlug().equals(stateSlug) || !county.getCountySlug().equals(countySlug)) {
             return permanentRedirect("/radon-levels/" + county.getStateSlug() + "/" + county.getCountySlug());
+        }
+
+        if (retireNonEvidenceCountyPages && !seoIndexingPolicyService.isCountyIndexableCandidate(county)) {
+            throw new ResponseStatusException(HttpStatus.GONE, "County SEO page retired");
         }
 
         // Get state regulation data
