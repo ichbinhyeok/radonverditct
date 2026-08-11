@@ -1,11 +1,14 @@
 package com.radonverdict;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.radonverdict.controller.PageController;
+import com.radonverdict.controller.RadonLevelsController;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.util.ReflectionTestUtils;
 
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
@@ -24,7 +27,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@SpringBootTest
+@SpringBootTest(properties = "app.site.retire-non-evidence-county-pages=false")
 @AutoConfigureMockMvc
 class SeoBehaviorIntegrationTest {
 
@@ -36,6 +39,12 @@ class SeoBehaviorIntegrationTest {
 
     @Autowired
     private MockMvc mockMvc;
+
+    @Autowired
+    private PageController pageController;
+
+    @Autowired
+    private RadonLevelsController radonLevelsController;
 
     @Test
     void homeRendersDecisionWorkspaceAndCanonicalUrl() throws Exception {
@@ -537,6 +546,28 @@ class SeoBehaviorIntegrationTest {
         mockMvc.perform(get("/radon-levels/california/butte-county"))
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("<meta name=\"robots\" content=\"noindex, follow\">")));
+    }
+
+    @Test
+    void productionRetirementReturnsGoneForNonEvidenceCountySurfaces() throws Exception {
+        ReflectionTestUtils.setField(pageController, "retireNonEvidenceCountyPages", true);
+        ReflectionTestUtils.setField(radonLevelsController, "retireNonEvidenceCountyPages", true);
+        try {
+            mockMvc.perform(get("/radon-levels/california/butte-county"))
+                    .andExpect(status().isGone());
+            mockMvc.perform(get("/radon-mitigation-cost/california/butte-county"))
+                    .andExpect(status().isGone());
+            mockMvc.perform(get("/radon-credit-calculator/california/butte-county"))
+                    .andExpect(status().isGone());
+
+            mockMvc.perform(get("/radon-levels/new-york/ulster-county"))
+                    .andExpect(status().isOk());
+            mockMvc.perform(get("/radon-mitigation-cost/utah/utah-county"))
+                    .andExpect(status().isOk());
+        } finally {
+            ReflectionTestUtils.setField(pageController, "retireNonEvidenceCountyPages", false);
+            ReflectionTestUtils.setField(radonLevelsController, "retireNonEvidenceCountyPages", false);
+        }
     }
 
     @Test

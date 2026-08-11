@@ -64,6 +64,9 @@ public class PageController {
     @Value("${app.feature.seo-debug-visible:false}")
     private boolean seoDebugVisible;
 
+    @Value("${app.site.retire-non-evidence-county-pages:true}")
+    private boolean retireNonEvidenceCountyPages;
+
     @GetMapping("/")
     public String home() {
         return "index";
@@ -221,6 +224,10 @@ public class PageController {
             return permanentRedirect("/radon-mitigation-cost/" + county.getStateSlug() + "/" + county.getCountySlug());
         }
 
+        if (retireNonEvidenceCountyPages && !seoIndexingPolicyService.isCostPageIndexableCandidate(county)) {
+            throw new ResponseStatusException(HttpStatus.GONE, "County SEO page retired");
+        }
+
         // Build the FULL page content (Zone + State regulation + Intent + FAQ +
         // Receipt)
         CountyPageContent pageContent = hasCostScenarioOverrides(foundation, intent, sqftCategory, radonResultBand)
@@ -274,6 +281,10 @@ public class PageController {
 
         if (!county.getStateSlug().equals(stateSlug) || !county.getCountySlug().equals(countySlug)) {
             return permanentRedirect("/radon-credit-calculator/" + county.getStateSlug() + "/" + county.getCountySlug());
+        }
+
+        if (retireNonEvidenceCountyPages && !seoIndexingPolicyService.isCostPageIndexableCandidate(county)) {
+            throw new ResponseStatusException(HttpStatus.GONE, "County utility page retired");
         }
 
         CountyPageContent defaultScenario = contentService.buildDefaultPageContent(county);
