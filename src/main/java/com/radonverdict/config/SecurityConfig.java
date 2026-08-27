@@ -25,10 +25,13 @@ public class SecurityConfig {
             @Value("${spring.security.user.name:admin}") String username,
             @Value("${spring.security.user.password:}") String password) {
         PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
+        String effectiveUsername = username == null || username.isBlank()
+                ? "admin"
+                : username;
         String effectivePassword = password == null || password.isBlank()
                 ? UUID.randomUUID().toString()
                 : password;
-        UserDetails adminUser = User.withUsername(username)
+        UserDetails adminUser = User.withUsername(effectiveUsername)
                 .password(passwordEncoder.encode(effectivePassword))
                 .roles("ADMIN")
                 .build();
