@@ -1,6 +1,7 @@
 @import com.radonverdict.model.dto.RadonActionPlan
 
 @param RadonActionPlan plan
+@param String shareError = null
 
 !{
     final boolean hasInput = (plan.getZipCode() != null && !plan.getZipCode().isBlank())
@@ -68,6 +69,9 @@
                             <p class="mt-4 font-semibold leading-relaxed text-slate-600">${plan.getInterpretation()}</p>
                             @if (plan.hasValidationError())
                                 <p class="mt-5 rounded-xl border border-red-200 bg-red-50 p-4 text-sm font-bold text-red-800">${plan.getValidationError()}</p>
+                                @if (shareError != null)
+                                    <p class="mt-3 rounded-xl border border-red-200 bg-red-50 p-3 text-sm font-bold text-red-800">${shareError}</p>
+                                @endif
                             @endif
                             <h3 class="mt-7 text-sm font-black uppercase tracking-[0.18em] text-slate-500">Next actions</h3>
                             <ol class="mt-3 space-y-3">
@@ -75,6 +79,20 @@
                                     <li class="flex gap-3 rounded-xl bg-slate-50 p-4 font-semibold text-slate-700"><span class="font-black text-slate-950">${i + 1}</span><span>${plan.getActions().get(i)}</span></li>
                                 @endfor
                             </ol>
+                            @if (!plan.hasValidationError())
+                                <div class="mt-7 border-t border-slate-200 pt-6">
+                                    <h3 class="text-lg font-black text-slate-950">Hand this plan to someone else</h3>
+                                    <p class="mt-2 text-sm font-semibold leading-relaxed text-slate-600">Create a private, read-only link for a client, buyer, seller, or family member. No name, street address, email, phone, or report is stored.</p>
+                                    <form action="/plan/share" method="post" class="mt-4">
+                                        <input type="hidden" name="zipCode" value="${plan.getZipCode()}">
+                                        <input type="hidden" name="radonReading" value="${plan.getRawReading()}">
+                                        <input type="hidden" name="noTest" value="${"not_tested".equals(plan.getResultBand())}">
+                                        <input type="hidden" name="intent" value="${plan.getIntent()}">
+                                        <button type="submit" class="min-h-[48px] rounded-xl bg-emerald-700 px-5 text-sm font-black text-white hover:bg-emerald-800">Create private share link</button>
+                                    </form>
+                                    <p class="mt-3 text-xs font-semibold text-slate-500">The link expires after 30 days and preserves this exact decision and evidence version.</p>
+                                </div>
+                            @endif
                         </article>
 
                         <aside class="space-y-6">
@@ -108,6 +126,13 @@
                             </section>
                         </aside>
                     </section>
+                    @if (!plan.hasValidationError())
+                        <script>
+                            if (typeof window.rvTrack === 'function') {
+                                window.rvTrack('plan_completed', { result_band: '${plan.getResultBand()}', intent: '${plan.getIntent()}', schema_version: 1 });
+                            }
+                        </script>
+                    @endif
                 @endif
             </div>
         </main>
