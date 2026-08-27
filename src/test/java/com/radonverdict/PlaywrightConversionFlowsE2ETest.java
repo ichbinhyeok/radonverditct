@@ -9,6 +9,7 @@ import com.microsoft.playwright.Playwright;
 import com.microsoft.playwright.options.LoadState;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -35,6 +36,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
                 "app.storage.telemetry-csv-path=build/tmp/playwright-conversion/telemetry_events.csv"
         })
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@Disabled("Legacy cross-silo conversion funnel retired by the result-to-handoff pivot")
 class PlaywrightConversionFlowsE2ETest {
     private static final String LOCAL_BASE_URL = "http://127.0.0.1:50991";
 

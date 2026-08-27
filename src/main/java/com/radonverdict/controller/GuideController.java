@@ -37,7 +37,7 @@ public class GuideController {
 
     @GetMapping("/guides/how-to-test-for-radon")
     public String guideRadonTesting(Model model) {
-        model.addAttribute("title", "How to Test for Radon at Home: Kit Placement & Results | RadonVerdict");
+        model.addAttribute("title", "How to Test for Radon at Home | RadonVerdict");
         TrustMetadata trust = trustMetadataService.forGuidePage();
         model.addAttribute("trust", trust);
         model.addAttribute("aeo", AeoAnswerBlock.builder()
@@ -74,6 +74,7 @@ public class GuideController {
         model.addAttribute("sharedByInspector", "inspector-demo".equals(normalizeSource(source))
                 ? "Your Inspection Company"
                 : null);
+        model.addAttribute("trust", trustMetadataService.forGuidePage());
         return "pages/guide_failed_inspection";
     }
 
@@ -100,7 +101,8 @@ public class GuideController {
 
     @GetMapping("/guides/radon-mitigation-quote-checklist")
     public String guideQuoteChecklist(Model model) {
-        model.addAttribute("title", "Radon Mitigation Quote Checklist: Questions Before You Hire | RadonVerdict");
+        model.addAttribute("title", "Radon Quote Checklist: Questions Before Hiring | RadonVerdict");
+        model.addAttribute("trust", trustMetadataService.forGuidePage());
         return "pages/guide_quote_checklist";
     }
 

@@ -11,8 +11,8 @@
 !{
     final String placeLabel = county.getAreaDisplayName() + ", " + county.getStateAbbr();
     final String levelsPath = "/radon-levels/" + county.getStateSlug() + "/" + county.getCountySlug();
-    final String seoTitle = "Commercial Radon Testing in " + placeLabel + " | Building Protocol";
-    final String seoDescription = "Commercial and multifamily radon testing in " + placeLabel + ": building scope, ground-contact locations, California provider verification, result handling, and mitigation bid checklist.";
+    final String seoTitle = county.getAreaDisplayName() + " Commercial Radon Testing | RadonVerdict";
+    final String seoDescription = "Plan commercial radon testing in " + placeLabel + ": ground-contact scope, California provider checks, result handling, and written follow-up steps.";
     final String cdphProviders = "https://www.cdph.ca.gov/Programs/CEH/DRSEM/Pages/EMB/Radon/Certified-Radon-Services-Providers.aspx";
     final String cdphStandards = "https://www.cdph.ca.gov/Programs/CEH/DRSEM/Pages/EMB/Radon/Radon-Regulations-and-Standards.aspx";
     final String epaStandards = "https://www.epa.gov/radon/radon-standards-practice";

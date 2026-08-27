@@ -8,7 +8,7 @@ on:
 env:
   DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
   DOCKERHUB_REPO: "shinhyeok22/radonverdict"
-  IMAGE_TAG: "latest"
+  IMAGE_TAG: ${{ github.sha }}
 
 jobs:
   build_and_push:
@@ -37,7 +37,9 @@ jobs:
             --tests "com.radonverdict.SeoBehaviorIntegrationTest" \
             --tests "com.radonverdict.ContentDepthAuditTest" \
             --tests "com.radonverdict.PersuasionQualityAuditTest" \
-            --tests "com.radonverdict.RenderedContentAuditTest"
+            --tests "com.radonverdict.RenderedContentAuditTest" \
+            --tests "com.radonverdict.ProductPivotPolicyIntegrationTest" \
+            --tests "com.radonverdict.SeoPublicSurfaceContractTest"
         
       - name: Build with Gradle (Skipping Tests for Speed)
         run: ./gradlew clean build -x test
@@ -63,7 +65,9 @@ jobs:
           file: ./Dockerfile
           platforms: linux/arm64
           push: true
-          tags: ${{ env.DOCKERHUB_REPO }}:${{ env.IMAGE_TAG }}
+          tags: |
+            ${{ env.DOCKERHUB_REPO }}:${{ env.IMAGE_TAG }}
+            ${{ env.DOCKERHUB_REPO }}:latest
 
   deploy:
     needs: build_and_push
@@ -72,10 +76,14 @@ jobs:
     steps:
       - name: SSH to OCI and Deploy via Docker Compose
         uses: appleboy/ssh-action@v1.0.3
+        env:
+          ADMIN_USERNAME: ${{ secrets.RADONVERDICT_ADMIN_USERNAME }}
+          ADMIN_PASSWORD: ${{ secrets.RADONVERDICT_ADMIN_PASSWORD }}
         with:
           host: ${{ secrets.OCI_HOST }}
           username: ${{ secrets.OCI_USERNAME }}
           key: ${{ secrets.OCI_KEY }}
+          envs: ADMIN_USERNAME,ADMIN_PASSWORD
           script: |
             # 배포 디렉토리 생성 및 이동
             mkdir -p ~/deploy/radonverdict
@@ -90,10 +98,13 @@ jobs:
             chmod -R 0777 ~/deploy/radonverdict/data
             
             # docker-compose.yml 동적 생성 (하드코딩하지 않고 CI에서 바로 주입)
+            previous_image=$(docker inspect radonverdict --format '{{.Config.Image}}' 2>/dev/null || true)
+            deploy_image="shinhyeok22/radonverdict:${{ github.sha }}"
+
             cat << 'EOF' > docker-compose.yml
             services:
               radonverdict-app:
-                image: shinhyeok22/radonverdict:latest
+                image: ${DEPLOY_IMAGE}
                 container_name: radonverdict
                 restart: unless-stopped
                 ports:
@@ -107,6 +118,10 @@ jobs:
                   - LEADS_CSV_PATH=/app/data/leads.csv
                   - TELEMETRY_CSV_PATH=/app/data/telemetry_events.csv
                   - CONTACT_CSV_PATH=/app/data/contact_messages.csv
+                  - PRODUCT_EVENTS_CSV_PATH=/app/data/product_events.csv
+                  - SPRING_DATASOURCE_URL=jdbc:h2:file:/app/data/radonverdict;DB_CLOSE_ON_EXIT=FALSE
+                  - ADMIN_USERNAME=${ADMIN_USERNAME}
+                  - ADMIN_PASSWORD=${ADMIN_PASSWORD}
                 deploy:
                   resources:
                     limits:
@@ -114,10 +129,29 @@ jobs:
             EOF
             
             # 최신 형상 병합을 위한 pull (V2 명령어 사용)
-            docker compose pull
+            DEPLOY_IMAGE="$deploy_image" docker compose pull
             
             # 컨테이너 무중단(이전 컨테이너 중지 후) 기동
-            docker compose up -d
+            DEPLOY_IMAGE="$deploy_image" docker compose up -d
+
+            healthy=false
+            for attempt in $(seq 1 18); do
+              if curl --fail --silent --show-error http://127.0.0.1:8807/ >/dev/null \
+                && curl --fail --silent --show-error http://127.0.0.1:8807/sitemap.xml | grep -q 'sitemap-core.xml' \
+                && curl --fail --silent --show-error http://127.0.0.1:8807/robots.txt | grep -q 'Sitemap:'; then
+                healthy=true
+                break
+              fi
+              sleep 5
+            done
+
+            if [ "$healthy" != "true" ]; then
+              docker logs --tail 120 radonverdict || true
+              if [ -n "$previous_image" ]; then
+                DEPLOY_IMAGE="$previous_image" docker compose up -d
+              fi
+              exit 1
+            fi
             
             # 불필요한/오래된 찌꺼기 이미지 및 빌드 캐시 청소 (용량 최적화)
             docker image prune -af

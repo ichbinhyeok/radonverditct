@@ -10,15 +10,16 @@
     <dl class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
         <div>
             <dt class="text-slate-500">Author</dt>
-            <dd class="text-slate-900 font-medium">${trust.getAuthorName()} (${trust.getAuthorRole()})</dd>
+            <dd class="text-slate-900 font-medium"><a href="/about" class="text-indigo-700 hover:underline">${trust.getAuthorName()}</a> (${trust.getAuthorRole()})</dd>
         </div>
         <div>
-            <dt class="text-slate-500">Content Review</dt>
+            <dt class="text-slate-500">Independent Review</dt>
             <dd class="text-slate-900 font-medium">
-                @if(trust.getLastReviewed() != null && !trust.getLastReviewed().isBlank())
-                    ${trust.getLastReviewed()}
+                @if(trust.getReviewerName() != null && !trust.getReviewerName().isBlank())
+                    ${trust.getReviewerName()}@if(trust.getReviewerRole() != null && !trust.getReviewerRole().isBlank()) (${trust.getReviewerRole()})@endif
+                    @if(trust.getLastReviewed() != null && !trust.getLastReviewed().isBlank()) · ${trust.getLastReviewed()}@endif
                 @else
-                    Source-level dates shown below
+                    Credentialed external review not yet completed
                 @endif
             </dd>
         </div>

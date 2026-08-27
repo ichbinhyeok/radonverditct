@@ -1,5 +1,7 @@
 # Radon Mitigation Cost Estimator ??Agent-Ready Spec (v3.1 DB-less)
 
+> **Current direction (2026-08-27):** This folder contains historical planning material. The shipped product has pivoted to evidence-first radon result interpretation with a deliberately controlled indexable surface. Use [`spec/15_seo_recovery_pivot.md`](spec/15_seo_recovery_pivot.md) as the current source of truth; older cost-estimator and lead-generation specs are retained for decision history only.
+
 **Date:** 2026-02-21 (Asia/Seoul)  
 **Purpose:** This folder is a self-contained specification for building a US-focused **Radon Mitigation System Cost Estimator** website with **lead-generation (CPL/CPA)** monetization.  
 It is written so an implementation agent can start coding immediately **without extra verbal context**.
@@ -9,12 +11,13 @@ A county-first, evidence-cited **radon mitigation cost estimator** that explains
 
 ## What makes this spec different
 This spec intentionally avoids common failure modes for this niche:
-- **Do NOT** use ?œEPA Zone ??price surcharge??logic.
+- **Do NOT** use EPA Zone as a price-surcharge rule.
 - **Do NOT** treat ZIP-level zone as authoritative; EPA zone is fundamentally county-level.
 - **Do NOT** distribute leads to multiple sellers without explicit, logged consent per seller selection (TCPA risk).
 - **Do** make pages deep enough for YMYL trust (sources, methodology, disclaimers).
 
 ## File map
+- `spec/15_seo_recovery_pivot.md` ??**CURRENT SOURCE OF TRUTH** ??evidence-first SEO portfolio, URL policy, trust model, and recovery guardrails
 - `spec/00_strategy.md` ??**READ FIRST** ??market strategy, competitive rationale, keyword tiers, monetization roadmap
 - `spec/01_context_and_rules.md` ??domain primer + hard rules + assumptions
 - `spec/02_data_sources_and_etl.md` ??datasets, fields, ETL steps, update cadence

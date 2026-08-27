@@ -13,6 +13,8 @@
     title = title,
     canonicalUrl = "https://radonverdict.com/guides/how-to-test-for-radon",
     description = "How to test for radon, place a home test correctly, understand the result, and decide when a follow-up test or mitigation plan is appropriate.",
+    articlePublished = "2026-02-26",
+    articleModified = "2026-08-27",
     headContent = @`
         <script type="application/ld+json">
             {
@@ -56,7 +58,7 @@
     `,
     content = @`
         <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24 prose prose-slate md:prose-lg">
-            <a href="/guides" class="not-prose inline-flex items-center gap-1 text-xs font-bold text-slate-400 hover:text-indigo-600 transition-colors uppercase tracking-wider mb-6"><svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg> All Guides</a>
+            <a href="/radon-data-sources" class="not-prose inline-flex items-center gap-1 text-xs font-bold text-slate-400 hover:text-indigo-600 transition-colors uppercase tracking-wider mb-6"><svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg> Sources and Methods</a>
             <span class="inline-block py-1 px-3 rounded-full bg-emerald-50 text-emerald-700 text-xs font-bold tracking-wider uppercase mb-6 ml-3">Testing &amp; Detection</span>
             <h1 class="font-display font-bold text-4xl text-slate-900 mb-6 tracking-tight">How to Test for Radon at Home: Kit Placement and Results</h1>
             <p class="lead text-xl text-slate-600 mb-10 leading-relaxed font-medium pb-10 border-b border-slate-200">
@@ -269,8 +271,8 @@
                     <a href="/radon-test-result-meaning" class="inline-flex items-center justify-center px-6 py-3 border border-transparent text-sm font-bold rounded-xl text-white bg-indigo-600 hover:bg-indigo-700 transition shadow-sm">
                         Interpret My Result ->
                     </a>
-                    <a href="/guides/diy-vs-professional-radon-mitigation" class="inline-flex items-center justify-center px-6 py-3 border border-indigo-200 text-sm font-bold rounded-xl text-indigo-800 bg-white hover:bg-indigo-50 transition">
-                        DIY vs. Professional
+                    <a href="/guides/radon-mitigation-quote-checklist" class="inline-flex items-center justify-center px-6 py-3 border border-indigo-200 text-sm font-bold rounded-xl text-indigo-800 bg-white hover:bg-indigo-50 transition">
+                        Compare Mitigation Quotes
                     </a>
                 </div>
             </div>

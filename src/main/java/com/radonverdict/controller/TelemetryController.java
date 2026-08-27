@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Map;
+import java.util.LinkedHashMap;
 
 @Slf4j
 @RestController
@@ -23,9 +24,6 @@ public class TelemetryController {
     @PostMapping("/events")
     public ResponseEntity<Void> collectEvent(@RequestBody(required = false) Map<String, Object> payload,
             HttpServletRequest request) {
-        String ip = request.getRemoteAddr();
-        String userAgent = request.getHeader("User-Agent");
-
         String eventName = payload != null && payload.get("event") != null
                 ? String.valueOf(payload.get("event"))
                 : "unknown_event";
@@ -35,14 +33,29 @@ public class TelemetryController {
                 : request.getRequestURI();
 
         try {
-            telemetryEventService.persistEvent(eventName, pagePath, ip, userAgent, payload);
+            telemetryEventService.persistEvent(eventName, pagePath, null, null, eventPayload(payload));
         } catch (Exception e) {
             // Telemetry storage failure should not break user requests.
             log.warn("Failed to persist telemetry event, continuing. event={} path={}", eventName, pagePath, e);
         }
 
-        log.info("telemetry_event event={} path={} ip={} ua={} payload={}",
-                eventName, pagePath, ip, userAgent, payload);
+        log.debug("telemetry_event event={} path={}", eventName, pagePath);
         return ResponseEntity.noContent().build();
+    }
+
+    @SuppressWarnings("unchecked")
+    private Map<String, Object> eventPayload(Map<String, Object> envelope) {
+        if (envelope == null) return Map.of();
+        Object nested = envelope.get("payload");
+        if (nested instanceof Map<?, ?> nestedMap) {
+            Map<String, Object> result = new LinkedHashMap<>();
+            nestedMap.forEach((key, value) -> result.put(String.valueOf(key), value));
+            return result;
+        }
+        Map<String, Object> result = new LinkedHashMap<>(envelope);
+        result.remove("event");
+        result.remove("path");
+        result.remove("ts");
+        return result;
     }
 }

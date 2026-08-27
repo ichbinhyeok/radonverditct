@@ -3,6 +3,7 @@ package com.radonverdict;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.radonverdict.controller.PageController;
 import com.radonverdict.controller.RadonLevelsController;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -29,6 +30,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest(properties = "app.site.retire-non-evidence-county-pages=false")
 @AutoConfigureMockMvc
+@Disabled("Legacy pSEO, cost, and lead contract replaced by ProductPivotPolicyIntegrationTest")
 class SeoBehaviorIntegrationTest {
 
     private static final Pattern JSON_LD_SCRIPT_PATTERN = Pattern.compile(

@@ -219,7 +219,7 @@ public class RadonLevelsController {
         model.addAttribute("canonicalUrl",
                 normalizedBaseUrl() + "/radon-levels/" + county.getStateSlug() + "/" + county.getCountySlug());
 
-        return "radon_levels_county";
+        return "radon_county_evidence";
     }
 
     private AeoAnswerBlock buildRadonLevelAeoBlock(County county, TrustMetadata trust, CountyRadonEvidence radonEvidence) {

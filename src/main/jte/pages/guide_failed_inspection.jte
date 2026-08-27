@@ -1,14 +1,16 @@
 @import com.radonverdict.util.JsonLdUtils
+@import com.radonverdict.model.dto.TrustMetadata
 
 @param String clientZip = null
 @param String clientReading = null
 @param String clientIntent = null
 @param String clientSource = null
 @param String sharedByInspector = null
+@param TrustMetadata trust = null
 
 !{
-    final String seoTitle = "Radon Failed Inspection: Repair, Credit, or Retest?";
-    final String seoDescription = "Failed a radon inspection? See when to confirm the test, when to ask for repair or a seller credit, and how to document the next step before closing.";
+    final String seoTitle = "Failed Radon Inspection: Next Steps";
+    final String seoDescription = "After a failed radon inspection, verify the test, preserve the deadline, and document a repair, credit, or retest decision before closing.";
     final boolean hasClientContext = clientZip != null || clientReading != null || clientIntent != null;
     final String clientActionUrl = clientZip == null
             ? "/plan"
@@ -34,6 +36,8 @@
     title = seoTitle + " | RadonVerdict",
     canonicalUrl = "https://radonverdict.com/guides/radon-failed-inspection",
     description = seoDescription,
+    articlePublished = "2026-07-09",
+    articleModified = "2026-08-27",
     headContent = @`
         <script type="application/ld+json">
             {
@@ -91,7 +95,7 @@
                     <ol class="inline-flex items-center space-x-2">
                         <li><a href="/" class="hover:text-white transition-colors">Home</a></li>
                         <li><span class="mx-1 text-slate-600">/</span></li>
-                        <li><a href="/guides" class="hover:text-white transition-colors">Guides</a></li>
+                        <li><a href="/radon-data-sources" class="hover:text-white transition-colors">Sources</a></li>
                         <li><span class="mx-1 text-slate-600">/</span></li>
                         <li class="text-white font-semibold" aria-current="page">Failed Inspection</li>
                     </ol>
@@ -166,7 +170,7 @@
                     <h2 class="mt-3 text-xl font-black text-slate-950">Build a documented next step</h2>
                     <p class="mt-2 text-sm leading-relaxed text-slate-700">Keep the reported result, test type, and deadline together before choosing repair, credit, or retest.</p>
                 </a>
-                <a href="/guides/radon-seller-credit-worksheet"
+                <a href="/plan?intent=selling&amp;source=failed-inspection-guide"
                    class="rounded-2xl border border-blue-200 bg-blue-50 p-5 transition-colors hover:border-blue-300 hover:bg-blue-100">
                     <p class="text-xs font-black uppercase tracking-wider text-blue-700">Seller response</p>
                     <h2 class="mt-3 text-xl font-black text-slate-950">Choose repair, credit, or concession</h2>
@@ -205,8 +209,8 @@
                     <div class="grid gap-3 p-5 md:grid-cols-[0.25fr_0.75fr]">
                         <p class="font-display text-2xl font-black text-rose-700">02</p>
                         <div>
-                            <h3 class="text-lg font-black text-slate-950">Price the local fix</h3>
-                            <p class="mt-1 text-sm leading-relaxed text-slate-600">A basement, slab, and crawl-space home do not create the same bid. Open the local cost path before choosing the ask.</p>
+                            <h3 class="text-lg font-black text-slate-950">Define the mitigation scope</h3>
+                            <p class="mt-1 text-sm leading-relaxed text-slate-600">A basement, slab, and crawl-space home do not create the same bid. Document foundation, sealing, electrical, permit, warranty, and retest assumptions before choosing the ask.</p>
                         </div>
                     </div>
                     <div class="grid gap-3 p-5 md:grid-cols-[0.25fr_0.75fr]">
@@ -238,7 +242,7 @@
                     <div class="rounded-2xl border border-white/10 bg-white p-5 text-slate-950">
                         <p class="text-xs font-bold uppercase tracking-wider text-slate-500">Reusable framing</p>
                         <p class="mt-3 text-sm leading-relaxed text-slate-700">
-                            The radon result was at or above the EPA action level. We want the issue resolved using a local mitigation cost range, with either seller-paid repair before closing or a closing credit that lets the buyer manage contractor scope after closing.
+                            The radon result was at or above the EPA action level. We want a written mitigation scope and documented post-work test, with either seller-paid repair before closing or a closing credit that lets the buyer manage qualified contractor quotes after closing.
                         </p>
                     </div>
                 </div>
@@ -252,15 +256,15 @@
                     </div>
                 </div>
                 <div class="mt-6 grid gap-3 md:grid-cols-2">
-                    <a href="/guides/who-pays-radon-mitigation-buyer-or-seller" class="rounded-2xl border border-slate-200 bg-white p-4 transition-colors hover:border-slate-400 hover:bg-slate-50">
+                    <a href="/plan?intent=buying&amp;source=failed-inspection-guide" class="rounded-2xl border border-slate-200 bg-white p-4 transition-colors hover:border-slate-400 hover:bg-slate-50">
                         <h3 class="font-black text-slate-950">Who pays after a failed radon inspection?</h3>
                         <p class="mt-1 text-sm leading-relaxed text-slate-600">Use this when the fight is buyer vs seller responsibility.</p>
                     </a>
-                    <a href="/radon-credit-calculator" class="rounded-2xl border border-slate-200 bg-white p-4 transition-colors hover:border-slate-400 hover:bg-slate-50">
+                    <a href="/plan?intent=buying&amp;source=failed-inspection-guide" class="rounded-2xl border border-slate-200 bg-white p-4 transition-colors hover:border-slate-400 hover:bg-slate-50">
                         <h3 class="font-black text-slate-950">How much seller credit should I ask for?</h3>
                         <p class="mt-1 text-sm leading-relaxed text-slate-600">Use this when the deal needs a number, not another article.</p>
                     </a>
-                    <a href="/radon-mitigation-cost" class="rounded-2xl border border-slate-200 bg-white p-4 transition-colors hover:border-slate-400 hover:bg-slate-50">
+                    <a href="/guides/radon-mitigation-quote-checklist" class="rounded-2xl border border-slate-200 bg-white p-4 transition-colors hover:border-slate-400 hover:bg-slate-50">
                         <h3 class="font-black text-slate-950">How much does radon mitigation cost?</h3>
                         <p class="mt-1 text-sm leading-relaxed text-slate-600">Use this when the contractor budget is the missing piece.</p>
                     </a>
@@ -272,16 +276,19 @@
                         <h3 class="font-black text-slate-950">What does the radon number mean?</h3>
                         <p class="mt-1 text-sm leading-relaxed text-slate-600">Use this when the buyer, seller, or agent does not understand 2.0 vs 4.0+.</p>
                     </a>
-                    <a href="/guides/radon-inspection-toolkit" class="rounded-2xl border border-indigo-200 bg-indigo-50 p-4 transition-colors hover:border-indigo-300 hover:bg-indigo-100">
+                    <a href="/for-home-inspectors" class="rounded-2xl border border-indigo-200 bg-indigo-50 p-4 transition-colors hover:border-indigo-300 hover:bg-indigo-100">
                         <h3 class="font-black text-slate-950">Need a client-sendable inspection packet?</h3>
                         <p class="mt-1 text-sm leading-relaxed text-slate-600">Use the agent and inspector toolkit when this decision needs to be shared cleanly.</p>
                     </a>
-                    <a href="/radon-quote-ledger#quote-checker" class="rounded-2xl border border-cyan-200 bg-cyan-50 p-4 transition-colors hover:border-cyan-300 hover:bg-cyan-100">
+                    <a href="/guides/radon-mitigation-quote-checklist" class="rounded-2xl border border-cyan-200 bg-cyan-50 p-4 transition-colors hover:border-cyan-300 hover:bg-cyan-100">
                         <h3 class="font-black text-slate-950">Have a real quote or credit number?</h3>
                         <p class="mt-1 text-sm leading-relaxed text-slate-600">Check whether the number is scoped well, then add an anonymized signal.</p>
                     </a>
                 </div>
             </section>
+            @if(trust != null)
+                @template.components.trust_metadata(trust = trust)
+            @endif
         </main>
     `
 )

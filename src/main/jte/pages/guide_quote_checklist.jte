@@ -1,14 +1,19 @@
 @import com.radonverdict.util.JsonLdUtils
+@import com.radonverdict.model.dto.TrustMetadata
+
+@param TrustMetadata trust = null
 
 !{
-    final String seoTitle = "Radon Mitigation Quote Checklist: Questions Before You Hire";
-    final String seoDescription = "Use this radon mitigation quote checklist before hiring a contractor: result band, foundation, system scope, fan, permit, warranty, retest, and quote red flags.";
+    final String seoTitle = "Radon Quote Checklist: Questions Before Hiring";
+    final String seoDescription = "Compare radon mitigation quotes by test result, foundation, system scope, fan, permit, warranty, retest plan, and exclusions.";
 }
 
 @template.layout.main(
     title = seoTitle + " | RadonVerdict",
     canonicalUrl = "https://radonverdict.com/guides/radon-mitigation-quote-checklist",
     description = seoDescription,
+    articlePublished = "2026-07-09",
+    articleModified = "2026-08-27",
     headContent = @`
         <script type="application/ld+json">
             {
@@ -47,10 +52,10 @@
                     "name": "Ask about fan, warranty, permit, and retest"
                 },{
                     "@type": "HowToStep",
-                    "name": "Compare final price against local cost context"
+                    "name": "Compare included scope and final price"
                 },{
                     "@type": "HowToStep",
-                    "name": "Add an anonymized quote signal"
+                    "name": "Preserve the written scope and retest plan"
                 }]
             }
         </script>
@@ -83,7 +88,7 @@
                     <ol class="inline-flex items-center space-x-2">
                         <li><a href="/" class="hover:text-white transition-colors">Home</a></li>
                         <li><span class="mx-1 text-slate-600">/</span></li>
-                        <li><a href="/guides" class="hover:text-white transition-colors">Guides</a></li>
+                        <li><a href="/radon-data-sources" class="hover:text-white transition-colors">Sources</a></li>
                         <li><span class="mx-1 text-slate-600">/</span></li>
                         <li class="text-white font-semibold" aria-current="page">Quote Checklist</li>
                     </ol>
@@ -99,17 +104,17 @@
                             Use this call script to compare radon mitigation quotes by result, foundation, scope, fan, permit, warranty, and retest plan.
                         </p>
                         <div class="mt-8 flex flex-col gap-3 sm:flex-row">
-                            <a href="/radon-cost-calculator"
+                            <a href="/plan?source=quote-checklist"
                                data-track-event="quote_checklist_cta_click"
                                data-track-label="local_cost"
                                class="inline-flex min-h-[52px] items-center justify-center rounded-xl bg-white px-5 text-sm font-black text-slate-950 transition-colors hover:bg-slate-100">
-                                Open local cost first
+                                Build a scoped plan
                             </a>
-                            <a href="/radon-quote-ledger#quote-checker"
+                            <a href="/radon-test-result-meaning"
                                data-track-event="quote_checklist_cta_click"
                                data-track-label="quote_checker"
                                class="inline-flex min-h-[52px] items-center justify-center rounded-xl border border-white/20 px-5 text-sm font-black text-white transition-colors hover:bg-white/10">
-                                Check quote after the call
+                                Interpret the test result
                             </a>
                         </div>
                     </div>
@@ -193,19 +198,19 @@
                 <div class="grid gap-6 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
                     <div>
                         <p class="text-xs font-bold uppercase tracking-[0.22em] text-slate-400">After the call</p>
-                        <h2 class="mt-3 font-display text-3xl font-black tracking-tight">Turn the quote into a local benchmark.</h2>
+                        <h2 class="mt-3 font-display text-3xl font-black tracking-tight">Turn the quote into a documented scope.</h2>
                         <p class="mt-3 text-sm leading-relaxed text-slate-300">
-                            Remove names, phone numbers, exact addresses, and contractor contact details. The useful signal is ZIP, reading, foundation, scope clue, quote status, and price.
+                            Preserve the test result, foundation assumptions, suction method, sealing, electrical work, warranty, permit responsibilities, exclusions, and post-mitigation retest plan beside the price.
                         </p>
                     </div>
                     <div class="grid gap-3 sm:grid-cols-2">
-                        <a href="/radon-quote-ledger#quote-checker"
+                        <a href="/plan?source=quote-checklist"
                            data-track-event="quote_checklist_after_call_click"
                            data-track-label="quote_checker"
                            class="inline-flex min-h-[52px] items-center justify-center rounded-xl bg-white px-5 text-sm font-black text-slate-950 transition-colors hover:bg-slate-100">
-                            Check and add quote
+                            Build the decision plan
                         </a>
-                        <a href="/guides/radon-inspection-toolkit"
+                        <a href="/for-home-inspectors"
                            data-track-event="quote_checklist_after_call_click"
                            data-track-label="inspection_toolkit"
                            class="inline-flex min-h-[52px] items-center justify-center rounded-xl border border-white/20 px-5 text-sm font-black text-white transition-colors hover:bg-white/10">
@@ -214,6 +219,9 @@
                     </div>
                 </div>
             </section>
+            @if(trust != null)
+                @template.components.trust_metadata(trust = trust)
+            @endif
         </main>
     `
 )
