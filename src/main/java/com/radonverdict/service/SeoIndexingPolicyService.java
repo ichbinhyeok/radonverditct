@@ -11,6 +11,22 @@ import java.util.Set;
 
 @Service
 public class SeoIndexingPolicyService {
+    // Controlled evidence cohort. Every URL has either historic clicks, current GSC query
+    // impressions, or an intent-matched child page backed by the 2026-07-29 export.
+    // This is deliberately small and must not be expanded from keyword ideas alone.
+    private static final Set<String> COUNTY_EVIDENCE_COHORT = Set.of(
+            "florida/marion-county",
+            "new-jersey/gloucester-county",
+            "pennsylvania/indiana-county",
+            "vermont/rutland-county",
+            "new-york/ulster-county",
+            "new-york/schenectady-county",
+            "idaho/fremont-county",
+            "virginia/falls-church-city",
+            "virginia/powhatan-county",
+            "colorado/broomfield-county",
+            "new-mexico/bernalillo-county",
+            "california/los-angeles-county");
 
     private static final int LARGE_HOUSING_UNIT_THRESHOLD = 50_000;
     private static final int ZONE_ONE_HOUSING_FLOOR = 10_000;
@@ -244,7 +260,7 @@ public class SeoIndexingPolicyService {
 
     public boolean isCountyIndexableCandidate(County county) {
         return hasBaseIndexingEligibility(county)
-                && LEVELS_WINNER_COUNTIES.contains(slugKey(county));
+                && COUNTY_EVIDENCE_COHORT.contains(slugKey(county));
     }
 
     public boolean isCostPageIndexableCandidate(County county) {

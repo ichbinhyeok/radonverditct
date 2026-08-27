@@ -11,7 +11,7 @@
 
 !{
     final String seoTitle = "Radon Data Sources & Evidence Policy | RadonVerdict";
-    final String seoDescription = "See how RadonVerdict uses EPA zones, official state radon measurement data, NJ DEP tier data, Census housing data, ZIP-to-county mapping, and cost references.";
+    final String seoDescription = "Review RadonVerdict's EPA zones, official state measurements, source caveats, indexing policy, and downloadable county evidence dataset.";
     final int officialEvidenceCount = measurementCountyCount + tierCountyCount;
 }
 
@@ -86,7 +86,7 @@
                     Radon data sources, evidence hierarchy, and indexing policy
                 </h1>
                 <p class="mt-6 max-w-3xl text-lg leading-relaxed text-slate-600">
-                    RadonVerdict is built around a simple rule: official radon evidence comes before calculators. County pages use public EPA, state, CDC, NJ DEP, Census, ZIP, and cost-reference data to decide whether a page has enough local evidence for search and what next step a user should see.
+                    RadonVerdict is built around a simple rule: official radon evidence comes before interpretation. County pages use public EPA, state, CDC, and NJ DEP records to explain local context, while every page preserves the boundary between an aggregate and a home test.
                 </p>
                 <div class="mt-8 flex flex-col gap-3 sm:flex-row">
                     <a href="/datasets/us-county-radon-evidence.csv" class="inline-flex items-center justify-center rounded-xl bg-indigo-700 px-5 py-3 text-sm font-bold text-white transition-colors hover:bg-indigo-600">
@@ -94,9 +94,6 @@
                     </a>
                     <a href="/methodology" class="inline-flex items-center justify-center rounded-xl bg-slate-900 px-5 py-3 text-sm font-bold text-white transition-colors hover:bg-slate-800">
                         Read Methodology
-                    </a>
-                    <a href="/radon-cost-data-report" class="inline-flex items-center justify-center rounded-xl border border-slate-200 bg-white px-5 py-3 text-sm font-bold text-slate-800 transition-colors hover:bg-slate-50">
-                        Open Cost Data Report
                     </a>
                     <a href="/radon-levels" class="inline-flex items-center justify-center rounded-xl border border-slate-200 bg-white px-5 py-3 text-sm font-bold text-slate-800 transition-colors hover:bg-slate-50">
                         Open Radon Levels
@@ -169,12 +166,12 @@
                     <div class="rounded-2xl border border-slate-200 bg-white p-5">
                         <p class="text-xs font-bold uppercase tracking-wider text-slate-500">ZIP mappings</p>
                         <p class="mt-3 font-display text-3xl font-black text-slate-950">${String.format(java.util.Locale.US, "%,d", zipMappingCount)}</p>
-                        <p class="mt-2 text-sm leading-relaxed text-slate-600">ZIP-to-primary-county mappings used to route cost and credit searches.</p>
+                        <p class="mt-2 text-sm leading-relaxed text-slate-600">ZIP-to-primary-county mappings used for optional local evidence lookup; boundary cases can be ambiguous.</p>
                     </div>
                     <div class="rounded-2xl border border-slate-200 bg-white p-5">
                         <p class="text-xs font-bold uppercase tracking-wider text-slate-500">Reference anchors</p>
                         <p class="mt-3 font-display text-3xl font-black text-slate-950">${referenceSourceCount}</p>
-                        <p class="mt-2 text-sm leading-relaxed text-slate-600">EPA, CDC, HUD, and cost-reference sources used across guides and calculators.</p>
+                        <p class="mt-2 text-sm leading-relaxed text-slate-600">EPA, CDC, state health, and supporting reference sources used across evidence pages and guides.</p>
                     </div>
                 </div>
             </section>
@@ -184,7 +181,7 @@
                     <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500">Evidence hierarchy</p>
                     <h2 class="mt-3 font-display text-3xl font-black tracking-tight text-slate-950">What gets trusted first</h2>
                     <p class="mt-4 text-sm leading-relaxed text-slate-600">
-                        The hierarchy matters because EPA zone maps, state measurements, and cost models answer different questions. We keep them separate so a county page does not overstate what any single source can prove.
+                        The hierarchy matters because EPA zone maps, state measurements, and ZIP mappings answer different questions. We keep them separate so a county page does not overstate what any single source can prove.
                     </p>
                 </div>
                 <div class="space-y-3">
@@ -201,8 +198,8 @@
                         <p class="mt-2 text-sm leading-relaxed text-slate-600">EPA zones explain predicted county potential. State program pages explain testing, disclosure, and credential expectations.</p>
                     </div>
                     <div class="rounded-2xl border border-slate-200 bg-white p-5">
-                        <p class="font-bold text-slate-950">4. Census housing and cost references</p>
-                        <p class="mt-2 text-sm leading-relaxed text-slate-600">Housing stock, home value, foundation assumptions, and national cost references support budgeting, but they never replace a home test.</p>
+                        <p class="font-bold text-slate-950">4. ZIP mapping and supporting context</p>
+                        <p class="mt-2 text-sm leading-relaxed text-slate-600">A ZIP can route a user to a primary county, but it does not establish the exact county at every boundary and never replaces a home test.</p>
                     </div>
                 </div>
             </section>
@@ -261,7 +258,7 @@
                     <div class="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2">
                         <div class="rounded-2xl border border-slate-200 bg-white p-5">
                             <p class="font-bold text-slate-950">Submit pages with distinct evidence</p>
-                            <p class="mt-2 text-sm leading-relaxed text-slate-600">Official evidence, housing context, state rules, clear related pages, and a distinct user task must support the page.</p>
+                            <p class="mt-2 text-sm leading-relaxed text-slate-600">Official evidence, source limits, a clear query match, useful related pages, and a distinct user task must support the page.</p>
                         </div>
                         <div class="rounded-2xl border border-slate-200 bg-white p-5">
                             <p class="font-bold text-slate-950">Hold thin or low-signal pages back</p>
@@ -277,7 +274,7 @@
                         <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-300">Bottom line</p>
                         <h2 class="mt-3 font-display text-3xl font-black tracking-tight">County evidence helps choose the next step. A home test still decides the home.</h2>
                         <p class="mt-4 max-w-3xl text-sm leading-relaxed text-slate-300">
-                            Public radon data can tell you whether a county deserves urgency. It cannot diagnose a property. That boundary is why our county pages separate evidence, testing guidance, cost planning, and lead capture.
+                            Public radon data can describe a county pattern and help prioritize testing. It cannot diagnose a property. That boundary is why our county pages separate official evidence, test guidance, and the result for an individual home.
                         </p>
                     </div>
                     <a href="/guides/how-to-test-for-radon" class="inline-flex items-center justify-center rounded-xl bg-white px-5 py-3 text-sm font-bold text-slate-950 transition-colors hover:bg-slate-100">

@@ -13,6 +13,14 @@
         <script type="application/ld+json">
         {"@context":"https://schema.org","@type":"WebPage","name":$unsafe{JsonLdUtils.json(seoTitle)},"url":"https://radonverdict.com/radon-test-result-meaning","description":$unsafe{JsonLdUtils.json(seoDescription)},"inLanguage":"en-US"}
         </script>
+        <script type="application/ld+json">
+        {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+          {"@type":"Question","name":"What does a 4.0 pCi/L radon result mean?","acceptedAnswer":{"@type":"Answer","text":"It reaches EPA's recommended action level. The next step depends on the test type: follow confirmation guidance after a short-term result, while a long-term result at or above 4.0 supports contacting a qualified radon-reduction professional."}},
+          {"@type":"Question","name":"Is a 2.5 pCi/L radon result bad?","acceptedAnswer":{"@type":"Answer","text":"It is below the main 4.0 pCi/L action level, but EPA says homeowners may consider fixing between 2.0 and 4.0 pCi/L. A long-term test can make the home's average clearer."}},
+          {"@type":"Question","name":"What should I do with an 8.0 pCi/L radon result?","acceptedAnswer":{"@type":"Answer","text":"Preserve the full report and act promptly on the confirmation or reduction path. Follow the test instructions and document transaction deadlines when buying or selling."}},
+          {"@type":"Question","name":"Can an EPA radon zone or county average explain my result?","acceptedAnswer":{"@type":"Answer","text":"No. Maps and county records provide local context, but testing is the only way to know the radon level in a specific home."}}
+        ]}
+        </script>
     `,
     content = @`
         <main class="bg-white">
@@ -32,7 +40,7 @@
             </section>
             <section class="mx-auto max-w-4xl px-4 py-14 sm:px-6 lg:px-8">
                 <h2 class="font-display text-3xl font-black tracking-tight text-slate-950">The short answer</h2>
-                <p class="mt-4 text-lg leading-relaxed text-slate-700">EPA recommends fixing a home when the radon level is 4.0 pCi/L or higher. A result below 4.0 is not an all-clear: keep the report and decide whether follow-up or long-term testing would reduce uncertainty for your home and situation.</p>
+                <p class="mt-4 text-lg leading-relaxed text-slate-700">EPA recommends fixing a home when the radon level is 4.0 pCi/L or higher and says homeowners may consider fixing between 2.0 and 4.0 pCi/L. A result below 4.0 is not an all-clear: keep the report and decide whether follow-up or long-term testing would reduce uncertainty for your home and situation.</p>
                 <div class="mt-8 grid gap-4 sm:grid-cols-2">
                     <article class="rounded-2xl border border-emerald-200 bg-emerald-50 p-5"><h3 class="font-black text-emerald-950">Under 2.0 pCi/L</h3><p class="mt-2 text-sm leading-relaxed text-slate-700">Keep the report. Retest at a sensible interval and after major changes to the home.</p></article>
                     <article class="rounded-2xl border border-amber-200 bg-amber-50 p-5"><h3 class="font-black text-amber-950">2.0–3.9 pCi/L</h3><p class="mt-2 text-sm leading-relaxed text-slate-700">Below the main action threshold, but not zero risk. A follow-up or long-term test can make the decision clearer.</p></article>
@@ -63,7 +71,8 @@
                 </section>
                 <h2 class="mt-14 font-display text-3xl font-black tracking-tight text-slate-950">Sources</h2>
                 <p class="mt-4 leading-relaxed text-slate-700">The 4.0 pCi/L action threshold comes from EPA guidance. CDC explains why testing the individual home matters; a local zone or county record cannot replace it.</p>
-                <ul class="mt-4 space-y-2"><li><a class="font-bold text-indigo-700 hover:underline" href="https://www.epa.gov/radon/explain-working-levels-wl-and-picocuries-liter-air-pcil" rel="noopener">EPA: pCi/L and the action threshold</a></li><li><a class="font-bold text-indigo-700 hover:underline" href="https://www.cdc.gov/radon/testing/index.html" rel="noopener">CDC: testing your home for radon</a></li><li><a class="font-bold text-indigo-700 hover:underline" href="/radon-levels">Browse county and state radon context</a></li></ul>
+                <ul class="mt-4 space-y-2"><li><a class="font-bold text-indigo-700 hover:underline" href="https://www.epa.gov/radon/what-epas-action-level-radon-and-what-does-it-mean" rel="noopener">EPA: action level and what it means</a></li><li><a class="font-bold text-indigo-700 hover:underline" href="https://www.epa.gov/radon/explain-working-levels-wl-and-picocuries-liter-air-pcil" rel="noopener">EPA: pCi/L and the action threshold</a></li><li><a class="font-bold text-indigo-700 hover:underline" href="https://www.cdc.gov/radon/testing/index.html" rel="noopener">CDC: testing your home for radon</a></li><li><a class="font-bold text-indigo-700 hover:underline" href="/radon-data-sources">Review the county dataset and source policy</a></li></ul>
+                <p class="mt-8 border-t border-slate-200 pt-5 text-xs font-semibold leading-relaxed text-slate-500">Last reviewed August 27, 2026. RadonVerdict is an independent software project, not a government agency or medical provider. A credentialed external radon review has not yet been completed.</p>
             </section>
         </main>
     `

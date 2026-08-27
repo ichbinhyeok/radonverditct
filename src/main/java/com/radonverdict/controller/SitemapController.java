@@ -19,7 +19,7 @@ import java.util.Collection;
 @RequiredArgsConstructor
 public class SitemapController {
 
-    private static final LocalDate SEO_CONTENT_LASTMOD = LocalDate.of(2026, 7, 20);
+    private static final LocalDate SEO_CONTENT_LASTMOD = LocalDate.of(2026, 8, 27);
 
     private final DataLoadService dataLoadService;
     private final SeoIndexingPolicyService seoIndexingPolicyService;
@@ -47,23 +47,9 @@ public class SitemapController {
         xml.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
         xml.append("<sitemapindex xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">");
 
-        addSitemapUrl(xml, "/sitemap-recovery.xml");
-        addSitemapUrl(xml, "/sitemap-growth.xml");
-        if (indexCountyCostPages) {
-            addSitemapUrl(xml, "/sitemap-cost-evidence.xml");
-        }
-        addSitemapUrl(xml, "/sitemap-levels-evidence.xml");
-        addSitemapUrl(xml, "/sitemap-intent.xml");
         addSitemapUrl(xml, "/sitemap-core.xml");
-        if (includeBroadZoneSitemap) {
-            addSitemapUrl(xml, "/sitemap-zone-high.xml");
-        }
-        if (includeBroadZoneSitemap && seoIndexingPolicyService.includeZoneLowSitemap()) {
-            addSitemapUrl(xml, "/sitemap-zone-low.xml");
-        }
-        if (includeBroadZoneSitemap && includeUnknownSitemap) {
-            addSitemapUrl(xml, "/sitemap-zone-unknown.xml");
-        }
+        addSitemapUrl(xml, "/sitemap-county-evidence.xml");
+        addSitemapUrl(xml, "/sitemap-intent.xml");
 
         xml.append("</sitemapindex>");
         return xml.toString();
@@ -165,54 +151,18 @@ public class SitemapController {
         xml.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
         xml.append("<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">");
 
-        // 1. Static & Hub Pages
         addUrl(xml, "/", "1.0");
         addUrl(xml, "/radon-test-result-meaning", "0.9");
         addUrl(xml, "/radon-levels", "0.9");
         addUrl(xml, "/about", "0.8");
         addUrl(xml, "/methodology", "0.8");
         addUrl(xml, "/radon-data-sources", "0.8");
-        addUrl(xml, "/for-home-inspectors", "0.7");
         addUrl(xml, "/contact", "0.8");
-        addUrl(xml, "/guides", "0.8");
-
-        // 1.5 Trust Pages (YMYL)
         addUrl(xml, "/privacy", "0.5");
         addUrl(xml, "/terms", "0.5");
-
-        // 2. Core Guides
-        addUrl(xml, "/guides/diy-vs-professional-radon-mitigation", "0.7");
-        addUrl(xml, "/guides/radon-mitigation-timeline-how-long-does-it-take", "0.7");
         addUrl(xml, "/guides/how-to-test-for-radon", "0.7");
-        addUrl(xml, "/guides/who-pays-radon-mitigation-buyer-or-seller", "0.7");
         addUrl(xml, "/guides/radon-failed-inspection", "0.8");
-        addUrl(xml, "/guides/radon-inspection-toolkit", "0.8");
         addUrl(xml, "/guides/radon-mitigation-quote-checklist", "0.8");
-        addUrl(xml, "/guides/radon-exposure-symptoms", "0.7");
-        addUrl(xml, "/guides/active-vs-passive-radon-system", "0.7");
-        addUrl(xml, "/guides/radon-fan-noise-troubleshooting", "0.7");
-        addUrl(xml, "/guides/crawl-space-radon-mitigation", "0.7");
-        addUrl(xml, "/guides/sump-pump-radon-mitigation", "0.7");
-        addUrl(xml, "/guides/radon-system-electricity-cost", "0.7");
-        addUrl(xml, "/guides/radon-myths-granite-countertops", "0.7");
-        addUrl(xml, "/guides/radon-seller-credit-worksheet", "0.7");
-
-        // 3. State Hubs (match each vertical's own indexability policy)
-        Collection<County> counties = dataLoadService.getCountyBySlugMap().values();
-        if (indexCountyCostPages) {
-            counties.stream()
-                    .filter(seoIndexingPolicyService::isCostPageIndexableCandidate)
-                    .map(County::getStateSlug)
-                    .distinct()
-                    .forEach(stateSlug -> addUrl(xml, "/radon-mitigation-cost/" + stateSlug, "0.6"));
-        }
-        counties.stream()
-                .filter(seoIndexingPolicyService::isCountyIndexableCandidate)
-                .map(County::getStateSlug)
-                .distinct()
-                .forEach(stateSlug -> {
-            addUrl(xml, "/radon-levels/" + stateSlug, "0.6");
-        });
 
         xml.append("</urlset>");
         return xml.toString();
@@ -243,7 +193,7 @@ public class SitemapController {
         return xml.toString();
     }
 
-    @GetMapping(value = "/sitemap-levels-evidence.xml", produces = MediaType.APPLICATION_XML_VALUE)
+    @GetMapping(value = {"/sitemap-levels-evidence.xml", "/sitemap-county-canary.xml", "/sitemap-county-evidence.xml"}, produces = MediaType.APPLICATION_XML_VALUE)
     @ResponseBody
     public String generateLevelsEvidenceSitemap() {
         StringBuilder xml = new StringBuilder();
@@ -252,7 +202,6 @@ public class SitemapController {
 
         dataLoadService.getCountyBySlugMap().values().stream()
                 .filter(seoIndexingPolicyService::isCountyIndexableCandidate)
-                .filter(county -> !seoIndexingPolicyService.isSearchTrafficCandidate(county))
                 .sorted((left, right) -> {
                     int stateCompare = left.getStateSlug().compareTo(right.getStateSlug());
                     if (stateCompare != 0) {

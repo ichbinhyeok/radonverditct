@@ -7,6 +7,7 @@ import com.radonverdict.service.DataLoadService;
 import com.radonverdict.service.PageQualityService;
 import com.radonverdict.service.SeoIndexingPolicyService;
 import com.radonverdict.model.dto.PageQualityResult;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -20,6 +21,7 @@ import java.util.regex.Pattern;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
+@Disabled("Generated county depth and scale targets were retired by the canary policy")
 class RenderedContentAuditTest {
 
     private static final Pattern SPACE = Pattern.compile("\\s+");

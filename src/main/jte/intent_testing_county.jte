@@ -11,12 +11,8 @@
 !{
     final String placeLabel = county.getAreaDisplayName() + ", " + county.getStateAbbr();
     final String countyLabel = county.getAreaDisplayName();
-    final String stateName = java.util.Arrays.stream(county.getStateSlug().split("-"))
-            .map(part -> part.substring(0, 1).toUpperCase(java.util.Locale.ROOT) + part.substring(1))
-            .collect(java.util.stream.Collectors.joining(" "));
     final String levelsPath = "/radon-levels/" + county.getStateSlug() + "/" + county.getCountySlug();
-    final String stateLevelsPath = "/radon-levels/" + county.getStateSlug();
-    final String seoTitle = "Radon Gas Testing in " + placeLabel + " | Local Data & Test Steps";
+    final String seoTitle = "Radon Testing in " + placeLabel + ": Local Data & Steps";
     final String seoDescription = "How to test for radon in " + placeLabel + ": placement, closed-house conditions, result thresholds, local evidence, and what to do after the test.";
     final String testProtocolAnswer = "Use a short-term radon test on the lowest level that could be regularly occupied. Keep windows and exterior doors closed under the kit instructions, place the device away from drafts, heat, humidity, and exterior walls, and do not move it during the test.";
     final String resultAnswer = "At 4.0 pCi/L or higher, confirm the result when the test instructions call for it and begin mitigation planning. From 2.0 to 3.9 pCi/L, a follow-up or long-term test can clarify the decision. A county statistic never replaces the home's own reading.";
@@ -56,8 +52,8 @@
                 },{
                     "@type": "ListItem",
                     "position": 2,
-                    "name": $unsafe{JsonLdUtils.json(stateName + " Radon Levels")},
-                    "item": $unsafe{JsonLdUtils.json("https://radonverdict.com" + stateLevelsPath)}
+                    "name": "County Radon Evidence",
+                    "item": "https://radonverdict.com/radon-levels"
                 },{
                     "@type": "ListItem",
                     "position": 3,
@@ -94,7 +90,7 @@
                 <ol class="inline-flex flex-wrap items-center gap-2">
                     <li><a href="/" class="hover:text-slate-900">Home</a></li>
                     <li class="text-slate-300">/</li>
-                    <li><a href="${stateLevelsPath}" class="hover:text-slate-900">${stateName} Radon Levels</a></li>
+                    <li><a href="/radon-levels" class="hover:text-slate-900">County Radon Evidence</a></li>
                     <li class="text-slate-300">/</li>
                     <li class="font-semibold text-slate-900" aria-current="page">${countyLabel} Testing</li>
                 </ol>
@@ -193,7 +189,7 @@
                         </div>
                         <div class="rounded-xl border border-rose-200 bg-rose-50 p-4">
                             <p class="font-black text-rose-900">4.0+ pCi/L</p>
-                            <p class="mt-1 text-sm leading-relaxed text-slate-700">Confirm as directed, then move into mitigation scope and local cost planning instead of repeatedly delaying the decision.</p>
+                            <p class="mt-1 text-sm leading-relaxed text-slate-700">Preserve the report, follow its confirmation instructions, and use qualified help when reduction is indicated.</p>
                         </div>
                     </div>
                     <p class="mt-5 text-sm leading-relaxed text-slate-600">${evidence.getRetestTriggerSummary()}</p>

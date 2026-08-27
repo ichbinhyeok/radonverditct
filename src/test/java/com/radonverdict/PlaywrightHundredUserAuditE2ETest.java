@@ -10,6 +10,7 @@ import com.microsoft.playwright.Response;
 import com.microsoft.playwright.options.LoadState;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -48,6 +49,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
                 "spring.jpa.show-sql=false"
         })
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@Disabled("Legacy hundred-persona audit retired; product contract is covered by ProductHandoffBrowserE2ETest")
 class PlaywrightHundredUserAuditE2ETest {
 
     private static final Pattern BAD_VISIBLE_COPY = Pattern.compile(
