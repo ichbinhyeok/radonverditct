@@ -2,77 +2,163 @@
 
 !{
     final String seoTitle = "What Does My Radon Test Result Mean? 2.0, 4.0 & 8.0 pCi/L";
-    final String seoDescription = "Understand a radon test result: what 2.0, 4.0, and 8.0 pCi/L mean, what to record from the report, and the next sensible step.";
+    final String seoDescription = "Interpret a radon result using the reading, test type, second-test average, procedure conditions, and official EPA and CDC next-step guidance.";
 }
 
 @template.layout.main(
     title = seoTitle,
     description = seoDescription,
     canonicalUrl = "https://radonverdict.com/radon-test-result-meaning",
+    articlePublished = "2026-08-27",
+    articleModified = "2026-09-05",
     headContent = @`
+        <script src="/js/radon-result-interpreter.js" defer></script>
         <script type="application/ld+json">
-        {"@context":"https://schema.org","@type":"WebPage","name":$unsafe{JsonLdUtils.json(seoTitle)},"url":"https://radonverdict.com/radon-test-result-meaning","description":$unsafe{JsonLdUtils.json(seoDescription)},"inLanguage":"en-US"}
+        {"@context":"https://schema.org","@type":"WebApplication","name":$unsafe{JsonLdUtils.json(seoTitle)},"url":"https://radonverdict.com/radon-test-result-meaning","description":$unsafe{JsonLdUtils.json(seoDescription)},"applicationCategory":"HealthApplication","operatingSystem":"Any","browserRequirements":"Requires JavaScript"}
+        </script>
+        <script type="application/ld+json">
+        {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://radonverdict.com/"},{"@type":"ListItem","position":2,"name":"Radon test result meaning","item":"https://radonverdict.com/radon-test-result-meaning"}]}
         </script>
         <script type="application/ld+json">
         {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
-          {"@type":"Question","name":"What does a 4.0 pCi/L radon result mean?","acceptedAnswer":{"@type":"Answer","text":"It reaches EPA's recommended action level. The next step depends on the test type: follow confirmation guidance after a short-term result, while a long-term result at or above 4.0 supports contacting a qualified radon-reduction professional."}},
-          {"@type":"Question","name":"Is a 2.5 pCi/L radon result bad?","acceptedAnswer":{"@type":"Answer","text":"It is below the main 4.0 pCi/L action level, but EPA says homeowners may consider fixing between 2.0 and 4.0 pCi/L. A long-term test can make the home's average clearer."}},
-          {"@type":"Question","name":"What should I do with an 8.0 pCi/L radon result?","acceptedAnswer":{"@type":"Answer","text":"Preserve the full report and act promptly on the confirmation or reduction path. Follow the test instructions and document transaction deadlines when buying or selling."}},
-          {"@type":"Question","name":"Can an EPA radon zone or county average explain my result?","acceptedAnswer":{"@type":"Answer","text":"No. Maps and county records provide local context, but testing is the only way to know the radon level in a specific home."}}
+          {"@type":"Question","name":"What does a 4.0 pCi/L radon result mean?","acceptedAnswer":{"@type":"Answer","text":"It reaches EPA's action level. A first short-term result needs a follow-up test; an average of two short-term tests or a long-term result at or above 4.0 pCi/L supports contacting a licensed radon-reduction professional."}},
+          {"@type":"Question","name":"What does a radon result between 2.0 and 4.0 pCi/L mean?","acceptedAnswer":{"@type":"Answer","text":"EPA and CDC say homeowners should consider reducing radon in this range. Keep the test type and procedure with the reading because a short snapshot and a long-term result provide different context."}},
+          {"@type":"Question","name":"Can I average two short-term radon tests?","acceptedAnswer":{"@type":"Answer","text":"CDC says to calculate the average when the follow-up is a second short-term test. If that average is at or above 4.0 pCi/L, contact a licensed professional about reduction."}},
+          {"@type":"Question","name":"Does a low county average override my home result?","acceptedAnswer":{"@type":"Answer","text":"No. County and zone data are context only. Testing is the only way to know the radon level measured in a particular home."}}
         ]}
         </script>
+        <style>
+            .result-marker { transition: left .45s cubic-bezier(.2,.75,.25,1); }
+            .result-reveal { animation: result-reveal .35s cubic-bezier(.2,.75,.25,1) both; }
+            @keyframes result-reveal { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+            @media (prefers-reduced-motion: reduce) { .result-marker { transition: none; } .result-reveal { animation: none; } }
+        </style>
     `,
     content = @`
-        <main class="bg-white">
-            <section class="border-b border-slate-200 bg-slate-50">
-                <div class="mx-auto max-w-4xl px-4 py-14 sm:px-6 md:py-20 lg:px-8">
-                    <nav class="mb-8 text-sm font-medium text-slate-500" aria-label="Breadcrumb"><a href="/" class="hover:text-slate-950">Home</a><span class="mx-2 text-slate-300">/</span><span class="text-slate-900">Radon test result meaning</span></nav>
-                    <p class="mb-4 text-xs font-bold uppercase tracking-wider text-indigo-700">Report-first answer</p>
-                    <h1 class="font-display text-4xl font-black leading-tight tracking-tight text-slate-950 sm:text-5xl">What Does My Radon Test Result Mean?</h1>
-                    <p class="mt-6 max-w-3xl text-lg font-medium leading-relaxed text-slate-600">Use the number from your report to choose the next step. This page explains the national threshold; it does not turn a county average into a verdict about your home.</p>
-                    <form action="/plan" method="get" class="mt-8 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-                        <input type="hidden" name="intent" value="homeowner"><input type="hidden" name="source" value="result-interpreter">
-                        <label for="radon-reading" class="block text-sm font-black text-slate-950">Radon result (pCi/L)</label>
-                        <div class="mt-3 flex flex-col gap-3 sm:flex-row"><input id="radon-reading" name="radonReading" type="number" inputmode="decimal" min="0" max="999" step="0.1" required placeholder="Example: 4.2" class="min-h-12 w-full rounded-xl border border-slate-300 px-4 font-bold text-slate-950 outline-none focus:border-indigo-600 focus:ring-2 focus:ring-indigo-100"><button type="submit" class="min-h-12 rounded-xl bg-slate-950 px-6 text-sm font-black text-white hover:bg-slate-800">See my next step</button></div>
-                        <p class="mt-3 text-sm text-slate-600">No number yet? <a href="/guides/how-to-test-for-radon" class="font-bold text-indigo-700 hover:underline">Start with a home test.</a></p>
+        <main class="bg-paper-light text-ink">
+            <header class="border-b-2 border-ink bg-ink text-white">
+                <div class="mx-auto max-w-7xl px-4 py-12 sm:px-6 sm:py-16 lg:px-8">
+                    <nav class="text-sm font-bold text-stone-300" aria-label="Breadcrumb"><a class="hover:text-signal" href="/">Home</a><span class="mx-2">/</span><span class="text-white">Result interpreter</span></nav>
+                    <p class="mt-8 text-xs font-black uppercase tracking-[0.24em] text-signal">Report-first decision tool</p>
+                    <h1 class="mt-4 max-w-4xl font-display text-5xl font-bold leading-[.98] tracking-tight sm:text-6xl">What does my radon test result mean?</h1>
+                    <p class="mt-6 max-w-2xl text-lg font-semibold leading-8 text-stone-200">The number matters. The test type and procedure determine what that number can support next.</p>
+                </div>
+            </header>
+
+            <section class="mx-auto max-w-7xl px-4 py-10 sm:px-6 sm:py-14 lg:px-8" aria-labelledby="interpreter-title">
+                <div class="grid gap-10 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,.9fr)] lg:items-start">
+                    <form id="result-interpreter-form" class="border-y-2 border-ink bg-white" novalidate>
+                        <div class="border-b-2 border-ink px-5 py-6 sm:px-7">
+                            <p class="text-xs font-black uppercase tracking-[0.2em] text-pine">Your test record</p>
+                            <h2 id="interpreter-title" class="mt-2 font-display text-3xl font-bold">Enter what the report actually says</h2>
+                            <p class="mt-3 max-w-2xl font-semibold leading-7 text-stone-600">Nothing is uploaded or saved. Unknown is a valid answer; the tool will keep the missing fact visible.</p>
+                        </div>
+
+                        <div class="divide-y divide-paper-rule">
+                            <fieldset class="px-5 py-6 sm:px-7">
+                                <legend class="font-display text-xl font-bold">1. Reported result</legend>
+                                <label class="mt-4 block max-w-sm text-sm font-black" for="result-reading">Radon reading, pCi/L</label>
+                                <input id="result-reading" class="mt-2 min-h-[52px] w-full max-w-sm border-2 border-ink bg-white px-4 text-lg font-bold" type="number" inputmode="decimal" min="0" max="999" step="0.1" placeholder="Example: 4.2" required>
+                                <p id="result-reading-error" class="mt-2 text-sm font-bold text-red-700" role="alert"></p>
+                            </fieldset>
+
+                            <fieldset class="px-5 py-6 sm:px-7">
+                                <legend class="font-display text-xl font-bold">2. Test type</legend>
+                                <div class="mt-4 grid gap-px bg-paper-rule sm:grid-cols-2">
+                                    <label class="cursor-pointer bg-white p-4"><input class="mr-3 accent-pine" type="radio" name="result-test-type" value="first-short" checked><strong>First short-term test</strong><span class="mt-1 block pl-7 text-sm font-semibold text-stone-600">2–90 day measurement; follow-up may be needed.</span></label>
+                                    <label class="cursor-pointer bg-white p-4"><input class="mr-3 accent-pine" type="radio" name="result-test-type" value="second-short"><strong>Two short-term tests</strong><span class="mt-1 block pl-7 text-sm font-semibold text-stone-600">The tool will calculate their average.</span></label>
+                                    <label class="cursor-pointer bg-white p-4"><input class="mr-3 accent-pine" type="radio" name="result-test-type" value="long"><strong>Long-term test</strong><span class="mt-1 block pl-7 text-sm font-semibold text-stone-600">More than 90 days.</span></label>
+                                    <label class="cursor-pointer bg-white p-4"><input class="mr-3 accent-pine" type="radio" name="result-test-type" value="post-mitigation"><strong>After mitigation</strong><span class="mt-1 block pl-7 text-sm font-semibold text-stone-600">Checks an installed system.</span></label>
+                                    <label class="cursor-pointer bg-white p-4 sm:col-span-2"><input class="mr-3 accent-pine" type="radio" name="result-test-type" value="unknown"><strong>I cannot identify the test type</strong><span class="mt-1 block pl-7 text-sm font-semibold text-stone-600">The report, laboratory, or tester may identify it.</span></label>
+                                </div>
+                                <div id="second-reading-field" class="mt-5 border-l-8 border-signal bg-paper-light p-4" hidden>
+                                    <label class="block text-sm font-black" for="result-second-reading">Second short-term result, pCi/L</label>
+                                    <input id="result-second-reading" class="mt-2 min-h-[52px] w-full max-w-sm border-2 border-ink bg-white px-4 text-lg font-bold" type="number" inputmode="decimal" min="0" max="999" step="0.1" placeholder="Example: 3.8">
+                                </div>
+                            </fieldset>
+
+                            <fieldset class="px-5 py-6 sm:px-7">
+                                <legend class="font-display text-xl font-bold">3. Procedure record</legend>
+                                <select id="result-procedure" class="mt-4 min-h-[52px] w-full border-2 border-ink bg-white px-4 font-bold">
+                                    <option value="clear">Placement, duration, conditions, and handling are documented</option>
+                                    <option value="unknown">One or more procedure details are unknown</option>
+                                    <option value="concern">A condition may conflict with the device or test protocol</option>
+                                </select>
+                                <label class="mt-5 block text-sm font-black" for="result-context">Decision context</label>
+                                <select id="result-context" class="mt-2 min-h-[52px] w-full border-2 border-ink bg-white px-4 font-bold">
+                                    <option value="living">Living in the home</option>
+                                    <option value="buying">Buying or selling</option>
+                                    <option value="renovation">Planning or completing renovation</option>
+                                </select>
+                            </fieldset>
+                        </div>
+
+                        <div class="px-5 py-6 sm:px-7"><button class="min-h-[54px] w-full bg-ink px-6 text-sm font-black text-white transition hover:bg-pine" type="submit">Interpret this record</button></div>
                     </form>
+
+                    <div class="lg:sticky lg:top-28">
+                        <section id="result-interpreter-output" class="border-2 border-ink bg-white" aria-live="polite" aria-labelledby="result-output-title">
+                            <div class="border-b-2 border-ink px-5 py-5">
+                                <p class="text-xs font-black uppercase tracking-[0.2em] text-pine">Recorded interpretation</p>
+                                <h2 id="result-output-title" class="mt-2 font-display text-3xl font-bold">Complete the record</h2>
+                            </div>
+                            <div class="p-5 sm:p-7">
+                                <div class="relative pt-8" aria-label="Result position on a zero to eight-plus pCi/L reference line">
+                                    <div class="grid h-3 grid-cols-2 overflow-hidden bg-stone-200"><span class="bg-stone-300"></span><span class="bg-signal"></span></div>
+                                    <span class="absolute left-1/2 top-3 h-8 border-l-2 border-ink"></span>
+                                    <span id="result-marker" class="result-marker absolute left-0 top-2 h-10 w-1 bg-pine"></span>
+                                    <div class="mt-2 flex justify-between text-xs font-black text-stone-500"><span>0</span><span>4.0 EPA action level</span><span>8+</span></div>
+                                </div>
+                                <strong id="result-value-summary" class="mt-7 block font-display text-3xl">No reading entered</strong>
+                                <p id="result-procedure-summary" class="mt-3 border-l-4 border-stone-400 pl-4 font-bold leading-7 text-stone-600">The procedure check comes before the next-step guidance.</p>
+                                <div id="result-next-step" class="mt-6 result-reveal" hidden>
+                                    <p class="text-xs font-black uppercase tracking-[0.2em] text-pine">What this record supports</p>
+                                    <p id="result-interpretation" class="mt-3 text-lg font-bold leading-8"></p>
+                                    <p id="result-action" class="mt-4 font-semibold leading-7 text-stone-700"></p>
+                                    <p id="result-context-note" class="mt-4 text-sm font-bold leading-6 text-stone-500"></p>
+                                    <div class="mt-6 flex flex-col gap-3 sm:flex-row">
+                                        <a id="result-primary-link" class="inline-flex min-h-[50px] items-center justify-center bg-ink px-5 text-sm font-black text-white hover:bg-pine" href="/guides/when-to-retest-for-radon">Review the next step</a>
+                                        <button id="result-copy" class="min-h-[50px] border-2 border-ink bg-white px-5 text-sm font-black" type="button">Copy record</button>
+                                    </div>
+                                    <p id="result-copy-status" class="mt-3 text-sm font-bold text-pine" aria-live="polite"></p>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
                 </div>
             </section>
-            <section class="mx-auto max-w-4xl px-4 py-14 sm:px-6 lg:px-8">
-                <h2 class="font-display text-3xl font-black tracking-tight text-slate-950">The short answer</h2>
-                <p class="mt-4 text-lg leading-relaxed text-slate-700">EPA recommends fixing a home when the radon level is 4.0 pCi/L or higher and says homeowners may consider fixing between 2.0 and 4.0 pCi/L. A result below 4.0 is not an all-clear: keep the report and decide whether follow-up or long-term testing would reduce uncertainty for your home and situation.</p>
-                <div class="mt-8 grid gap-4 sm:grid-cols-2">
-                    <article class="rounded-2xl border border-emerald-200 bg-emerald-50 p-5"><h3 class="font-black text-emerald-950">Under 2.0 pCi/L</h3><p class="mt-2 text-sm leading-relaxed text-slate-700">Keep the report. Retest at a sensible interval and after major changes to the home.</p></article>
-                    <article class="rounded-2xl border border-amber-200 bg-amber-50 p-5"><h3 class="font-black text-amber-950">2.0–3.9 pCi/L</h3><p class="mt-2 text-sm leading-relaxed text-slate-700">Below the main action threshold, but not zero risk. A follow-up or long-term test can make the decision clearer.</p></article>
-                    <article class="rounded-2xl border border-orange-200 bg-orange-50 p-5"><h3 class="font-black text-orange-950">4.0–7.9 pCi/L</h3><p class="mt-2 text-sm leading-relaxed text-slate-700">This reaches EPA’s action threshold. If it came from a short-term test, CDC says to take a second short- or long-term test; use the average if both tests are short-term.</p></article>
-                    <article class="rounded-2xl border border-rose-200 bg-rose-50 p-5"><h3 class="font-black text-rose-950">8.0 pCi/L or higher</h3><p class="mt-2 text-sm leading-relaxed text-slate-700">Treat this as a high reading. Preserve the report and prioritize the next test or reduction decision, especially when a home transaction has a deadline.</p></article>
-                </div>
-                <section class="mt-10 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-                    <h2 class="font-display text-2xl font-black tracking-tight text-slate-950">One number is not the whole instruction</h2>
-                    <dl class="mt-5 divide-y divide-slate-200 text-sm leading-relaxed">
-                        <div class="py-4"><dt class="font-black text-slate-950">A short-term result at or above 4.0</dt><dd class="mt-1 text-slate-700">Take a second short- or long-term test. If both are short-term, use their average for the decision.</dd></div>
-                        <div class="py-4"><dt class="font-black text-slate-950">A long-term result at or above 4.0</dt><dd class="mt-1 text-slate-700">CDC says this supports contacting a licensed professional for a radon reduction system.</dd></div>
-                        <div class="py-4"><dt class="font-black text-slate-950">After a home is fixed</dt><dd class="mt-1 text-slate-700">Retest a few months later to check whether the level was reduced.</dd></div>
+
+            <section class="border-y-2 border-ink bg-white">
+                <div class="mx-auto max-w-5xl px-4 py-12 sm:px-6 lg:px-8">
+                    <p class="text-xs font-black uppercase tracking-[0.2em] text-pine">Read the sequence, not only the band</p>
+                    <h2 class="mt-3 font-display text-4xl font-bold">What the national guidance says</h2>
+                    <dl class="mt-8 divide-y divide-paper-rule border-y-2 border-ink">
+                        <div class="grid gap-3 py-6 sm:grid-cols-[190px_1fr]"><dt class="font-display text-xl font-bold">Below 2.0 pCi/L</dt><dd class="font-semibold leading-7 text-stone-700">CDC lists no immediate action, while EPA says no radon level is risk-free. Keep the report and retest when lower-level occupancy or major building changes alter the question.</dd></div>
+                        <div class="grid gap-3 py-6 sm:grid-cols-[190px_1fr]"><dt class="font-display text-xl font-bold">2.0–3.9 pCi/L</dt><dd class="font-semibold leading-7 text-stone-700">EPA and CDC say to consider reducing radon. Test type, time coverage, and procedure still belong with the number.</dd></div>
+                        <div class="grid gap-3 py-6 sm:grid-cols-[190px_1fr]"><dt class="font-display text-xl font-bold">First short-term ≥4.0</dt><dd class="font-semibold leading-7 text-stone-700">Take a second short- or long-term test. When the second is short-term, calculate the average of both results.</dd></div>
+                        <div class="grid gap-3 py-6 sm:grid-cols-[190px_1fr]"><dt class="font-display text-xl font-bold">Confirmed or long-term ≥4.0</dt><dd class="font-semibold leading-7 text-stone-700">An average of two short-term tests or a long-term result at or above 4.0 supports contacting a licensed radon-reduction professional.</dd></div>
                     </dl>
-                    <p class="mt-4 text-xs leading-relaxed text-slate-500">This summary follows CDC’s homeowner testing guidance. Your report instructions and applicable state or local requirements still control.</p>
-                </section>
-                <h2 class="mt-14 font-display text-3xl font-black tracking-tight text-slate-950">Before you act, keep the details that change the answer</h2>
-                <ul class="mt-5 space-y-3 text-slate-700"><li><strong>The number and unit:</strong> record the pCi/L exactly as reported.</li><li><strong>Test type and duration:</strong> short-term and long-term tests answer different uncertainty questions.</li><li><strong>Location:</strong> note the lowest lived-in level and where the device was placed.</li><li><strong>Dates and test conditions:</strong> retain the complete report rather than a screenshot of the number alone.</li></ul>
-                <div class="mt-12 rounded-2xl border border-indigo-200 bg-indigo-50 p-6"><h2 class="font-display text-2xl font-black text-indigo-950">Buying or selling a home?</h2><p class="mt-2 leading-relaxed text-slate-700">Do not jump from one number to a price claim. Build a documented repair, credit, or retest decision around the inspection report and the transaction deadline.</p><a href="/guides/radon-failed-inspection" class="mt-4 inline-flex font-black text-indigo-800 hover:underline">Use the failed-inspection decision guide →</a></div>
-                <section class="mt-14" aria-labelledby="result-questions">
-                    <p class="text-xs font-bold uppercase tracking-wider text-slate-500">Result questions</p>
-                    <h2 id="result-questions" class="mt-2 font-display text-3xl font-black tracking-tight text-slate-950">Common questions about a radon number</h2>
-                    <div class="mt-6 divide-y divide-slate-200 rounded-2xl border border-slate-200 bg-white">
-                        <article class="p-5"><h3 class="font-black text-slate-950">What does a 4.0 pCi/L radon result mean?</h3><p class="mt-2 leading-relaxed text-slate-700">It reaches EPA’s recommended action level. The next step depends on the test type: CDC advises a second test after a short-term result, while a long-term result at or above 4.0 supports contacting a licensed reduction professional.</p></article>
-                        <article class="p-5"><h3 class="font-black text-slate-950">Is a 2.5 pCi/L radon result bad?</h3><p class="mt-2 leading-relaxed text-slate-700">It is below the main 4.0 pCi/L action level, but it is not a promise that no action is ever appropriate. EPA says homeowners may consider fixing a home between 2.0 and 4.0 pCi/L; a long-term test can make the home’s average clearer.</p></article>
-                        <article class="p-5"><h3 class="font-black text-slate-950">What should I do with an 8.0 pCi/L radon result?</h3><p class="mt-2 leading-relaxed text-slate-700">Preserve the full report and act promptly on the test or reduction path. If it was a short-term test, follow the confirmation guidance; if the result is part of a transaction, document the deadline and the agreed repair, credit, or retest path.</p></article>
-                        <article class="p-5"><h3 class="font-black text-slate-950">Can an EPA radon zone or county average explain my result?</h3><p class="mt-2 leading-relaxed text-slate-700">No. Maps and county records are useful local context, but testing is the only way to know the level in a specific home. <a href="/radon-levels" class="font-bold text-indigo-700 hover:underline">Browse local context separately.</a></p></article>
+                </div>
+            </section>
+
+            <section class="mx-auto max-w-5xl px-4 py-12 sm:px-6 lg:px-8">
+                <div class="grid gap-10 lg:grid-cols-2">
+                    <div><p class="text-xs font-black uppercase tracking-[0.2em] text-pine">Important boundary</p><h2 class="mt-3 font-display text-3xl font-bold">A county average cannot validate this result</h2><p class="mt-4 font-semibold leading-7 text-stone-700">County measurements and EPA zones can show why testing matters locally. They cannot replace the device report, prove the procedure was followed, or overturn a result from the home.</p><a class="mt-4 inline-flex font-black text-pine underline decoration-2 underline-offset-4" href="/radon-levels">Use local data as context →</a></div>
+                    <div><p class="text-xs font-black uppercase tracking-[0.2em] text-pine">Transaction boundary</p><h2 class="mt-3 font-display text-3xl font-bold">Do not turn one result into a price claim</h2><p class="mt-4 font-semibold leading-7 text-stone-700">For a purchase or sale, preserve the report, protocol, deadline, and written scope separately. A radon number does not determine a universal repair cost or seller credit.</p><a class="mt-4 inline-flex font-black text-pine underline decoration-2 underline-offset-4" href="/guides/radon-failed-inspection">Open the transaction decision guide →</a></div>
+                </div>
+            </section>
+
+            <section class="border-t-2 border-ink bg-white">
+                <div class="mx-auto max-w-5xl px-4 py-12 sm:px-6 lg:px-8">
+                    <p class="text-xs font-black uppercase tracking-[0.2em] text-pine">Primary guidance</p>
+                    <h2 class="mt-3 font-display text-4xl font-bold">Sources used by the interpreter</h2>
+                    <div class="mt-7 divide-y divide-paper-rule border-y border-paper-rule">
+                        <a class="grid gap-2 py-5 sm:grid-cols-[1fr_auto] sm:items-center" href="https://www.cdc.gov/radon/testing/index.html" rel="noopener" target="_blank"><span><strong class="block text-lg">Testing for Radon in Your Home</strong><small class="mt-1 block font-semibold text-stone-500">CDC · test types, result bands, follow-up tests, and reduction decisions</small></span><span class="text-xl font-black text-pine" aria-hidden="true">↗</span></a>
+                        <a class="grid gap-2 py-5 sm:grid-cols-[1fr_auto] sm:items-center" href="https://www.epa.gov/radon/what-epas-action-level-radon-and-what-does-it-mean" rel="noopener" target="_blank"><span><strong class="block text-lg">EPA action level and what it means</strong><small class="mt-1 block font-semibold text-stone-500">U.S. EPA · 4.0 pCi/L action level and reduction below it</small></span><span class="text-xl font-black text-pine" aria-hidden="true">↗</span></a>
+                        <a class="grid gap-2 py-5 sm:grid-cols-[1fr_auto] sm:items-center" href="https://www.epa.gov/radon/how-often-should-i-testretest-my-home-radon" rel="noopener" target="_blank"><span><strong class="block text-lg">How often should I retest?</strong><small class="mt-1 block font-semibold text-stone-500">U.S. EPA · future testing, transactions, renovation, and lower-level occupancy</small></span><span class="text-xl font-black text-pine" aria-hidden="true">↗</span></a>
                     </div>
-                </section>
-                <h2 class="mt-14 font-display text-3xl font-black tracking-tight text-slate-950">Sources</h2>
-                <p class="mt-4 leading-relaxed text-slate-700">The 4.0 pCi/L action threshold comes from EPA guidance. CDC explains why testing the individual home matters; a local zone or county record cannot replace it.</p>
-                <ul class="mt-4 space-y-2"><li><a class="font-bold text-indigo-700 hover:underline" href="https://www.epa.gov/radon/what-epas-action-level-radon-and-what-does-it-mean" rel="noopener">EPA: action level and what it means</a></li><li><a class="font-bold text-indigo-700 hover:underline" href="https://www.epa.gov/radon/explain-working-levels-wl-and-picocuries-liter-air-pcil" rel="noopener">EPA: pCi/L and the action threshold</a></li><li><a class="font-bold text-indigo-700 hover:underline" href="https://www.cdc.gov/radon/testing/index.html" rel="noopener">CDC: testing your home for radon</a></li><li><a class="font-bold text-indigo-700 hover:underline" href="/radon-data-sources">Review the county dataset and source policy</a></li></ul>
-                <p class="mt-8 border-t border-slate-200 pt-5 text-xs font-semibold leading-relaxed text-slate-500">Last reviewed August 27, 2026. RadonVerdict is an independent software project, not a government agency or medical provider. A credentialed external radon review has not yet been completed.</p>
+                    <p class="mt-6 text-sm font-semibold leading-7 text-stone-500">Reviewed September 5, 2026. This tool organizes published federal guidance; it does not diagnose health effects, validate a laboratory report, or replace state requirements and qualified professional judgment.</p>
+                </div>
             </section>
         </main>
     `

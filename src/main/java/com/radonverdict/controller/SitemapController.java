@@ -5,6 +5,7 @@ import com.radonverdict.model.CountyRadonMeasurement;
 import com.radonverdict.model.CountyRadonTier;
 import com.radonverdict.service.DataLoadService;
 import com.radonverdict.service.SeoIndexingPolicyService;
+import com.radonverdict.service.TestProtocolGuideCatalog;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
@@ -20,10 +21,12 @@ import java.util.Collection;
 public class SitemapController {
 
     private static final LocalDate SEO_CONTENT_LASTMOD = LocalDate.of(2026, 8, 27);
+    private static final String TEST_PROTOCOL_LASTMOD = "2026-09-05";
 
     private final DataLoadService dataLoadService;
     private final SeoIndexingPolicyService seoIndexingPolicyService;
     private final com.radonverdict.service.IntentPagePolicyService intentPagePolicyService;
+    private final TestProtocolGuideCatalog testProtocolGuideCatalog;
 
     @Value("${app.site.base-url:https://radonverdict.com}")
     private String baseUrl;
@@ -152,6 +155,7 @@ public class SitemapController {
         xml.append("<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">");
 
         addUrl(xml, "/", "1.0");
+        addUrl(xml, "/radon-test-planner", "1.0");
         addUrl(xml, "/radon-test-result-meaning", "0.9");
         addUrl(xml, "/radon-levels", "0.9");
         addUrl(xml, "/about", "0.8");
@@ -160,7 +164,10 @@ public class SitemapController {
         addUrl(xml, "/contact", "0.8");
         addUrl(xml, "/privacy", "0.5");
         addUrl(xml, "/terms", "0.5");
+        addUrl(xml, "/guides", "0.9", TEST_PROTOCOL_LASTMOD);
         addUrl(xml, "/guides/how-to-test-for-radon", "0.7");
+        testProtocolGuideCatalog.slugs().forEach(slug ->
+                addUrl(xml, "/guides/" + slug, "0.8", TEST_PROTOCOL_LASTMOD));
         addUrl(xml, "/guides/radon-failed-inspection", "0.8");
         addUrl(xml, "/guides/radon-mitigation-quote-checklist", "0.8");
 

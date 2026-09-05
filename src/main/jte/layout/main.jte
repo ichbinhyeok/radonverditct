@@ -314,10 +314,10 @@
     <meta name="twitter:description" content="${description}">
     <meta name="twitter:image" content="https://radonverdict.com/images/default-og.png">
     
-    <!-- Google Fonts: Outfit (Display) & Inter (Numbers/Body) -->
+    <!-- RadonVerdict design system: Fraunces (display) + Source Sans 3 (body/data) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700;9..144,800;9..144,900&family=Source+Sans+3:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     
     <!-- Pre-built locally hosted Tailwind CSS -->
     <link href="/css/style.css" rel="stylesheet">
@@ -327,31 +327,28 @@
     <script defer src="https://unpkg.com/htmx.org@1.9.10"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.13.3/dist/cdn.min.js"></script>
 </head>
-<body class="bg-slate-50 text-slate-800 font-sans antialiased selection:bg-brand-900 selection:text-white flex flex-col min-h-screen">
+<body class="bg-paper-light text-ink font-sans antialiased selection:bg-signal selection:text-ink flex flex-col min-h-screen">
     
     @if(!minimalChrome)
-    <!-- Glassmorphism Navbar -->
-    <header x-data="{ mobileNavOpen: false }" class="sticky top-0 z-50 glass-header">
-        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 min-h-16 flex items-center justify-between gap-3">
-            <a href="/" class="tap-target-inline flex items-center gap-2 group rounded-xl">
-                <div class="w-8 h-8 rounded-lg bg-slate-900 text-white flex items-center justify-center font-display font-bold text-lg shadow-sm group-hover:bg-slate-700 transition-colors">
-                    R
-                </div>
-                <span class="font-display font-bold text-xl tracking-tight text-slate-900">Radon<span class="text-slate-400">Verdict</span></span>
+    <header x-data="{ mobileNavOpen: false }" class="sticky top-0 z-50 border-b border-paper-rule bg-paper-light/95 backdrop-blur-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 min-h-16 flex items-center justify-between gap-3">
+            <a href="/" class="tap-target-inline flex items-center gap-3 group rounded-lg">
+                <div class="w-8 h-8 rounded bg-ink text-signal flex items-center justify-center font-sans font-black text-sm transition-colors group-hover:bg-pine">RV</div>
+                <span class="font-display font-bold text-xl tracking-tight text-ink">RadonVerdict</span>
             </a>
-            <nav class="hidden lg:flex gap-6 text-sm font-medium text-slate-500">
-                <a href="/radon-test-result-meaning" class="tap-target-inline hover:text-slate-900 transition-colors">Result meaning</a>
-                <a href="/radon-levels" class="tap-target-inline hover:text-slate-900 transition-colors">County evidence</a>
-                <a href="/radon-data-sources" class="tap-target-inline hover:text-slate-900 transition-colors">Data sources</a>
-                <a href="/guides/how-to-test-for-radon" class="tap-target-inline hover:text-slate-900 transition-colors">Testing guide</a>
-                <a href="/methodology" class="tap-target-inline hover:text-slate-900 transition-colors">Methodology</a>
+            <nav class="hidden lg:flex items-center gap-6 text-sm font-bold text-stone-600">
+                <a href="/radon-test-planner" class="tap-target-inline text-pine hover:text-ink transition-colors">Test planner</a>
+                <a href="/guides" class="tap-target-inline hover:text-ink transition-colors">Guides</a>
+                <a href="/radon-levels" class="tap-target-inline hover:text-ink transition-colors">Local evidence</a>
+                <a href="/radon-data-sources" class="tap-target-inline hover:text-ink transition-colors">Sources</a>
+                <a href="/radon-test-planner" class="inline-flex min-h-10 items-center rounded bg-ink px-4 font-black text-white transition-colors hover:bg-pine">Start a test record</a>
             </nav>
             <button type="button"
                     @click="mobileNavOpen = !mobileNavOpen"
                     :aria-expanded="mobileNavOpen.toString()"
                     aria-controls="mobile-nav-panel"
                     aria-label="Toggle navigation"
-                    class="tap-target lg:hidden inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border border-slate-200 bg-white/80 text-slate-700 shadow-sm transition-colors hover:bg-white hover:text-slate-900">
+                    class="tap-target lg:hidden inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-lg border border-paper-rule bg-paper-light text-ink transition-colors hover:bg-paper">
                 <svg x-show="!mobileNavOpen" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M4 7h16M4 12h16M4 17h16" />
                 </svg>
@@ -364,15 +361,14 @@
              x-show="mobileNavOpen"
              x-transition.opacity.duration.150ms
              x-cloak
-             class="lg:hidden border-t border-slate-200/80 bg-white/95 backdrop-blur-sm">
-            <nav class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex flex-col">
-                <a href="/radon-test-result-meaning" class="tap-target-inline rounded-xl px-3 text-slate-700 hover:bg-slate-100 hover:text-slate-900">Result meaning</a>
-                <a href="/radon-levels" class="tap-target-inline rounded-xl px-3 text-slate-700 hover:bg-slate-100 hover:text-slate-900">County evidence</a>
-                <a href="/radon-data-sources" class="tap-target-inline rounded-xl px-3 text-slate-700 hover:bg-slate-100 hover:text-slate-900">Data sources</a>
-                <a href="/guides/how-to-test-for-radon" class="tap-target-inline rounded-xl px-3 text-slate-700 hover:bg-slate-100 hover:text-slate-900">Testing guide</a>
-                <a href="/methodology" class="tap-target-inline rounded-xl px-3 text-slate-700 hover:bg-slate-100 hover:text-slate-900">Methodology</a>
-                <a href="/about" class="tap-target-inline rounded-xl px-3 text-slate-700 hover:bg-slate-100 hover:text-slate-900">About</a>
-                <a href="/contact" class="tap-target-inline rounded-xl px-3 text-slate-700 hover:bg-slate-100 hover:text-slate-900">Contact</a>
+             class="lg:hidden border-t border-paper-rule bg-paper-light">
+            <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex flex-col">
+                <a href="/radon-test-planner" class="tap-target-inline rounded-lg px-3 font-black text-pine hover:bg-paper">Start a test record</a>
+                <a href="/guides" class="tap-target-inline rounded-lg px-3 text-stone-700 hover:bg-paper">Guide library</a>
+                <a href="/radon-levels" class="tap-target-inline rounded-lg px-3 text-stone-700 hover:bg-paper">Local evidence</a>
+                <a href="/radon-data-sources" class="tap-target-inline rounded-lg px-3 text-stone-700 hover:bg-paper">Sources</a>
+                <a href="/methodology" class="tap-target-inline rounded-lg px-3 text-stone-700 hover:bg-paper">Methodology</a>
+                <a href="/about" class="tap-target-inline rounded-lg px-3 text-stone-700 hover:bg-paper">About</a>
             </nav>
         </div>
     </header>
@@ -384,42 +380,40 @@
     </main>
 
     @if(!minimalChrome)
-    <!-- ${java.time.LocalDate.now().getYear()} evidence-first footer -->
-    <footer class="bg-white border-t border-slate-100 mt-20">
-        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <footer class="bg-ink text-white border-t border-ink mt-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
             <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
                 <div class="col-span-1 md:col-span-2">
-                    <span class="font-display font-bold text-lg tracking-tight text-slate-900">Radon<span class="text-slate-400">Verdict</span></span>
-                    <p class="mt-4 text-sm text-slate-500 leading-relaxed max-w-sm">
-                        Independent radon result interpretation and source-linked county evidence. We are not affiliated with the US EPA or any government agency.
+                    <span class="font-display font-bold text-2xl tracking-tight">RadonVerdict</span>
+                    <p class="mt-4 text-sm text-stone-300 leading-relaxed max-w-md">
+                        Set up, document, and check a home radon test against source-linked guidance. A procedural check is not a property or medical diagnosis.
                     </p>
                 </div>
                 <div>
-                    <h4 class="font-bold text-slate-900 mb-4 text-sm uppercase tracking-wider">Company</h4>
-                    <ul class="space-y-3 text-sm font-medium text-slate-500">
-                        <li><a href="/about" class="tap-target-inline hover:text-indigo-600 transition-colors">About Us</a></li>
-                        <li><a href="/methodology" class="tap-target-inline hover:text-indigo-600 transition-colors">Methodology</a></li>
-                        <li><a href="/radon-data-sources" class="tap-target-inline hover:text-indigo-600 transition-colors">Data Sources</a></li>
-                        <li><a href="/contact" class="tap-target-inline hover:text-indigo-600 transition-colors">Contact</a></li>
-                        <li><a href="/plan" class="tap-target-inline hover:text-indigo-600 transition-colors">Build a plan</a></li>
-                        <li><a href="/for-home-inspectors" class="tap-target-inline hover:text-indigo-600 transition-colors">For inspectors</a></li>
-                        <li><a href="/radon-levels" class="tap-target-inline hover:text-indigo-600 transition-colors">County evidence</a></li>
-                        <li><a href="/guides/how-to-test-for-radon" class="tap-target-inline hover:text-indigo-600 transition-colors">Testing Guide</a></li>
+                    <h4 class="font-black mb-4 text-sm uppercase tracking-wider text-signal">Test</h4>
+                    <ul class="space-y-3 text-sm font-semibold text-stone-300">
+                        <li><a href="/radon-test-planner" class="tap-target-inline hover:text-signal transition-colors">Test planner</a></li>
+                        <li><a href="/guides" class="tap-target-inline hover:text-signal transition-colors">Guide library</a></li>
+                        <li><a href="/radon-test-result-meaning" class="tap-target-inline hover:text-signal transition-colors">Record a result</a></li>
+                        <li><a href="/radon-levels" class="tap-target-inline hover:text-signal transition-colors">Local evidence</a></li>
                     </ul>
                 </div>
                 <div>
-                    <h4 class="font-bold text-slate-900 mb-4 text-sm uppercase tracking-wider">Legal</h4>
-                    <ul class="space-y-3 text-sm font-medium text-slate-500">
-                        <li><a href="/privacy" class="tap-target-inline hover:text-indigo-600 transition-colors">Privacy Policy</a></li>
-                        <li><a href="/terms" class="tap-target-inline hover:text-indigo-600 transition-colors">Terms of Service</a></li>
+                    <h4 class="font-black mb-4 text-sm uppercase tracking-wider text-signal">Evidence</h4>
+                    <ul class="space-y-3 text-sm font-semibold text-stone-300">
+                        <li><a href="/methodology" class="tap-target-inline hover:text-signal transition-colors">Methodology</a></li>
+                        <li><a href="/radon-data-sources" class="tap-target-inline hover:text-signal transition-colors">Data sources</a></li>
+                        <li><a href="/about" class="tap-target-inline hover:text-signal transition-colors">About</a></li>
+                        <li><a href="/privacy" class="tap-target-inline hover:text-signal transition-colors">Privacy</a></li>
+                        <li><a href="/terms" class="tap-target-inline hover:text-signal transition-colors">Terms</a></li>
                     </ul>
                 </div>
             </div>
-            <div class="border-t border-slate-100 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
-                <div class="text-xs text-slate-400 font-medium">
+            <div class="border-t border-stone-700 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+                <div class="text-xs text-stone-400 font-medium">
                     &copy; ${java.time.LocalDate.now().getYear()} RadonVerdict. Not affiliated with the US EPA or any government agency.
                 </div>
-                <div class="text-xs text-slate-400 font-medium text-center md:text-right">
+                <div class="text-xs text-stone-400 font-medium text-center md:text-right">
                     As an Amazon Associate, RadonVerdict earns from qualifying purchases.
                 </div>
             </div>

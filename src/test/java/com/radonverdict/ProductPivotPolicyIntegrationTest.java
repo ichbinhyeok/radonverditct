@@ -31,7 +31,9 @@ class ProductPivotPolicyIntegrationTest {
         mockMvc.perform(get("/client-action-plan"))
                 .andExpect(status().isMovedPermanently())
                 .andExpect(header().string("Location", "/plan"));
-        mockMvc.perform(get("/guides")).andExpect(status().isGone());
+        mockMvc.perform(get("/guides"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("Radon test field manual")));
         mockMvc.perform(get("/radon-levels/florida")).andExpect(status().isGone());
         mockMvc.perform(get("/guides/how-to-test-for-radon")).andExpect(status().isOk());
     }

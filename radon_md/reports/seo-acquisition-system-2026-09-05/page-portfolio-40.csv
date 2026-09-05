@@ -1,0 +1,41 @@
+priority,primary_query,target_url,action,release_gate,reason
+1,how long does a radon test take,/guides/short-term-vs-long-term-radon-test,LIVE_NOW,index+impressions,largest winnable procedural band
+2,radon mitigation system maintenance,/guides/radon-mitigation-system-maintenance,LIVE_NOW,index+impressions,high commercial-adjacent bid and weak mixed SERP
+3,radon manometer reading,/guides/radon-manometer-reading,LIVE_NOW,index+impressions,specific task with thin contractor results
+4,radon fan noise,/guides/radon-fan-noise,LIVE_NOW,index+impressions,forum-heavy SERP and legacy domain signal
+5,how long do radon fans last,/guides/how-long-do-radon-fans-last,LIVE_NOW,index+impressions,confirmed demand and EPA source anchor
+6,where to place radon test,/guides/where-to-place-radon-test,LIVE_SUPPORT,index+query-match,current GSC impressions
+7,radon closed house conditions,/guides/radon-closed-house-conditions,LIVE_SUPPORT,index+query-match,protocol support
+8,is my radon test valid,/guides/is-my-radon-test-valid,LIVE_SUPPORT,index+query-match,high-anxiety task fit
+9,when to retest for radon,/guides/when-to-retest-for-radon,LIVE_SUPPORT,index+query-match,result bridge
+10,radon test after mitigation,/guides/radon-test-after-mitigation,LIVE_SUPPORT,index+query-match,system-owner bridge
+11,can you open windows during radon test,/guides/can-you-open-windows-during-radon-test,LIVE_SUPPORT,impressions in 60 days,zero-band support
+12,can you live in house during radon test,/guides/can-you-live-in-house-during-radon-test,LIVE_SUPPORT,impressions in 60 days,zero-band support
+13,radon test during rain,/guides/radon-test-during-rain-or-storm,LIVE_SUPPORT,impressions in 60 days,fragmented state guidance
+14,best time of year to test for radon,/guides/best-time-of-year-to-test-for-radon,LIVE_SUPPORT,impressions in 60 days,seasonal question
+15,charcoal vs digital radon test,/guides/charcoal-vs-digital-radon-test,LIVE_SUPPORT,impressions in 60 days,device-choice bridge without best claim
+16,expired radon test kit,/guides/expired-radon-test-kit,LIVE_SUPPORT,impressions in 60 days,lab-specific task
+17,radon test moved,/guides/radon-test-moved-or-tampered,LIVE_SUPPORT,impressions in 60 days,validity incident
+18,how to mail radon test kit,/guides/how-to-mail-radon-test-kit,LIVE_SUPPORT,impressions in 60 days,completion task
+19,radon testing in apartments,/guides/radon-testing-in-apartments,LIVE_SUPPORT,impressions in 60 days,narrow occupancy fit
+20,radon test after renovation,/guides/radon-test-after-renovation,LIVE_SUPPORT,impressions in 60 days,CDC-backed retest trigger
+21,how to test for radon at home,/guides/how-to-test-for-radon,LIVE_PILLAR,index+query-match,source-bounded five-step workflow implemented
+22,radon test planner,/radon-test-planner,LIVE_TOOL,index+usage,protocol workflow moat
+23,radon test results,/radon-test-result-meaning,LIVE_TOOL,index+usage,test-type and procedure-aware interpreter implemented
+24,radon levels chart,/radon-test-result-meaning,MERGE_QUERY,no second URL,avoid result cannibalization
+25,radon levels by county,/radon-levels,KEEP_HUB,12 county cohort healthy,official-data navigation only
+26,radon monitor spikes,/guides/radon-monitor-spikes,BUILD_AFTER_SIGNAL,50 impressions in adjacent family,forum-heavy unmet task
+27,two radon tests different results,/guides/two-radon-tests-disagree,BUILD_AFTER_SIGNAL,50 impressions in adjacent family,measurement uncertainty workflow
+28,radon fan stopped working,/guides/radon-fan-stopped,BUILD_AFTER_SIGNAL,maintenance cluster top20,safety-bounded task
+29,radon system alarm,/guides/radon-system-alarm,BUILD_AFTER_SIGNAL,maintenance cluster top20,clear incident intent
+30,radon pipe gurgling,/guides/radon-fan-noise,MERGE_QUERY,no separate URL,noise page already handles it
+31,radon manometer fluid level,/guides/radon-manometer-reading,MERGE_QUERY,no separate URL,baseline page handles it
+32,radon fan replacement cost,/guides/radon-fan-replacement-cost,BUILD_AFTER_SIGNAL,fan-life top20,commercial adjacent
+33,radon test basement or first floor,/guides/where-to-place-radon-test,MERGE_QUERY,no separate URL,placement decision branch
+34,hvac during radon test,/guides/radon-closed-house-conditions,MERGE_QUERY,no separate URL,closed-house subquestion
+35,dehumidifier during radon test,/guides/radon-closed-house-conditions,MERGE_QUERY,no separate URL,avoid thin page
+36,radon test kit vs monitor,/guides/charcoal-vs-digital-radon-test,MERGE_QUERY,no second URL,device choice canonical
+37,best radon test kit,/guides/best-radon-test-kit,HOLD,hands-on evidence required,do not fake product testing
+38,radon detector,/guides/radon-detector,HOLD,authority and product evidence required,head term too difficult now
+39,radon mitigation cost,/radon-mitigation-cost,HOLD,defensible model required,retired estimates cannot return unchanged
+40,radon mitigation services near me,/radon-mitigation-services,HOLD,provider inventory required,service intent cannot be met

@@ -1361,16 +1361,18 @@ class SeoBehaviorIntegrationTest {
                 .andExpect(content().string(not(containsString("<meta name=\"robots\" content=\"noindex, follow\">"))))
                 .andExpect(content().string(containsString("<title>What Does My Radon Test Result Mean? 2.0, 4.0 &amp; 8.0 pCi/L</title>")))
                 .andExpect(content().string(containsString("What Does My Radon Test Result Mean?")))
-                .andExpect(content().string(containsString("action=\"/plan\"")))
-                .andExpect(content().string(containsString("name=\"radonReading\"")))
-                .andExpect(content().string(containsString("EPA recommends fixing a home when the radon level is 4.0 pCi/L or higher")))
-                .andExpect(content().string(containsString("A short-term result at or above 4.0")))
-                .andExpect(content().string(containsString("If both are short-term, use their average")))
-                .andExpect(content().string(containsString("Test type and duration")))
-                .andExpect(content().string(containsString("Is a 2.5 pCi/L radon result bad?")))
-                .andExpect(content().string(containsString("What should I do with an 8.0 pCi/L radon result?")))
+                .andExpect(content().string(containsString("id=\"result-interpreter-form\"")))
+                .andExpect(content().string(containsString("id=\"result-reading\"")))
+                .andExpect(content().string(containsString("Two short-term tests")))
+                .andExpect(content().string(containsString("One or more procedure details are unknown")))
+                .andExpect(content().string(containsString("First short-term ≥4.0")))
+                .andExpect(content().string(containsString("calculate the average of both results")))
+                .andExpect(content().string(containsString("What does a radon result between 2.0 and 4.0 pCi/L mean?")))
+                .andExpect(content().string(containsString("A county average cannot validate this result")))
                 .andExpect(content().string(containsString("/guides/radon-failed-inspection")))
-                .andExpect(content().string(containsString("https://www.epa.gov/radon/")));
+                .andExpect(content().string(containsString("https://www.epa.gov/radon/")))
+                .andExpect(content().string(not(containsString("credentialed external radon review"))))
+                .andExpect(content().string(not(containsString("action=\"/plan\""))));
     }
 
     @Test

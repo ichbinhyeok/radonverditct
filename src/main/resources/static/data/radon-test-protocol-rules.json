@@ -1,0 +1,156 @@
+{
+  "catalogVersion": "2026.09.05-1",
+  "jurisdiction": "United States",
+  "reviewedOn": "2026-09-05",
+  "scope": "General residential radon test procedure checks. Real-estate rules apply only when purpose is transaction.",
+  "sources": {
+    "CDC_HOME_TESTING_2024": {
+      "title": "Testing for Radon in Your Home",
+      "publisher": "Centers for Disease Control and Prevention",
+      "publishedOn": "2024-02-02",
+      "url": "https://www.cdc.gov/radon/testing/index.html",
+      "supports": "Short-term and long-term duration definitions, general placement, device instructions, and qualified testers for home transactions."
+    },
+    "EPA_CITIZENS_GUIDE_2016": {
+      "title": "A Citizen's Guide to Radon",
+      "publisher": "U.S. Environmental Protection Agency",
+      "publishedOn": "2016-12-01",
+      "url": "https://www.epa.gov/sites/default/files/2016-12/documents/2016_a_citizens_guide_to_radon.pdf",
+      "supports": "Regularly used rooms, lowest lived-in level, avoiding kitchens and bathrooms, avoiding disturbance, and following package timing."
+    },
+    "EPA_REAL_ESTATE_GUIDE_2024": {
+      "title": "Home Buyer's and Seller's Guide to Radon",
+      "publisher": "U.S. Environmental Protection Agency",
+      "publishedOn": "2024-03-01",
+      "url": "https://www.epa.gov/sites/default/files/2015-05/documents/hmbuygud.pdf",
+      "supports": "Transaction-specific minimum duration, closed-house conditions, test interference, and qualified measurement guidance."
+    },
+    "EPA_TEST_KITS_2026": {
+      "title": "How do I get a radon test kit? Are they free?",
+      "publisher": "U.S. Environmental Protection Agency",
+      "publishedOn": "2026-08-06",
+      "url": "https://www.epa.gov/radon/how-do-i-get-radon-test-kit-are-they-free",
+      "supports": "State and local free or discounted kit availability."
+    }
+  },
+  "rules": [
+    {
+      "id": "DEVICE_TYPE_UNKNOWN",
+      "severity": "caution",
+      "conditions": [{ "field": "device", "operator": "eq", "value": "unknown" }],
+      "message": "The device type is unknown, so its required duration and handling cannot be checked.",
+      "action": "Confirm the device type and keep its instructions with this record.",
+      "sourceIds": ["CDC_HOME_TESTING_2024"]
+    },
+    {
+      "id": "PLACEMENT_INSTRUCTIONS_NOT_FOLLOWED",
+      "severity": "caution",
+      "conditions": [{ "field": "placementInstructions", "operator": "eq", "value": "no" }],
+      "message": "The placement did not follow the device instructions.",
+      "action": "Use the device instructions to choose a new placement; they override this general planner.",
+      "sourceIds": ["CDC_HOME_TESTING_2024"]
+    },
+    {
+      "id": "PLACEMENT_INSTRUCTIONS_UNCONFIRMED",
+      "severity": "caution",
+      "conditions": [{ "field": "placementInstructions", "operator": "eq", "value": "unsure" }],
+      "message": "The placement has not been checked against the device instructions.",
+      "action": "Check the package or laboratory instructions before relying on the setup.",
+      "sourceIds": ["CDC_HOME_TESTING_2024"]
+    },
+    {
+      "id": "ROOM_NOT_RECOMMENDED",
+      "severity": "caution",
+      "conditions": [{ "field": "room", "operator": "in", "value": ["kitchen-bath", "storage"] }],
+      "message": "The recorded room is not a generally recommended location for a representative home test.",
+      "action": "Choose a regularly used room such as a living room, bedroom, playroom, or den unless the device instructions say otherwise.",
+      "sourceIds": ["EPA_CITIZENS_GUIDE_2016"]
+    },
+    {
+      "id": "UPPER_LEVEL_REVIEW",
+      "severity": "caution",
+      "conditions": [{ "field": "level", "operator": "eq", "value": "upper" }],
+      "message": "An upper-floor placement needs review because general guidance starts with the basement or lowest level used in the home.",
+      "action": "Confirm that this is the lowest level in the home or unit that is used regularly.",
+      "sourceIds": ["CDC_HOME_TESTING_2024", "EPA_CITIZENS_GUIDE_2016"]
+    },
+    {
+      "id": "SHORT_TERM_UNDER_48_HOURS",
+      "severity": "retest",
+      "conditions": [
+        { "field": "stage", "operator": "eq", "value": "finished" },
+        { "field": "device", "operator": "eq", "value": "short" },
+        { "field": "durationHours", "operator": "numberLt", "value": 48 }
+      ],
+      "message": "The recorded short-term test lasted less than 48 hours, below the general two-day lower bound.",
+      "action": "Check the kit's minimum exposure time and repeat the test if that minimum was not met.",
+      "sourceIds": ["CDC_HOME_TESTING_2024"]
+    },
+    {
+      "id": "LONG_TERM_NOT_OVER_90_DAYS",
+      "severity": "retest",
+      "conditions": [
+        { "field": "stage", "operator": "eq", "value": "finished" },
+        { "field": "device", "operator": "eq", "value": "long" },
+        { "field": "durationHours", "operator": "numberLte", "value": 2160 }
+      ],
+      "message": "The recorded long-term test did not run for more than 90 days.",
+      "action": "Confirm the device type and dates, then continue or repeat the test according to its instructions.",
+      "sourceIds": ["CDC_HOME_TESTING_2024"]
+    },
+    {
+      "id": "TRANSACTION_SHORT_CLOSED_HOUSE_NO",
+      "severity": "caution",
+      "conditions": [
+        { "field": "purpose", "operator": "eq", "value": "transaction" },
+        { "field": "device", "operator": "eq", "value": "short" },
+        { "field": "closedHouse", "operator": "eq", "value": "no" }
+      ],
+      "message": "Closed-house conditions were not maintained for this short-term real-estate test.",
+      "action": "Treat the transaction test as needing protocol review; another test may be required.",
+      "sourceIds": ["EPA_REAL_ESTATE_GUIDE_2024"]
+    },
+    {
+      "id": "TRANSACTION_SHORT_CLOSED_HOUSE_UNCONFIRMED",
+      "severity": "caution",
+      "conditions": [
+        { "field": "purpose", "operator": "eq", "value": "transaction" },
+        { "field": "device", "operator": "eq", "value": "short" },
+        { "field": "closedHouse", "operator": "eq", "value": "unsure" }
+      ],
+      "message": "Closed-house conditions cannot be confirmed for this short-term real-estate test.",
+      "action": "Ask the tester or occupants for the condition record before relying on the result.",
+      "sourceIds": ["EPA_REAL_ESTATE_GUIDE_2024"]
+    },
+    {
+      "id": "DEVICE_DISTURBED",
+      "severity": "caution",
+      "conditions": [{ "field": "disturbed", "operator": "eq", "value": "yes" }],
+      "message": "The device was moved, covered, unplugged, or otherwise disturbed.",
+      "action": "Check the device or laboratory instructions; interference can make another test necessary.",
+      "sourceIds": ["EPA_CITIZENS_GUIDE_2016", "EPA_REAL_ESTATE_GUIDE_2024"]
+    },
+    {
+      "id": "DEVICE_DISTURBANCE_UNCONFIRMED",
+      "severity": "caution",
+      "conditions": [{ "field": "disturbed", "operator": "eq", "value": "unsure" }],
+      "message": "It is not known whether the device remained undisturbed.",
+      "action": "Verify the test conditions with the occupants or tester before relying on the result.",
+      "sourceIds": ["EPA_REAL_ESTATE_GUIDE_2024"]
+    }
+  ],
+  "contextActions": [
+    {
+      "id": "TRANSACTION_QUALIFIED_TESTER",
+      "conditions": [{ "field": "purpose", "operator": "eq", "value": "transaction" }],
+      "message": "EPA recommends a qualified tester when buying or selling a home; state or transaction rules may add requirements.",
+      "sourceIds": ["CDC_HOME_TESTING_2024", "EPA_REAL_ESTATE_GUIDE_2024"]
+    },
+    {
+      "id": "RESULT_FOLLOW_UP",
+      "conditions": [{ "field": "result", "operator": "present" }],
+      "message": "Use official follow-up guidance for the reported result; this procedure check does not label the home safe or unsafe.",
+      "sourceIds": ["CDC_HOME_TESTING_2024"]
+    }
+  ]
+}

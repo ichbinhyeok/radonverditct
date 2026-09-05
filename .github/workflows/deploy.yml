@@ -39,7 +39,11 @@ jobs:
             --tests "com.radonverdict.PersuasionQualityAuditTest" \
             --tests "com.radonverdict.RenderedContentAuditTest" \
             --tests "com.radonverdict.ProductPivotPolicyIntegrationTest" \
-            --tests "com.radonverdict.SeoPublicSurfaceContractTest"
+            --tests "com.radonverdict.SeoPublicSurfaceContractTest" \
+            --tests "com.radonverdict.AcquisitionMetadataContractTest" \
+            --tests "com.radonverdict.AcquisitionResearchAssetTest" \
+            --tests "com.radonverdict.TestProtocolGuideIntegrationTest" \
+            --tests "com.radonverdict.RadonTestProtocolRuleCatalogTest"
         
       - name: Build with Gradle (Skipping Tests for Speed)
         run: ./gradlew clean build -x test
