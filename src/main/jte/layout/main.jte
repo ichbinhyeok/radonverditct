@@ -320,8 +320,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700;9..144,800;9..144,900&family=Source+Sans+3:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     
     <!-- Pre-built locally hosted Tailwind CSS -->
-    <link href="/css/style.css" rel="stylesheet">
-    <link href="/css/mobile-overrides.css" rel="stylesheet">
+    <link href="/css/style.css?v=20260906a" rel="stylesheet">
+    <link href="/css/mobile-overrides.css?v=20260906a" rel="stylesheet">
     
     <!-- HTMX & Alpine.js -->
     <script defer src="https://unpkg.com/htmx.org@1.9.10"></script>
