@@ -7,10 +7,18 @@ module.exports = {
     theme: {
         extend: {
             fontFamily: {
-                sans: ['Inter', 'sans-serif'],
-                display: ['Outfit', 'sans-serif'],
+                sans: ['"Source Sans 3"', 'sans-serif'],
+                display: ['Fraunces', 'serif'],
             },
             colors: {
+                paper: {
+                    DEFAULT: '#F2EEE4',
+                    light: '#FBFAF6',
+                    rule: '#CFC8B8',
+                },
+                ink: '#142019',
+                pine: '#245542',
+                signal: '#DDF56B',
                 brand: {
                     50: '#f8fafc',
                     100: '#f1f5f9',

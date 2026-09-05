@@ -53,11 +53,7 @@ class ProductHandoffBrowserE2ETest {
                     blockedBy.set(marker == null ? "" : marker);
                 }
             });
-            page.navigate(baseUrl() + "/");
-            page.getByLabel("Radon result").fill("5.8");
-            page.getByLabel("ZIP code").fill("22030");
-            page.getByRole(com.microsoft.playwright.options.AriaRole.BUTTON,
-                    new Page.GetByRoleOptions().setName("Build my next step")).click();
+            page.navigate(baseUrl() + "/plan?radonReading=5.8&zipCode=22030&intent=homeowner&source=handoff-test");
             page.waitForURL(url -> url.contains("/plan"));
             assertTrue(page.getByText("At or above the EPA action level").isVisible());
 

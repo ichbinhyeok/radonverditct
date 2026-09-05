@@ -855,7 +855,7 @@ class PlaywrightHundredUserAuditE2ETest {
                 new RoutePlan("radon mitigation timeline how long", "/guides/radon-mitigation-timeline-how-long-does-it-take", UserAction.SCAN, null),
                 new RoutePlan("radon exposure symptoms", "/guides/radon-exposure-symptoms", UserAction.SCAN, null),
                 new RoutePlan("active vs passive radon system", "/guides/active-vs-passive-radon-system", UserAction.SCAN, null),
-                new RoutePlan("radon fan noise troubleshooting", "/guides/radon-fan-noise-troubleshooting", UserAction.SCAN, null),
+                new RoutePlan("radon fan noise troubleshooting", "/guides/radon-fan-noise", UserAction.SCAN, null),
                 new RoutePlan("crawl space radon mitigation", "/guides/crawl-space-radon-mitigation", UserAction.SCAN, null),
                 new RoutePlan("sump pump radon mitigation", "/guides/sump-pump-radon-mitigation", UserAction.SCAN, null),
                 new RoutePlan("radon system electricity cost", "/guides/radon-system-electricity-cost", UserAction.SCAN, null),

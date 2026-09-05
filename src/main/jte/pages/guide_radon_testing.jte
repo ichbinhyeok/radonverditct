@@ -4,290 +4,136 @@
 @param String title
 @param AeoAnswerBlock aeo = null
 @param TrustMetadata trust = null
-!{
-    final String shortTermKitUrl = "https://www.amazon.com/dp/B00002N83E?tag=radonverdict-20";
-    final String digitalMonitorUrl = "https://www.amazon.com/dp/B00H2VOSP8?tag=radonverdict-20";
-}
 
 @template.layout.main(
     title = title,
     canonicalUrl = "https://radonverdict.com/guides/how-to-test-for-radon",
-    description = "How to test for radon, place a home test correctly, understand the result, and decide when a follow-up test or mitigation plan is appropriate.",
+    description = "Test a home for radon with a source-linked workflow for choosing a device, placing it, maintaining test conditions, returning it, and reviewing the record.",
     articlePublished = "2026-02-26",
-    articleModified = "2026-08-27",
+    articleModified = "2026-09-05",
     headContent = @`
         <script type="application/ld+json">
-            {
-                "@context": "https://schema.org",
-                "@type": "HowTo",
-                "name": "How to Test Your Home for Radon",
-                "description": "Radon testing is the only way to know if your home has dangerous radon levels. This guide covers how to test, place your kit, and interpret the results.",
-                "totalTime": "P3D",
-                "estimatedCost": {
-                    "@type": "MonetaryAmount",
-                    "currency": "USD",
-                    "value": "20.00"
-                },
-                "supply": [
-                    { "@type": "HowToSupply", "name": "Short-Term Charcoal Radon Test Kit" }
-                ],
-                "step": [
-                    {
-                        "@type": "HowToStep",
-                        "name": "Buy a Test Kit",
-                        "text": "Purchase a short-term charcoal test kit online or from a local hardware store. Place it in the lowest livable level of your home, such as a basement, about 2-5 feet above the floor."
-                    },
-                    {
-                        "@type": "HowToStep",
-                        "name": "Maintain Closed-House Conditions",
-                        "text": "Keep doors and windows closed (except for normal entry/exit) for 12 hours before starting the test and during the entire 2-7 day test period. Do not run whole-house fans."
-                    },
-                    {
-                        "@type": "HowToStep",
-                        "name": "Wait 2-7 Days and Mail to Lab",
-                        "text": "Leave the kit absorbing radon for the duration specified by the manufacturer (usually 48 to 96 hours). Afterward, seal the kit immediately and mail it to the certified lab for analysis."
-                    },
-                    {
-                        "@type": "HowToStep",
-                        "name": "Read Your Results",
-                        "text": "Keep every result. A result from 2.0 to 3.9 pCi/L can justify a follow-up or long-term test. At 4.0 pCi/L or higher, follow the test instructions for confirmation when needed and begin mitigation planning."
-                    }
-                ]
-            }
+        {
+          "@context":"https://schema.org",
+          "@type": "Article",
+          "headline":"How to Test for Radon at Home",
+          "description":"A source-linked workflow for choosing, placing, running, returning, and reviewing a home radon test.",
+          "datePublished":"2026-02-26",
+          "dateModified":"2026-09-05",
+          "mainEntityOfPage":"https://radonverdict.com/guides/how-to-test-for-radon",
+          "author":{"@type":"Organization","name":"RadonVerdict","url":"https://radonverdict.com/about"},
+          "publisher":{"@type":"Organization","name":"RadonVerdict","url":"https://radonverdict.com/"}
+        }
         </script>
+        <script type="application/ld+json">
+        {
+          "@context":"https://schema.org",
+          "@type":"HowTo",
+          "name":"How to Test a Home for Radon",
+          "step":[
+            {"@type":"HowToStep","name":"Define the decision","text":"Identify whether this is routine screening, a real-estate transaction, or verification after mitigation."},
+            {"@type":"HowToStep","name":"Choose the test","text":"Select a device whose instructions and exposure window fit the decision."},
+            {"@type":"HowToStep","name":"Place and document it","text":"Use the lowest regularly occupied level and follow the device-specific placement instructions."},
+            {"@type":"HowToStep","name":"Maintain the required conditions","text":"Record start and stop times and any event that could affect the procedure."},
+            {"@type":"HowToStep","name":"Close and review the record","text":"Return or retrieve the device as instructed, then review procedure context before interpreting the number."}
+          ]
+        }
+        </script>
+        <style>
+            .testing-hero-image { animation: testing-image-in .8s cubic-bezier(.2,.75,.25,1) both; }
+            .testing-hero-copy > * { animation: testing-copy-in .55s cubic-bezier(.2,.75,.25,1) both; }
+            .testing-hero-copy > *:nth-child(2) { animation-delay: .08s; }
+            .testing-hero-copy > *:nth-child(3) { animation-delay: .16s; }
+            @keyframes testing-image-in { from { opacity: 0; transform: scale(1.035); } to { opacity: 1; transform: none; } }
+            @keyframes testing-copy-in { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+            @media (prefers-reduced-motion: reduce) { .testing-hero-image, .testing-hero-copy > * { animation: none; } }
+        </style>
     `,
     content = @`
-        <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24 prose prose-slate md:prose-lg">
-            <a href="/radon-data-sources" class="not-prose inline-flex items-center gap-1 text-xs font-bold text-slate-400 hover:text-indigo-600 transition-colors uppercase tracking-wider mb-6"><svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg> Sources and Methods</a>
-            <span class="inline-block py-1 px-3 rounded-full bg-emerald-50 text-emerald-700 text-xs font-bold tracking-wider uppercase mb-6 ml-3">Testing &amp; Detection</span>
-            <h1 class="font-display font-bold text-4xl text-slate-900 mb-6 tracking-tight">How to Test for Radon at Home: Kit Placement and Results</h1>
-            <p class="lead text-xl text-slate-600 mb-10 leading-relaxed font-medium pb-10 border-b border-slate-200">
-                Radon testing is the only way to know if your home has dangerous radon levels. This guide covers every testing method, how to interpret your results, and the critical mistakes that invalidate tests.
-            </p>
-            <div class="not-prose rounded-2xl border border-emerald-200 bg-emerald-50 p-5 mb-10">
-                <div class="text-xs font-bold uppercase tracking-wider text-emerald-700 mb-2">Best first purchase for most homes</div>
-                <p class="text-sm text-emerald-900 leading-relaxed m-0">
-                    If you are deciding what to buy today, start with a short-term test kit. Digital monitors make more sense after your first reading, for seasonal follow-up, or after mitigation.
-                </p>
-            </div>
-            @if(aeo != null)
-                @template.components.aeo_answer_block(block = aeo)
-            @endif
-
-            <h2 class="font-display font-bold text-2xl text-slate-900 mt-12 mb-4">Why Testing Is Non-Negotiable</h2>
-            <p class="text-slate-600 mb-4">
-                Radon is invisible, odorless, and tasteless. You cannot detect it without a test. The EPA estimates that <strong>1 in every 15 US homes</strong> has radon levels above the 4.0 pCi/L action threshold. Even homes in "low-risk" EPA zones can have dangerously elevated readings due to localized geological conditions.
-            </p>
-            <p class="text-slate-600 mb-6">
-                A test is the only way to know the level in a particular home. The right follow-up depends on the test type, the result, and whether the result will affect a purchase, sale, or mitigation decision.
-            </p>
-
-            <h2 class="font-display font-bold text-2xl text-slate-900 mt-12 mb-4">The 3 Types of Radon Tests</h2>
-
-            <!-- Test Type 1 -->
-            <div class="not-prose bg-white rounded-2xl border border-slate-200 p-6 shadow-sm mb-6">
-                <div class="flex items-start gap-4">
-                    <div class="w-12 h-12 rounded-xl bg-indigo-100 text-indigo-600 flex items-center justify-center shrink-0">
-                        <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
-                    </div>
-                    <div>
-                        <h3 class="font-display font-bold text-lg text-slate-900 mb-2">Short-Term Test Kits (2-7 Days)</h3>
-                        <p class="text-sm text-slate-600 leading-relaxed mb-3">
-                            Charcoal canisters or alpha-track detectors that absorb radon over 2-7 days. You mail the kit to a certified lab, which returns your result in about a week. This is the most common first test.
-                        </p>
-                        <div class="grid grid-cols-2 gap-3 text-xs">
-                            <div class="bg-emerald-50 rounded-lg p-3">
-                                <span class="font-bold text-emerald-700 block mb-1">Pros</span>
-                                <span class="text-emerald-600">Fast results - Cheapest option - Available everywhere</span>
-                            </div>
-                            <div class="bg-red-50 rounded-lg p-3">
-                                <span class="font-bold text-red-700 block mb-1">Cons</span>
-                                <span class="text-red-600">Snapshot only - Affected by weather - Can be invalidated</span>
-                            </div>
-                        </div>
-                        <div class="mt-3 text-sm font-bold text-slate-900">Cost: $15-$30</div>
-                        <a href="${shortTermKitUrl}"
-                           data-rv-affiliate-link="true"
-                           target="_blank" rel="sponsored nofollow noopener"
-                           onclick="if(window.rvTrackAffiliateClick) window.rvTrackAffiliateClick(this, { cta_id: 'guide_primary_test_kit', offer_type: 'test_kit', offer_brand: 'first_alert', offer_model: 'rd1', placement_group: 'guide', placement_id: 'primary_test_card', journey_stage: 'first_test' });"
-                           class="inline-flex items-center gap-2 mt-3 px-4 py-2 rounded-lg bg-slate-900 text-white text-xs font-bold hover:bg-slate-800 transition-colors">
-                            View Recommended Short-Term Kit ->
-                        </a>
-                    </div>
+        <article class="bg-paper-light text-ink">
+            <header class="relative isolate flex min-h-[500px] items-end overflow-hidden bg-ink">
+                <img class="testing-hero-image absolute inset-0 -z-20 h-full w-full object-cover opacity-40" src="/images/radon-test-editorial-hero-v1.webp" alt="A radon test device placed in a lived-in room" width="1600" height="1000">
+                <div class="absolute inset-0 -z-10 bg-gradient-to-r from-ink via-ink/90 to-ink/20"></div>
+                <div class="testing-hero-copy mx-auto w-full max-w-7xl px-4 pb-12 pt-24 sm:px-6 sm:pb-16 lg:px-8">
+                    <p class="text-xs font-black uppercase tracking-[0.24em] text-signal">Radon test field manual · source-linked</p>
+                    <h1 class="mt-5 max-w-4xl font-display text-5xl font-bold leading-[.98] tracking-tight text-white sm:text-6xl lg:text-7xl">How to test for radon at home</h1>
+                    <p class="mt-6 max-w-2xl text-lg font-semibold leading-relaxed text-stone-200">Choose the test, preserve the conditions, and keep a record that still makes sense when the result arrives.</p>
                 </div>
-            </div>
+            </header>
 
-            <!-- Test Type 2 -->
-            <div class="not-prose bg-white rounded-2xl border border-slate-200 p-6 shadow-sm mb-6">
-                <div class="flex items-start gap-4">
-                    <div class="w-12 h-12 rounded-xl bg-amber-100 text-amber-600 flex items-center justify-center shrink-0">
-                        <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                        </svg>
+            <div class="mx-auto max-w-5xl px-4 py-12 sm:px-6 sm:py-16 lg:px-8">
+                <section class="border-l-8 border-signal bg-ink px-6 py-7 text-white sm:px-8">
+                    <p class="text-xs font-black uppercase tracking-[0.2em] text-signal">Direct answer</p>
+                    <p class="mt-4 font-display text-2xl font-bold leading-snug sm:text-3xl">Define why you are testing, choose a device that fits that decision, place it on the lowest regularly occupied level, follow its exact timing and condition instructions, then preserve the procedure record with the result.</p>
+                </section>
+
+                <p class="mt-6 text-sm font-semibold leading-relaxed text-stone-500">Reviewed September 5, 2026. United States federal guidance. The device instructions, laboratory directions, transaction protocol, and applicable state requirements take precedence.</p>
+
+                @if(aeo != null)
+                    <div class="mt-8">@template.components.aeo_answer_block(block = aeo)</div>
+                @endif
+
+                <section class="mt-12 border-y-2 border-ink py-8">
+                    <p class="text-xs font-black uppercase tracking-[0.2em] text-pine">Start with the decision</p>
+                    <h2 class="mt-3 font-display text-4xl font-bold">One test does not serve every context</h2>
+                    <div class="mt-7 divide-y divide-paper-rule border-y border-paper-rule">
+                        <div class="grid gap-2 py-5 sm:grid-cols-[180px_1fr]"><h3 class="font-display text-xl font-bold text-pine">Routine screening</h3><p class="font-semibold leading-7 text-stone-700">Choose between a faster short-term answer and a longer measurement that better represents variation over time.</p></div>
+                        <div class="grid gap-2 py-5 sm:grid-cols-[180px_1fr]"><h3 class="font-display text-xl font-bold text-pine">Home transaction</h3><p class="font-semibold leading-7 text-stone-700">Use the applicable transaction protocol. Timing, closed-house conditions, tamper controls, and who performs the test can matter.</p></div>
+                        <div class="grid gap-2 py-5 sm:grid-cols-[180px_1fr]"><h3 class="font-display text-xl font-bold text-pine">After mitigation</h3><p class="font-semibold leading-7 text-stone-700">Verify the installed system with an indoor measurement and retain the post-mitigation report with the system record.</p></div>
                     </div>
-                    <div>
-                        <h3 class="font-display font-bold text-lg text-slate-900 mb-2">Long-Term Test Kits (90+ Days)</h3>
-                        <p class="text-sm text-slate-600 leading-relaxed mb-3">
-                            Alpha-track detectors or electret ion chambers that measure radon over 90 days to one year. These provide the most accurate long-term average, accounting for seasonal fluctuations. The EPA recommends a long-term test for the definitive measurement.
-                        </p>
-                        <div class="grid grid-cols-2 gap-3 text-xs">
-                            <div class="bg-emerald-50 rounded-lg p-3">
-                                <span class="font-bold text-emerald-700 block mb-1">Pros</span>
-                                <span class="text-emerald-600">Most accurate average - Accounts for seasons - EPA gold standard</span>
-                            </div>
-                            <div class="bg-red-50 rounded-lg p-3">
-                                <span class="font-bold text-red-700 block mb-1">Cons</span>
-                                <span class="text-red-600">Slow results - No real-time feedback - Easy to forget</span>
-                            </div>
-                        </div>
-                        <div class="mt-3 text-sm font-bold text-slate-900">Cost: $25-$40</div>
+                </section>
+
+                <section class="py-12">
+                    <p class="text-xs font-black uppercase tracking-[0.2em] text-pine">Five-step workflow</p>
+                    <h2 class="mt-3 font-display text-4xl font-bold">Run a test someone else can review</h2>
+                    <ol class="mt-8 divide-y divide-paper-rule border-y-2 border-ink">
+                        <li class="grid gap-4 py-7 sm:grid-cols-[64px_1fr]"><span class="font-display text-4xl font-bold text-pine">01</span><div><h3 class="font-display text-2xl font-bold">Choose the time horizon</h3><p class="mt-3 font-semibold leading-7 text-stone-700">CDC defines short-term tests as 2–90 days and long-term tests as more than 90 days. The exact allowed exposure still comes from the selected device. A continuous monitor is not automatically the right answer merely because it displays more readings.</p><a class="mt-3 inline-flex font-black text-pine underline decoration-2 underline-offset-4" href="/guides/short-term-vs-long-term-radon-test">Compare duration and total turnaround →</a></div></li>
+                        <li class="grid gap-4 py-7 sm:grid-cols-[64px_1fr]"><span class="font-display text-4xl font-bold text-pine">02</span><div><h3 class="font-display text-2xl font-bold">Place the device deliberately</h3><p class="mt-3 font-semibold leading-7 text-stone-700">Use the lowest level people occupy regularly and select a normal living area. Avoid improvising universal height or clearance numbers: record the kit or monitor model and follow its supplied instructions.</p><a class="mt-3 inline-flex font-black text-pine underline decoration-2 underline-offset-4" href="/guides/where-to-place-radon-test">Choose the floor, room, and position →</a></div></li>
+                        <li class="grid gap-4 py-7 sm:grid-cols-[64px_1fr]"><span class="font-display text-4xl font-bold text-pine">03</span><div><h3 class="font-display text-2xl font-bold">Preserve the required conditions</h3><p class="mt-3 font-semibold leading-7 text-stone-700">Record windows, exterior doors, outdoor-air equipment, HVAC state, weather, and occupancy when the protocol makes them relevant. EPA's 12-hour closed-house rule cited here belongs to short real-estate testing; it is not a substitute for every device's instructions.</p><a class="mt-3 inline-flex font-black text-pine underline decoration-2 underline-offset-4" href="/guides/radon-closed-house-conditions">Review closed-house conditions →</a></div></li>
+                        <li class="grid gap-4 py-7 sm:grid-cols-[64px_1fr]"><span class="font-display text-4xl font-bold text-pine">04</span><div><h3 class="font-display text-2xl font-bold">Record exact time and incidents</h3><p class="mt-3 font-semibold leading-7 text-stone-700">Keep start and stop timestamps, not just dates. Note movement, covering, unplugging, a power outage, an opened window, severe weather, or any other event without trying to erase the uncertainty.</p><a class="mt-3 inline-flex font-black text-pine underline decoration-2 underline-offset-4" href="/guides/is-my-radon-test-valid">Check the procedure record →</a></div></li>
+                        <li class="grid gap-4 py-7 sm:grid-cols-[64px_1fr]"><span class="font-display text-4xl font-bold text-pine">05</span><div><h3 class="font-display text-2xl font-bold">Close, return, and interpret in order</h3><p class="mt-3 font-semibold leading-7 text-stone-700">Seal and return a passive kit by the laboratory deadline, or save the monitor/tester report. Review test type, duration, placement, and conditions before treating the number as a complete decision.</p><a class="mt-3 inline-flex font-black text-pine underline decoration-2 underline-offset-4" href="/radon-test-result-meaning">Review a radon test result →</a></div></li>
+                    </ol>
+                </section>
+
+                <section class="border-y-2 border-ink py-10">
+                    <div class="grid gap-7 lg:grid-cols-[1fr_auto] lg:items-end">
+                        <div><p class="text-xs font-black uppercase tracking-[0.2em] text-pine">Interactive record</p><h2 class="mt-3 font-display text-4xl font-bold">Do not reconstruct the test from memory</h2><p class="mt-4 max-w-2xl font-semibold leading-7 text-stone-700">The planner records device, purpose, timestamps, placement, conditions, and incidents, then shows which facts need verification against published rules.</p></div>
+                        <a href="/radon-test-planner" class="inline-flex min-h-[54px] items-center justify-center bg-ink px-6 text-sm font-black text-white transition hover:bg-pine">Build the test record →</a>
                     </div>
-                </div>
-            </div>
+                </section>
 
-            <!-- Test Type 3 -->
-            <div class="not-prose bg-white rounded-2xl border border-slate-200 p-6 shadow-sm mb-6">
-                <div class="flex items-start gap-4">
-                    <div class="w-12 h-12 rounded-xl bg-indigo-100 text-indigo-600 flex items-center justify-center shrink-0">
-                        <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-                        </svg>
+                <section class="py-12">
+                    <p class="text-xs font-black uppercase tracking-[0.2em] text-pine">Resolve one problem at a time</p>
+                    <h2 class="mt-3 font-display text-4xl font-bold">Testing procedure library</h2>
+                    <div class="mt-7 grid gap-px bg-paper-rule sm:grid-cols-2">
+                        <a class="bg-white p-5 font-bold hover:bg-paper" href="/guides/can-you-open-windows-during-radon-test">A window was opened →</a>
+                        <a class="bg-white p-5 font-bold hover:bg-paper" href="/guides/can-you-live-in-house-during-radon-test">People or pets stayed home →</a>
+                        <a class="bg-white p-5 font-bold hover:bg-paper" href="/guides/radon-test-during-rain-or-storm">Rain, wind, or a storm occurred →</a>
+                        <a class="bg-white p-5 font-bold hover:bg-paper" href="/guides/radon-test-moved-or-tampered">The device moved or lost power →</a>
+                        <a class="bg-white p-5 font-bold hover:bg-paper" href="/guides/expired-radon-test-kit">The kit may be expired →</a>
+                        <a class="bg-white p-5 font-bold hover:bg-paper" href="/guides/how-to-mail-radon-test-kit">The kit must reach a laboratory →</a>
+                        <a class="bg-white p-5 font-bold hover:bg-paper" href="/guides/radon-testing-in-apartments">The home is an apartment or condo →</a>
+                        <a class="bg-white p-5 font-bold hover:bg-paper" href="/guides/radon-test-after-renovation">The building recently changed →</a>
+                        <a class="bg-white p-5 font-bold hover:bg-paper" href="/guides/when-to-retest-for-radon">A new test may be needed →</a>
+                        <a class="bg-white p-5 font-bold hover:bg-paper" href="/guides/charcoal-vs-digital-radon-test">Choose passive kit or monitor →</a>
                     </div>
-                    <div>
-                        <h3 class="font-display font-bold text-lg text-slate-900 mb-2">Continuous Radon Monitors (CRM)</h3>
-                        <p class="text-sm text-slate-600 leading-relaxed mb-3">
-                            Electronic devices that continuously sample air and display real-time radon readings. Consumer-grade models like the Airthings Wave or Corentium Home provide hourly measurements. Professional monitors used during real estate transactions (like the Sun Nuclear 1027) log data for 48+ hours.
-                        </p>
-                        <p class="text-sm text-slate-600 leading-relaxed mb-3">
-                            These are usually a better second purchase than a first purchase. They are most useful after your first test, for tracking seasonal swings, or for checking levels after mitigation work.
-                        </p>
-                        <div class="grid grid-cols-2 gap-3 text-xs">
-                            <div class="bg-emerald-50 rounded-lg p-3">
-                                <span class="font-bold text-emerald-700 block mb-1">Pros</span>
-                                <span class="text-emerald-600">Real-time data - Reusable - Smart home integration</span>
-                            </div>
-                            <div class="bg-red-50 rounded-lg p-3">
-                                <span class="font-bold text-red-700 block mb-1">Cons</span>
-                                <span class="text-red-600">Higher upfront cost - Needs calibration - Battery dependent</span>
-                            </div>
-                        </div>
-                        <div class="mt-3 text-sm font-bold text-slate-900">Cost: $150-$250 (consumer) - $1,500+ (professional)</div>
-                        <a href="${digitalMonitorUrl}"
-                           data-rv-affiliate-link="true"
-                           target="_blank" rel="sponsored nofollow noopener"
-                           onclick="if(window.rvTrackAffiliateClick) window.rvTrackAffiliateClick(this, { cta_id: 'guide_monitor_followup', offer_type: 'monitor', offer_brand: 'airthings', offer_model: 'corentium_home', placement_group: 'guide', placement_id: 'monitor_card', journey_stage: 'followup_monitor' });"
-                           class="inline-flex items-center gap-2 mt-3 px-4 py-2 rounded-lg bg-slate-900 text-white text-xs font-bold hover:bg-slate-800 transition-colors">
-                            View Airthings Corentium Home ->
-                        </a>
+                    <a class="mt-6 inline-flex font-black text-pine underline decoration-2 underline-offset-4" href="/guides">Browse all testing and system guides →</a>
+                </section>
+
+                <section class="border-t-2 border-ink py-12">
+                    <p class="text-xs font-black uppercase tracking-[0.2em] text-pine">Primary guidance</p>
+                    <h2 class="mt-3 font-display text-4xl font-bold">Sources used for this workflow</h2>
+                    <div class="mt-7 divide-y divide-paper-rule border-y border-paper-rule">
+                        <a class="grid gap-2 py-5 sm:grid-cols-[1fr_auto] sm:items-center" href="https://www.cdc.gov/radon/testing/index.html" rel="noopener" target="_blank"><span><strong class="block text-lg">Testing for Radon in Your Home</strong><small class="mt-1 block font-semibold text-stone-500">Centers for Disease Control and Prevention · test types, duration, placement, and retesting</small></span><span class="text-xl font-black text-pine" aria-hidden="true">↗</span></a>
+                        <a class="grid gap-2 py-5 sm:grid-cols-[1fr_auto] sm:items-center" href="https://www.epa.gov/sites/default/files/2016-12/documents/2016_a_citizens_guide_to_radon.pdf" rel="noopener" target="_blank"><span><strong class="block text-lg">A Citizen's Guide to Radon</strong><small class="mt-1 block font-semibold text-stone-500">U.S. Environmental Protection Agency · residential testing and follow-up</small></span><span class="text-xl font-black text-pine" aria-hidden="true">↗</span></a>
+                        <a class="grid gap-2 py-5 sm:grid-cols-[1fr_auto] sm:items-center" href="https://www.epa.gov/sites/default/files/2015-05/documents/hmbuygud.pdf" rel="noopener" target="_blank"><span><strong class="block text-lg">Home Buyer's and Seller's Guide to Radon</strong><small class="mt-1 block font-semibold text-stone-500">U.S. Environmental Protection Agency · transaction testing and closed-house conditions</small></span><span class="text-xl font-black text-pine" aria-hidden="true">↗</span></a>
                     </div>
-                </div>
+                </section>
+
+                @if(trust != null)
+                    @template.components.trust_metadata(trust = trust)
+                @endif
             </div>
-
-            <h2 class="font-display font-bold text-2xl text-slate-900 mt-12 mb-4">How to Place Your Test Kit: The 5 Rules</h2>
-            <p class="text-slate-600 mb-6">
-                Test placement directly affects accuracy. An improperly placed test can produce a falsely low reading, giving you a dangerous false sense of security. Follow these rules exactly:
-            </p>
-
-            <ol class="list-decimal pl-6 text-slate-600 mb-6 space-y-3">
-                <li><strong>Lowest livable level.</strong> Place the test in the lowest level of the home that is regularly occupied - usually the basement or ground floor. Garages and storage rooms don't count.</li>
-                <li><strong>2-5 feet above the floor.</strong> Radon is heavier than air but mixes continuously. Testing at breathing height (a table or shelf) gives the most relevant result.</li>
-                <li><strong>Away from exterior walls, windows, and doors.</strong> At least 20 inches from exterior walls and 12 inches from any window or door. Drafts dilute local readings.</li>
-                <li><strong>Away from sump pits and foundation cracks.</strong> These are radon entry points and will produce artificially high readings that don't represent the room's average level.</li>
-                <li><strong>Closed-house conditions.</strong> Keep windows and doors closed for 12 hours before the test begins and throughout the test duration. Normal entry/exit is fine. Do not run whole-house fans.</li>
-            </ol>
-
-            <div class="not-prose bg-amber-50 border border-amber-200 rounded-2xl p-6 mb-8">
-                <h3 class="font-display font-bold text-amber-900 mb-2">Warning: Common Invalidation Mistakes</h3>
-                <ul class="text-sm text-amber-800 space-y-2 leading-relaxed">
-                    <li>&bull; <strong>Leaving windows open</strong> - even cracked windows dilute radon readings by 30-50%</li>
-                    <li>&bull; <strong>Testing during renovation</strong> - open walls and disturbed foundation material can spike readings</li>
-                    <li>&bull; <strong>HVAC changes mid-test</strong> - switching from AC to heat (or vice versa) alters air pressure dynamics</li>
-                    <li>&bull; <strong>Placing near humidity sources</strong> - bathrooms and laundry areas produce moisture that interferes with charcoal kits</li>
-                </ul>
-            </div>
-
-            <h2 class="font-display font-bold text-2xl text-slate-900 mt-12 mb-4">Understanding Your Results</h2>
-
-            <div class="not-prose bg-white rounded-2xl border border-slate-200 overflow-hidden mb-8">
-                <table class="w-full text-sm">
-                    <thead class="bg-slate-50">
-                        <tr>
-                            <th class="px-4 py-3 text-left font-bold text-slate-700">Reading (pCi/L)</th>
-                            <th class="px-4 py-3 text-left font-bold text-slate-700">Risk Level</th>
-                            <th class="px-4 py-3 text-left font-bold text-slate-700">Recommended Action</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-slate-100">
-                        <tr>
-                            <td class="px-4 py-3 font-semibold text-emerald-600">Below 2.0</td>
-                            <td class="px-4 py-3 text-slate-700">Low</td>
-                            <td class="px-4 py-3 text-slate-600">Keep the result and retest on a sensible schedule or after major home changes.</td>
-                        </tr>
-                        <tr>
-                            <td class="px-4 py-3 font-semibold text-amber-600">2.0 - 4.0</td>
-                            <td class="px-4 py-3 text-slate-700">Moderate</td>
-                            <td class="px-4 py-3 text-slate-600">A follow-up or long-term test can reduce uncertainty; consider reduction based on the full situation.</td>
-                        </tr>
-                        <tr>
-                            <td class="px-4 py-3 font-semibold text-red-600">4.0 - 8.0</td>
-                            <td class="px-4 py-3 text-slate-700">High</td>
-                            <td class="px-4 py-3 text-slate-600">Follow the test instructions for confirmation when needed, then begin mitigation planning.</td>
-                        </tr>
-                        <tr>
-                            <td class="px-4 py-3 font-semibold text-red-700">Above 8.0</td>
-                            <td class="px-4 py-3 text-slate-700">Very High</td>
-                            <td class="px-4 py-3 text-slate-600">Treat this as a high result: document the test conditions and prioritize the mitigation decision.</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-
-            <p class="text-slate-600 mb-6">
-                If a short-term test reads at or above 4.0 pCi/L, follow the kit instructions and current EPA or CDC guidance for confirmation. Keep the report, the test duration, and placement notes together before you compare scopes from mitigation professionals.
-            </p>
-
-            <h2 class="font-display font-bold text-2xl text-slate-900 mt-12 mb-4">When to Re-Test (Even If Your First Test Was Low)</h2>
-            <p class="text-slate-600 mb-4">Radon levels fluctuate. A one-time test provides a snapshot, not a guarantee. The EPA recommends re-testing in these scenarios:</p>
-            <ul class="list-disc pl-6 text-slate-600 mb-6 space-y-2">
-                <li><strong>On a sensible periodic schedule</strong> - especially if the home has changed or the prior test was a short snapshot</li>
-                <li><strong>After major renovation</strong> - especially if you've altered the foundation, waterproofing, or HVAC system</li>
-                <li><strong>After any real estate transaction</strong> - tests conducted under "closed house" conditions for sales may not reflect normal living patterns</li>
-                <li><strong>When seasons or occupancy change the question</strong> - a long-term test can better capture variation over time.</li>
-            </ul>
-
-            <h2 class="font-display font-bold text-2xl text-slate-900 mt-12 mb-4">Professional Testing vs. DIY</h2>
-            <p class="text-slate-600 mb-6">
-                A qualified radon professional can help when the result will affect a real-estate transaction, test conditions need independent documentation, or the home has an unusual layout. For personal screening, a properly used home kit can provide a useful initial measurement. If the result is near 4.0 pCi/L, use the test instructions and a follow-up test to reduce uncertainty.
-            </p>
-
-            <!-- CTA Section -->
-            <div class="not-prose bg-indigo-50 border border-indigo-100 rounded-2xl p-8 mt-12 text-slate-900 shadow-sm relative overflow-hidden">
-                <div class="absolute top-0 right-0 -mr-16 -mt-16 w-32 h-32 rounded-full bg-indigo-200 opacity-50 blur-2xl"></div>
-                <h3 class="font-display font-bold text-xl text-indigo-950 mb-3 relative z-10">Have a result? Put the next step in writing.</h3>
-                <p class="text-indigo-800 mb-6 text-sm leading-relaxed relative z-10">Use the result interpreter for the decision path, then use the inspection guide or quote checklist when a documented scope matters.</p>
-                <div class="flex flex-col sm:flex-row gap-3 relative z-10">
-                    <a href="/radon-test-result-meaning" class="inline-flex items-center justify-center px-6 py-3 border border-transparent text-sm font-bold rounded-xl text-white bg-indigo-600 hover:bg-indigo-700 transition shadow-sm">
-                        Interpret My Result ->
-                    </a>
-                    <a href="/guides/radon-mitigation-quote-checklist" class="inline-flex items-center justify-center px-6 py-3 border border-indigo-200 text-sm font-bold rounded-xl text-indigo-800 bg-white hover:bg-indigo-50 transition">
-                        Compare Mitigation Quotes
-                    </a>
-                </div>
-            </div>
-
-            <!-- Source Citation -->
-            <div class="mt-8 p-4 rounded-xl bg-indigo-50 border border-indigo-100">
-                <p class="text-xs text-indigo-800 font-semibold not-prose">
-                    Sources: EPA "A Citizen's Guide to Radon" (EPA 402/K-12/002), EPA "Home Buyer's and Seller's Guide to Radon", WHO Handbook on Indoor Radon (2009). All testing protocol recommendations follow ANSI/AARST MAH 2019 standards.
-                </p>
-            </div>
-
-            @if(trust != null)
-                @template.components.trust_metadata(trust = trust)
-            @endif
-        </div>
+        </article>
     `
 )
-

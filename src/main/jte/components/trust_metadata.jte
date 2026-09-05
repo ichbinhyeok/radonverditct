@@ -13,13 +13,13 @@
             <dd class="text-slate-900 font-medium"><a href="/about" class="text-indigo-700 hover:underline">${trust.getAuthorName()}</a> (${trust.getAuthorRole()})</dd>
         </div>
         <div>
-            <dt class="text-slate-500">Independent Review</dt>
+            <dt class="text-slate-500">Evidence Review</dt>
             <dd class="text-slate-900 font-medium">
                 @if(trust.getReviewerName() != null && !trust.getReviewerName().isBlank())
                     ${trust.getReviewerName()}@if(trust.getReviewerRole() != null && !trust.getReviewerRole().isBlank()) (${trust.getReviewerRole()})@endif
                     @if(trust.getLastReviewed() != null && !trust.getLastReviewed().isBlank()) · ${trust.getLastReviewed()}@endif
                 @else
-                    Credentialed external review not yet completed
+                    Official and primary sources cited below
                 @endif
             </dd>
         </div>

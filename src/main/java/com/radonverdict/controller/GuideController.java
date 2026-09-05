@@ -3,6 +3,7 @@ package com.radonverdict.controller;
 import com.radonverdict.model.dto.AeoAnswerBlock;
 import com.radonverdict.model.dto.TrustMetadata;
 import com.radonverdict.service.TrustMetadataService;
+import com.radonverdict.service.TestProtocolGuideCatalog;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,10 +17,14 @@ import java.util.List;
 public class GuideController {
 
     private final TrustMetadataService trustMetadataService;
+    private final TestProtocolGuideCatalog testProtocolGuideCatalog;
 
     @GetMapping("/guides")
     public String guidesHub(Model model) {
-        model.addAttribute("title", "Radon Mitigation Guides | RadonVerdict");
+        model.addAttribute("title", "Radon Testing & System Guides | RadonVerdict");
+        model.addAttribute("guides", testProtocolGuideCatalog.all());
+        model.addAttribute("priorityGuides", testProtocolGuideCatalog.acquisitionPriority());
+        model.addAttribute("guideCategories", testProtocolGuideCatalog.categories());
         return "pages/guides_hub";
     }
 
@@ -38,16 +43,16 @@ public class GuideController {
     @GetMapping("/guides/how-to-test-for-radon")
     public String guideRadonTesting(Model model) {
         model.addAttribute("title", "How to Test for Radon at Home | RadonVerdict");
-        TrustMetadata trust = trustMetadataService.forGuidePage();
+        TrustMetadata trust = trustMetadataService.forTestingGuidePage();
         model.addAttribute("trust", trust);
         model.addAttribute("aeo", AeoAnswerBlock.builder()
-                .question("What is the fastest reliable way to test a home for radon?")
-                .directAnswer("Use a short-term home radon test in the lowest regularly occupied level under the kit's closed-house instructions, then send it to the lab. A follow-up or long-term test can reduce uncertainty when the result is elevated or near a decision threshold.")
+                .question("How do you test a home for radon?")
+                .directAnswer("Define why you are testing, choose a device that fits that decision, use the lowest regularly occupied level, follow the device's exact placement and timing instructions, and keep the procedure record with the result.")
                 .evidenceRows(List.of(
-                        AeoAnswerBlock.Row.builder().label("Primary Method").value("Short-term charcoal kit").build(),
-                        AeoAnswerBlock.Row.builder().label("Test Window").value("2 to 7 days").build(),
-                        AeoAnswerBlock.Row.builder().label("EPA Action Level").value("4.0 pCi/L").build(),
-                        AeoAnswerBlock.Row.builder().label("Placement").value("Lowest regularly occupied level").build()))
+                        AeoAnswerBlock.Row.builder().label("Short-term").value("2 to 90 days; device instructions set the exact window").build(),
+                        AeoAnswerBlock.Row.builder().label("Long-term").value("More than 90 days").build(),
+                        AeoAnswerBlock.Row.builder().label("Placement").value("Lowest regularly occupied level plus device instructions").build(),
+                        AeoAnswerBlock.Row.builder().label("Record").value("Purpose, device, location, timestamps, conditions, and incidents").build()))
                 .sources(trust != null ? trust.getSources() : List.of())
                 .build());
         return "pages/guide_radon_testing";
@@ -122,12 +127,6 @@ public class GuideController {
     public String guideActivePassive(Model model) {
         model.addAttribute("title", "Active vs. Passive Radon Mitigation Systems | RadonVerdict");
         return "pages/guide_active_passive";
-    }
-
-    @GetMapping("/guides/radon-fan-noise-troubleshooting")
-    public String guideFanNoise(Model model) {
-        model.addAttribute("title", "Radon Fan Noise Troubleshooting: Is It Normal? | RadonVerdict");
-        return "pages/guide_fan_noise";
     }
 
     @GetMapping("/guides/crawl-space-radon-mitigation")

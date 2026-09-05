@@ -83,12 +83,16 @@ class SeoPublicSurfaceContractTest {
                 "/guides/radon-failed-inspection",
                 "/guides/radon-mitigation-quote-checklist")) {
             String html = fetch(path);
+            String expectedModifiedDate = path.equals("/guides/how-to-test-for-radon")
+                    ? "2026-09-05"
+                    : "2026-08-27";
             assertThat(html)
                     .contains("\"datePublished\":")
-                    .contains("\"dateModified\": \"2026-08-27\"")
+                    .contains("\"dateModified\": \"" + expectedModifiedDate + "\"")
                     .contains("\"url\": \"https://radonverdict.com/about\"")
-                    .contains("Independent Review")
-                    .contains("Credentialed external review not yet completed");
+                    .contains("Evidence Review")
+                    .contains("Official and primary sources cited below")
+                    .doesNotContain("Credentialed external review not yet completed");
         }
     }
 

@@ -102,6 +102,17 @@ public class TrustMetadataService {
                 .build();
     }
 
+    public TrustMetadata forTestingGuidePage() {
+        List<TrustMetadata.SourceLink> sourceLinks = new ArrayList<>();
+        addReferenceSourceById(sourceLinks, "epa_citizens_guide");
+        addReferenceSourceById(sourceLinks, "cdc_radon_testing");
+
+        return baseBuilder()
+                .dataRetrievedAt(null)
+                .sources(sourceLinks)
+                .build();
+    }
+
     private TrustMetadata.TrustMetadataBuilder baseBuilder() {
         String lastReviewed = (configuredLastReviewed != null && !configuredLastReviewed.isBlank())
                 ? configuredLastReviewed
