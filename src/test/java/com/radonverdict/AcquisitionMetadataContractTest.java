@@ -77,6 +77,16 @@ class AcquisitionMetadataContractTest {
         }
     }
 
+    @Test
+    void sharedStylesheetsUseVersionedUrlsSoProductionCdnCannotServeStaleDesigns() throws Exception {
+        String html = mockMvc.perform(get("/"))
+                .andReturn().getResponse().getContentAsString();
+
+        assertThat(html)
+                .contains("href=\"/css/style.css?v=20260906a\"")
+                .contains("href=\"/css/mobile-overrides.css?v=20260906a\"");
+    }
+
     private List<String> acquisitionPaths() {
         List<String> paths = new ArrayList<>(List.of(
                 "/", "/guides", "/guides/how-to-test-for-radon",
